@@ -1,0 +1,76 @@
+<div class="serversettings">
+	<div class="tabbable tabs-left">
+		<ul class="nav nav-tabs">
+			<li class="active"><a class="basicServerSettingsLink" href="#basicserversettings" data-toggle="tab">Server Settings</a></li>
+			<li><a class="migrationsLink" href="#migrations" data-toggle="tab">Migrations</a></li>
+			<li><a class="pluginsLink" href="#plugins" data-toggle="tab">Plugins</a></li>
+			<li><a class="extendedDataSchemasLink" href="#extendeddataschemas" data-toggle="tab">Extended Data Schemas</a></li>
+		</ul>
+		<div class="tab-content">
+			<div class="tab-pane active" id="basicserversettings">Server Settings</div>
+			<div class="tab-pane" id="migrations">Migrations</div>
+			<div class="tab-pane" id="plugins">Plugins</div>
+			<div class="tab-pane" id="extendeddataschemas">Extended Data Schemas</div>
+		</div>
+	</div>
+</div>
+<script>
+	function ServerSettings(main) {
+		var othis = this;
+
+		this.showAddNewExtendedDataSchema = function(extendedDataSchema) {
+			$(".serversettings .nav-tabs .extendedDataSchemasLink").tab("show");
+			$("#extendeddataschemas").load("addnewextendeddataschema.html", function(){
+				new AddExtendedDataSchema(main, othis, extendedDataSchema);
+			});
+		};
+
+		this.showAddRepoExtendedDataSchema = function() {
+			$("#extendeddataschemas").load("addrepoextendeddataschema.html", function(){
+				new AddRepoExtendedDataSchema(main, othis);
+			});
+		};
+		
+		this.showExtendedDataSchema = function(extendedDataSchema) {
+			$(".serversettings .nav-tabs .extendedDataSchemasLink").tab("show");
+			$("#extendeddataschemas").load("extendeddataschema.html", function(){
+				new ExtendedDataSchema(main, extendedDataSchema);
+			});
+		};
+
+		this.showBasicServerSettings = function() {
+			$("#basicserversettings").load("basicserversettings.html", function(){
+				new BasicServerSettings(main, othis);
+			});
+		};
+
+		this.showMigrations = function() {
+			$("#migrations").load("migrations.html", function(){
+				new Migrations(main, othis);
+			});
+		};
+
+		this.showPlugins = function() {
+			$("#plugins").load("plugins.html", function(){
+				new Plugins(main, othis);
+			});
+		};
+
+		this.showExtendedDataSchemas = function() {
+			$(".serversettings .extendedDataSchemasLink").tab("show");
+			$("#extendeddataschemas").load("extendeddataschemas.html", function(){
+				new ExtendedDataSchemas(main, othis);
+			});
+		};
+		
+		this.close = function() {
+		};
+		
+		othis.showBasicServerSettings();
+		
+		$(".serversettings .basicServerSettingsLink").click(othis.showBasicServerSettings);
+		$(".serversettings .migrationsLink").click(othis.showMigrations);
+		$(".serversettings .pluginsLink").click(othis.showPlugins);
+		$(".serversettings .extendedDataSchemasLink").click(othis.showExtendedDataSchemas);
+	}
+</script>

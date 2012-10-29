@@ -1,0 +1,94 @@
+<table class="logTable table table-striped table-hover">
+	<tr>
+		<th>When</th>
+		<th>Type</th>
+		<th>User</th>
+		<th>Access Method</th>
+		<th>Summary</th>
+	</tr>
+</table>
+<script>
+function Dashboard(main) {
+	var othis = this;
+	
+	this.showUser = function(event) {
+		main.showUser($(this).data("user"), event);
+	};
+	
+	this.showProject = function(event) {
+		main.showProject($(this).data("project"), event);
+	};
+
+	this.close = function() {
+		bimServerApi.unregister(othis.newLogAction);
+	};
+	
+	this.createProjectLink = function(poid) {
+		var link = $("<a>Loading...</a>");
+		link.attr("poid", poid);
+		link.click(othis.showProject);
+		loadProject(link);
+		return link;
+	};
+	
+	this.createUserLink = function(uoid) {
+		var link = $("<a>Loading...</a>");
+		link.attr("uoid", uoid);
+		link.click(othis.showUser);
+		loadUser(link);
+		return link;
+	};
+
+	this.newLogAction = function(uuid, logAction, serviceIdentifier, profileIdentifier, token, apiUrl) {
+		var tr = $("<tr></tr>");
+		tr.append("<td><span title=\"" + formatDateTime(new Date(logAction.date)) + "\" class=\"timespan\" datetime=\"" + logAction.date + "\">" + formatTimeSpan(new Date().getTime() - logAction.date, false) + "</span></td>");
+		tr.append("<td>" + logAction.__type.substring(1) + "</td>");
+		
+		var userTd = $("<td></td>");
+		userTd.append(othis.createUserLink(logAction.executorId));
+		tr.append(userTd);
+		
+		tr.append("<td>" + formatAccessMethod(logAction.accessMethod) + "</td>");
+		var descriptionTd = $("<td></td>");
+		tr.append(descriptionTd);
+		if (logAction.__type == "SNewUserAdded") {
+			descriptionTd.append(othis.createUserLink(logAction.userId));
+		} else if (logAction.__type == "SNewProjectAdded") {
+			descriptionTd.append(othis.createProjectLink(logAction.projectId));
+		} else if (logAction.__type == "SRevisionBranched") {
+		} else if (logAction.__type == "SNewRevisionAdded") {
+		} else if (logAction.__type == "SNewCheckoutAdded") {
+		} else if (logAction.__type == "SSettingsSaved") {
+		} else if (logAction.__type == "SUserAddedToProject") {
+		} else if (logAction.__type == "SNewObjectIDMUploaded") {
+		} else if (logAction.__type == "SDownload") {
+		} else if (logAction.__type == "SUserRemovedFromProject") {
+		} else if (logAction.__type == "SProjectDeleted") {
+		} else if (logAction.__type == "SUserDeleted") {
+		} else if (logAction.__type == "SPasswordReset") {
+		} else if (logAction.__type == "SDatabaseCreated") {
+		} else if (logAction.__type == "SServerStarted") {
+		} else if (logAction.__type == "SProjectUpdated") {
+		} else if (logAction.__type == "SUserUndeleted") {
+		} else if (logAction.__type == "SProjectUndeleted") {
+		} else if (logAction.__type == "SRevisionUpdated") {
+		} else if (logAction.__type == "SGeoTagUpdated") {
+		} else if (logAction.__type == "SPasswordChanged") {
+		} else if (logAction.__type == "SUserChanged") {
+		} else if (logAction.__type == "SExtendedDataAddedToProject") {
+		} else if (logAction.__type == "SExtendedDataAddedToRevision") {
+		} else {
+			descriptionTd.append(logAction.__type);
+		}
+		tr.insertAfter($(".logTable tr:first-child"));
+	}
+
+	bimServerApi.call("ServiceInterface", "getLogs", {}, function(data){
+		data.forEach(function(logAction){
+			othis.newLogAction("", logAction);
+		});
+	});
+	
+	bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
+}
+</script>

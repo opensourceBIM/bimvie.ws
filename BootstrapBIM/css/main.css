@@ -1,0 +1,40 @@
+a {
+	cursor: pointer;
+}
+
+.container {
+	padding: 10px;
+}
+
+.initialhide {
+	display: none
+}
+
+table .header {
+	font-weight: bold;
+}
+
+.login .span5 {
+	padding-top: 50px;
+	width: 500px;
+}
+
+.modal { overflow: visible; }
+.modal-body { overflow-y: visible; }
+
+.addservice2 .loadPrivateProfiles form {
+	margin-bottom: 0px;
+}
+
+.linkspacer {
+	margin: 8px;	
+}
+
+table.table-hover tr {
+	cursor: pointer;
+}
+
+table .btn {
+  padding: 1px 5px 1px;
+  margin-right: -3px;
+}

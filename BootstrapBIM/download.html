@@ -1,0 +1,196 @@
+<div class="downloadpopup">
+	<div class="modal-header">
+    	<a class="close" data-dismiss="modal">&times;</a>
+    	<h3>Download / Checkout</h3>
+  	</div>
+	<div class="modal-body">
+		<div class="checkoutMessage initialhide"></div>
+		<div class="message"></div>
+		<div class="downloadProgressBar progress initialhide">
+			<div class="bar" style="width: 0;"></div>
+		</div>
+		<div class="fields">
+			<form class="form-horizontal">
+				<div class="control-group">
+					<label for="serializerOid" class="control-label">Serializer</label>
+					<div class="controls">
+						<select id="serializerOid" name="serializerOid" class="revisionsdownloadcheckoutselect">
+						</select>
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="controls">
+						<label class="checkbox" for="downloadCheckoutZip">
+							<input id="downloadCheckoutZip" type="checkbox" name="zip"> Zip
+						</label>
+					</div>
+				</div>
+			</form>
+			<div class="resultsarea"></div>
+		</div>
+	</div>
+  	<div class="modal-footer">
+		<a class="btn" style="margin-right: 8px" data-dismiss="modal">Close</a>
+		<div class="btn-group" style="float: right">
+			<button class="btn downloadButton btn-primary">Download</button>
+			<button class="btn dropdown-toggle btn-primary" data-toggle="dropdown">
+	  			<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu">
+				<li><a class="checkoutButton">Checkout</a></li>
+				<li><a class="downloadTextButton">Download as Text</a></li>
+			</ul>
+		</div>
+    </div>
+</div>
+<script>
+function Download(data) {
+	var othis = this;
+	othis.userHasCheckinRights = false;
+	othis.data = data;
+	othis.mimeTypeOverride = null;
+	othis.laid;
+	othis.zip = false;
+
+	bimServerApi.multiCall([[
+		"ServiceInterface", "getDefaultSerializer", {}
+	],
+	[
+		"ServiceInterface", "getAllSerializers", {onlyEnabled: true}
+	]], function(data){
+		var defaultSerializer = data[0].result;
+		var serializers = data[1].result;
+		serializers.forEach(function(serializer){
+			var option = $("<option value=\"" + serializer.oid + "\">" + serializer.name + "</option>");
+			if (serializer.oid == defaultSerializer.oid) {
+				option.attr("selected", "selected");
+			}
+			$(".downloadpopup .revisionsdownloadcheckoutselect").append(option);
+		});
+	});
+	
+	bimServerApi.call("ServiceInterface", "userHasCheckinRights", {uoid: bimServerApi.user.oid, poid: data.poid}, function(data){
+		othis.userHasCheckinRights = data;
+		othis.checkRevisionsCheckoutButton();
+	});
+	
+	this.checkRevisionsCheckoutButton = function(event) {
+		if (!othis.data.allowCheckouts) {
+			$(".checkoutButton").hide();
+			return;
+		}
+		var el = $(".downloadpopup .revisionsdownloadcheckoutselect");
+		var val = el.val();
+		var text = el.find(":selected").text();
+		if ((text != "Ifc2x3" && text != "IfcXML") || !othis.userHasCheckinRights) {
+			$(".downloadpopup .checkoutButton").button("disable");
+		} else {
+			$(".downloadpopup .checkoutButton").button("enable");
+		}
+		if (!othis.userHasCheckinRights) {
+			$(".checkoutMessage").html("Checkout unavailable because you have no rights on the project");
+		} else if (text != "Ifc2x3" && text != "IfcXML") {
+			$(".checkoutMessage").html("Checkout unavailable for formats other than Ifc2x3 and IfcXML");
+		} else {
+			$(".checkoutMessage").html("");
+		}
+	}
+
+	this.progressHandler = function(topicId, state) {
+		if (topicId == othis.laid) {
+			$(".downloadpopup .downloadProgressBar .bar").css("width", state.progress + "%");
+			if (state.errors.length > 0) {
+				$(".downloadpopup .fields, .downloadpopup .checkoutMessage").show();
+				$(".downloadpopup .downloadProgressBar").hide();
+				state.errors.map(function(error){
+					$(".downloadpopup .resultsarea").append(error + "<br/>");
+				});
+				$(".downloadpopup .message").html("");
+				bimServerApi.unregister(othis.progressHandler);
+			} else if (state.state == "FINISHED") {
+				if (state.warnings.length > 0) {
+					state.warnings.map(function(warning){
+						$(".downloadpopup .resultsarea").append(warning + "<br/>");
+					});
+				}
+				$(".downloadpopup .downloadProgressBar").hide();
+				$(".downloadpopup .downloadProgressBar").toggleClass('active');
+				$(".downloadpopup .downloadProgressBar").css("width", "0");
+				$(".downloadpopup .downloadProgressBar").toggleClass('active');
+				$(".downloadpopup .fields, .downloadpopup .checkoutMessage").show();
+				var url = bimServerApi.generateRevisionDownloadUrl({
+					zip: $("#downloadCheckoutZip").attr('checked') != undefined,
+					serializerOid: $(".downloadpopup .revisionsdownloadcheckoutselect").val(),
+					laid: othis.laid
+				});
+				if (othis.mimeTypeOverride != null) {
+					url += "&mime=" + othis.mimeTypeOverride;
+					window.open(url);
+				} else {
+					window.location = url;
+				}
+				bimServerApi.unregister(othis.progressHandler);
+				$(".downloadpopup .message").html("Prepare complete, initiating download, click <a href=\"" + url + "\">here</a> if the download does not start automatically<br/><br/>");
+			}
+		}
+	};
+	
+	this.start = function(data) {
+		$(".downloadpopup .message").html("Preparing download...");
+		$(".downloadpopup .downloadProgressBar").show();
+		$(".downloadpopup .fields").hide();
+		$(".downloadpopup .checkoutMessage").hide();
+		bimServerApi.call("ServiceInterface", "download", data, function(data){
+			$(".downloadpopup .message").html("Preparing download...");
+			othis.laid = parseInt(data);
+			bimServerApi.register("NotificationInterface", "progress", othis.progressHandler);
+		}, function(){
+			$(".downloadpopup .message").html("Error: " + textStatus);
+			$(".downloadpopup .checkoutMessage").show();
+		});
+	}
+
+	this.initCheckout = function(event) {
+		event.preventDefault();
+		othis.data.serializerOid = $(".downloadpopup .revisionsdownloadcheckoutselect").val();
+		othis.data.showOwn = true;
+		othis.data.sync = false;
+		othis.mimeTypeOverride = null;
+		othis.data.downloadType = "checkout";
+		othis.start(data);
+	}
+
+	this.initDownload = function(event) {
+		event.preventDefault();
+		othis.data.serializerOid = $(".downloadpopup .revisionsdownloadcheckoutselect").val();
+		othis.data.showOwn = true;
+		othis.data.sync = false;
+		othis.mimeTypeOverride = null;
+		othis.start(data);
+	}
+
+	this.initTextDownload = function(event) {
+		event.preventDefault();
+		othis.data.showOwn = true;
+		othis.data.sync = false;
+		othis.data.serializerOid = $(".downloadpopup .revisionsdownloadcheckoutselect").val();
+		othis.mimeTypeOverride = "text/plain";
+		othis.start(data);
+	}
+
+	$(".downloadpopup .revisionsdownloadcheckoutselect").change(othis.checkRevisionsCheckoutButton);
+	$(".downloadpopup .downloadButton").click(othis.initDownload);
+	$(".downloadpopup .downloadTextButton").click(othis.initTextDownload);
+	$(".downloadpopup .checkoutButton").click(othis.initCheckout);
+
+	$("#downloadCheckoutZip").change(function(){
+		if ($(this).is(":checked")) {
+			$(".downloadpopup .downloadTextButton").button("disable");
+		} else {
+			$(".downloadpopup .downloadTextButton").button("enable");
+		}	
+	});
+	
+	$(".downloadpopup input[type=\"button\"]").button();
+}
+</script>

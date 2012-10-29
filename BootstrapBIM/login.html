@@ -1,0 +1,64 @@
+<div class="login container">
+    <div class="span5">
+    	<form class="form-horizontal">
+    	<legend>Login</legend>
+		<div class="control-group">
+			<label class="control-label" for="inputServer">Server</label>
+			<div class="controls">
+				<div class="btn-group">
+					<input type="text" id="inputServer" placeholder="BIMserver">
+					<a class="btn dropdown-toggle btn" title="Suggestions" data-toggle="dropdown"><i class="icon-star"></i></a>
+					<ul id="serverDropdown" class="dropdown-menu">
+						<li><a address="http://localhost:8080">Localhost 8082</a></li>
+						<li><a address="http://bimserver.logic-labs.nl">Logic Labs Demo BIMserver</a></li>
+						<li><a address="http://demo.bimserver.org">TNO Demo BIMserver</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="inputEmail">Email</label>
+			<div class="controls">
+				<input type="email" id="inputEmail" placeholder="Email">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="inputPassword">Password</label>
+			<div class="controls">
+				<input type="password" id="inputPassword" placeholder="Password">
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				<label class="checkbox"> <input type="checkbox"
+					id="rememberMe"> Remember me
+				</label>
+				<button type="button" class="btn loginButton">Sign in</button>
+			</div>
+		</div>
+	</form>
+  </div>
+</div>
+<script>
+function login(address) {
+	jQuery.getScript($.cookie("address") + "/js/bimserverapi.js");
+	bimServerApi = new BimServerApi(address, notifier);
+	bimServerApi.login($("#inputEmail").val(), $("#inputPassword").val(), $("#rememberMe").is(":checked"), function(data){
+		$(".indexcontainer").load("main.html", function(){
+			new Main().show();
+		});
+	});
+}
+
+$(function(){
+	$("#serverDropdown").click(function(event){
+		event.preventDefault();
+		$("#inputServer").val($(event.target).attr("address"));
+	});
+	$(".loginButton").click(function(){
+		login($("#inputServer").val());
+	});
+	
+	$("#inputServer").focus();
+});
+</script>

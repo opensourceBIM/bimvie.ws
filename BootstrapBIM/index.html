@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>BIMserver Demo</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+    <link href="css/bimsurfer.css" rel="stylesheet">
+	<link rel="shortcut icon" type="image/ico" href="img/logo_small.png"/>
+    <script src="js/jquery-1.8.2.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/String.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/jquery.ui.widget.js"></script>
+    <script src="js/jquery.history.js"></script>
+    <script src="js/jquery.numeric.js"></script>
+    <script src="js/jquery.iframe.transport.js"></script>
+    <script src="js/jquery.fileupload.js"></script>
+    <script src="js/formatters.js"></script>
+    <script src="js/jquery.cookie.js"></script>
+    <script src="js/sha256.js"></script>
+    <script src="js/scenejs.js"></script>
+    <script src="js/scenejs.math.extra.js"></script>
+    <script src="js/scenejs.math.js"></script>
+    <script src="js/scenejs.viewer.js"></script>  </head>
+  <body>
+	<div class="alert fade in genericErrors" id="login-error" style="display:none;">
+		<span class="text"></span>
+		<button type="button" class="close">×</button>
+	</div>
+	<div class="indexcontainer container-fluid"></div>
+	<script>
+		var bimServerApi;
+		var objectcache = {};
+		
+		pushInitialState();
+		
+		var notifier = {
+			error: function(message){
+				$(".genericErrors .text").html(message).parent().show();
+			},
+			info: function(message) {
+				$(".genericErrors .text").html(message).parent().show();						
+			},
+			clear: function() {
+				$(".genericErrors .text").html("").parent().hide();
+			}
+		};
+
+		$(function(){
+			if ($.cookie("autologin") != null) {
+				$.getScript($.cookie("address") + "/js/bimserverapi.js")
+				.done(function(script, textStatus) {
+					bimServerApi = new BimServerApi($.cookie("address"), notifier);
+					bimServerApi.autologin($.cookie("username"), $.cookie("autologin"), function(){
+						$(".indexcontainer").load("main.html", function(){
+							new Main().show(false);
+						});
+					}, function(){
+						$(".indexcontainer").load("login.html");
+					});
+				})
+				.fail(function(jqxhr, settings, exception) {
+					console.log(exception);
+					notifier.error(exception);
+				});  
+			} else {
+				$(".indexcontainer").load("login.html");
+			}
+			
+			setInterval(function() {
+				var now = new Date().getTime();
+				$(".timespan").each(function() {
+					$(this).html(formatTimeSpan(now - $(this).attr("datetime"), false));
+				});
+			}, 60000);
+		});
+	</script>
+  </body>
+</html>

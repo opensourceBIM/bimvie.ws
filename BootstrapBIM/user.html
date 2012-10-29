@@ -1,0 +1,179 @@
+<div class="user">
+	<h1></h1>
+	<ul class="nav nav-tabs">
+	  <li class="detailsLink active"><a>Details</a></li>
+	  <li class="revisionsLink"><a>Revisions</a></li>
+	  <li class="checkoutsLink"><a>Checkouts</a></li>
+	  <li class="projectsLink"><a>Projects</a></li>
+	</ul>
+	<div class="content">	
+		<div class="details">
+			Not implemented
+			<label>Token </label><span class="tokenSpan"></span>
+		</div>
+		<div class="revisions initialhide">
+			<div class="well well-small norevisions">No revisions</div>
+			<table class="revisionsTable initialhide table table-striped table-hover">
+				<tr><th>Id</th><th>Date</th><th>Project</th><th>Comment</th><th>Size</th><th>Actions</th></tr>
+			</table>
+		</div>
+		<div class="checkouts initialhide">
+			Not implemented
+		</div>
+		<div class="projects initialhide">
+			<div class="well well-small noprojects">No projects</div>
+			<table class="projectsTable initialhide table table-striped table-hover">
+				<tr><th>Name</th><th>Sub Projects</th><th>Revisions</th><th>Actions</th></tr>
+			</table>
+		</div>
+	</div>
+	<div class="initialhide dropdowntemplate">
+		<div class="btn-group">
+			<a class="btn dropdown-toggle" data-toggle="dropdown">
+				Actions
+			<span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu">
+				<li><a>Download/Checkout</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<script>
+function User(main, user) {
+	var othis = this;
+	othis.user = user;
+	
+	$(".user h1").html(othis.user.name);
+	$(".user .revisionsLink a").html("Revisions" + (othis.user.revisions.length == 0 ? "" : (" (" + othis.user.revisions.length + ")")));
+	$(".user .checkoutsLink a").html("Checkouts" + (othis.user.checkouts == null || othis.user.checkouts.length == 0 ? "" : (" (" + othis.user.checkouts.length + ")")));
+	$(".user .projectsLink a").html("Projects" + (othis.user.hasRightsOn.length == 0 ? "" : (" (" + othis.user.hasRightsOn.length + ")")));
+	$(".user .tokenSpan").html(othis.user.token);
+	
+	this.close = function() {
+	};
+	
+	this.showDetails = function(event) {
+		if (event != null) {
+			event.preventDefault();
+		}
+		$(".user .nav li").removeClass("active");
+		$(".user .detailsLink").addClass("active");
+		$(".user .content > div").hide();
+		$(".user .details").show();
+	};
+	
+	this.projectClick = function(event) {
+		main.showProject($(this).data("project"), event);
+		othis.close();
+	};
+	
+	this.revisionClick = function(event) {
+		if (!$(event.target).is("a, button, span.caret")) {
+			main.showRevision($(this).parents("tr").andSelf().data("revision"), event);
+			othis.close();
+		}
+	};
+
+	this.loadUserName = function(uoid, targetElement) {
+		bimServerApi.call("ServiceInterface", "getUserByUoid", {uoid: uoid}, function(data){
+			targetElement.html(data.username);
+			targetElement.data("user", data);
+		});
+	};
+
+	this.addRevision = function(revision) {
+		$(".user .norevisions").hide();
+		$(".user .revisionsTable").show();
+		var revisionRow = $("<tr class=\"revision\">");
+		revisionRow.data("revision", revision);
+		revisionRow.click(othis.revisionClick);
+		revisionRow.append("<td>" + revision.id + "</td>");
+
+		revisionRow.append("<td><span title=\"" + formatDateTime(new Date(revision.date)) + "\" class=\"timespan\" datetime=\"" + revision.date + "\">" + formatTimeSpan(new Date().getTime() - revision.date, false) + "</span></td>");
+
+		var projectTd = $("<td></td>");
+		var projectA = $("<a>loading...</a>");
+		projectA.attr("poid", revision.projectId);
+		loadProject(projectA);
+		projectA.click(othis.projectClick);
+		projectTd.append(projectA);
+		revisionRow.append(projectTd);
+
+		revisionRow.append("<td>" + revision.comment + "</td>");
+		revisionRow.append("<td>" + revision.size + "</td>");
+
+		var actions = $("<td></td>");
+		var dd = $(".dropdowntemplaterevision").clone();
+		dd.removeClass("dropdowntemplaterevision");
+		dd.find(".downloadCheckoutRevisionButton").click(othis.downloadCheckoutClick);
+		dd.show();
+		actions.append(dd);
+		revisionRow.append(actions);
+		revisionRow.insertAfter($(".revisionsTable tr:first-child"));
+	}
+	
+	this.showRevisions = function(event) {
+		event.preventDefault();
+		$(".user .nav li").removeClass("active");
+		$(".user .revisionsLink").addClass("active");
+		$(".user .content > div").hide();
+		$(".user .revisions").show();
+		bimServerApi.call("ServiceInterface", "getAllRevisionsByUser", {uoid: othis.user.oid}, function(data){
+			$(".revisionsTable tr.revision").remove();
+			data.forEach(function(revision){
+				othis.addRevision(revision);
+			});
+		});
+	};
+
+	this.showCheckouts = function(event) {
+		event.preventDefault();
+		$(".user .nav li").removeClass("active");
+		$(".user .checkoutsLink").addClass("active");
+		$(".user .content > div").hide();
+		$(".user .checkouts").show();
+	};
+
+	this.addProject = function(project) {
+		$(".user .noprojects").hide();
+		$(".user .projectsTable").show();
+		$(".projects .projectsTable").show();
+		$(".projects .noprojects").hide();
+		var projectRow = $("<tr class=\"project\">");
+
+		var nameTd = $("<td></td>");
+		var nameLink = $("<a>" + project.name + "</a>");
+		nameLink.data("project", project);
+		nameLink.click(othis.projectClick);
+		nameTd.append(nameLink);
+		projectRow.append(nameTd);
+
+		projectRow.append("<td>" + project.subProjects.length + "</td>");
+		projectRow.append("<td>" + project.revisions.length + "</td>");
+		projectRow.append("<td></td>");
+		$(".projectsTable").append(projectRow);
+	};
+	
+	this.showProjects = function(event) {
+		event.preventDefault();
+		$(".user .nav li").removeClass("active");
+		$(".user .projectsLink").addClass("active");
+		$(".user .content > div").hide();
+		$(".user .projects").show();
+		bimServerApi.call("ServiceInterface", "getUsersProjects", {uoid: othis.user.oid}, function(data){
+			$(".projectsTable tr.project").remove();
+			data.forEach(function(project){
+				othis.addProject(project);
+			});
+		});
+	};
+	
+	$(".user .detailsLink").click(othis.showDetails);
+	$(".user .revisionsLink").click(othis.showRevisions);
+	$(".user .checkoutsLink").click(othis.showCheckouts);
+	$(".user .projectsLink").click(othis.showProjects);
+	
+	othis.showDetails();
+}
+</script>

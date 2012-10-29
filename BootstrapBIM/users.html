@@ -1,0 +1,46 @@
+<div class="users">
+	<table class="usersTable table table-striped table-hover">
+		<tr><th>Name</th><th>Actions</th></tr>
+	</table>
+</div>
+<script>
+function Users(main) {
+	var othis = this;
+
+	this.userClick = function(event) {
+		if (!$(event.target).is("a, button, span.caret")) {
+			main.showUser($(this).parents("tr").andSelf().data("user"), event)
+			othis.close();
+		}
+	};
+	
+	this.close = function() {
+		bimServerApi.unregister(othis.newLogAction);
+	};
+
+	this.addUser = function(user) {
+		var userRow = $("<tr>");
+		userRow.click(othis.userClick);
+		userRow.data("user", user);
+		userRow.append("<td>" + user.name + "</td>");
+		userRow.append("<td></td>");
+		$(".usersTable").append(userRow);
+	};
+	
+	bimServerApi.call("ServiceInterface", "getAllUsers", {}, function(data){
+		data.forEach(function(user){
+			othis.addUser(user);
+		});
+	});
+	
+	this.newLogAction = function(uuid, logAction, serviceIdentifier, profileIdentifier, token, apiUrl){
+		if (logAction.__type == "SNewUserAdded") {
+			bimServerApi.call("ServiceInterface", "getUserByUoid", {uoid: logAction.userId}, function(data){
+				othis.addUser(data);
+			});
+		}
+	};
+	
+	bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
+}
+</script>

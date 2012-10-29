@@ -1,0 +1,190 @@
+<div class="browser">
+	<table class="typesTable initialhide table table-striped table-hover">
+	</table>
+	<table class="objectsTable initialhide table table-striped table-hover">
+		<tr><th>Oid</th><th>Name</th><th>GUID</th></tr>
+	</table>
+	<div class="linkspacer">
+		<a class="load3dButton initialhide">Show object in 3D</a>
+	</div>
+	<div id="3dviewport" class="3dviewport initialhide">
+		<canvas id='3dview' class="3dview" width="940" height='500'>
+	  		<p>This application requires a browser that supports the<a href='http://www.w3.org/html/wg/html5/'>HTML5</a>&lt;canvas&gt; feature.</p>
+		</canvas>
+	</div>
+	<table class="objectTable initialhide table table-striped">
+		<tr><th>Property</th><th>Value</th></tr>
+	</table>
+</div>
+<script>
+function Browser(revision) {
+	var othis = this;
+	othis.revision = revision;
+	
+	this.loadObject = function(oid) {
+		othis.oid = oid;
+		bimServerApi.call("ServiceInterface", "getDataObjectByOid", {roid: othis.revision.oid, oid: oid}, function(data){
+			$(".browser .objectTable tr[fieldName], .revision .objectTable tr.extra").remove();
+			$(".browser table").hide();
+			$(".browser .3dviewport").hide();
+			$(".browser .objectTable").append("<tr class=\"extra\"><td>Type</td><td>" + data.type + "</td></tr>");
+			$(".browser .objectTable").append("<tr class=\"extra\"><td>Oid</td><td>" + oid + "</td></tr>");
+			data.values.forEach(function(value){
+				if (value.__type == "SListDataValue") {
+					var tr = $("<tr></tr>");
+					tr.attr("fieldName", value.fieldName);
+					tr.append("<td>" + value.fieldName + "</td>");
+					var td = $("<td></td>");
+					value.values.forEach(function(listItem, index){
+						if (listItem.__type == "SListDataValue") {
+							// Should not occur
+						} else if (listItem.__type == "SSimpleDataValue") {
+							td.append((listItem.stringValue == null ? "" : listItem.stringValue) + (index == value.values.length-1 ? "" : ", "));
+						} else if (listItem.__type == "SReferenceDataValue") {
+							var link = $("<a>" + listItem.typeName + " (" + (listItem.guid == null ? listItem.oid : listItem.guid) + ")</a>");
+							link.attr("oid", listItem.oid);
+							link.attr("type", listItem.typeName);
+							link.click(othis.referenceClick);
+							td.append(link);
+							if (index != value.values.length-1) {
+								td.append(", ");
+							}
+						}
+					});
+					tr.append(td);
+					$(".browser .objectTable").append(tr);
+				} else if (value.__type == "SSimpleDataValue") {
+					var tr = $("<tr></tr>");
+					tr.attr("fieldName", value.fieldName);
+					tr.append("<td>" + value.fieldName + "</td>");
+					tr.append("<td>" + (value.stringValue == null ? "" : value.stringValue) + "</td>");
+					$(".browser .objectTable").append(tr);
+				} else if (value.__type == "SReferenceDataValue") {
+					var tr = $("<tr></tr>");
+					tr.attr("fieldName", value.fieldName);
+					tr.append("<td>" + value.fieldName + "</td>");
+					var valueTd = $("<td></td>");
+					var a = $("<a>" + value.typeName + " (" + (value.guid == null ? value.oid : value.guid) + ")</a>");
+					a.attr("type", value.typeName);
+					a.attr("oid", value.oid);
+					a.click(othis.referenceClick);
+					valueTd.append(a);
+					tr.append(valueTd);
+					$(".browser .objectTable").append(tr);
+				}
+			});
+			$(".browser .objectTable").show();
+			$(".browser .load3dButton").show();
+		});
+	};
+	
+	this.close = function() {
+		if (othis.viewer != null) {
+			othis.viewer.destroy();
+		}
+	};
+	
+	this.referenceClick = function(event) {
+		event.preventDefault();
+		othis.loadObject($(this).attr("oid"));
+	};
+	
+	this.objectClick = function(event) {
+		event.preventDefault();
+		var oid = $(this).parents("tr").attr("oid");
+		othis.loadObject(oid);
+	};
+	
+	this.typeClick = function(event) {
+		event.preventDefault();
+		var className = $(this).parents("tr").attr("className");
+		bimServerApi.call("ServiceInterface", "getDataObjectsByType", {roid: othis.revision.oid, className: className}, function(data){
+			$(".browser .objectsTable tr[className]").remove();
+			$(".browser table").hide();
+			$(".browser .load3dButton, .browser .3dviewport").hide();
+			data.forEach(function(dataObject){
+				var tr = $("<tr></tr>");
+				tr.attr("oid", dataObject.oid);
+
+				var oidTd = $("<td></td>");
+				var oidA = $("<a>" + dataObject.oid + "</a>");
+				oidA.click(othis.objectClick);
+				oidTd.append(oidA);
+				tr.append(oidTd);
+
+				var nameA = $("<a>" + dataObject.name + "</a>");
+				nameA.click(othis.objectClick);
+				var nameTd = $("<td></td>");
+				nameTd.append(nameA);
+				tr.append(nameTd);
+
+				var guidA = $("<a>" + dataObject.guid + "</a>");
+				var guidTd = $("<td></td>");
+				guidA.click(othis.objectClick);
+				guidTd.append(guidA);
+				tr.append(guidTd);
+				$(".browser .objectsTable").append(tr);				
+			});
+			$(".browser .objectsTable").show();
+		});
+	};
+
+	this.loadRevision = function() {
+		bimServerApi.call("ServiceInterface", "getRevisionSummary", {roid: othis.revision.oid}, function(data){
+			$(".browser table").hide();
+			$(".browser .load3dButton, .browser .3dviewport").hide();
+			data.list.forEach(function(revisionSummaryContainer){
+				if (revisionSummaryContainer.types.length > 0) {
+					var tr = $("<tr class=\"header\"><td>" + revisionSummaryContainer.name + "</td><td>Occurances</td></tr>");
+					$(".browser .typesTable").append(tr);
+					revisionSummaryContainer.types.forEach(function(revisionSummaryType){
+						var tr = $("<tr></tr>");
+						tr.attr("className", revisionSummaryType.name);
+						var nameTd = $("<td>");
+						var nameA = $("<a>" + revisionSummaryType.name + "</a>");
+						nameA.click(othis.typeClick);
+						nameTd.append(nameA);
+						tr.append(nameTd);
+						tr.append("<td>" + revisionSummaryType.count + "</td>");
+						$(".browser  .typesTable").append(tr);
+					});
+				}
+			});
+			$(".browser .typesTable").show();
+		});
+	};
+
+	this.bimserverImport = function(roid) {
+		bimServerApi.call("ServiceInterface", "getSerializerByContentType", {contentType: "application/json"}, function(serializer){
+			othis.loadType(roid, serializer.oid);
+	    });
+	  };
+
+	  this.loadType = function(roid, soid) {
+		  bimServerApi.call("ServiceInterface", "downloadByOids", {
+	  	  roids: [roid],
+	  	  oids: [othis.oid],
+	  	  serializerOid: soid,
+	  	  sync: true
+		  }, function(laid){
+			  var url = bimServerApi.generateRevisionDownloadUrl({
+				  serializerOid: soid,
+				  laid: laid
+			  });
+	        $.getJSON(url, function(data){
+	        	data.id = new Date().getTime();
+	        	data.canvasId = "3dview";
+           	  	othis.viewer.loadScene(data);
+	        });
+		  });
+	  }
+	$(".browser .load3dButton").click(function(event){
+		$(".browser .load3dButton").hide();
+		othis.viewer = new SceneJsViewer($(".browser .3dviewport"), $(".browser .3dview"));
+		othis.bimserverImport(othis.revision.oid);
+		$(".browser .3dviewport").show();
+	});
+	
+	othis.loadRevision();
+}
+</script>

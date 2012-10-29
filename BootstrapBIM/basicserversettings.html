@@ -1,0 +1,39 @@
+<div class="basicserversettings">
+	<form class="form-horizontal">
+		<div class="control-group">
+			<label class="control-label" for="inputRepositoryServer">Repository Server</label>
+			<div class="controls">
+				<input type="text" class="input-xxlarge inputRepositoryServer" id="inputRepositoryServer" placeholder="Name">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label"><a href="#" rel="tooltip" data-original-title="Select from which referred domains web browsers can connect to this BIMserver. More information about this can be found by searching for 'CORS'" data-placement="right">Whitelisted domains</a></label>
+			<div class="controls whiteListedDomains">
+			</div>
+		</div>
+	</form>
+</div>
+<script>
+function BasicServerSettings(main, serversettings) {
+	var othis = this;
+	
+	this.loadSettings = function() {
+		bimServerApi.call("ServiceInterface", "getServerSettings", {}, function(data){
+			$(".basicserversettings .inputRepositoryServer").val(data.serviceRepositoryUrl);
+			data.whitelistedDomains.forEach(function(domain){
+				var input = $("<input type=\"text\" class=\"whiteListedDomain input-xlarge\">");
+				input.val(domain);
+				var button = $("<button class=\"btn btn-small\"><i class=\"icon-minus\"/></button>");
+				$(".basicserversettings .whiteListedDomains").append(input);
+				//$(".basicserversettings .whiteListedDomains").append(button);
+			});
+		});
+	};
+	
+	this.close = function(){
+	};
+	
+	$("[rel=tooltip]").tooltip();
+	othis.loadSettings();
+}
+</script>

@@ -1,0 +1,44 @@
+<div class="addproject">
+	<form class="form-horizontal">
+		<div class="control-group">
+			<label class="control-label" for="inputName">Name</label>
+			<div class="controls">
+				<input type="text" class="inputName" placeholder="Name">
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				<button type="button" class="btn addButton">Add</button>
+			</div>
+		</div>
+	</form>
+</div>
+<script>
+function AddProject(main, parentProject) {
+	var othis = this;
+
+	this.close = function(){
+	};
+	
+	this.addProject = function() {
+		if (parentProject != null) {
+			bimServerApi.call("ServiceInterface", "addProjectAsSubProject", {parentPoid: parentProject.oid, projectName: $(".addproject .inputName").val()}, function(data){
+				main.showProject(data);
+			});
+		} else {
+			bimServerApi.call("ServiceInterface", "addProject", {projectName: $(".addproject .inputName").val()}, function(data){
+				main.showProject(data);
+			});
+		}
+	};
+
+	$(".addproject .addButton").click(othis.addProject);
+	$(".addproject .inputName").keypress(function(event){
+		if (event.which == 13) {
+			event.preventDefault();
+			othis.addProject();
+		}
+	});
+	$(".addproject .inputName").focus();
+}
+</script>

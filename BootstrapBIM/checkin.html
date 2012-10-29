@@ -1,0 +1,217 @@
+<div class="checkin">
+	<div class="modal-header">
+    	<a class="close" data-dismiss="modal">&times;</a>
+    	<h3>Checkin</h3>
+  	</div>
+	<div class="modal-body">
+		<a class="uploadlink">This project has subprojects, click here if you still want to checkin a new revision</a>
+		<div class="uploads">
+			<div class="upload">
+				<div class="uploadStatus"></div>
+				<div class="uploadProgressBar progress initialhide">
+					<div class="bar" style="width: 0;"></div>
+				</div>
+				<table class="uploadTable">
+				<tr><td><label for="file">File</label></td><td><input class="fileupload" type="file" name="data"/></td></tr>
+				<tr><td><label for="deserializerName">Deserializer</label></td><td><select class="deserializerName" name="deserializerName">
+				<option value="[NONE]">Select a deserializer</option>
+				</select></td></tr>
+				<tr><td><label for="comment">Comment</label></td><td><textarea class="comment" name="comment" cols="57" rows="4"></textarea></td></tr>
+				<tr><td><label for="merge">Merge</label></td><td><input class="merge" name="merge" type="checkbox"/></td></tr>
+				</table>
+			</div>
+			<div class="uploadbranch">
+				<form method="post" action="branch.jsp">
+					<label>Project/Revision</label> 
+					<select class="revisionSelect" name="roid"></select> 
+					<label>Comment</label> <input type="text" name="comment" /> 
+					<input type="hidden" name="action" value="branchtoexistingproject" />
+					<input type="hidden" name="destpoid" />
+				</form>
+				<br/>
+			</div>
+			<a class="showuploadlink initialhide">OR Checkin new revision</a>
+			<a class="uploadbranchlink">OR Checkin existing revision</a>
+		</div>
+	</div>
+  	<div class="modal-footer">
+    	<a class="btn" data-dismiss="modal">Close</a>
+    	<a class="btn uploadButton btn-primary">Checkin new revision</a>
+  	</div>
+</div>
+<script>
+var lastVal = "";
+
+function Checkin(project, successFunction) {
+	var othis = this;
+	othis.project = project;
+	
+	this.hideUpload = function() {
+		$(".uploadbranchlink").hide();			
+		$(".uploadTable").hide();
+		$(".uploadProgressBar").show();
+		$(".uploadButton").hide();
+		$(".uploadStatus").show();
+	};
+
+	this.showUpload = function() {
+		$(".uploadbranchlink").show();			
+		$(".uploadTable").show();
+		$(".uploadProgressBar").hide();
+		$(".uploadButton").show();
+	};
+	
+	$(".uploadajaxloader").hide();
+
+	bimServerApi.call("ServiceInterface", "getAllDeserializers", {onlyEnabled: true}, function(data){
+		data.forEach(function(deserializer){
+			var option = $("<option value=\"" + deserializer.oid + "\">" + deserializer.name + "</option>");
+			$(".checkin .deserializerName").append(option);
+		});
+	});
+	
+	var submitdata = null;
+	var shouldsend = false;
+	var currentCheckinId = null;
+	var fileselected = false;
+
+	this.progressHandler = function(topicId, state) {
+		if (state.state == "ERROR") {
+			$(".uploadStatus").html("Error: " + state.lastError);
+			othis.showUpload();
+			bimServerApi.unregister(othis.progressHandler);
+		} else {
+			$(".uploadProgressBar .bar").css("width", parseInt(state.progress) + "%");
+			if (state.state == "FINISHED") {
+				$(".checkin").parent().modal("hide").remove();
+				bimServerApi.unregister(othis.progressHandler);
+				if (successFunction != null) {
+					successFunction();
+				}
+			} else if (state.state == "STARTED" || state.state == "NONE") {
+			}
+		}
+	};
+	
+	this.updateSubmitButton = function() {
+        if ($(".deserializerName").val() != "[NONE]" && fileselected) {
+	        $(".uploadButton").show();
+        } else {
+	        $(".uploadButton").hide();
+        }
+	}
+	
+	$(".deserializerName").change(othis.updateSubmitButton);
+	
+	$(".fileupload").fileupload({
+		dataType: "json",
+        url: bimServerApi.baseUrl + '/upload',
+		replaceFileInput: false,
+		submit: function(e, data){
+			if (!shouldsend) {
+				shouldsend = false;
+		        submitdata = data;
+		        othis.updateSubmitButton();
+				if ($(".comment").attr("value") == "" || $("#comment").attr("value") == lastVal) {
+					var path = null;
+					$.each(data.files, function (index, file) {
+						path = file.name;
+				    });
+					if (path.indexOf("/") != -1) {
+						path = path.substr(path.lastIndexOf("/") + 1);
+					} else if (path.indexOf("\\") != -1) {
+						path = path.substr(path.lastIndexOf("\\") + 1);
+					}
+					$(".comment").attr("value", path);
+					lastVal = path;
+				}
+		        return false;
+			}
+        },
+        change: function(e, data) {
+        	fileselected = true;
+        	var path = null;
+			$.each(data.files, function (index, file) {
+				path = file.name;
+		    });
+		    var lastIndex = path.lastIndexOf(".");
+		    if (lastIndex != -1) {
+			    var extension = path.substring(path.lastIndexOf(".") + 1);
+				bimServerApi.call("ServiceInterface", "getSuggestedDeserializerForExtension", {extension: extension}, function(data){
+					$(".checkin .deserializerName").val(data.oid);
+					othis.updateSubmitButton();
+				});
+		    }
+        },
+		progress: function(e, data) {
+			$(".uploadProgressBar .bar").css("width", parseInt(data.loaded / data.total * 100, 10) + "%");
+			if (data.loaded == data.total) {
+				$(".uploadStatus").html("Processing file...");
+				$(".uploadProgressBar .bar").css("width", "0%");
+			}
+		},
+		done: function(e, data) {
+			if (data.result.error == null) {
+				currentCheckinId = data.result.checkinid;
+				bimServerApi.register("NotificationInterface", "progress", othis.progressHandler);
+			} else {
+				$(".uploadStatus").html("Error: " + data.result.error);
+				othis.showUpload();
+			}
+		},
+		fail: function(e, data) {
+			$(".uploadStatus").html("Error: " + data.textStatus);
+			othis.showUpload();
+		}
+    });
+
+	$(".uploadButton").click(function(event){
+		shouldsend = true;
+		submitdata.formData = {
+			tokenString: bimServerApi.token.tokenString,
+			tokenExpires: bimServerApi.token.expires,
+			deserializerOid: $(".deserializerName").val(),
+			comment: $(".comment").val(),
+			merge: $(".merge").is(':checked'),
+			poid: othis.project.oid
+		};
+		othis.hideUpload();
+		$(".uploadStatus").html("Uploading file...");
+		$(".fileupload").fileupload('send', submitdata);
+		shouldsend = false;
+		event.preventDefault();
+	});
+
+	$(".uploadbranch").hide();
+	$(".uploadbranchlink").click(function(event){
+		event.preventDefault();
+		$(".upload").hide();
+		$(".showuploadlink").show();
+		$(".uploadbranch").show();
+		$(".uploadbranchlink").hide();
+		$(".uploadButton").html("Checkin existing revision");
+	});
+	$(".showuploadlink").hide();
+	$(".showuploadlink").click(function(event){
+		event.preventDefault();
+		$(".upload").show();
+		$(".showuploadlink").hide();
+		$(".uploadbranch").hide();
+		$(".uploadbranchlink").show();
+		$(".uploadButton").html("Checkin new revision");
+	});
+	
+	$(".uploadButton").hide();
+	if (othis.project.subProjects.length != 0) {
+		$(".uploadlink").show();
+		$(".uploadlink").click(function(){
+			$(".uploads").show();
+			$(".uploadlink").hide();
+		});
+		$(".uploads").hide();
+	} else {
+		$(".uploads").show();
+		$(".uploadlink").hide();
+	}
+}
+</script>

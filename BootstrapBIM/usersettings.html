@@ -1,0 +1,50 @@
+<div class="usersettings">
+	<div class="tabbable tabs-left">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#usersettings" data-toggle="tab">User Settings</a></li>
+			<li><a href="#serializers" data-toggle="tab">Serializers</a></li>
+			<li><a href="#deserializers" data-toggle="tab">Deserializers</a></li>
+			<li><a href="#objectidms" data-toggle="tab">ObjectIDMs</a></li>
+			<li><a href="#renderengines" data-toggle="tab">Render Engines</a></li>
+			<li><a href="#queryengines" data-toggle="tab">Query Engines</a></li>
+			<li><a href="#modelmergers" data-toggle="tab">Model Mergers</a></li>
+			<li><a href="#modelcompares" data-toggle="tab">Model Compare Engines</a></li>
+			<li><a href="#internalservices" class="internalServicesLink" data-toggle="tab">Internal Services</a></li>
+		</ul>
+		<div class="tab-content">
+			<div class="tab-pane active" id="usersettings">User Settings</div>
+			<div class="tab-pane" id="serializers">Serializers</div>
+			<div class="tab-pane" id="deserializers">Deserializers</div>
+			<div class="tab-pane" id="objectidms">ObjectIDMs</div>
+			<div class="tab-pane" id="renderengines">Render Engines</div>
+			<div class="tab-pane" id="queryengines">Query Engines</div>
+			<div class="tab-pane" id="modelmergers">Model Mergers</div>
+			<div class="tab-pane" id="modelcompares">Model Compare Engines</div>
+			<div class="tab-pane" id="internalservices"></div>
+		</div>
+	</div>
+</div>
+<script>
+	function UserSettings(main) {
+		var othis = this;
+
+		this.showInternalService = function(internalService) {
+			$("#internalservices").load("internalservice.html", function(){
+				new InternalService(main, othis, internalService);
+			});
+		};
+		
+		this.showInternalServices = function() {
+			$("#internalservices").load("internalservices.html", function(){
+				new InternalServices(main, othis);
+			});
+		};
+		
+		this.close = function() {
+		};
+		
+		$(".usersettings .internalServicesLink").click(othis.showInternalServices);
+		
+		othis.showInternalServices();
+	}
+</script>

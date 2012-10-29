@@ -1,0 +1,176 @@
+<div class="main container">
+	<ul class="nav nav-pills">
+	  <li class="dashboardLink active"><a>Dashboard</a></li>
+	  <li class="projectsLink"><a>Projects</a></li>
+	  <li class="usersLink"><a>Users</a></li>
+	  <li class="usersettingsLink"><a>User Settings</a></li>
+	  <li class="serversettingsLink"><a>Server Settings</a></li>
+	  <li class="logoutLink pull-right"><a>Logout</a></li>
+	</ul>
+	<div class="maincontainer">
+	</div>
+</div>
+<script>
+function Main() {
+	var othis = this;
+	var current = null;
+
+	History.Adapter.bind(window, "statechange", function(){
+		if (!pushing) {
+	        othis.show(false);
+		}
+    });
+	
+	this.show = function(alterState) {
+		var history = History.getState().data;
+		if (history.page == "Dashboard") {
+			othis.showDashboard();
+		} else if (history.page == "Projects") {
+			othis.showProjects();
+		} else if (history.page == "Project") {
+			othis.showProject(history.poid);
+		} else if (history.page == "Revision") {
+			othis.showRevision(history.roid);
+		} else if (history.page == "User") {
+			othis.showUser(history.roid);
+		} else if (history.page == "Users") {
+			othis.showUsers();
+		} else if (history.page == "UserSettings") {
+			othis.showUserSettings();
+		} else if (history.page == "ServerSettings") {
+			othis.showServerSettings();
+		} else {
+			othis.showDashboard();
+		}
+	};
+	
+	this.logout = function(event) {
+		event.preventDefault();
+		bimServerApi.logout(function(){
+			$(".indexcontainer").load("login.html");
+		});
+	};
+
+	this.changePage = function(linkElement, page, constructorFunction, event, callback) {
+		if (event != null) {
+			event.preventDefault();
+		}
+		if (othis.current != null) {
+			othis.current.close();
+		}
+		$(".main .nav li").removeClass("active");
+		linkElement.addClass("active");
+		$(".maincontainer").load(page, function(){
+			constructorFunction();
+			if (callback != null) {
+				callback.call(othis.current);
+			}
+		});
+	};
+
+	this.showDashboard = function(event) {
+		othis.changePage($(".dashboardLink"), "dashboard.html", function(){
+			othis.current = new Dashboard(othis);
+			pushHistory({page: "Dashboard"});
+		}, event);
+	};
+
+	this.showProjects = function(event, alterState, callback) {
+		othis.changePage($(".projectsLink"), "projects.html", function(){
+			othis.current = new Projects(othis);
+			othis.current.show(alterState);
+			pushHistory({page: "Projects"});
+		}, event, callback);
+	};
+
+	this.showAddProject = function(event, callback, parentProject) {
+		othis.changePage($(".projectsLink"), "addproject.html", function(){
+			othis.current = new AddProject(othis, parentProject);
+			pushHistory({page: "AddProject"});
+		}, event, callback);
+	};
+	
+	this.showUser = function(user, event, callback) {
+		othis.changePage($(".usersLink"), "user.html", function(){
+			othis.current = new User(othis, user);
+			pushHistory({page: "User", uoid: user.oid});
+		}, event, callback);
+	};
+
+	this.showAddService = function(project, event, callback) {
+		othis.changePage($(".projectsLink"), "addservice.html", function(){
+			othis.current = new AddService(othis, project);
+			pushHistory({page: "AddService"});
+		}, event, callback);
+	};
+	
+	this.showAddService2 = function(project, serviceDescriptor, isLocal, event, callback) {
+		othis.changePage($(".projectsLink"), "addservice2.html", function(){
+			othis.current = new AddService2(othis, project, serviceDescriptor, isLocal);
+			pushHistory({page: "AddService2"});
+		}, event, callback);
+	};
+	
+	this.showProject = function(project, event, callback) {
+		othis.changePage($(".projectsLink"), "project.html", function(){
+			othis.current = new Project(othis, project);
+			othis.current.show();
+			pushHistory({page: "Project", "poid": typeof project == "object" ? project.oid : project});
+		}, event, callback);
+	};
+	
+	this.showRevision = function(revision, event, callback) {
+		othis.changePage($(".projectsLink"), "revision.html", function(){
+			othis.current = new Revision(othis, revision);
+			othis.current.show();
+			pushHistory({page: "Revision", "roid": typeof revision == "object" ? revision.oid : revision});
+		}, event, callback);
+	};
+	
+	this.showUsers = function(event, callback) {
+		othis.changePage($(".usersLink"), "users.html", function(){
+			othis.current = new Users(othis);
+			pushHistory({page: "Users"});
+		}, event, callback);
+	};
+	
+	this.showUserSettings = function(event, callback) {
+		othis.changePage($(".usersettingsLink"), "usersettings.html", function(){
+			othis.current = new UserSettings(othis);
+			pushHistory({page: "UserSettings"});
+		}, event, callback);
+	};
+
+	this.showExtendedDataSchema = function(extendedDataSchema, event, callback) {
+		this.showServerSettings(null, function(){
+			othis.current.showExtendedDataSchema(extendedDataSchema);
+		});
+	};
+	
+	this.showServerSettings = function(event, callback) {
+		othis.changePage($(".serversettingsLink"), "serversettings.html", function(){
+			othis.current = new ServerSettings(othis);
+			pushHistory({page: "ServerSettings"});
+		}, event, callback);
+	};
+
+	this.extendedDataSchemaClick = function(event){
+		event.preventDefault();
+		othis.showExtendedDataSchema($(this).data("extendeddataschema"));
+	};
+	
+	this.createExtendedDataSchemaLink = function(extendedDataSchema) {
+		var link = $("<a>" + extendedDataSchema.name + "</a>");
+		link.data("extendeddataschema", extendedDataSchema);
+		link.click(othis.extendedDataSchemaClick);
+		return link;
+	};
+	
+	$(".dashboardLink").click(othis.showDashboard);
+	$(".projectsLink").click(othis.showProjects);
+	$(".usersLink").click(othis.showUsers);
+	$(".usersettingsLink").click(othis.showUserSettings);
+	$(".serversettingsLink").click(othis.showServerSettings);
+	$(".logoutLink").click(othis.logout);
+}
+</script>

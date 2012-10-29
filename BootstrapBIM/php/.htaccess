@@ -1,0 +1,5 @@
+RewriteEngine on
+
+RewriteRule logger logger.php
+RewriteRule quantizator quantizator.php
+RewriteRule json json.php

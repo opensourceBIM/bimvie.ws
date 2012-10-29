@@ -1,0 +1,95 @@
+<div class="revision">
+	<h1></h1>
+	<ul class="nav nav-tabs">
+	  <li class="detailsLink active"><a href="#details" data-toggle="tab">Details</a></li>
+	  <li class="queryLink"><a href="#query" data-toggle="tab">Query</a></li>
+	  <li class="extendedDataLink"><a href="#extendeddata" data-toggle="tab">Extended Data</a></li>
+	  <li class="browserLink"><a href="#browser" data-toggle="tab">Browser</a></li>
+	</ul>
+	<div class="tab-content">	
+		<div class="tab-pane active details" id="details">
+			Not implemented
+		</div>
+		<div class="tab-pane query" id="query">
+			Not implemented
+		</div>
+		<div class="tab-pane extendeddata" id="extendeddata">
+			Not implemented
+		</div>
+		<div class="tab-pane browser" id="browser">
+			Not implemented
+		</div>
+	</div>
+</div>
+<script>
+function Revision(main, revision) {
+	var othis = this;
+	othis.current = null;
+
+	this.show = function() {
+		if (typeof revision == "object") {
+			othis.revision = revision;
+			othis.updateRevision();
+		} else {
+			othis.reloadRevision(revision);
+		}
+		bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
+	};
+	
+	this.updateRevision = function() {
+		$(".revision h1").html("Revision " + othis.revision.id);
+		$(".revision .extendedDataLink a").html("Extended Data" + (othis.revision.extendedData.length == 0 ? "" : (" (" + othis.revision.extendedData.length + ")")));
+	};
+	
+	this.reloadRevision = function(roid) {
+		if (roid == null) {
+			roid = othis.revision.oid;
+		}
+		bimServerApi.call("ServiceInterface", "getRevision", {roid: roid}, function(revision){
+			othis.revision = revision;
+			othis.updateRevision();
+		});
+	};
+	
+	this.close = function(){
+		bimServerApi.unregister(othis.newLogAction);
+	};
+
+	this.showDetails = function(){
+	};
+	
+	this.showQuery = function(){
+	};
+	
+	this.newLogAction = function(uuid, logAction, serviceIdentifier, profileIdentifier, token, apiUrl){
+		if (logAction.__type == "SExtendedDataAddedToRevision") {
+			bimServerApi.call("ServiceInterface", "getExtendedData", {oid: logAction.extendedDataId}, function(data){
+				//othis.addExtendedData(data);
+			});
+		}
+	};
+	
+	this.showExtendedData = function(){
+		if (othis.current != null) {
+			othis.current.close();
+		}
+		$(".revision .extendeddata").load("extendeddatalist.html", function(){
+			othis.current = new ExtendedDataList(main, othis.revision);
+		});
+	};
+
+	this.showBrowser = function(){
+		if (othis.current != null) {
+			othis.current.close();
+		}
+		$(".revision #browser").load("browser.html", function(){
+			othis.current = new Browser(othis.revision);
+		});
+	};
+	
+	$(".revision .detailsLink").click(othis.showDetails);
+	$(".revision .queryLink").click(othis.showQuery);
+	$(".revision .extendedDataLink").click(othis.showExtendedData);
+	$(".revision .browserLink").click(othis.showBrowser);
+};
+</script>

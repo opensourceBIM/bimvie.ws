@@ -1,0 +1,52 @@
+<div class="genericpluginsettingslist">
+	<h3>Internal Services</h3>
+	<table class="internalServicesTable table">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Description</th>
+				<th>State</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</div>
+<script>
+function GenericPluginSettingsList(main, usersettings) {
+	var othis = this;
+
+	this.internalServiceClick = function(event) {
+		event.preventDefault();
+		var internalService = $(this).parents("tr").data("internalService");
+		usersettings.showPluginSettings();
+		usersettings.showInternalService(internalService);
+	};
+
+	this.addInternalService = function(internalService) {
+		var tr = $("<tr>");
+		tr.data("internalService", internalService);
+		var a = $("<a>" + internalService.name + "</a>");
+		a.click(othis.internalServiceClick);
+		tr.append($("<td></td>").append(a));
+		tr.append("<td>" + internalService.description + "</td>");
+		tr.append("<td>" + (internalService.enabled ? "Enabled" : "Disabled") + "</td>");
+		tr.append("<td>" + "" + "</td>");
+		$(".internalservices .internalServicesTable tbody").append(tr);
+	};
+
+	this.loadInternalServices = function(){
+		bimServerApi.call("ServiceInterface", "getAllInternalServices", {onlyEnabled: false}, function(data){
+			$(".internalservices .internalServicesTable tbody").empty();
+			data.forEach(function(internalService){
+				othis.addInternalService(internalService);
+			});
+		});
+	};
+	
+	this.close = function(){
+	};
+	othis.loadInternalServices();
+}
+</script>

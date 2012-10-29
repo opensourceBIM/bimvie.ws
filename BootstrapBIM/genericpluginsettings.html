@@ -1,0 +1,114 @@
+<div class="genericpluginsettings">
+	<h3 class="">Internal Service</h3>
+	<table class="table detailsTable">
+		<tbody>
+		</tbody>
+	</table>
+	<table class="table settingsTable">
+		<caption>Settings</caption>
+		<tbody>
+		</tbody>
+	</table>
+	<div class="well clearfix">
+		<button class="btn saveButton pull-right">Save</button>
+	</div>
+</div>
+<script>
+function GenericPluginSettings(main, usersettings, pluginsettings) {
+	var othis = this;
+	othis.internalService = internalService;
+
+	this.close = function(){
+	};
+
+	$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Name</td><td>" + pluginsettings.name + "</td></tr>");
+	$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Description</td><td>" + pluginsettings.description + "</td></tr>");
+	$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Class</td><td>" + pluginsettings.className + "</td></tr>");
+	$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Status</td><td>" + (pluginsettings.enabled ? "Enabled" : "Disabled") + "</td></tr>");
+
+	this.loadPluginSettings = function() {
+		bimServerApi.call("ServiceInterface", "getPluginSettings", {poid: internalService.oid}, function(objectDefinition){
+			if (objectDefinition.parameters != null) {
+				objectDefinition.parameters.forEach(function(parameter){
+					var input = $(".genericpluginsettings").find("input[parameter=\"" + parameter.name + "\"]");
+					var value = parameter.value;
+					if (value.__type == "SDoubleType" || value.__type == "SStringType" || value.__type == "SBooleanType" || value.__type == "SLongType") {
+						input.val(value.value);
+					} else if (value.__type == "SObjectType") {
+					} else if (value.__type == "SArrayType") {
+					}
+				});
+			}
+		});
+	};
+	
+	this.loadPluginObjectDefinition = function() {
+		bimServerApi.call("ServiceInterface", "getPluginObjectDefinition", {className: internalService.className}, function(objectDefinition){
+			objectDefinition.parameters.forEach(function(parameter){
+				var tr = $("<tr></tr>");
+				tr.append("<td>" + parameter.name.firstUpper() + "</td>");
+				var td = $("<td></td>");
+				tr.append(td);
+				if (parameter.type.__type == "SPrimitiveDefinition") {
+					var primitiveDefinition = parameter.type;
+					if (primitiveDefinition.type == "INTEGER") {
+						var input = $("<input parameter=\"" + parameter.name + "\" type=\"text\"/>");
+						input.numeric({ decimal: false, negative: false });
+						td.append(input);
+					} else if (primitiveDefinition.type == "DOUBLE") {
+						var input = $("<input parameter=\"" + parameter.name + "\" type=\"text\"/>");
+						input.numeric({ decimal: ".", negative: false });
+						td.append(input);
+					} else if (primitiveDefinition.type == "STRING") {
+						var input = $("<input parameter=\"" + parameter.name + "\" type=\"text\"/>");
+						td.append(input);
+					} else if (primitiveDefinition.type == "BOOLEAN") {
+						var input = $("<input parameter=\"" + parameter.name + "\" type=\"checkbox\"/>");
+						td.append(input);
+					}
+				}
+				$(".genericpluginsettings .settingsTable tbody").append(tr);
+			});
+			othis.loadPluginSettings();
+		});
+	};
+
+	this.saveSettings = function() {
+		var settings = {
+			__type: "SObjectType",
+			parameters: []
+		};
+		$(".genericpluginsettings").find("input[parameter]").each(function(){
+			var type = {
+				__type: "SDoubleType",
+				value: parseFloat($(this).val())
+			};
+			var parameter = {
+				__type: "SParameter",
+				name: $(this).attr("parameter"),
+				value: type
+			};
+			settings.parameters.push(parameter);
+		});
+		bimServerApi.call("ServiceInterface", "setPluginSettings", {poid: othis.internalService.oid, settings: settings}, function(data){
+			
+		});
+	};
+	
+	this.savePlugin = function() {
+		var internalService = othis.internalService;
+		internalService.remoteAccessible = $(".genericpluginsettings .remoteAccessible").is(":checked");
+		bimServerApi.call("ServiceInterface", "updateInternalService", {internalService: internalService}, function(data){
+			othis.saveSettings();
+		});
+	};
+	
+	this.save = function(event) {
+		event.preventDefault();
+		othis.savePlugin();
+	};
+	
+	othis.loadPluginObjectDefinition();
+	$(".genericpluginsettings .saveButton").click(othis.save);
+}
+</script>

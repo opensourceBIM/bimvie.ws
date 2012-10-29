@@ -1,0 +1,164 @@
+<div class="service">
+	<h1>Service</h1>
+	<table class="table pluginTable">
+		<thead></thead>
+		<tbody></tbody>
+	</table>
+	<h3>Rights</h3>
+	<div class="well well-small norights">
+		No rights required
+	</div>
+	<table class="table rightsTable">
+		<thead></thead>
+		<tbody></tbody>
+	</table>
+	<h3>Profile</h3>
+	<table class="table profileTable">
+		<thead></thead>
+		<tbody></tbody>
+	</table>
+	<a class="technicalDetailsLink">Technical details</a>
+	<div class="technicalDetails initialhide">
+		<h3>Technical details</h3>
+		<table class="table technicalDetailsTable">
+			<thead></thead>
+			<tbody></tbody>
+		</table>
+	</div>
+</div>
+<script>
+function Service(main, service) {
+	var othis = this;
+	othis.service = service;
+
+	this.loadProjects = function(targetElement) {
+		bimServerApi.call("ServiceInterface", "getAllProjects", {onlyTopLevel: false}, function(data){
+			targetElement.empty();
+			targetElement.append("<option value=\"[SELECT_A_PROJECT]\">[Select a project]</option>");
+			data.forEach(function(project){
+				targetElement.append("<option value=\"" + project.oid + "\">" + project.name + "</option>");
+			});
+		});
+	};
+	
+	$(".service .pluginTable tbody").append("<tr><td>Provider</td><td>" + service.providerName + "</td></tr>");	
+	$(".service .pluginTable tbody").append("<tr><td>Name</td><td>" + service.name + "</td></tr>");	
+	$(".service .pluginTable tbody").append("<tr><td>Description</td><td>" + service.description + "</td></tr>");	
+	$(".service .pluginTable tbody").append("<tr><td>Trigger</td><td>" + formatTrigger(service.trigger) + "</td></tr>");
+	
+	if (service.readRevision || service.writeRevision || service.readExtendedData != null || service.writeExtendedData != null) {
+		$(".service .rightsTable").show();
+		$(".service .norights").hide();
+	} else {
+		$(".service .rightsTable").hide();
+		$(".service .norights").show();
+	}
+	
+	if (service.readRevision) {
+		$(".service .rightsTable tbody").append("<tr><td>Read Revision</td><td><input disabled=\"disabled\" checked=\"checked\" type=\"checkbox\"/></td></tr>");	
+	}
+	if (service.writeRevisionId != -1) {
+		var form = $("<form class=\"form-inline\">");
+		var select = $("<select class=\"projectSelect\"></select>");
+		select.change(othis.canAdd);
+		othis.loadProjects(select);
+		var tr = $("<tr><td>Write Revision</td></tr>");
+		var label = $("<label>To project </label>");
+		var td = $("<td></td>");
+		td.append(form);
+		form.append(label);
+		label.append(select);
+		tr.append(td);
+		$(".service .rightsTable tbody").append(tr);
+	}
+	if (service.readExtendedDataId != -1) {
+		var tr1 = $("<tr><td>Read Extended Data</td></tr>");
+		var td1 = $("<td></td>");
+		tr1.append(td1);
+		$(".service .rightsTable tbody").append(tr1);	
+		bimServerApi.call("ServiceInterface", "getExtendedDataSchemaById", {naoidmespace: service.readExtendedDataId}, function(data){
+			td.append(main.createExtendedDataSchemaLink(data));
+			othis.readExtendedDataOid = data.oid;
+		}, function(){
+			tr1.addClass("error");
+			td1.append("<br/>Missing extended data schema");
+		});
+	}
+	if (service.writeExtendedDataId != -1) {
+		var tr2 = $("<tr><td>Write Extended Data</td></tr>");
+		var td2 = $("<td></td>");
+		tr2.append(td2);
+		$(".service .rightsTable tbody").append(tr2);	
+		bimServerApi.call("ServiceInterface", "getExtendedDataSchemaById", {oid: service.writeExtendedDataId}, function(data){
+			td2.append(main.createExtendedDataSchemaLink(data));
+			othis.writeExtendedDataOid = data.oid;
+		}, function(){
+			tr2.addClass("error");
+			td2.append("<br/>Missing extended data schema");
+			bimServerApi.call("ServiceInterface", "getExtendedDataSchemaFromRepository", {namespace: service.writeExtendedData}, function(data){
+				var exs = data;
+				main.showServerSettings(null, function(){
+					main.current.showAddNewExtendedDataSchema(exs);
+				});
+			})
+		});
+	}
+	
+	$(".service .profileTable tbody").append("<tr><td>Name</td><td>" + service.profileName + "</td></tr>");
+	$(".service .profileTable tbody").append("<tr><td>Description</td><td>" + service.profileDescription + "</td></tr>");
+	$(".service .profileTable tbody").append("<tr><td>Public</td><td>" + service.profilePublic + "</td></tr>");
+
+	$(".service .technicalDetailsTable tbody").append("<tr><td>URL</td><td>" + service.url + "</td></tr>");
+	$(".service .technicalDetailsTable tbody").append("<tr><td>Service Identifier</td><td>" + service.serviceIdentifier + "</td></tr>");
+	
+	this.addProfileDescriptor = function(profileDescriptor) {
+		var tr = $("<tr class=\"" + (profileDescriptor.publicProfile ? "public" : "private") + "profiledescriptor\"></tr>");
+		tr.data("profiledescriptor", profileDescriptor);
+		tr.append("<td>" + profileDescriptor.name + "</td>");
+		tr.append("<td>" + profileDescriptor.description + "</td>");
+		tr.append("<td>" + profileDescriptor.publicProfile + "</td>");
+		var radio = $("<input type=\"radio\" name=\"profile\" class=\"profileRadio\"/>");
+		radio.change(othis.canAdd);
+		tr.append($("<td></td>").append(radio));
+		$(".service .profilesTable tbody").append(tr);
+	};
+	
+	this.close = function() {
+	};
+
+	this.updateServiceButtonClick = function () {
+		if (othis.canAdd()) {
+			var profileDescriptor = $(".addservice2 .profilesTable .profileRadio:checked").parents("tr").data("profiledescriptor");
+			var service = {
+				__type: "SService",
+				name: othis.serviceDescriptor.name,
+				url: othis.serviceDescriptor.url,
+				token: othis.token,
+				notificationProtocol: othis.serviceDescriptor.notificationProtocol,
+				description: othis.serviceDescriptor.description,
+				trigger: othis.serviceDescriptor.trigger,
+				profileIdentifier: profileDescriptor.identifier,
+				profileName: profileDescriptor.name,
+				profileDescription: profileDescriptor.description,
+				profilePublic: profileDescriptor.publicProfile,
+				readRevision: othis.serviceDescriptor.readRevision,
+				readExtendedDataId: othis.readExtendedDataOid,
+				writeRevisionId: othis.serviceDescriptor.writeRevision ? $(".addservice2 .projectSelect").val() : -1,
+				writeExtendedDataId: othis.writeExtendedDataOid
+			};
+			bimServerApi.call("ServiceInterface", "addServiceToProject", {poid: othis.project.oid, sService: service}, function(data){
+				main.showProject(othis.project, null, function(){
+					this.reloadProject();
+				});
+			});
+		}
+	};
+
+	$(".service .technicalDetailsLink").click(function(){
+		$(".service .technicalDetails").show();
+		$(".service .technicalDetailsLink").hide();
+	});
+	
+	$(".service .updateServiceButton").click(othis.updateServiceButtonClick);
+}
+</script>
