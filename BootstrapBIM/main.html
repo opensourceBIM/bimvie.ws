@@ -1,17 +1,25 @@
 <div class="main container">
-	<ul class="nav nav-pills">
-	  <li class="dashboardLink active"><a>Dashboard</a></li>
-	  <li class="projectsLink"><a>Projects</a></li>
-	  <li class="usersLink"><a>Users</a></li>
-	  <li class="usersettingsLink"><a>User Settings</a></li>
-	  <li class="serversettingsLink"><a>Server Settings</a></li>
-	  <li class="logoutLink pull-right"><a>Logout</a></li>
-	</ul>
-	<div class="maincontainer">
+	<div class="pull-left">
+		<ul class="nav nav-pills">
+			<li class="dashboardLink active"><a>Dashboard</a></li>
+			<li class="projectsLink"><a>Projects</a></li>
+			<li class="usersLink"><a>Users</a></li>
+			<li class="usersettingsLink"><a>User Settings</a></li>
+			<li class="serversettingsLink"><a>Server Settings</a></li>
+		</ul>
 	</div>
+	<div class="btn-group pull-right">
+		<a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i> <span class="userLabel">User</span></a> <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span
+			class="caret"></span></a>
+		<ul class="dropdown-menu">
+			<li><a class="logoutLink"><i></i>Logout</a></li>
+		</ul>
+	</div>
+	<div class="clearfix"></div>
+	<div class="maincontainer"></div>
 </div>
 <script>
-function Main() {
+function Main(username) {
 	var othis = this;
 	var current = null;
 
@@ -20,6 +28,8 @@ function Main() {
 	        othis.show(false);
 		}
     });
+	
+	$(".main .userLabel").html(username);
 	
 	this.show = function(alterState) {
 		var history = History.getState().data;
@@ -47,7 +57,9 @@ function Main() {
 	this.logout = function(event) {
 		event.preventDefault();
 		bimServerApi.logout(function(){
-			$(".indexcontainer").load("login.html");
+			$(".indexcontainer").load("login.html", function(){
+				new Login();
+			});
 		});
 	};
 

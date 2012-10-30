@@ -9,8 +9,9 @@
 					<input type="text" id="inputServer" placeholder="BIMserver">
 					<a class="btn dropdown-toggle btn" title="Suggestions" data-toggle="dropdown"><i class="icon-star"></i></a>
 					<ul id="serverDropdown" class="dropdown-menu">
-						<li><a address="http://localhost:8080">Localhost 8082</a></li>
+						<li><a address="http://localhost:8080">Localhost 8080</a></li>
 						<li><a address="http://bimserver.logic-labs.nl">Logic Labs Demo BIMserver</a></li>
+						<li><a address="http://e-bouw.org:8080/">E-Bouw BIMserver</a></li>
 						<li><a address="http://demo.bimserver.org">TNO Demo BIMserver</a></li>
 					</ul>
 				</div>
@@ -40,25 +41,53 @@
   </div>
 </div>
 <script>
-function login(address) {
-	jQuery.getScript($.cookie("address") + "/js/bimserverapi.js");
-	bimServerApi = new BimServerApi(address, notifier);
-	bimServerApi.login($("#inputEmail").val(), $("#inputPassword").val(), $("#rememberMe").is(":checked"), function(data){
-		$(".indexcontainer").load("main.html", function(){
-			new Main().show();
+function Login(address, username) {
+	var othis = this;
+	
+	this.login = function(address) {
+		var timeoutId = window.setTimeout(function() {
+			notifier.error("Could not connect");
+		}, 3000);
+		$.getScript(address + "/js/bimserverapi.js").done(function(){
+			window.clearTimeout(timeoutId);
+			bimServerApi = new BimServerApi(address, notifier);
+			bimServerApi.call("ServiceInterface", "getServerInfo", {}, function(serverInfo){
+				if (serverInfo.serverState == "NOT_SETUP") {
+					$(".indexcontainer").load("setup.html", function(){
+						new Setup(address);
+					});
+				} else if (serverInfo.serverState == "UNDEFINED") {
+				} else if (serverInfo.serverState == "MIGRATION_REQUIRED") {
+				} else if (serverInfo.serverState == "MIGRATION_IMPOSSIBLE") {
+				} else if (serverInfo.serverState == "FATAL_ERROR") {
+				} else if (serverInfo.serverState == "RUNNING") {
+					var username = $("#inputEmail").val()
+					bimServerApi.login(username, $("#inputPassword").val(), $("#rememberMe").is(":checked"), function(data){
+						$(".indexcontainer").load("main.html", function(){
+							new Main(username).show();
+						});
+					});
+				}
+			});
 		});
-	});
-}
+	}
 
-$(function(){
+	if (address != null) {
+		$("#inputServer").val(address);
+	}
+	if (username != null) {
+		$("#inputEmail").val(username);
+		$("#inputPassword").focus();
+	}
+	
 	$("#serverDropdown").click(function(event){
 		event.preventDefault();
 		$("#inputServer").val($(event.target).attr("address"));
 	});
 	$(".loginButton").click(function(){
-		login($("#inputServer").val());
+		othis.login($("#inputServer").val());
 	});
 	
 	$("#inputServer").focus();
-});
+}
 </script>
