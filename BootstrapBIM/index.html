@@ -65,7 +65,7 @@
 					bimServerApi = new BimServerApi($.cookie("address"), notifier);
 					bimServerApi.autologin($.cookie("username"), $.cookie("autologin"), function(){
 						$(".indexcontainer").load("main.html", function(){
-							new Main($.cookie("username")).show(false);
+							new Main($.cookie("address"), $.cookie("username")).show(false);
 						});
 					}, function(){
 						$(".indexcontainer").load("login.html", function(){

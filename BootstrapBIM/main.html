@@ -8,6 +8,7 @@
 			<li class="serversettingsLink"><a>Server Settings</a></li>
 		</ul>
 	</div>
+	<span class="addressLabel"></span>
 	<div class="btn-group pull-right">
 		<a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i> <span class="userLabel">User</span></a> <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span
 			class="caret"></span></a>
@@ -19,7 +20,7 @@
 	<div class="maincontainer"></div>
 </div>
 <script>
-function Main(username) {
+function Main(address, username) {
 	var othis = this;
 	var current = null;
 
@@ -30,6 +31,7 @@ function Main(username) {
     });
 	
 	$(".main .userLabel").html(username);
+	$(".main .addressLabel").html(address);
 	
 	this.show = function(alterState) {
 		var history = History.getState().data;
