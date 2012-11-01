@@ -155,7 +155,7 @@ function Browser(revision) {
 	};
 
 	this.bimserverImport = function(roid) {
-		bimServerApi.call("ServiceInterface", "getSerializerByContentType", {contentType: "application/json"}, function(serializer){
+		bimServerApi.call("ServiceInterface", "getSerializerByName", {serializerName: "StreamingSceneJS"}, function(serializer){
 			othis.loadType(roid, serializer.oid);
 	    });
 	  };

@@ -64,7 +64,7 @@ function Login(address, username) {
 					var username = $("#inputEmail").val()
 					bimServerApi.login(username, $("#inputPassword").val(), $("#rememberMe").is(":checked"), function(data){
 						$(".indexcontainer").load("main.html", function(){
-							new Main(username).show();
+							new Main(address, username).show();
 						});
 					});
 				}
