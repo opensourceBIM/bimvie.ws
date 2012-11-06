@@ -27,7 +27,7 @@ table .header {
 }
 
 .linkspacer {
-	margin: 8px;	
+	margin: 8px;
 }
 
 table.table-hover tr {
@@ -37,4 +37,10 @@ table.table-hover tr {
 table .btn {
   padding: 1px 5px 1px;
   margin-right: -3px;
+}
+
+.accept {
+	background-image: url("../img/accept.png");
+	background-repeat: no-repeat;
+	background-position: right center;
 }
