@@ -83,14 +83,12 @@ function Download(data) {
 		var val = el.val();
 		var text = el.find(":selected").text();
 		if ((text != "Ifc2x3" && text != "IfcXML") || !othis.userHasCheckinRights) {
-			$(".downloadpopup .checkoutButton").button("disable");
+			$(".downloadpopup .checkoutButton").hide();
 		} else {
-			$(".downloadpopup .checkoutButton").button("enable");
+			$(".downloadpopup .checkoutButton").show();
 		}
 		if (!othis.userHasCheckinRights) {
 			$(".checkoutMessage").html("Checkout unavailable because you have no rights on the project");
-		} else if (text != "Ifc2x3" && text != "IfcXML") {
-			$(".checkoutMessage").html("Checkout unavailable for formats other than Ifc2x3 and IfcXML");
 		} else {
 			$(".checkoutMessage").html("");
 		}
@@ -117,7 +115,6 @@ function Download(data) {
 				$(".downloadpopup .downloadProgressBar").toggleClass('active');
 				$(".downloadpopup .downloadProgressBar").css("width", "0");
 				$(".downloadpopup .downloadProgressBar").toggleClass('active');
-				$(".downloadpopup .fields, .downloadpopup .checkoutMessage").show();
 				var url = bimServerApi.generateRevisionDownloadUrl({
 					zip: $("#downloadCheckoutZip").attr('checked') != undefined,
 					serializerOid: $(".downloadpopup .revisionsdownloadcheckoutselect").val(),
@@ -130,7 +127,9 @@ function Download(data) {
 					window.location = url;
 				}
 				bimServerApi.unregister(othis.progressHandler);
+				$(".downloadpopup .checkoutMessage").html("");
 				$(".downloadpopup .message").html("Prepare complete, initiating download, click <a href=\"" + url + "\">here</a> if the download does not start automatically<br/><br/>");
+				$(".downloadpopup .fields, .downloadpopup .checkoutMessage").show();
 			}
 		}
 	};

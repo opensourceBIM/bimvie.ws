@@ -8,8 +8,7 @@
 		<div class="uploads">
 			<div class="upload">
 				<div class="uploadStatus"></div>
-				<div class="uploadProgressBar progress initialhide">
-					<div class="bar" style="width: 0;"></div>
+				<div class="progressBarHolder">
 				</div>
 				<table class="uploadTable">
 				<tr><td><label for="file">File</label></td><td><input class="fileupload" type="file" name="data"/></td></tr>
@@ -76,12 +75,25 @@ function Checkin(project, successFunction) {
 	var fileselected = false;
 
 	this.progressHandler = function(topicId, state) {
+		var oldStage = othis.stage;
+		othis.stage = state.state;
 		if (state.state == "ERROR") {
 			$(".uploadStatus").html("Error: " + state.lastError);
 			othis.showUpload();
 			bimServerApi.unregister(othis.progressHandler);
 		} else {
-			$(".uploadProgressBar .bar").css("width", parseInt(state.progress) + "%");
+			$(".uploadStatus").html(state.title);
+			if (othis.stage != state.stage) {
+				$(".progressBarHolder .uploadProgressBar").remove();
+				$(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"bar\"></div></div>");
+			}
+			if (state.progress == -1) {
+				$(".uploadProgressBar").addClass("progress-striped").addClass("active");
+				$(".uploadProgressBar .bar").css("width", "100%");
+			} else {
+				$(".uploadProgressBar").removeClass("progress-striped").removeClass("active");
+				$(".uploadProgressBar .bar").css("width", parseInt(state.progress) + "%");
+			}
 			if (state.state == "FINISHED") {
 				$(".checkin").parent().modal("hide").remove();
 				bimServerApi.unregister(othis.progressHandler);
@@ -145,14 +157,12 @@ function Checkin(project, successFunction) {
         },
 		progress: function(e, data) {
 			$(".uploadProgressBar .bar").css("width", parseInt(data.loaded / data.total * 100, 10) + "%");
-			if (data.loaded == data.total) {
-				$(".uploadStatus").html("Processing file...");
-				$(".uploadProgressBar .bar").css("width", "0%");
-			}
 		},
 		done: function(e, data) {
 			if (data.result.error == null) {
 				currentCheckinId = data.result.checkinid;
+				$(".progressBarHolder .uploadProgressBar").remove();
+				$(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"bar\"></div></div>");
 				bimServerApi.register("NotificationInterface", "progress", othis.progressHandler);
 			} else {
 				$(".uploadStatus").html("Error: " + data.result.error);
@@ -177,6 +187,8 @@ function Checkin(project, successFunction) {
 		};
 		othis.hideUpload();
 		$(".uploadStatus").html("Uploading file...");
+		$(".progressBarHolder .uploadProgressBar").remove();
+		$(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"bar\"></div></div>");
 		$(".fileupload").fileupload('send', submitdata);
 		shouldsend = false;
 		event.preventDefault();
