@@ -1,0 +1,60 @@
+<div class="adduser">
+	<h2>Add user</h2>
+	<form class="form-horizontal">
+		<div class="control-group">
+			<label class="control-label" for="inputUsername">Username</label>
+			<div class="controls">
+				<input type="text" class="inputUsername" placeholder="Username">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="inputName">Name</label>
+			<div class="controls">
+				<input type="text" class="inputName" placeholder="Name">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="inputName">Type</label>
+			<div class="controls">
+				<select class="selectType">
+					<option value="ADMIN">Administrator</option>
+					<option value="USER">User</option>
+					<option value="READ_ONLY">Read only</option>
+				</select>
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				<button type="button" class="btn addButton">Add</button>
+			</div>
+		</div>
+	</form>
+</div>
+<script>
+function AddUser(main) {
+	var othis = this;
+
+	this.close = function(){
+	};
+	
+	this.addUser = function() {
+		bimServerApi.call("ServiceInterface", "addUser", {
+			username: $(".adduser .inputUsername").val(),
+			name: $(".adduser .inputName").val(),
+			type: $(".adduser .selectType").val(),
+			selfRegistration: false
+		}, function(data){
+			main.showUser(data);
+		});
+	};
+
+	$(".adduser .addButton").click(othis.addUser);
+	$(".adduser .inputName").keypress(function(event){
+		if (event.which == 13) {
+			event.preventDefault();
+			othis.addProject();
+		}
+	});
+	$(".adduser .inputUsername").focus();
+}
+</script>

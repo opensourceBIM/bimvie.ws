@@ -2,13 +2,13 @@
 	<div class="tabbable tabs-left">
 		<ul class="nav nav-tabs">
 			<li class="active"><a href="#usersettings" data-toggle="tab">User Settings</a></li>
-			<li><a href="#serializers" data-toggle="tab">Serializers</a></li>
-			<li><a href="#deserializers" data-toggle="tab">Deserializers</a></li>
-			<li><a href="#objectidms" data-toggle="tab">ObjectIDMs</a></li>
-			<li><a href="#renderengines" data-toggle="tab">Render Engines</a></li>
-			<li><a href="#queryengines" data-toggle="tab">Query Engines</a></li>
-			<li><a href="#modelmergers" data-toggle="tab">Model Mergers</a></li>
-			<li><a href="#modelcompares" data-toggle="tab">Model Compare Engines</a></li>
+			<li><a href="#serializers" class="serializersLink" data-toggle="tab">Serializers</a></li>
+			<li><a href="#deserializers" class="deserializersLink" data-toggle="tab">Deserializers</a></li>
+			<li><a href="#objectidms" class="objectIdmsLink" data-toggle="tab">ObjectIDMs</a></li>
+			<li><a href="#renderengines" class="renderEnginesLink" data-toggle="tab">Render Engines</a></li>
+			<li><a href="#queryengines" class="queryEnginesLink" data-toggle="tab">Query Engines</a></li>
+			<li><a href="#modelmergers" class="modelMergersLink" data-toggle="tab">Model Mergers</a></li>
+			<li><a href="#modelcompares" class="modelComparesLink" data-toggle="tab">Model Compare Engines</a></li>
 			<li><a href="#internalservices" class="internalServicesLink" data-toggle="tab">Internal Services</a></li>
 		</ul>
 		<div class="tab-content">
@@ -28,21 +28,154 @@
 	function UserSettings(main) {
 		var othis = this;
 
-		this.showInternalService = function(internalService) {
-			$("#internalservices").load("internalservice.html", function(){
-				new InternalService(main, othis, internalService);
+		this.showSerializers = function(internalService) {
+			$("#serializers").load("genericpluginsettingslist.html", function(){
+				new GenericPluginSettingsList(main, othis, {
+					getAllMethodName: "getAllSerializers",
+					listTitle: "Serializers",
+					showDetailsFunction: othis.showSerializer
+				});
 			});
 		};
 		
+		this.showDeserializers = function() {
+			$("#deserializers").load("genericpluginsettingslist.html", function(){
+				new GenericPluginSettingsList(main, othis, {
+					getAllMethodName: "getAllDeserializers",
+					listTitle: "Deserializers",
+					showDetailsFunction: othis.showDeserializer
+				});
+			});
+		};
+
+		this.showObjectIdms = function() {
+			$("#objectidms").load("genericpluginsettingslist.html", function(){
+				new GenericPluginSettingsList(main, othis, {
+					getAllMethodName: "getAllObjectIDMs",
+					listTitle: "Object IDMs",
+					showDetailsFunction: othis.showObjectIdm
+				});
+			});
+		};
+
+		this.showRenderEngines = function() {
+			$("#renderengines").load("genericpluginsettingslist.html", function(){
+				new GenericPluginSettingsList(main, othis, {
+					getAllMethodName: "getAllIfcEngines",
+					listTitle: "Render Engines",
+					showDetailsFunction: othis.showRenderEngine
+				});
+			});
+		};
+
+		this.showQueryEngines = function() {
+			$("#queryengines").load("genericpluginsettingslist.html", function(){
+				new GenericPluginSettingsList(main, othis, {
+					getAllMethodName: "getAllQueryEngines",
+					listTitle: "Query Engines",
+					showDetailsFunction: othis.showQueryEngine
+				});
+			});
+		};
+
+		this.showModelMergers = function() {
+			$("#modelmergers").load("genericpluginsettingslist.html", function(){
+				new GenericPluginSettingsList(main, othis, {
+					getAllMethodName: "getAllModelMergers",
+					listTitle: "Model Mergers",
+					showDetailsFunction: othis.showModelMerger
+				});
+			});
+		};
+
+		this.showModelCompares = function() {
+			$("#modelcompares").load("genericpluginsettingslist.html", function(){
+				new GenericPluginSettingsList(main, othis, {
+					getAllMethodName: "getAllModelCompares",
+					listTitle: "Model Compares",
+					showDetailsFunction: othis.showModelCompare
+				});
+			});
+		};
+
 		this.showInternalServices = function() {
 			$("#internalservices").load("internalservices.html", function(){
 				new InternalServices(main, othis);
 			});
 		};
 		
+		this.showSerializer = function(serializer) {
+			$("#serializers").load("genericpluginsettings.html", function(){
+				new GenericPluginSettings(main, othis, serializer, {
+					title: "Serializer"
+				});
+			});
+		};
+
+		this.showDeserializer = function(deserializer) {
+			$("#deserializers").load("genericpluginsettings.html", function(){
+				new GenericPluginSettings(main, othis, deserializer, {
+					title: "Deserializer"
+				});
+			});
+		};
+
+		this.showObjectIdm = function(objectidm) {
+			$("#objectidms").load("genericpluginsettings.html", function(){
+				new GenericPluginSettings(main, othis, objectidm, {
+					title: "Object IDM"
+				});
+			});
+		};
+
+		this.showRenderEngine = function(renderEngine) {
+			$("#renderengines").load("genericpluginsettings.html", function(){
+				new GenericPluginSettings(main, othis, renderEngine, {
+					title: "Render Engine"
+				});
+			});
+		};
+
+		this.showQueryEngine = function(queryEngine) {
+			$("#queryengines").load("genericpluginsettings.html", function(){
+				new GenericPluginSettings(main, othis, queryEngine, {
+					title: "Query Engine"
+				});
+			});
+		};
+
+		this.showModelMerger = function(modelMerger) {
+			$("#modelmergers").load("genericpluginsettings.html", function(){
+				new GenericPluginSettings(main, othis, modelMerger, {
+					title: "Model Merger"
+				});
+			});
+		};
+
+		this.showModelCompare = function(modelCompare) {
+			$("#modelcompares").load("genericpluginsettings.html", function(){
+				new GenericPluginSettings(main, othis, modelCompare, {
+					title: "Model Compare"
+				});
+			});
+		};
+		
+		this.showInternalService = function(internalService) {
+			$("#internalservices").load("internalservice.html", function(){
+				new InternalService(main, othis, internalService);
+			});
+		};
+
 		this.close = function() {
 		};
 		
+		$(".usersettings .serializersLink").click(othis.showSerializers);
+		$(".usersettings .deserializersLink").click(othis.showDeserializers);
+		$(".usersettings .objectIdmsLink").click(othis.showObjectIdms);
+		$(".usersettings .renderEnginesLink").click(othis.showRenderEngines);
+		$(".usersettings .queryEnginesLink").click(othis.showQueryEngines);
+		$(".usersettings .modelMergersLink").click(othis.showModelMergers);
+		$(".usersettings .modelComparesLink").click(othis.showModelCompares);
 		$(".usersettings .internalServicesLink").click(othis.showInternalServices);
 		
 		othis.showInternalServices();

@@ -103,7 +103,14 @@ function Main(address, username) {
 			pushHistory({page: "AddProject"});
 		}, event, callback);
 	};
-	
+
+	this.showAddUser = function(event, callback) {
+		othis.changePage($(".usersLink"), "adduser.html", function(){
+			othis.current = new AddUser(othis);
+			pushHistory({page: "AddUser"});
+		}, event, callback);
+	};
+
 	this.showUser = function(user, event, callback) {
 		othis.changePage($(".usersLink"), "user.html", function(){
 			othis.current = new User(othis, user);

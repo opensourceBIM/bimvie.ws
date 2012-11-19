@@ -1,4 +1,7 @@
 <div class="users">
+	<div class="well well-small">
+		<button class="addUserButton btn">Add user</button>
+	</div>
 	<table class="usersTable table table-striped table-hover">
 		<tr><th>Name</th><th>Actions</th></tr>
 	</table>
@@ -42,5 +45,6 @@ function Users(main) {
 	};
 	
 	bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
+	$(".users .addUserButton").click(main.showAddUser);
 }
 </script>

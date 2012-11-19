@@ -1,11 +1,14 @@
 <div class="genericpluginsettings">
-	<h3 class="">Internal Service</h3>
+	<h3 class="title">Internal Service</h3>
 	<table class="table detailsTable">
 		<tbody>
 		</tbody>
 	</table>
+	<h3>Settings</h3>
+	<div class="well well-small nosettings">
+		No settings
+	</div>
 	<table class="table settingsTable">
-		<caption>Settings</caption>
 		<tbody>
 		</tbody>
 	</table>
@@ -14,9 +17,11 @@
 	</div>
 </div>
 <script>
-function GenericPluginSettings(main, usersettings, pluginsettings) {
+function GenericPluginSettings(main, usersettings, pluginsettings, configuration) {
 	var othis = this;
-	othis.internalService = internalService;
+	othis.pluginsettings = pluginsettings;
+	
+	$(".genericpluginsettings h3.title").html(configuration.title);
 
 	this.close = function(){
 	};
@@ -27,43 +32,46 @@ function GenericPluginSettings(main, usersettings, pluginsettings) {
 	$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Status</td><td>" + (pluginsettings.enabled ? "Enabled" : "Disabled") + "</td></tr>");
 
 	this.loadPluginSettings = function() {
-		bimServerApi.call("ServiceInterface", "getPluginSettings", {poid: internalService.oid}, function(objectDefinition){
-			if (objectDefinition.parameters != null) {
-				objectDefinition.parameters.forEach(function(parameter){
-					var input = $(".genericpluginsettings").find("input[parameter=\"" + parameter.name + "\"]");
-					var value = parameter.value;
-					if (value.__type == "SDoubleType" || value.__type == "SStringType" || value.__type == "SBooleanType" || value.__type == "SLongType") {
-						input.val(value.value);
-					} else if (value.__type == "SObjectType") {
-					} else if (value.__type == "SArrayType") {
-					}
-				});
+		bimServerApi.call("ServiceInterface", "getPluginSettings", {poid: pluginsettings.oid}, function(objectDefinition){
+			if (objectDefinition != null) {
+				if (objectDefinition.parameters != null) {
+					objectDefinition.parameters.forEach(function(parameter){
+						var input = $(".genericpluginsettings").find("input[parameter=\"" + parameter.name + "\"]");
+						var value = parameter.value;
+						if (value.__type == "SDoubleType" || value.__type == "SStringType" || value.__type == "SBooleanType" || value.__type == "SLongType") {
+							input.val(value.value);
+						} else if (value.__type == "SObjectType") {
+						} else if (value.__type == "SArrayType") {
+						}
+					});
+				}
 			}
 		});
 	};
 	
 	this.loadPluginObjectDefinition = function() {
-		bimServerApi.call("ServiceInterface", "getPluginObjectDefinition", {className: internalService.className}, function(objectDefinition){
+		bimServerApi.call("ServiceInterface", "getPluginObjectDefinition", {className: othis.pluginsettings.className}, function(objectDefinition){
 			objectDefinition.parameters.forEach(function(parameter){
+				$(".genericpluginsettings .nosettings").hide();
 				var tr = $("<tr></tr>");
 				tr.append("<td>" + parameter.name.firstUpper() + "</td>");
 				var td = $("<td></td>");
 				tr.append(td);
 				if (parameter.type.__type == "SPrimitiveDefinition") {
 					var primitiveDefinition = parameter.type;
-					if (primitiveDefinition.type == "INTEGER") {
-						var input = $("<input parameter=\"" + parameter.name + "\" type=\"text\"/>");
+					if (primitiveDefinition.type == "LONG") {
+						var input = $("<input parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
 						input.numeric({ decimal: false, negative: false });
 						td.append(input);
 					} else if (primitiveDefinition.type == "DOUBLE") {
-						var input = $("<input parameter=\"" + parameter.name + "\" type=\"text\"/>");
+						var input = $("<input parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
 						input.numeric({ decimal: ".", negative: false });
 						td.append(input);
 					} else if (primitiveDefinition.type == "STRING") {
-						var input = $("<input parameter=\"" + parameter.name + "\" type=\"text\"/>");
+						var input = $("<input parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
 						td.append(input);
 					} else if (primitiveDefinition.type == "BOOLEAN") {
-						var input = $("<input parameter=\"" + parameter.name + "\" type=\"checkbox\"/>");
+						var input = $("<input parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"checkbox\"/>");
 						td.append(input);
 					}
 				}
@@ -79,10 +87,28 @@ function GenericPluginSettings(main, usersettings, pluginsettings) {
 			parameters: []
 		};
 		$(".genericpluginsettings").find("input[parameter]").each(function(){
-			var type = {
-				__type: "SDoubleType",
-				value: parseFloat($(this).val())
-			};
+			var type = null;
+			if ($(this).attr("dtype") == "DOUBLE") {
+				type = {
+					__type: "SDoubleType",
+					value: parseFloat($(this).val())
+				};
+			} else if ($(this).attr("dtype") == "STRING") {
+				type = {
+					__type: "SStringType",
+					value: $(this).val()
+				};
+			} else if ($(this).attr("dtype") == "INTEGER") {
+				type = {
+					__type: "SStringType",
+					value: parseInt($(this).val())
+				};
+			} else if ($(this).attr("dtype") == "BOOLEAN") {
+				type = {
+					__type: "SStringType",
+					value: parseBoolean($(this).val())
+				};
+			}
 			var parameter = {
 				__type: "SParameter",
 				name: $(this).attr("parameter"),
@@ -90,14 +116,14 @@ function GenericPluginSettings(main, usersettings, pluginsettings) {
 			};
 			settings.parameters.push(parameter);
 		});
-		bimServerApi.call("ServiceInterface", "setPluginSettings", {poid: othis.internalService.oid, settings: settings}, function(data){
+		bimServerApi.call("ServiceInterface", "setPluginSettings", {poid: othis.pluginsettings.oid, settings: settings}, function(data){
 			
 		});
 	};
 	
 	this.savePlugin = function() {
-		var internalService = othis.internalService;
-		internalService.remoteAccessible = $(".genericpluginsettings .remoteAccessible").is(":checked");
+		var pluginsettings = othis.pluginsettings;
+		pluginsettings.remoteAccessible = $(".genericpluginsettings .remoteAccessible").is(":checked");
 		bimServerApi.call("ServiceInterface", "updateInternalService", {internalService: internalService}, function(data){
 			othis.saveSettings();
 		});

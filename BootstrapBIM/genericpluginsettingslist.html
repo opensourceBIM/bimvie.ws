@@ -1,6 +1,6 @@
 <div class="genericpluginsettingslist">
 	<h3>Internal Services</h3>
-	<table class="internalServicesTable table">
+	<table class="table table-striped table-hover">
 		<thead>
 			<tr>
 				<th>Name</th>
@@ -14,39 +14,40 @@
 	</table>
 </div>
 <script>
-function GenericPluginSettingsList(main, usersettings) {
+function GenericPluginSettingsList(main, usersettings, configuration) {
 	var othis = this;
 
-	this.internalServiceClick = function(event) {
+	$(".genericpluginsettingslist h3").html(configuration.listTitle);
+	
+	this.pluginClick = function(event) {
 		event.preventDefault();
-		var internalService = $(this).parents("tr").data("internalService");
-		usersettings.showPluginSettings();
-		usersettings.showInternalService(internalService);
+		var plugin = $(this).parents("tr").data("plugin");
+		configuration.showDetailsFunction(plugin);
 	};
 
-	this.addInternalService = function(internalService) {
+	this.addPlugin = function(plugin) {
 		var tr = $("<tr>");
-		tr.data("internalService", internalService);
-		var a = $("<a>" + internalService.name + "</a>");
-		a.click(othis.internalServiceClick);
+		tr.data("plugin", plugin);
+		var a = $("<a>" + plugin.name + "</a>");
+		a.click(othis.pluginClick);
 		tr.append($("<td></td>").append(a));
-		tr.append("<td>" + internalService.description + "</td>");
-		tr.append("<td>" + (internalService.enabled ? "Enabled" : "Disabled") + "</td>");
+		tr.append("<td>" + plugin.description + "</td>");
+		tr.append("<td>" + (plugin.enabled ? "Enabled" : "Disabled") + "</td>");
 		tr.append("<td>" + "" + "</td>");
-		$(".internalservices .internalServicesTable tbody").append(tr);
+		$(".genericpluginsettingslist table tbody").append(tr);
 	};
 
-	this.loadInternalServices = function(){
-		bimServerApi.call("ServiceInterface", "getAllInternalServices", {onlyEnabled: false}, function(data){
-			$(".internalservices .internalServicesTable tbody").empty();
-			data.forEach(function(internalService){
-				othis.addInternalService(internalService);
+	this.loadPluginConfigurations = function(){
+		bimServerApi.call("ServiceInterface", configuration.getAllMethodName, {onlyEnabled: false}, function(data){
+			$(".genericpluginsettingslist table tbody").empty();
+			data.forEach(function(plugin){
+				othis.addPlugin(plugin);
 			});
 		});
 	};
 	
 	this.close = function(){
 	};
-	othis.loadInternalServices();
+	othis.loadPluginConfigurations();
 }
 </script>
