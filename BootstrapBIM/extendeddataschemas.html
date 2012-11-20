@@ -6,7 +6,7 @@
 	<div class="well well-small noextendeddataschemas">
 		No extended data schemas
 	</div>
-	<table class="table initialhide">
+	<table class="table initialhide table-striped table-hover">
 		<thead>
 			<tr>
 				<th>Name</th>
@@ -33,11 +33,11 @@ function ExtendedDataSchemas(main, serversettings) {
 		
 		var tr = $("<tr>");
 		tr.data("extendeddataschema", extendedDataSchema);
+		tr.click(function(){
+			main.showExtendedDataSchema($(this).data("extendeddataschema"));
+		});
 		
-		var td = $("<td>");
-		td.append(main.createExtendedDataSchemaLink(extendedDataSchema));
-		tr.append(td);
-		
+		tr.append("<td>" + extendedDataSchema.name + "</td>");
 		tr.append("<td>" + extendedDataSchema.namespace + "</td>");
 		tr.append("<td>" + extendedDataSchema.validate + "</td>");
 		tr.append("<td>" + extendedDataSchema.type + "</td>");

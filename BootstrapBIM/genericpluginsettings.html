@@ -19,20 +19,22 @@
 <script>
 function GenericPluginSettings(main, usersettings, pluginsettings, configuration) {
 	var othis = this;
-	othis.pluginsettings = pluginsettings;
 	
-	$(".genericpluginsettings h3.title").html(configuration.title);
-
 	this.close = function(){
 	};
 
-	$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Name</td><td>" + pluginsettings.name + "</td></tr>");
-	$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Description</td><td>" + pluginsettings.description + "</td></tr>");
-	$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Class</td><td>" + pluginsettings.className + "</td></tr>");
-	$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Status</td><td>" + (pluginsettings.enabled ? "Enabled" : "Disabled") + "</td></tr>");
 
+	this.loadGenericPluginSettings = function() {
+		$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Name</td><td>" + othis.pluginsettings.name + "</td></tr>");
+		$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Description</td><td>" + othis.pluginsettings.description + "</td></tr>");
+		$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Class</td><td>" + othis.pluginsettings.className + "</td></tr>");
+		$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Status</td><td>" + (othis.pluginsettings.enabled ? "Enabled" : "Disabled") + "</td></tr>");
+		$(".genericpluginsettings h3.title").html(configuration.title);
+		othis.loadPluginObjectDefinition();
+	};
+	
 	this.loadPluginSettings = function() {
-		bimServerApi.call("ServiceInterface", "getPluginSettings", {poid: pluginsettings.oid}, function(objectDefinition){
+		bimServerApi.call("ServiceInterface", "getPluginSettings", {poid: othis.pluginsettings.oid}, function(objectDefinition){
 			if (objectDefinition != null) {
 				if (objectDefinition.parameters != null) {
 					objectDefinition.parameters.forEach(function(parameter){
@@ -51,33 +53,35 @@ function GenericPluginSettings(main, usersettings, pluginsettings, configuration
 	
 	this.loadPluginObjectDefinition = function() {
 		bimServerApi.call("ServiceInterface", "getPluginObjectDefinition", {className: othis.pluginsettings.className}, function(objectDefinition){
-			objectDefinition.parameters.forEach(function(parameter){
-				$(".genericpluginsettings .nosettings").hide();
-				var tr = $("<tr></tr>");
-				tr.append("<td>" + parameter.name.firstUpper() + "</td>");
-				var td = $("<td></td>");
-				tr.append(td);
-				if (parameter.type.__type == "SPrimitiveDefinition") {
-					var primitiveDefinition = parameter.type;
-					if (primitiveDefinition.type == "LONG") {
-						var input = $("<input parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
-						input.numeric({ decimal: false, negative: false });
-						td.append(input);
-					} else if (primitiveDefinition.type == "DOUBLE") {
-						var input = $("<input parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
-						input.numeric({ decimal: ".", negative: false });
-						td.append(input);
-					} else if (primitiveDefinition.type == "STRING") {
-						var input = $("<input parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
-						td.append(input);
-					} else if (primitiveDefinition.type == "BOOLEAN") {
-						var input = $("<input parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"checkbox\"/>");
-						td.append(input);
+			if (objectDefinition != null && objectDefinition.parameters != null) {
+				objectDefinition.parameters.forEach(function(parameter){
+					$(".genericpluginsettings .nosettings").hide();
+					var tr = $("<tr></tr>");
+					tr.append("<td>" + parameter.name.firstUpper() + "</td>");
+					var td = $("<td></td>");
+					tr.append(td);
+					if (parameter.type.__type == "SPrimitiveDefinition") {
+						var primitiveDefinition = parameter.type;
+						if (primitiveDefinition.type == "LONG") {
+							var input = $("<input parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
+							input.numeric({ decimal: false, negative: false });
+							td.append(input);
+						} else if (primitiveDefinition.type == "DOUBLE") {
+							var input = $("<input parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
+							input.numeric({ decimal: ".", negative: false });
+							td.append(input);
+						} else if (primitiveDefinition.type == "STRING") {
+							var input = $("<input parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
+							td.append(input);
+						} else if (primitiveDefinition.type == "BOOLEAN") {
+							var input = $("<input parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"checkbox\"/>");
+							td.append(input);
+						}
 					}
-				}
-				$(".genericpluginsettings .settingsTable tbody").append(tr);
-			});
-			othis.loadPluginSettings();
+					$(".genericpluginsettings .settingsTable tbody").append(tr);
+				});
+				othis.loadPluginSettings();
+			}
 		});
 	};
 
@@ -133,8 +137,17 @@ function GenericPluginSettings(main, usersettings, pluginsettings, configuration
 		event.preventDefault();
 		othis.savePlugin();
 	};
+
+	if (typeof pluginsettings == "number") {
+		bimServerApi.call("ServiceInterface", configuration.getMethod, {oid: pluginsettings}, function(data){
+			othis.pluginsettings = data;
+			othis.loadGenericPluginSettings();
+		});
+	} else {
+		othis.pluginsettings = pluginsettings;
+		othis.loadGenericPluginSettings();
+	}
 	
-	othis.loadPluginObjectDefinition();
 	$(".genericpluginsettings .saveButton").click(othis.save);
 }
 </script>

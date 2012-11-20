@@ -20,7 +20,7 @@ function InternalServices(main, usersettings) {
 	this.internalServiceClick = function(event) {
 		event.preventDefault();
 		var internalService = $(this).parents("tr").data("internalService");
-		usersettings.showInternalService(internalService);
+		usersettings.showInternalService(internalService, null, true);
 	};
 
 	this.addInternalService = function(internalService) {

@@ -22,7 +22,7 @@ function GenericPluginSettingsList(main, usersettings, configuration) {
 	this.pluginClick = function(event) {
 		event.preventDefault();
 		var plugin = $(this).parents("tr").data("plugin");
-		configuration.showDetailsFunction(plugin);
+		configuration.showDetailsFunction(plugin, null, true);
 	};
 
 	this.addPlugin = function(plugin) {

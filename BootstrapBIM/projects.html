@@ -22,7 +22,7 @@ function Projects(main) {
 
 	this.projectClick = function(event) {
 		if (!$(event.target).is("a, button, span.caret")) {
-			main.showProject($(this).parents("tr").andSelf().data("project"), event);
+			main.showProject($(this).parents("tr").andSelf().data("project"), null, true);
 			othis.close();
 		}
 	};

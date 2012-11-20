@@ -36,26 +36,26 @@ function Main(address, username) {
 	this.show = function(alterState) {
 		var history = History.getState().data;
 		if (history.page == "Dashboard") {
-			othis.showDashboard();
+			othis.showDashboard(null, alterState);
 		} else if (history.page == "Projects") {
-			othis.showProjects();
+			othis.showProjects(null, alterState);
 		} else if (history.page == "Project") {
-			othis.showProject(history.poid);
+			othis.showProject(history.poid, null, alterState);
 		} else if (history.page == "Revision") {
-			othis.showRevision(history.roid);
+			othis.showRevision(history.roid, null, alterState);
 		} else if (history.page == "User") {
-			othis.showUser(history.roid);
+			othis.showUser(history.uoid, null, alterState);
 		} else if (history.page == "Users") {
-			othis.showUsers();
+			othis.showUsers(null, alterState);
 		} else if (history.page == "UserSettings") {
-			othis.showUserSettings();
+			othis.showUserSettings(null, alterState);
 		} else if (history.page == "ServerSettings") {
-			othis.showServerSettings();
+			othis.showServerSettings(null, alterState);
 		} else {
-			othis.showDashboard();
+			othis.showDashboard(null, alterState);
 		}
 	};
-	
+
 	this.logout = function(event) {
 		event.preventDefault();
 		bimServerApi.logout(function(){
@@ -65,10 +65,7 @@ function Main(address, username) {
 		});
 	};
 
-	this.changePage = function(linkElement, page, constructorFunction, event, callback) {
-		if (event != null) {
-			event.preventDefault();
-		}
+	this.changePage = function(linkElement, page, constructorFunction, callback) {
 		if (othis.current != null) {
 			othis.current.close();
 		}
@@ -82,97 +79,121 @@ function Main(address, username) {
 		});
 	};
 
-	this.showDashboard = function(event) {
+	this.showDashboard = function(callback, alterState) {
 		othis.changePage($(".dashboardLink"), "dashboard.html", function(){
 			othis.current = new Dashboard(othis);
-			pushHistory({page: "Dashboard"});
-		}, event);
+			if (alterState) {
+				pushHistory({page: "Dashboard"});
+			}
+		}, callback);
 	};
 
-	this.showProjects = function(event, alterState, callback) {
+	this.showProjects = function(callback, alterState) {
 		othis.changePage($(".projectsLink"), "projects.html", function(){
 			othis.current = new Projects(othis);
 			othis.current.show(alterState);
-			pushHistory({page: "Projects"});
-		}, event, callback);
+			if (alterState) {
+				pushHistory({page: "Projects"});
+			}
+		}, callback);
 	};
 
-	this.showAddProject = function(event, callback, parentProject) {
+	this.showAddProject = function(callback, parentProject, alterState) {
 		othis.changePage($(".projectsLink"), "addproject.html", function(){
 			othis.current = new AddProject(othis, parentProject);
-			pushHistory({page: "AddProject"});
-		}, event, callback);
+			if (alterState) {
+				pushHistory({page: "AddProject"});
+			}
+		}, callback);
 	};
 
-	this.showAddUser = function(event, callback) {
+	this.showAddUser = function(callback, alterState) {
 		othis.changePage($(".usersLink"), "adduser.html", function(){
 			othis.current = new AddUser(othis);
-			pushHistory({page: "AddUser"});
-		}, event, callback);
+			if (alterState) {
+				pushHistory({page: "AddUser"});
+			}
+		}, callback);
 	};
 
-	this.showUser = function(user, event, callback) {
+	this.showUser = function(user, callback, alterState) {
 		othis.changePage($(".usersLink"), "user.html", function(){
 			othis.current = new User(othis, user);
-			pushHistory({page: "User", uoid: user.oid});
-		}, event, callback);
+			if (alterState) {
+				pushHistory({page: "User", uoid: user.oid});
+			}
+		}, callback);
 	};
 
-	this.showAddService = function(project, event, callback) {
+	this.showAddService = function(project, callback, alterState) {
 		othis.changePage($(".projectsLink"), "addservice.html", function(){
 			othis.current = new AddService(othis, project);
-			pushHistory({page: "AddService"});
-		}, event, callback);
+			if (alterState) {
+				pushHistory({page: "AddService"});
+			}
+		}, callback);
 	};
 	
-	this.showAddService2 = function(project, serviceDescriptor, isLocal, event, callback) {
+	this.showAddService2 = function(project, serviceDescriptor, isLocal, callback, alterState) {
 		othis.changePage($(".projectsLink"), "addservice2.html", function(){
 			othis.current = new AddService2(othis, project, serviceDescriptor, isLocal);
-			pushHistory({page: "AddService2"});
-		}, event, callback);
+			if (alterState) {
+				pushHistory({page: "AddService2"});
+			}
+		}, callback);
 	};
 	
-	this.showProject = function(project, event, callback) {
+	this.showProject = function(project, callback, alterState) {
 		othis.changePage($(".projectsLink"), "project.html", function(){
 			othis.current = new Project(othis, project);
 			othis.current.show();
-			pushHistory({page: "Project", "poid": typeof project == "object" ? project.oid : project});
-		}, event, callback);
+			if (alterState) {
+				pushHistory({page: "Project", "poid": typeof project == "object" ? project.oid : project});
+			}
+		}, callback);
 	};
-	
-	this.showRevision = function(revision, event, callback) {
+
+	this.showRevision = function(revision, callback, alterState) {
 		othis.changePage($(".projectsLink"), "revision.html", function(){
 			othis.current = new Revision(othis, revision);
 			othis.current.show();
-			pushHistory({page: "Revision", "roid": typeof revision == "object" ? revision.oid : revision});
-		}, event, callback);
+			if (alterState) {
+				pushHistory({page: "Revision", "roid": typeof revision == "object" ? revision.oid : revision});
+			}
+		}, callback);
 	};
 	
-	this.showUsers = function(event, callback) {
+	this.showUsers = function(callback, alterState) {
 		othis.changePage($(".usersLink"), "users.html", function(){
 			othis.current = new Users(othis);
-			pushHistory({page: "Users"});
-		}, event, callback);
+			if (alterState) {
+				pushHistory({page: "Users"});
+			}
+		}, callback);
 	};
 	
-	this.showUserSettings = function(event, callback) {
+	this.showUserSettings = function(callback, alterState) {
 		othis.changePage($(".usersettingsLink"), "usersettings.html", function(){
 			othis.current = new UserSettings(othis);
-			pushHistory({page: "UserSettings"});
-		}, event, callback);
+			if (alterState) {
+				pushHistory({page: "UserSettings"});
+			}
+		}, callback);
 	};
 
-	this.showExtendedDataSchema = function(extendedDataSchema, event, callback) {
-		this.showServerSettings(null, function(){
+	this.showExtendedDataSchema = function(extendedDataSchema, callback, alterState) {
+		this.showServerSettings(function(){
 			othis.current.showExtendedDataSchema(extendedDataSchema);
 		});
 	};
 	
-	this.showServerSettings = function(event, callback) {
+	this.showServerSettings = function(callback, alterState) {
 		othis.changePage($(".serversettingsLink"), "serversettings.html", function(){
 			othis.current = new ServerSettings(othis);
-			pushHistory({page: "ServerSettings"});
-		}, event, callback);
+			if (alterState) {
+				pushHistory({page: "ServerSettings"});
+			}
+		}, callback);
 	};
 
 	this.extendedDataSchemaClick = function(event){
@@ -186,12 +207,12 @@ function Main(address, username) {
 		link.click(othis.extendedDataSchemaClick);
 		return link;
 	};
-	
-	$(".dashboardLink").click(othis.showDashboard);
-	$(".projectsLink").click(othis.showProjects);
-	$(".usersLink").click(othis.showUsers);
-	$(".usersettingsLink").click(othis.showUserSettings);
-	$(".serversettingsLink").click(othis.showServerSettings);
+
+	$(".dashboardLink").click(function(){othis.showDashboard(null, true)});
+	$(".projectsLink").click(function(event){othis.showProjects(null, true)});
+	$(".usersLink").click(function(event){othis.showUsers(null, true)});
+	$(".usersettingsLink").click(function(event){othis.showUserSettings(null, true)});
+	$(".serversettingsLink").click(function(event){othis.showServerSettings(null, true)});
 	$(".logoutLink").click(othis.logout);
 }
 </script>

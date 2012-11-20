@@ -38,7 +38,7 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<button type="submit" class="btn saveButton btn-primary">Save</button>
+			<button type="button" class="btn saveButton btn-primary">Save</button>
 			<button type="button" class="btn cancelButton">Cancel</button>
 		</div>
 	</form>
@@ -56,6 +56,10 @@ function ExtendedDataSchema(main, extendedDataSchema) {
 	$(".extendeddataschema .validateInput").val(extendedDataSchema.validate);
 	$(".extendeddataschema .typeSelect").val(extendedDataSchema.type);
 	
+	this.saveClick = function(event) {
+		
+	};
+	
 	this.cancelClick = function(event) {
 		event.preventDefault();
 		main.showServerSettings(null, function(){
@@ -64,5 +68,6 @@ function ExtendedDataSchema(main, extendedDataSchema) {
 	};
 	
 	$(".extendeddataschema .cancelButton").click(othis.cancelClick);
+	$(".extendeddataschema .saveButton").click(othis.saveClick);
 }
 </script>

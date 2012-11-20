@@ -438,7 +438,7 @@ var Project = function(main, project) {
 	this.addSubProjectClick = function(event) {
 		main.showAddProject(event, null, othis.project);
 	};
-	
+
 	this.loadSurfer = function(event) {
 		event.preventDefault();
 		$(".project .nav li").removeClass("active");
@@ -449,7 +449,7 @@ var Project = function(main, project) {
 			new Surfer(othis.lastRevision);
 		});
 	};
-	
+
 	$(".project .detailsLink").click(othis.loadDetails);
 	$(".project .subprojectsLink").click(othis.loadSubProjects);
 	$(".project .revisionsLink").click(othis.loadRevisions);
@@ -459,11 +459,11 @@ var Project = function(main, project) {
 	$(".project .browserLink").click(othis.loadBrowser);
 	$(".project .usersLink").click(othis.loadUsers);
 	$(".project .surferLink").click(othis.loadSurfer);
-	
+
 	$(".project .checkinButton").click(othis.showCheckinPopup);
 	$(".project .addServiceButton").click(othis.addServiceClick);
 	$(".project .addSubProjectButton").click(othis.addSubProjectClick);
-	
+
 	this.newLogAction = function(uuid, logAction, serviceIdentifier, profileIdentifier, token, apiUrl){
 		if (logAction.__type == "SNewRevisionAdded") {
 			bimServerApi.call("ServiceInterface", "getRevision", {roid: logAction.revisionId}, function(data){
