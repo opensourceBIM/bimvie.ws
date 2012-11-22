@@ -75,17 +75,22 @@
 			}
 		};
 
+		function loadError() {
+			window.clearTimeout(timeoutId);
+			notifier.error("Could not connect");
+			$.removeCookie("username");
+			$.removeCookie("autologin");
+			$.removeCookie("address");
+			$(".indexcontainer").load("login.html", function(){
+				new Login();
+			});
+		}
+		
+		var timeoutId; // timeout id is a global variable
 		$(function(){
 			if ($.cookie("autologin") != null) {
-				var timeoutId; // timeout id is a global variable
 				timeoutId = window.setTimeout(function() {
-					notifier.error("Could not connect");
-					$.removeCookie("username");
-					$.removeCookie("autologin");
-					$.removeCookie("address");
-					$(".indexcontainer").load("login.html", function(){
-						new Login();
-					});
+					loadError();
 				}, 3000);
 				$.getScript($.cookie("address") + "/js/bimserverapi.js")
 				.done(function(script, textStatus) {
@@ -100,7 +105,9 @@
 							new Login();
 						});
 					});
-				})
+				}).fail(function(jqxhr, settings, exception){
+					loadError();
+				});
 			} else {
 				$(".indexcontainer").load("login.html", function(){
 					new Login();
