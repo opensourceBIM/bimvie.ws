@@ -79,6 +79,13 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<div class="controls">
+				<label class="checkbox" for="allowOnlyWhitelisted"><a rel="tooltip" data-original-title="Whether only whitelisted (below) domains should be authorized to connect" data-placement="right">Only white listed domains</a>
+					<input type="checkbox" class="allowOnlyWhitelisted" id="allowOnlyWhitelisted"/>
+				</label>
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label"><a rel="tooltip" data-original-title="Select from which referred domains web browsers can connect to this BIMserver. More information about this can be found by searching for 'CORS'" data-placement="right">Whitelisted domains</a></label>
 			<div class="controls whiteListedDomains">
 			</div>
@@ -145,6 +152,7 @@ function BasicServerSettings(main, serversettings) {
 		serverSettings.allowUsersToCreateTopLevelProjects = $(".basicserversettings .createTopLevelProjects").prop("checked");
 		serverSettings.allowSelfRegistration = $(".basicserversettings .allowSelfRegistration").prop("checked");
 		serverSettings.sendConfirmationEmailAfterRegistration = $(".basicserversettings .sendConfirmationEmailAfterRegistration").prop("checked");
+		serverSettings.allowOnlyWhitelisted = $(".basicserversettings .allowOnlyWhitelisted").prop("checked");
 		bimServerApi.call("ServiceInterface", "setServerSettings", {serverSettings: serverSettings}, function(data){
 		});
 	};
@@ -183,11 +191,33 @@ function BasicServerSettings(main, serversettings) {
 			$(".basicserversettings .createTopLevelProjects").prop("checked", data.allowUsersToCreateTopLevelProjects);
 			$(".basicserversettings .allowSelfRegistration").prop("checked", data.allowSelfRegistration);
 			$(".basicserversettings .sendConfirmationEmailAfterRegistration").prop("checked", data.sendConfirmationEmailAfterRegistration);
+			$(".basicserversettings .allowOnlyWhitelisted").prop("checked", data.allowOnlyWhitelisted);
 			data.whitelistedDomains.forEach(function(domain){
 				othis.addWhiteListedDomain(domain);
 			});
 			othis.addWhiteListedDomain("");
+			othis.updateWhiteListedVisible(data.allowOnlyWhitelisted);
 		});
+	};
+	
+	this.updateWhiteListedVisible = function(allowOnlyWhitelisted){
+		if (allowOnlyWhitelisted) {
+			$(".basicserversettings .whiteListedDomains input").removeAttr("disabled");
+			$(".basicserversettings .whiteListedDomains button").show();
+			$(".basicserversettings .whiteListedDomains input").each(function(){
+				if ($(this).val() == "") {
+					$(this).show();
+				}
+			});
+		} else {
+			$(".basicserversettings .whiteListedDomains input").attr("disabled", "disabled");
+			$(".basicserversettings .whiteListedDomains button").hide();
+			$(".basicserversettings .whiteListedDomains input").each(function(){
+				if ($(this).val() == "") {
+					$(this).hide();
+				}
+			});
+		}
 	};
 	
 	this.close = function(){
@@ -195,6 +225,7 @@ function BasicServerSettings(main, serversettings) {
 	
 	$(".basicserversettings input[type='checkbox']").change(othis.save);
 	$(".basicserversettings input[type='text']").blur(othis.save);
+	$(".basicserversettings .allowOnlyWhitelisted").change(function(event){othis.updateWhiteListedVisible($(this).is(":checked"))});
 	
 	$("[rel=tooltip]").tooltip();
 	othis.loadSettings();

@@ -76,6 +76,9 @@
 			Not implemented
 		</div>
 		<div class="tab-pane users initialhide" id="users">
+			<div class="linkspacer">
+				<a href="addUserLink">Add user</a>
+			</div>
 			<div class="nousers well well-small">
 				No users
 			</div>
@@ -449,6 +452,10 @@ var Project = function(main, project) {
 			new Surfer(othis.lastRevision);
 		});
 	};
+	
+	this.addUserLinkClick = function(){
+		
+	};
 
 	$(".project .detailsLink").click(othis.loadDetails);
 	$(".project .subprojectsLink").click(othis.loadSubProjects);
@@ -460,6 +467,8 @@ var Project = function(main, project) {
 	$(".project .usersLink").click(othis.loadUsers);
 	$(".project .surferLink").click(othis.loadSurfer);
 
+	$(".project .addUserLink").click(othis.addUserLinkClick);
+	
 	$(".project .checkinButton").click(othis.showCheckinPopup);
 	$(".project .addServiceButton").click(othis.addServiceClick);
 	$(".project .addSubProjectButton").click(othis.addSubProjectClick);
