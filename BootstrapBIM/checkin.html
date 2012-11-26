@@ -76,9 +76,12 @@ function Checkin(project, successFunction) {
 
 	this.progressHandler = function(topicId, state) {
 		var oldStage = othis.stage;
-		othis.stage = state.state;
+		othis.stage = state.stage;
 		if (state.state == "ERROR") {
-			$(".uploadStatus").html("Error: " + state.lastError);
+			$(".uploadStatus").empty();
+			state.errors.forEach(function(error){
+				$(".uploadStatus").append("<div class=\"alert alert-block alert-error\">" + error + "</div>");
+			});
 			othis.showUpload();
 			bimServerApi.unregister(othis.progressHandler);
 		} else {
