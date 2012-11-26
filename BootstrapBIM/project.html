@@ -235,10 +235,9 @@ var Project = function(main, project) {
 			bimServerApi.call("ServiceInterface", "getAllServicesOfProject", {poid: othis.project.oid}, function(data){
 				actions.find("ul li").remove();
 				data.forEach(function(service){
-					var li = $("<li><a>Run <b>" + service.name + "</b></a></li>");
-					li.find("a").click(function(){
+					var li = $("<li><a>Run \"" + service.name + "\"</a></li>");
+					li.find("a").click(function(event){
 						bimServerApi.call("ServiceInterface", "triggerNewRevision", {roid: revision.oid, soid: service.oid}, function(data){
-							
 						});
 					});
 					actions.find("ul").append(li);
@@ -248,7 +247,7 @@ var Project = function(main, project) {
 		revisionRow.append(actions);
 		$(".project .revisionsTable tbody").prepend(revisionRow);
 	};
-	
+
 	this.serviceClick = function(event){
 		if (!$(event.target).is("a, button, span.caret")) {
 			var service = $(this).parents("tr").andSelf().data("service");
