@@ -234,6 +234,10 @@ var Project = function(main, project) {
 		actions.find("button.dropdown-toggle").click(function(){
 			bimServerApi.call("ServiceInterface", "getAllServicesOfProject", {poid: othis.project.oid}, function(data){
 				actions.find("ul li").remove();
+				if (data.length == 0) {
+					var li = $("<li><a>No services configured</a></li>");
+					actions.find("ul").append(li);
+				}
 				data.forEach(function(service){
 					var li = $("<li><a>Run \"" + service.name + "\"</a></li>");
 					li.find("a").click(function(event){

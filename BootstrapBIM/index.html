@@ -54,6 +54,9 @@
 				$(".status").stop(true, true);
 				$(".status").fadeOut(1000);
 			},
+			resetStatusQuick: function(){
+				$(".status").hide();
+			},
 			setStatus: function(status, timeToShow) {
 				if (timeToShow == null) {
 					timeToShow = 5000;
