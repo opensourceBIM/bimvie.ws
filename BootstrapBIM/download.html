@@ -5,7 +5,9 @@
   	</div>
 	<div class="modal-body">
 		<div class="checkoutMessage initialhide"></div>
-		<div class="message"></div>
+		<div class="downloadStatus"></div>
+		<div class="progressBarHolder"></div>
+		
 		<div class="downloadProgressBar progress initialhide">
 			<div class="bar" style="width: 0;"></div>
 		</div>
@@ -96,9 +98,23 @@ function Download(data) {
 
 	this.progressHandler = function(topicId, state) {
 		if (topicId == othis.laid) {
-			$(".downloadpopup .downloadProgressBar .bar").css("width", state.progress + "%");
+			var oldStage = othis.stage;
+			othis.stage = state.stage;
+			$(".downloadStatus").html(state.title);
+			if (oldStage != state.stage) {
+				$(".progressBarHolder .downloadProgressBar").remove();
+				$(".progressBarHolder").append("<div class=\"downloadProgressBar progress\"><div class=\"bar\"></div></div>");
+			}
+			if (state.progress == -1) {
+				$(".downloadProgressBar").addClass("progress-striped").addClass("active");
+				$(".downloadProgressBar .bar").css("width", "100%");
+			} else {
+				$(".downloadProgressBar").removeClass("progress-striped").removeClass("active");
+				$(".downloadProgressBar .bar").css("width", parseInt(state.progress) + "%");
+			}
 			if (state.errors.length > 0) {
 				$(".downloadpopup .fields, .downloadpopup .checkoutMessage").show();
+				$(".downloadpopup .resultsarea").empty();
 				$(".downloadpopup .downloadProgressBar").hide();
 				state.errors.map(function(error){
 					$(".downloadpopup .resultsarea").append(error + "<br/>");
@@ -111,10 +127,9 @@ function Download(data) {
 						$(".downloadpopup .resultsarea").append(warning + "<br/>");
 					});
 				}
-				$(".downloadpopup .downloadProgressBar").hide();
-				$(".downloadpopup .downloadProgressBar").toggleClass('active');
-				$(".downloadpopup .downloadProgressBar").css("width", "0");
-				$(".downloadpopup .downloadProgressBar").toggleClass('active');
+				
+				$(".progressBarHolder .downloadProgressBar").remove();
+				
 				var url = bimServerApi.generateRevisionDownloadUrl({
 					zip: $("#downloadCheckoutZip").attr('checked') != undefined,
 					serializerOid: $(".downloadpopup .revisionsdownloadcheckoutselect").val(),
@@ -128,23 +143,26 @@ function Download(data) {
 				}
 				bimServerApi.unregister(othis.progressHandler);
 				$(".downloadpopup .checkoutMessage").html("");
-				$(".downloadpopup .message").html("Prepare complete, initiating download, click <a href=\"" + url + "\">here</a> if the download does not start automatically<br/><br/>");
+				$(".downloadpopup .downloadStatus").html("Prepare complete, initiating download, click <a href=\"" + url + "\">here</a> if the download does not start automatically<br/><br/>");
 				$(".downloadpopup .fields, .downloadpopup .checkoutMessage").show();
 			}
 		}
 	};
 	
 	this.start = function(data) {
-		$(".downloadpopup .message").html("Preparing download...");
-		$(".downloadpopup .downloadProgressBar").show();
+		$(".downloadpopup .downloadStatus").html("Preparing download...");
+		
+		$(".progressBarHolder .downloadProgressBar").remove();
+		$(".progressBarHolder").append("<div class=\"downloadProgressBar progress\"><div class=\"bar\"></div></div>");
+		
 		$(".downloadpopup .fields").hide();
 		$(".downloadpopup .checkoutMessage").hide();
 		bimServerApi.call("ServiceInterface", "download", data, function(data){
-			$(".downloadpopup .message").html("Preparing download...");
+			$(".downloadpopup .downloadStatus").html("Preparing download...");
 			othis.laid = parseInt(data);
 			bimServerApi.register("NotificationInterface", "progress", othis.progressHandler);
 		}, function(){
-			$(".downloadpopup .message").html("Error: " + textStatus);
+			$(".downloadpopup .downloadStatus").html("Error: " + textStatus);
 			$(".downloadpopup .checkoutMessage").show();
 		});
 	}

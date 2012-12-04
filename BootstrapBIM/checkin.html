@@ -8,8 +8,7 @@
 		<div class="uploads">
 			<div class="upload">
 				<div class="uploadStatus"></div>
-				<div class="progressBarHolder">
-				</div>
+				<div class="progressBarHolder"></div>
 				<table class="uploadTable">
 				<tr><td><label for="file">File</label></td><td><input class="fileupload" type="file" name="data"/></td></tr>
 				<tr><td><label for="deserializerName">Deserializer</label></td><td><select class="deserializerName" name="deserializerName">
@@ -68,7 +67,7 @@ function Checkin(project, successFunction) {
 			$(".checkin .deserializerName").append(option);
 		});
 	});
-	
+
 	var submitdata = null;
 	var shouldsend = false;
 	var currentCheckinId = null;
@@ -86,7 +85,7 @@ function Checkin(project, successFunction) {
 			bimServerApi.unregister(othis.progressHandler);
 		} else {
 			$(".uploadStatus").html(state.title);
-			if (othis.stage != state.stage) {
+			if (oldStage != state.stage) {
 				$(".progressBarHolder .uploadProgressBar").remove();
 				$(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"bar\"></div></div>");
 			}
