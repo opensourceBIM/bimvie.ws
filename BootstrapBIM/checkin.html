@@ -180,8 +180,7 @@ function Checkin(project, successFunction) {
 	$(".uploadButton").click(function(event){
 		shouldsend = true;
 		submitdata.formData = {
-			tokenString: bimServerApi.token.tokenString,
-			tokenExpires: bimServerApi.token.expires,
+			token: bimServerApi.token,
 			deserializerOid: $(".deserializerName").val(),
 			comment: $(".comment").val(),
 			merge: $(".merge").is(':checked'),
