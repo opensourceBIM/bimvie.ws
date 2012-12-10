@@ -138,32 +138,35 @@ function BasicServerSettings(main, serversettings) {
 	};
 	
 	this.save = function(force) {
-		var serverSettings = {
-			__type: "SServerSettings"
-		};
-		serverSettings.whitelistedDomains = [];
-		$(".basicserversettings .whiteListedDomainDiv").each(function(){
-			var val = $(this).find("input").val();
-			if (val != "") {
-				serverSettings.whitelistedDomains.push(val);
-			}
-		});
-		serverSettings.serviceRepositoryUrl = $(".basicserversettings .inputRepositoryServer").val();
-		serverSettings.siteAddress = $(".basicserversettings .siteAddress").val();
-		serverSettings.smtpServer = $(".basicserversettings .smtpServer").val();
-		serverSettings.emailSenderAddress = $(".basicserversettings .emailSenderAddress").val();
-		serverSettings.emailSenderName = $(".basicserversettings .emailSenderName").val();
-		serverSettings.hideUserListForNonAdmin = $(".basicserversettings .hideUserList").prop("checked");
-		serverSettings.protocolBuffersPort = $(".basicserversettings .protocolBuffersPort").val();
-		serverSettings.cacheOutputFiles = $(".basicserversettings .cacheOutputFiles").prop("checked");
-		serverSettings.checkinMergingEnabled = $(".basicserversettings .checkinMergingEnabled").prop("checked");
-		serverSettings.allowUsersToCreateTopLevelProjects = $(".basicserversettings .createTopLevelProjects").prop("checked");
-		serverSettings.allowSelfRegistration = $(".basicserversettings .allowSelfRegistration").prop("checked");
-		serverSettings.sendConfirmationEmailAfterRegistration = $(".basicserversettings .sendConfirmationEmailAfterRegistration").prop("checked");
-		serverSettings.allowOnlyWhitelisted = $(".basicserversettings .allowOnlyWhitelisted").prop("checked");
-		serverSettings.generateGeometryOnCheckin = $(".basicserversettings .generateGeometryCheckin").prop("checked");
-		bimServerApi.call("ServiceInterface", "setServerSettings", {serverSettings: serverSettings}, function(data){
-		});
+		if (othis.change) {
+			var serverSettings = {
+				__type: "SServerSettings"
+			};
+			serverSettings.whitelistedDomains = [];
+			$(".basicserversettings .whiteListedDomainDiv").each(function(){
+				var val = $(this).find("input").val();
+				if (val != "") {
+					serverSettings.whitelistedDomains.push(val);
+				}
+			});
+			serverSettings.serviceRepositoryUrl = $(".basicserversettings .inputRepositoryServer").val();
+			serverSettings.siteAddress = $(".basicserversettings .siteAddress").val();
+			serverSettings.smtpServer = $(".basicserversettings .smtpServer").val();
+			serverSettings.emailSenderAddress = $(".basicserversettings .emailSenderAddress").val();
+			serverSettings.emailSenderName = $(".basicserversettings .emailSenderName").val();
+			serverSettings.hideUserListForNonAdmin = $(".basicserversettings .hideUserList").prop("checked");
+			serverSettings.protocolBuffersPort = $(".basicserversettings .protocolBuffersPort").val();
+			serverSettings.cacheOutputFiles = $(".basicserversettings .cacheOutputFiles").prop("checked");
+			serverSettings.checkinMergingEnabled = $(".basicserversettings .checkinMergingEnabled").prop("checked");
+			serverSettings.allowUsersToCreateTopLevelProjects = $(".basicserversettings .createTopLevelProjects").prop("checked");
+			serverSettings.allowSelfRegistration = $(".basicserversettings .allowSelfRegistration").prop("checked");
+			serverSettings.sendConfirmationEmailAfterRegistration = $(".basicserversettings .sendConfirmationEmailAfterRegistration").prop("checked");
+			serverSettings.allowOnlyWhitelisted = $(".basicserversettings .allowOnlyWhitelisted").prop("checked");
+			serverSettings.generateGeometryOnCheckin = $(".basicserversettings .generateGeometryCheckin").prop("checked");
+			bimServerApi.callWithFullIndication("ServiceInterface", "setServerSettings", {serverSettings: serverSettings}, function(data){
+				othis.change = false;
+			});
+		}
 	};
 
 	this.addWhiteListedDomain = function(domain) {
@@ -242,6 +245,12 @@ function BasicServerSettings(main, serversettings) {
 	
 	$(".basicserversettings input[type='checkbox']").change(othis.save);
 	$(".basicserversettings input[type='text']").blur(othis.save);
+	$(".basicserversettings input[type='text']").enterpress(othis.save);
+	$(".basicserversettings input[type='text']").keyup(function(event){
+		if (event.which != 13) {
+			othis.change = true;
+		}
+	});
 	$(".basicserversettings .allowOnlyWhitelisted").change(function(event){othis.updateWhiteListedVisible($(this).is(":checked"))});
 	$(".basicserversettings .clearCacheButton").click(othis.clearCacheClick);
 	

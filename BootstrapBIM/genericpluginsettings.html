@@ -23,12 +23,14 @@ function GenericPluginSettings(main, usersettings, pluginsettings, configuration
 	this.close = function(){
 	};
 
-
 	this.loadGenericPluginSettings = function() {
 		$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Name</td><td>" + othis.pluginsettings.name + "</td></tr>");
 		$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Description</td><td>" + othis.pluginsettings.description + "</td></tr>");
 		$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Class</td><td>" + othis.pluginsettings.className + "</td></tr>");
 		$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Status</td><td>" + (othis.pluginsettings.enabled ? "Enabled" : "Disabled") + "</td></tr>");
+		if (configuration.title == "Internal Service") {
+			$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Remote Accessible</td><td><input class=\"remoteAccessible\" type=\"checkbox\"" + (othis.pluginsettings.remoteAccessible ? " checked=\"checked\"" : "") + "/></td></tr>");
+		}
 		$(".genericpluginsettings h3.title").html(configuration.title);
 		othis.loadPluginObjectDefinition();
 	};
@@ -126,11 +128,12 @@ function GenericPluginSettings(main, usersettings, pluginsettings, configuration
 	};
 	
 	this.savePlugin = function() {
-		var pluginsettings = othis.pluginsettings;
-		pluginsettings.remoteAccessible = $(".genericpluginsettings .remoteAccessible").is(":checked");
-		bimServerApi.call("ServiceInterface", "updateInternalService", {internalService: internalService}, function(data){
-			othis.saveSettings();
-		});
+		if (configuration.title == "Internal Service") {
+			othis.pluginsettings.remoteAccessible = $(".genericpluginsettings .remoteAccessible").is(":checked");
+			bimServerApi.call("ServiceInterface", "updateInternalService", {internalService: othis.pluginsettings}, function(data){
+			});
+		}
+		othis.saveSettings();
 	};
 	
 	this.save = function(event) {

@@ -94,7 +94,7 @@ function Download(data) {
 		} else {
 			$(".checkoutMessage").html("");
 		}
-	}
+	};
 
 	this.progressHandler = function(topicId, state) {
 		if (topicId == othis.laid) {
@@ -157,15 +157,26 @@ function Download(data) {
 		
 		$(".downloadpopup .fields").hide();
 		$(".downloadpopup .checkoutMessage").hide();
-		bimServerApi.call("ServiceInterface", "download", data, function(data){
-			$(".downloadpopup .downloadStatus").html("Preparing download...");
-			othis.laid = parseInt(data);
-			bimServerApi.register("NotificationInterface", "progress", othis.progressHandler);
-		}, function(){
-			$(".downloadpopup .downloadStatus").html("Error: " + textStatus);
-			$(".downloadpopup .checkoutMessage").show();
-		});
-	}
+		if (data.downloadType == "query") {
+			bimServerApi.call("ServiceInterface", "downloadQuery", data, function(data){
+				$(".downloadpopup .downloadStatus").html("Preparing download...");
+				othis.laid = parseInt(data);
+				bimServerApi.register("NotificationInterface", "progress", othis.progressHandler);
+			}, function(){
+				$(".downloadpopup .downloadStatus").html("Error: " + textStatus);
+				$(".downloadpopup .checkoutMessage").show();
+			});
+		} else {
+			bimServerApi.call("ServiceInterface", "download", data, function(data){
+				$(".downloadpopup .downloadStatus").html("Preparing download...");
+				othis.laid = parseInt(data);
+				bimServerApi.register("NotificationInterface", "progress", othis.progressHandler);
+			}, function(){
+				$(".downloadpopup .downloadStatus").html("Error: " + textStatus);
+				$(".downloadpopup .checkoutMessage").show();
+			});
+		}
+	};
 
 	this.initCheckout = function(event) {
 		event.preventDefault();
@@ -175,7 +186,7 @@ function Download(data) {
 		othis.mimeTypeOverride = null;
 		othis.data.downloadType = "checkout";
 		othis.start(data);
-	}
+	};
 
 	this.initDownload = function(event) {
 		event.preventDefault();
@@ -184,7 +195,7 @@ function Download(data) {
 		othis.data.sync = false;
 		othis.mimeTypeOverride = null;
 		othis.start(data);
-	}
+	};
 
 	this.initTextDownload = function(event) {
 		event.preventDefault();
@@ -193,7 +204,7 @@ function Download(data) {
 		othis.data.serializerOid = $(".downloadpopup .revisionsdownloadcheckoutselect").val();
 		othis.mimeTypeOverride = "text/plain";
 		othis.start(data);
-	}
+	};
 
 	$(".downloadpopup .revisionsdownloadcheckoutselect").change(othis.checkRevisionsCheckoutButton);
 	$(".downloadpopup .downloadButton").click(othis.initDownload);

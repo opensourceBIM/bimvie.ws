@@ -439,6 +439,9 @@ var Project = function(main, project) {
 		$(".project .queryLink").addClass("active");
 		$(".project .content > div").hide();
 		$(".project .query").show();
+		$(".project .query").load("query.html", function(){
+			new Query($(this), main, othis.project.oid, othis.lastRevision.oid);
+		});
 	};
 
 	this.addSubProjectClick = function(event) {

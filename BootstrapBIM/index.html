@@ -16,6 +16,7 @@
     <script src="js/jquery.numeric.js"></script>
     <script src="js/jquery.iframe.transport.js"></script>
     <script src="js/jquery.fileupload.js"></script>
+    <script src="js/jquery.enterpress.js"></script>
     <script src="js/formatters.js"></script>
     <script src="js/jquery.cookie.js"></script>
     <script src="js/sha256.js"></script>
@@ -67,9 +68,10 @@
 					this.lastTimeOut = null;
 				}
 				$(".status").show().html(status).removeClass("error");
+				var notifier = this;
 				if (timeToShow != -1) {
 					this.lastTimeOut = setTimeout(function(){
-						this.resetStatus();
+						notifier.resetStatus();
 					}, timeToShow);
 				}
 			},
