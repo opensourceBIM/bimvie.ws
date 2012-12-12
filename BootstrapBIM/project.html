@@ -77,7 +77,13 @@
 		</div>
 		<div class="tab-pane users initialhide" id="users">
 			<div class="linkspacer">
-				<a href="addUserLink">Add user</a>
+				<a class="addUserLink">Add user</a>
+			</div>
+			<div class="addUserToProjectDiv initialhide">
+				<form class="inline-form">
+					<select></select>
+					<button class="btn">Add</button>
+				</form>
 			</div>
 			<div class="nousers well well-small">
 				No users
@@ -196,7 +202,13 @@ var Project = function(main, project) {
 	};
 
 	this.revokeUser = function() {
-		
+		var user = $(this).parents("tr").data("user");
+		bimServerApi.call("ServiceInterface", "removeUserFromProject", {
+			uoid: user.oid,
+			poid: othis.project.oid
+		}, function(data){
+			othis.loadUsers();
+		});
 	};
 	
 	this.addUser = function(user) {
@@ -315,8 +327,7 @@ var Project = function(main, project) {
 		});
 	};
 
-	this.loadUsers = function(event) {
-		event.preventDefault();
+	this.loadUsers = function() {
 		$(".project .nav li").removeClass("active");
 		$(".project .usersLink").addClass("active");
 		$(".project .content > div").hide();
@@ -459,10 +470,27 @@ var Project = function(main, project) {
 		});
 	};
 	
-	this.addUserLinkClick = function(){
-		
+	this.addUserLinkClick = function() {
+		bimServerApi.call("ServiceInterface", "getAllNonAuthorizedUsersOfProject", {poid: othis.project.oid}, function(data){
+			data.forEach(function(user){
+				var option = $("<option value=\"" + user.oid + "\">" + user.name + "</option>");
+				$(".project .addUserToProjectDiv select").append(option);
+			});
+		});
+		$(".project .addUserLink").hide();
+		$(".project .addUserToProjectDiv").show();
 	};
 
+	this.addUserToProject = function(event){
+		event.preventDefault();
+		bimServerApi.call("ServiceInterface", "addUserToProject", {
+			uoid: $(".project .addUserToProjectDiv select option:selected").val(),
+			poid: othis.project.oid
+		}, function(data){
+			othis.loadUsers();
+		});
+	};
+	
 	$(".project .detailsLink").click(othis.loadDetails);
 	$(".project .subprojectsLink").click(othis.loadSubProjects);
 	$(".project .revisionsLink").click(othis.loadRevisions);
@@ -473,6 +501,8 @@ var Project = function(main, project) {
 	$(".project .usersLink").click(othis.loadUsers);
 	$(".project .surferLink").click(othis.loadSurfer);
 
+	$(".project .addUserToProjectDiv button").click(othis.addUserToProject);
+	
 	$(".project .addUserLink").click(othis.addUserLinkClick);
 	
 	$(".project .checkinButton").click(othis.showCheckinPopup);
