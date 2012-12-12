@@ -93,31 +93,44 @@
 		
 		var timeoutId; // timeout id is a global variable
 		$(function(){
-			if ($.cookie("autologin") != null) {
-				timeoutId = window.setTimeout(function() {
-					loadError();
-				}, 3000);
-				$.getScript($.cookie("address") + "/js/bimserverapi.js")
-				.done(function(script, textStatus) {
-					window.clearTimeout(timeoutId);
-					bimServerApi = new BimServerApi($.cookie("address"), notifier);
-					bimServerApi.autologin($.cookie("username"), $.cookie("autologin"), function(){
-						$(".indexcontainer").load("main.html", function(){
-							new Main($.cookie("address"), $.cookie("username")).show(false);
+			timeoutId = window.setTimeout(function() {
+				loadError();
+			}, 3000);
+			var address = $.cookie("address");
+			$.getScript(address + "/js/bimserverapi.js")
+			.done(function(script, textStatus) {
+				window.clearTimeout(timeoutId);
+				bimServerApi = new BimServerApi($.cookie("address"), notifier);
+				bimServerApi.call("ServiceInterface", "getServerInfo", {}, function(serverInfo){
+					if (serverInfo.serverState == "NOT_SETUP") {
+						$(".indexcontainer").load("setup.html", function(){
+							new Setup(address);
 						});
-					}, function(){
-						$(".indexcontainer").load("login.html", function(){
-							new Login();
-						});
-					});
-				}).fail(function(jqxhr, settings, exception){
-					loadError();
+					} else if (serverInfo.serverState == "UNDEFINED") {
+					} else if (serverInfo.serverState == "MIGRATION_REQUIRED") {
+					} else if (serverInfo.serverState == "MIGRATION_IMPOSSIBLE") {
+					} else if (serverInfo.serverState == "FATAL_ERROR") {
+					} else if (serverInfo.serverState == "RUNNING") {
+						if ($.cookie("autologin") != null) {
+							bimServerApi.autologin($.cookie("username"), $.cookie("autologin"), function(){
+								$(".indexcontainer").load("main.html", function(){
+									new Main($.cookie("address"), $.cookie("username")).show(false);
+								});
+							}, function(){
+								$(".indexcontainer").load("login.html", function(){
+									new Login();
+								});
+							});
+						} else {
+							$(".indexcontainer").load("login.html", function(){
+								new Login();
+							});
+						}
+					}
 				});
-			} else {
-				$(".indexcontainer").load("login.html", function(){
-					new Login();
-				});
-			}
+			}).fail(function(jqxhr, settings, exception){
+				loadError();
+			});
 			
 			setInterval(function() {
 				var now = new Date().getTime();

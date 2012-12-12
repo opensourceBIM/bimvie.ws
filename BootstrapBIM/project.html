@@ -472,13 +472,19 @@ var Project = function(main, project) {
 	
 	this.addUserLinkClick = function() {
 		bimServerApi.call("ServiceInterface", "getAllNonAuthorizedUsersOfProject", {poid: othis.project.oid}, function(data){
-			data.forEach(function(user){
-				var option = $("<option value=\"" + user.oid + "\">" + user.name + "</option>");
-				$(".project .addUserToProjectDiv select").append(option);
-			});
+			$(".project .addUserToProjectDiv select option").remove();
+			if (data.length == 0) {
+				$(".project .addUserLink").show();
+				$(".project .addUserToProjectDiv").hide();
+			} else {
+				data.forEach(function(user){
+					var option = $("<option value=\"" + user.oid + "\">" + user.name + "</option>");
+					$(".project .addUserToProjectDiv select").append(option);
+				});
+				$(".project .addUserLink").hide();
+				$(".project .addUserToProjectDiv").show();
+			}
 		});
-		$(".project .addUserLink").hide();
-		$(".project .addUserToProjectDiv").show();
 	};
 
 	this.addUserToProject = function(event){
@@ -488,6 +494,7 @@ var Project = function(main, project) {
 			poid: othis.project.oid
 		}, function(data){
 			othis.loadUsers();
+			othis.addUserLinkClick();
 		});
 	};
 	
