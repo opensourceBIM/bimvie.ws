@@ -13,5 +13,9 @@ function formatAccessMethod(accessMethod) {
 function formatTrigger(trigger) {
 	if (trigger == "NEW_REVISION") {
 		return "New revision";
-	}	
+	} else if (trigger == "NEW_EXTENDED_DATA") {
+		return "New extended data";
+	} else if (trigger == "NEW_PROJECT") {
+		return "New project";
+	}
 }

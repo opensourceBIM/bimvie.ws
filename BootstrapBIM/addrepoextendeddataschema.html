@@ -16,6 +16,7 @@
 	</table>
 	<div class="well well-small">
 		<button class="btn cancelButton">Cancel</button>
+		<button class="btn addAllButton">Add all</button>
 	</div>
 </div>
 <script>
@@ -81,7 +82,32 @@ function AddRepoExtendedDataSchema(main, serversettings) {
 		});
 	};
 	
+	this.addAllClick = function(){
+		var schemas = {};
+		bimServerApi.call("ServiceInterface", "getAllExtendedDataSchemas", {}, function(extendedDataSchemas){
+			extendedDataSchemas.forEach(function(extendedDataSchema){
+				schemas[extendedDataSchema.namespace] = extendedDataSchema;
+			});
+		});
+		bimServerApi.call("ServiceInterface", "getAllRepositoryExtendedDataSchemas", {}, function(data){
+			var requests = [];
+			$("addrepoextendeddata table tbody tr").remove();
+			data.forEach(function(extendedDataSchema){
+				if (schemas[extendedDataSchema.namespace] == null) {
+					var request = [
+						"ServiceInterface", "addExtendedDataSchema", {extendedDataSchema: extendedDataSchema}
+					];
+					requests.push(request);
+				}
+			});
+			bimServerApi.multiCall(requests, function(){
+				serversettings.showExtendedDataSchemas();
+			});
+		});
+	};
+	
 	$(".addrepoextendeddata .cancelButton").click(othis.cancelClick);
+	$(".addrepoextendeddata .addAllButton").click(othis.addAllClick);
 	
 	this.loadExtendedDataSchemas();
 }
