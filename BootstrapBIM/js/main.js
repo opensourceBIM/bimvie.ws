@@ -138,7 +138,7 @@ function newDropdownTd(title) {
 // http://stackoverflow.com/questions/4498866/actual-numbers-to-the-human-readable-values/4506030#4506030 //
 var SizePrefixes = ' KMGTPEZYXWVU';
 
-function GetHumanSize(size) {
+function getHumanSize(size) {
 	if(size <= 0) return '0';
 	var t2 = Math.min(Math.round(Math.log(size)/Math.log(1024)), 12);
 	return (Math.round(size * 100 / Math.pow(1024, t2)) / 100) + SizePrefixes.charAt(t2).replace(' ', '') + 'B';

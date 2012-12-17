@@ -20,6 +20,7 @@
 <script>
 function ExtendedDataList(main, revision) {
 	var othis = this;
+	othis.revision = revision;
 
 	bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
 	
@@ -82,10 +83,32 @@ function ExtendedDataList(main, revision) {
 		var schemaTd = $("<td>");
 		schemaTd.append(othis.makeSchemaLink(extendedData.schemaId));
 		tr.append(schemaTd);
-		tr.append("<td>" + GetHumanSize(extendedData.size) + "</td>");
+		tr.append("<td>" + getHumanSize(extendedData.size) + "</td>");
 		
-		tr.append(newButtonTd("Download", othis.download));
-		
+		var actions = newSplitDropDownTd("Download", othis.download);
+		actions.find("button.dropdown-toggle").click(function(){
+			bimServerApi.call("ServiceInterface", "getAllServicesOfProject", {poid: othis.revision.projectId}, function(data){
+				actions.find("ul li").remove();
+				var added = 0;
+				data.forEach(function(service){
+					if (service.trigger == "NEW_EXTENDED_DATA") {
+						var li = $("<li><a>Run \"" + service.name + "\"</a></li>");
+						added++;
+						li.find("a").click(function(event){
+							bimServerApi.call("ServiceInterface", "triggerNewExtendedData", {edid: extendedData.oid, soid: service.oid}, function(data){
+							});
+						});
+						actions.find("ul").append(li);
+					}
+				});
+				if (added == 0) {
+					var li = $("<li><a>No services configured</a></li>");
+					actions.find("ul").append(li);
+				}
+			});
+		});
+		tr.append(actions);
+
 		$(".extendeddatalist table tbody").append(tr);
 	};
 	
