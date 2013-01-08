@@ -21,19 +21,45 @@ function GenericPluginSettingsList(main, usersettings, configuration) {
 	
 	this.pluginClick = function(event) {
 		event.preventDefault();
-		var plugin = $(this).parents("tr").data("plugin");
-		configuration.showDetailsFunction(plugin, null, true);
+		if (!$(event.target).is("a, button, span.caret")) {
+			var plugin = $(this).parents("tr").andSelf().data("plugin");
+			configuration.showDetailsFunction(plugin, null, true);
+		}
 	};
 
+	this.enableDisableClick = function(event){
+		var plugin = $(this).parents("tr").data("plugin");
+		var link = $(this);
+		var state = $(this).parents("tr").find(".state");
+		plugin.enabled = !plugin.enabled;
+		bimServerApi.callWithFullIndication("ServiceInterface", configuration.updateMethodName, configuration.createUpdateObject(plugin), function(){
+			if (plugin.enabled) {
+				link.html("disable");
+				state.html("Enabled");
+			} else {
+				link.html("enable");
+				state.html("Disabled");
+			}
+		});
+	};
+	
 	this.addPlugin = function(plugin) {
 		var tr = $("<tr>");
 		tr.data("plugin", plugin);
-		var a = $("<a>" + plugin.name + "</a>");
-		a.click(othis.pluginClick);
-		tr.append($("<td></td>").append(a));
+		tr.click(othis.pluginClick);
+		tr.append("<td>" + plugin.name + "</td>");
 		tr.append("<td>" + plugin.description + "</td>");
-		tr.append("<td>" + (plugin.enabled ? "Enabled" : "Disabled") + "</td>");
-		tr.append("<td>" + "" + "</td>");
+		tr.append("<td class=\"state\">" + (plugin.enabled ? "Enabled" : "Disabled") + "</td>");
+		var link = $("<a>");
+		if (plugin.enabled) {
+			link.html("disable");
+		} else {
+			link.html("enable");
+		}
+		link.click(othis.enableDisableClick);
+		var td = $("<td>");
+		td.append(link);
+		tr.append(td);
 		$(".genericpluginsettingslist table tbody").append(tr);
 	};
 

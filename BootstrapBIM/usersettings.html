@@ -46,6 +46,8 @@
 			othis.changePage($(".serializersLink"), "genericpluginsettingslist.html", function(){
 				othis.current = new GenericPluginSettingsList(main, othis, {
 					getAllMethodName: "getAllSerializers",
+					updateMethodName: "updateSerializer",
+					createUpdateObject: function(pluginConfiguration){return {serializer: pluginConfiguration}},
 					listTitle: "Serializers",
 					showDetailsFunction: othis.showSerializer
 				});
@@ -59,6 +61,8 @@
 			othis.changePage($(".deserializersLink"), "genericpluginsettingslist.html", function(){
 				othis.current = new GenericPluginSettingsList(main, othis, {
 					getAllMethodName: "getAllDeserializers",
+					updateMethodName: "updateDeserializer",
+					createUpdateObject: function(pluginConfiguration){return {deserializer: pluginConfiguration}},
 					listTitle: "Deserializers",
 					showDetailsFunction: othis.showDeserializer
 				});
@@ -72,6 +76,8 @@
 			othis.changePage($(".objectIdmsLink"), "genericpluginsettingslist.html", function(){
 				othis.current = new GenericPluginSettingsList(main, othis, {
 					getAllMethodName: "getAllObjectIDMs",
+					updateMethodName: "updateObjectIDM",
+					createUpdateObject: function(pluginConfiguration){return {objectIDM: pluginConfiguration}},
 					listTitle: "Object IDMs",
 					showDetailsFunction: othis.showObjectIdm
 				});
@@ -85,6 +91,8 @@
 			othis.changePage($(".renderEnginesLink"), "genericpluginsettingslist.html", function(){
 				othis.current = new GenericPluginSettingsList(main, othis, {
 					getAllMethodName: "getAllIfcEngines",
+					updateMethodName: "updateIfcEngine",
+					createUpdateObject: function(pluginConfiguration){return {ifcEngine: pluginConfiguration}},
 					listTitle: "Render Engines",
 					showDetailsFunction: othis.showRenderEngine
 				});
@@ -98,6 +106,8 @@
 			othis.changePage($(".queryEnginesLink"), "genericpluginsettingslist.html", function(){
 				othis.current = new GenericPluginSettingsList(main, othis, {
 					getAllMethodName: "getAllQueryEngines",
+					updateMethodName: "updateQueryEngine",
+					createUpdateObject: function(pluginConfiguration){return {queryEngine: pluginConfiguration}},
 					listTitle: "Query Engines",
 					showDetailsFunction: othis.showQueryEngine
 				});
@@ -111,6 +121,8 @@
 			othis.changePage($(".modelMergersLink"), "genericpluginsettingslist.html", function(){
 				othis.current = new GenericPluginSettingsList(main, othis, {
 					getAllMethodName: "getAllModelMergers",
+					updateMethodName: "updateModelMerger",
+					createUpdateObject: function(pluginConfiguration){return {modelMerger: pluginConfiguration}},
 					listTitle: "Model Mergers",
 					showDetailsFunction: othis.showModelMerger
 				});
@@ -124,6 +136,8 @@
 			othis.changePage($(".modelComparesLink"), "genericpluginsettingslist.html", function(){
 				othis.current = new GenericPluginSettingsList(main, othis, {
 					getAllMethodName: "getAllModelCompares",
+					updateMethodName: "updateModelCompare",
+					createUpdateObject: function(pluginConfiguration){return {modelCompare: pluginConfiguration}},
 					listTitle: "Model Compares",
 					showDetailsFunction: othis.showModelCompare
 				});
@@ -137,6 +151,8 @@
 			othis.changePage($(".internalServicesLink"), "genericpluginsettingslist.html", function(){
 				othis.current = new GenericPluginSettingsList(main, othis, {
 					getAllMethodName: "getAllInternalServices",
+					updateMethodName: "updateInternalService",
+					createUpdateObject: function(pluginConfiguration){return {internalService: pluginConfiguration}},
 					listTitle: "Internal Services",
 					showDetailsFunction: othis.showInternalService
 				});
