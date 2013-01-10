@@ -243,11 +243,11 @@ function BasicServerSettings(main, serversettings) {
 	this.close = function(){
 	};
 	
-	$(".basicserversettings input[type='checkbox']").change(othis.save);
+	$(".basicserversettings input[type='checkbox']").change(function(){othis.change = true; othis.save()});
 	$(".basicserversettings input[type='text']").blur(othis.save);
 	$(".basicserversettings input[type='text']").enterpress(othis.save);
 	$(".basicserversettings input[type='text']").keyup(function(event){
-		if (event.which != 13) {
+		if (event.which != 13 && event.which != 9) {
 			othis.change = true;
 		}
 	});

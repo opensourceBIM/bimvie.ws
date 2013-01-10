@@ -3,7 +3,11 @@
 		<button class="addUserButton btn">Add user</button>
 	</div>
 	<table class="usersTable table table-striped table-hover">
-		<tr><th>Name</th><th>Actions</th></tr>
+		<thead>
+			<tr><th>Name</th><th>Actions</th></tr>
+		</thead>
+		<tbody>
+		</tbody>
 	</table>
 </div>
 <script>
@@ -26,8 +30,8 @@ function Users(main) {
 		userRow.click(othis.userClick);
 		userRow.data("user", user);
 		userRow.append("<td>" + user.name + "</td>");
-		userRow.append("<td></td>");
-		$(".usersTable").append(userRow);
+		userRow.append(newDropdownTd("Actions"));
+		$(".usersTable tbody").append(userRow);
 	};
 	
 	bimServerApi.call("ServiceInterface", "getAllUsers", {}, function(data){

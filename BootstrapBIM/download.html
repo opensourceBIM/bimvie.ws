@@ -59,9 +59,14 @@ function Download(data) {
 	],
 	[
 		"ServiceInterface", "getAllSerializers", {onlyEnabled: true}
-	]], function(data){
+	],
+	[
+	 	"ServiceInterface", "userHasCheckinRights", {uoid: bimServerApi.user.oid, poid: data.poid}
+	]
+	], function(data){
 		var defaultSerializer = data[0].result;
 		var serializers = data[1].result;
+		othis.userHasCheckinRights = data[2].result;
 		serializers.forEach(function(serializer){
 			var option = $("<option value=\"" + serializer.oid + "\">" + serializer.name + "</option>");
 			if (serializer.oid == defaultSerializer.oid) {
@@ -69,10 +74,6 @@ function Download(data) {
 			}
 			$(".downloadpopup .revisionsdownloadcheckoutselect").append(option);
 		});
-	});
-	
-	bimServerApi.call("ServiceInterface", "userHasCheckinRights", {uoid: bimServerApi.user.oid, poid: data.poid}, function(data){
-		othis.userHasCheckinRights = data;
 		othis.checkRevisionsCheckoutButton();
 	});
 	
@@ -84,6 +85,7 @@ function Download(data) {
 		var el = $(".downloadpopup .revisionsdownloadcheckoutselect");
 		var val = el.val();
 		var text = el.find(":selected").text();
+		console.log(text);
 		if ((text != "Ifc2x3" && text != "IfcXML") || !othis.userHasCheckinRights) {
 			$(".downloadpopup .checkoutButton").hide();
 		} else {
