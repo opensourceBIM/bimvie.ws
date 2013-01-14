@@ -82,3 +82,7 @@ table .btn {
 	cursor: pointer;
 	margin-bottom: 0px;
 }
+
+.classpath {
+	max-width: 400px;	
+}

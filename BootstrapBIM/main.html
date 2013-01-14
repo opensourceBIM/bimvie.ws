@@ -6,6 +6,7 @@
 			<li class="usersLink"><a>Users</a></li>
 			<li class="usersettingsLink"><a>User Settings</a></li>
 			<li class="serversettingsLink"><a>Server Settings</a></li>
+			<li class="serverinfoLink"><a>Server Info</a></li>
 		</ul>
 	</div>
 	<div class="btn-group pull-right">
@@ -51,6 +52,8 @@ function Main(address, username) {
 			othis.showUserSettings(null, alterState);
 		} else if (history.page == "ServerSettings") {
 			othis.showServerSettings(null, alterState);
+		} else if (history.page == "ServerInfo") {
+			othis.showServerInfo(null, alterState);
 		} else {
 			othis.showDashboard(null, alterState);
 		}
@@ -119,6 +122,7 @@ function Main(address, username) {
 	this.showUser = function(user, callback, alterState) {
 		othis.changePage($(".usersLink"), "user.html", function(){
 			othis.current = new User(othis, user);
+			othis.current.show();
 			if (alterState) {
 				pushHistory({page: "User", uoid: user.oid});
 			}
@@ -188,10 +192,23 @@ function Main(address, username) {
 	};
 	
 	this.showServerSettings = function(callback, alterState) {
-		othis.changePage($(".serversettingsLink"), "serversettings.html", function(){
-			othis.current = new ServerSettings(othis);
+		if (othis.current != null && othis.current.getName != null && othis.current.getName() == "ServerSettings") {
+			callback();
+		} else {
+			othis.changePage($(".serversettingsLink"), "serversettings.html", function(){
+				othis.current = new ServerSettings(othis);
+				if (alterState) {
+					pushHistory({page: "ServerSettings"});
+				}
+			}, callback);
+		}
+	};
+
+	this.showServerInfo = function(callback, alterState) {
+		othis.changePage($(".serverinfoLink"), "serverinfo.html", function(){
+			othis.current = new ServerInfo(othis);
 			if (alterState) {
-				pushHistory({page: "ServerSettings"});
+				pushHistory({page: "ServerInfo"});
 			}
 		}, callback);
 	};
@@ -212,7 +229,14 @@ function Main(address, username) {
 	$(".projectsLink").click(function(event){othis.showProjects(null, true)});
 	$(".usersLink").click(function(event){othis.showUsers(null, true)});
 	$(".usersettingsLink").click(function(event){othis.showUserSettings(null, true)});
+	$(".serverinfoLink").click(function(event){othis.showServerInfo(null, true)});
 	$(".serversettingsLink").click(function(event){othis.showServerSettings(null, true)});
 	$(".logoutLink").click(othis.logout);
+	
+	$(".userButton").click(function(){
+		bimServerApi.call("ServiceInterface", "getCurrentUser", {}, function(user){
+			othis.showUser(user);
+		});
+	});
 }
 </script>

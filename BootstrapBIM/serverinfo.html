@@ -1,0 +1,154 @@
+<div class="serverinfo">
+	<div class="tabbable tabs-left">
+		<ul class="nav nav-tabs">
+			<li><a class="link systemLink" data-toggle="tab" href="#system">System</a></li>
+			<li><a class="link javaLink" data-toggle="tab" href="#java">Java</a></li>
+			<li><a class="link bimserverLink" data-toggle="tab" href="#bimserver">BIMserver</a></li>
+			<li><a class="link databaseLink" data-toggle="tab" href="#database">Database</a></li>
+			<li><a class="link webservicesLink" data-toggle="tab" href="#webservices">Web Services</a></li>
+			<li><a class="link transactionsLink" data-toggle="tab" href="#transactions">Transactions</a></li>
+			<li><a class="link longrunningactionsLink" data-toggle="tab" href="#longrunningactions">Long running actions</a></li>
+		</ul>
+		<div class="tab-content">
+			<div id="system" class="tab-pane system">
+				<table class="table"></table>
+			</div>
+			<div id="java" class="tab-pane java">
+				<table class="table"></table>
+			</div>
+			<div id="bimserver" class="tab-pane bimserver">
+				<table class="table"></table>
+			</div>
+			<div id="database" class="tab-pane database">
+				<table class="table"></table>
+			</div>
+			<div id="webservices" class="tab-pane webservices">
+				<table class="table"></table>
+			</div>
+			<div id="transactions" class="tab-pane transactions">
+				<table class="table"></table>
+			</div>
+			<div id="longrunningactions" class="tab-pane longrunningactions">
+				<table class="table"></table>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+function ServerInfo(main) {
+	var othis = this;
+	
+	this.close = function(){};
+	
+	var history = History.getState().data;
+	if (history.subpage != null) {
+		$(".serverinfo .link[href=\"#" + history.subpage + "\"]").click();
+	} else {
+		$(".serverinfo .systemLink").click();
+	}
+	
+	this.loadData = function() {
+		bimServerApi.call("ServiceInterface", "getDatabaseInformation", {}, function(data){
+			$(".database table").append("<tr><td colspan=\"2\" class=\"header\">General Information</td></tr>");
+			$(".database table").append("<tr><td>Size</td><td>" + data.databaseSizeInBytes + "</td></tr>");
+			$(".database table").append("<tr><td>Type</td><td>" + data.type + "</td></tr>");
+			$(".database table").append("<tr><td>Created</td><td>" + formatDateTime(new Date(data.created)) + "</td></tr>");
+			$(".database table").append("<tr><td>Location</td><td>" + data.location + "</td></tr>");
+			$(".database table").append("<tr><td>Schema version</td><td>" + data.schemaVersion + "</td></tr>");
+			data.categories.forEach(function(category){
+				$(".database table").append("<tr><td colspan=\"2\" class=\"header\">" + category.title + "</td></tr>");
+				category.items.forEach(function(item){
+					$(".database table").append("<tr><td>" + item.key + "</td><td>" + item.value + "</td></tr>");
+				});
+			});
+		});
+		bimServerApi.call("ServiceInterface", "getSystemInfo", {}, function(data){
+			$(".system table").append("<tr><td colspan=\"2\" class=\"header\">Machine</td></tr>");
+			$(".system table").append("<tr><td>Number of cores</td><td>" + data.cpucores + "</td></tr>");
+			$(".system table").append("<tr><td>Current date/time</td><td>" + formatDateTime(new Date(data.datetime)) + "</td></tr>");
+			$(".system table").append("<tr><td colspan=\"2\" class=\"header\">Operating System</td></tr>");
+			$(".system table").append("<tr><td>OS name</td><td>" + data.osname + "</td></tr>");
+			$(".system table").append("<tr><td>OS version</td><td>" + data.osversion + "</td></tr>");
+			$(".system table").append("<tr><td colspan=\"2\" class=\"header\">User</td></tr>");
+			$(".system table").append("<tr><td>User name</td><td>" + data.userName + "</td></tr>");
+			$(".system table").append("<tr><td>User home</td><td>" + data.userHome + "</td></tr>");
+			$(".system table").append("<tr><td>User dir</td><td>" + data.userDir + "</td></tr>");
+		});
+		
+		bimServerApi.call("ServiceInterface", "getJavaInfo", {}, function(data){
+			$(".java table").append("<tr><td colspan=\"2\" class=\"header\">Heap memory</td></tr>");
+			$(".java table").append("<tr><td>Total</td><td>" + getHumanSize(data.heapTotal) + "</td></tr>");
+			$(".java table").append("<tr><td>Used</td><td>" + getHumanSize(data.heapUsed) + "</td></tr>");
+			$(".java table").append("<tr><td>Free</td><td>" + getHumanSize(data.heapFree) + "</td></tr>");
+			$(".java table").append("<tr><td>Max</td><td>" + getHumanSize(data.heapMax) + "</td></tr>");
+			$(".java table").append("<tr><td colspan=\"2\" class=\"header\">Threads</td></tr>");
+			$(".java table").append("<tr><td>Active threads</td><td>" + data.threads + "</td></tr>");
+			$(".java table").append("<tr><td colspan=\"2\" class=\"header\">Java</td></tr>");
+			$(".java table").append("<tr><td>Home</td><td>" + data.javaHome + "</td></tr>");
+			$(".java table").append("<tr><td>Version</td><td>" + data.javaVersion + "</td></tr>");
+			$(".java table").append("<tr><td>Vendor</td><td>" + data.javaVendor + "</td></tr>");
+			$(".java table").append("<tr><td>Vendor URL</td><td>" + data.javaVendorurl + "</td></tr>");
+			$(".java table").append("<tr><td colspan=\"2\" class=\"header\">Java Virtual Machine</td></tr>");
+			$(".java table").append("<tr><td>Version</td><td>" + data.javavmVersion + "</td></tr>");
+			$(".java table").append("<tr><td>Vendor</td><td>" + data.javavmVendor + "</td></tr>");
+			$(".java table").append("<tr><td>Name</td><td>" + data.javavmName + "</td></tr>");
+			$(".java table").append("<tr><td colspan=\"2\" class=\"header\">Java Specification</td></tr>");
+			$(".java table").append("<tr><td>Version</td><td>" + data.javaspecVersion + "</td></tr>");
+			$(".java table").append("<tr><td>Vendor</td><td>" + data.javaspecVendor + "</td></tr>");
+			$(".java table").append("<tr><td>Name</td><td>" + data.javaspecName + "</td></tr>");
+			$(".java table").append("<tr><td colspan=\"2\" class=\"header\">Java Other</td></tr>");
+			$(".java table").append("<tr><td>Class version</td><td>" + data.javaClassVersion + "</td></tr>");
+			
+			var classpath = $("<div class=\"classpath\">");
+			data.javaClasspath.forEach(function(cp){
+				classpath.append(cp + "<br/>");
+			});
+			var tr = $("<tr>");
+			tr.append("<td>Class path</td>");
+			tr.append($("<td>").append(classpath));
+			$(".java table").append(tr);
+
+			var librarypath = $("<div class=\"classpath\">");
+			data.javaLibrarypath.forEach(function(cp){
+				librarypath.append(cp + "<br/>");
+			});
+			tr = $("<tr>");
+			tr.append("<td>Library path</td>");
+			tr.append($("<td>").append(librarypath));
+			$(".java table").append(tr);
+			
+			$(".java table").append("<tr><td>IO Tmp</td><td>" + data.javaIoTmp + "</td></tr>");
+			$(".java table").append("<tr><td>Java Compiler</td><td>" + data.javaCompiler + "</td></tr>");
+			$(".java table").append("<tr><td>Ext dir</td><td>" + data.javaExtdir + "</td></tr>");
+			$(".java table").append("<tr><td>File separator</td><td>" + data.javaFileSeparator + "</td></tr>");
+			$(".java table").append("<tr><td>Path serparator</td><td>" + data.javaPathSeparator + "</td></tr>");
+			$(".java table").append("<tr><td>Line separator</td><td>" + data.javaLineSeparator + "</td></tr>");
+		});
+		
+		bimServerApi.call("ServiceInterface", "getBimServerInfo", {}, function(data){
+			$(".bimserver table").append("<tr><td colspan=\"2\" class=\"header\">Current version</td></tr>");
+			$(".bimserver table").append("<tr><td>Current version</td><td>" + data.currentVersion + "</td></tr>");
+			$(".bimserver table").append("<tr><td>Current version date</td><td>" + formatDate(new Date(data.currentDate)) + "</td></tr>");
+			$(".bimserver table").append("<tr><td>Schema version</td><td>" + data.schemaVersion + "</td></tr>");
+			$(".bimserver table").append("<tr><td colspan=\"2\" class=\"header\">Latest version</td></tr>");
+			$(".bimserver table").append("<tr><td>Latest version</td><td>" + data.latestVersion + "</td></tr>");
+			$(".bimserver table").append("<tr><td>Latest version date</td><td>" + formatDate(new Date(data.latestDate)) + "</td></tr>");
+			$(".bimserver table").append("<tr><td colspan=\"2\" class=\"header\">Counts</td></tr>");
+			$(".bimserver table").append("<tr><td>Projects</td><td>" + data.projects + "</td></tr>");
+			$(".bimserver table").append("<tr><td>Revisions</td><td>" + data.revisions + "</td></tr>");
+			$(".bimserver table").append("<tr><td>Users</td><td>" + data.users + "</td></tr>");
+			$(".bimserver table").append("<tr><td>Checkouts</td><td>" + data.checkouts + "</td></tr>");
+			$(".bimserver table").append("<tr><td colspan=\"2\" class=\"header\">Other</td></tr>");
+			$(".bimserver table").append("<tr><td>Server log</td><td><a href=\"" + data.serverLogUrl + "\">Log</a></td></tr>");
+			$(".bimserver table").append("<tr><td>Started</td><td>" + formatDateTime(new Date(data.started)) + "</td></tr>");
+			$(".bimserver table").append("<tr><td>Uptime</td><td>" + data.uptime + "</td></tr>");
+		});
+	}
+	
+	$(".serverinfo .link").click(function(){
+		pushHistory({page: "ServerInfo", subpage: $(this).attr("href").substring(1)});
+	});
+	
+	this.loadData();
+}
+</script>

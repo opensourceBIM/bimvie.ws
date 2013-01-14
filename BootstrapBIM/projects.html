@@ -34,6 +34,18 @@ function Projects(main) {
 	this.show = function() {
 	};
 	
+	this.deleteProject = function(project){
+		bimServerApi.callWithFullIndication("ServiceInterface", "deleteProject", {poid: project.oid}, function(){
+			othis.loadProjects();
+		});
+	};
+	
+	this.undeleteProject = function(project){
+		bimServerApi.callWithFullIndication("ServiceInterface", "undeleteProject", {poid: project.oid}, function(){
+			othis.loadProjects();
+		});
+	};
+	
 	this.addProject = function(project) {
 		$(".projects .projectsTable").show();
 		$(".projects .noprojects").hide();
@@ -45,15 +57,34 @@ function Projects(main) {
 
 		projectRow.append("<td>" + project.subProjects.length + "</td>");
 		projectRow.append("<td>" + project.revisions.length + "</td>");
-		projectRow.append("<td></td>");
+		var actions = newDropdownTd("Actions");
+		
+		actions.find(".dropdown-toggle").click(function(){
+			actions.find("ul li").remove();
+			var project = $(this).parents("tr").data("project");
+			if (project.state == "ACTIVE") {
+				var li = $("<li><a>Delete</a></li>");
+				li.find("a").click(function(){othis.deleteProject(project)});
+				actions.find("ul").append(li);
+			} else {
+				var li = $("<li><a>Undelete</a></li>");
+				li.find("a").click(function(){othis.undeleteProject(project)});
+				actions.find("ul").append(li);
+			}
+		});
+		
+		projectRow.append(actions);
 		$(".projectsTable").append(projectRow);
 	};
 	
-	bimServerApi.call("ServiceInterface", "getAllProjects", {onlyTopLevel: true}, function(data){
-		data.forEach(function(project){
-			othis.addProject(project);
+	this.loadProjects = function(){
+		$(".projectsTable tbody tr").remove();
+		bimServerApi.call("ServiceInterface", "getAllProjects", {onlyTopLevel: true}, function(data){
+			data.forEach(function(project){
+				othis.addProject(project);
+			});
 		});
-	});
+	};
 	
 	this.newLogAction = function(uuid, logAction, serviceIdentifier, profileIdentifier, token, apiUrl){
 		if (logAction.__type == "SNewProjectAdded") {
@@ -64,6 +95,8 @@ function Projects(main) {
 	};
 	
 	$(".addProjectButton").click(main.showAddProject);
+
+	othis.loadProjects();
 	
 	bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
 }

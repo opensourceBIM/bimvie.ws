@@ -19,6 +19,8 @@
     <script src="js/jquery.enterpress.js"></script>
     <script src="js/formatters.js"></script>
     <script src="js/jquery.cookie.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/bimserverapibootstrap.js"></script>
     <script src="js/sha256.js"></script>
     <script src="js/scenejs.js"></script>
     <script src="js/scenejs.math.extra.js"></script>
@@ -36,7 +38,8 @@
 	<script>
 		var bimServerApi;
 		var objectcache = {};
-		
+		var timeoutId; // timeout id is a global variable
+
 		pushInitialState();
 		
 		$(".status").hide();
@@ -91,54 +94,68 @@
 			});
 		}
 		
-		var timeoutId; // timeout id is a global variable
-		$(function(){
-			timeoutId = window.setTimeout(function() {
-				loadError();
-			}, 3000);
-			var address = $.cookie("address");
-			$.getScript(address + "/js/bimserverapi.js")
-			.done(function(script, textStatus) {
-				window.clearTimeout(timeoutId);
-				bimServerApi = new BimServerApi($.cookie("address"), notifier);
-				bimServerApi.call("ServiceInterface", "getServerInfo", {}, function(serverInfo){
-					if (serverInfo.serverState == "NOT_SETUP") {
-						$(".indexcontainer").load("setup.html", function(){
-							new Setup(address);
-						});
-					} else if (serverInfo.serverState == "UNDEFINED") {
-					} else if (serverInfo.serverState == "MIGRATION_REQUIRED") {
-					} else if (serverInfo.serverState == "MIGRATION_IMPOSSIBLE") {
-					} else if (serverInfo.serverState == "FATAL_ERROR") {
-					} else if (serverInfo.serverState == "RUNNING") {
-						if ($.cookie("autologin") != null) {
-							bimServerApi.autologin($.cookie("username"), $.cookie("autologin"), function(){
-								$(".indexcontainer").load("main.html", function(){
-									new Main($.cookie("address"), $.cookie("username")).show(false);
+		this.showResetPassword = function() {
+			$(".indexcontainer").load("resetpassword.html", function(){
+				new ResetPassword();
+			});
+		};
+		
+		this.tryAutoLogin = function(){
+			$(function(){
+				timeoutId = window.setTimeout(function() {
+					loadError();
+				}, 3000);
+				var address = $.cookie("address");
+				$.getScript(address + "/js/bimserverapi.js")
+				.done(function(script, textStatus) {
+					window.clearTimeout(timeoutId);
+					bimServerApi = new BimServerApi($.cookie("address"), notifier);
+					bimServerApi.call("ServiceInterface", "getServerInfo", {}, function(serverInfo){
+						if (serverInfo.serverState == "NOT_SETUP") {
+							$(".indexcontainer").load("setup.html", function(){
+								new Setup(address);
+							});
+						} else if (serverInfo.serverState == "UNDEFINED") {
+						} else if (serverInfo.serverState == "MIGRATION_REQUIRED") {
+						} else if (serverInfo.serverState == "MIGRATION_IMPOSSIBLE") {
+						} else if (serverInfo.serverState == "FATAL_ERROR") {
+						} else if (serverInfo.serverState == "RUNNING") {
+							if ($.cookie("autologin") != null) {
+								bimServerApi.autologin($.cookie("username"), $.cookie("autologin"), function(){
+									$(".indexcontainer").load("main.html", function(){
+										new Main($.cookie("address"), $.cookie("username")).show(false);
+									});
+								}, function(){
+									$(".indexcontainer").load("login.html", function(){
+										new Login();
+									});
 								});
-							}, function(){
+							} else {
 								$(".indexcontainer").load("login.html", function(){
 									new Login();
 								});
-							});
-						} else {
-							$(".indexcontainer").load("login.html", function(){
-								new Login();
-							});
+							}
 						}
-					}
+					});
+				}).fail(function(jqxhr, settings, exception){
+					loadError();
 				});
-			}).fail(function(jqxhr, settings, exception){
-				loadError();
+				
+				setInterval(function() {
+					var now = new Date().getTime();
+					$(".timespan").each(function() {
+						$(this).html(formatTimeSpan(now - $(this).attr("datetime"), false));
+					});
+				}, 60000);
 			});
-			
-			setInterval(function() {
-				var now = new Date().getTime();
-				$(".timespan").each(function() {
-					$(this).html(formatTimeSpan(now - $(this).attr("datetime"), false));
-				});
-			}, 60000);
-		});
+		};
+		
+		var history = History.getState().data;
+		if (history.page == "ResetPassword") {
+			showResetPassword();
+		} else {
+			tryAutoLogin();
+		}
 	</script>
   </body>
 </html>

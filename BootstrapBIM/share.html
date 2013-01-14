@@ -1,0 +1,29 @@
+<div class="share">
+	<div class="modal-header">
+    	<a class="close" data-dismiss="modal">&times;</a>
+    	<h3>Share</h3>
+  	</div>
+	<div class="modal-body">
+		<div class="input-prepend" style="width: 445px">
+	  		<span class="add-on">URL</span>
+			<input type="text" class="linkInput" style="width: 100%"/>
+		</div>
+		<div class="input-prepend" style="width: 445px">
+	  		<span class="add-on">BIMsurfer</span>
+			<input type="text" class="bimsurferInput" style="width: 100%"/>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<a class="btn" class="closeButton" style="margin-right: 8px" data-dismiss="modal">Close</a>
+	</div>
+</div>
+<script>
+function Share(roid) {
+	var othis = this;
+	
+	bimServerApi.call("ServiceInterface", "shareRevision", {roid: roid}, function(token){
+		$(".linkInput").val(token).select();
+		$(".bimsurferInput").val("http://localhost/bimsurfer/?token=" + token + "&server=" + bimServerApi.baseUrl + "&roid=" + roid);
+	});
+}
+</script>

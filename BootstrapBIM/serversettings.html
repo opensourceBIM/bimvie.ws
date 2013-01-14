@@ -93,6 +93,10 @@
 		
 		this.close = function() {
 		};
+		
+		this.getName = function() {
+			return "ServerSettings";
+		};
 
 		var history = History.getState().data;
 		if (history.subpage == "BasicServerSettings") {

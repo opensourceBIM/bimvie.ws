@@ -84,7 +84,7 @@ function Dashboard(main) {
 		} else {
 			descriptionTd.append(logAction.__type);
 		}
-		$(".logTable tbody").append(tr);
+		$(".logTable tbody").prepend(tr);
 	}
 
 	bimServerApi.call("ServiceInterface", "getLogs", {}, function(data){

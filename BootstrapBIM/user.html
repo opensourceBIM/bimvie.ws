@@ -17,8 +17,20 @@
 				<tr><th>Id</th><th>Date</th><th>Project</th><th>Comment</th><th>Size</th><th>Actions</th></tr>
 			</table>
 		</div>
-		<div class="checkouts initialhide">
-			Not implemented
+		<div class="tab-pane checkouts initialhide">
+			<div class="well well-small nocheckouts">No checkouts</div>
+			<table class="checkoutsTable initialhide table table-striped table-hover">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Date</th>
+						<th>User</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
 		</div>
 		<div class="projects initialhide">
 			<div class="well well-small noprojects">No projects</div>
@@ -44,13 +56,34 @@ function User(main, user) {
 	var othis = this;
 	othis.user = user;
 	
-	$(".user h1").html(othis.user.name);
-	$(".user .revisionsLink a").html("Revisions" + (othis.user.revisions.length == 0 ? "" : (" (" + othis.user.revisions.length + ")")));
-	$(".user .checkoutsLink a").html("Checkouts" + (othis.user.checkouts == null || othis.user.checkouts.length == 0 ? "" : (" (" + othis.user.checkouts.length + ")")));
-	$(".user .projectsLink a").html("Projects" + (othis.user.hasRightsOn.length == 0 ? "" : (" (" + othis.user.hasRightsOn.length + ")")));
-	$(".user .tokenSpan").html(othis.user.token);
-	
 	this.close = function() {
+	};
+	
+	this.show = function(){
+		if (typeof user == "number" || typeof user == "string") {
+			othis.reloadUser(user);
+		} else {
+			othis.user = user;
+			othis.updateUser();
+		}
+	};	
+	
+	this.reloadUser = function(uoid) {
+		if (uoid == null) {
+			uoid = othis.user.oid;
+		}
+		bimServerApi.call("ServiceInterface", "getUserByUoid", {uoid: uoid}, function(user){
+			othis.user = user;
+			othis.updateUser();
+		});
+	};
+	
+	this.updateUser = function() {
+		$(".user h1").html(othis.user.name);
+		$(".user .revisionsLink a").html("Revisions" + (othis.user.revisions.length == 0 ? "" : (" (" + othis.user.revisions.length + ")")));
+		$(".user .checkoutsLink a").html("Checkouts" + (othis.user.checkouts == null || othis.user.checkouts.length == 0 ? "" : (" (" + othis.user.checkouts.length + ")")));
+		$(".user .projectsLink a").html("Projects" + (othis.user.hasRightsOn.length == 0 ? "" : (" (" + othis.user.hasRightsOn.length + ")")));
+		$(".user .tokenSpan").html(othis.user.token);
 	};
 	
 	this.showDetails = function(event) {
@@ -111,7 +144,26 @@ function User(main, user) {
 		actions.append(dd);
 		revisionRow.append(actions);
 		revisionRow.insertAfter($(".revisionsTable tr:first-child"));
-	}
+	};
+	
+	this.downloadCheckoutClick = function(event) {
+		event.preventDefault();
+		othis.showDownloadCheckoutPopup($(this).parents("tr").andSelf().data("revision"));
+	};
+
+	this.showDownloadCheckoutPopup = function(revision) {
+		var div = $("<div class=\"modal fade\">");
+		$(document.body).append(div);
+		var params = {
+			downloadType: "single",
+			allowCheckouts: true,
+			poid: revision.projectId,
+			roid: revision.oid
+		};
+		div.load("download.html", function(){
+			new Download(params);
+		}).modal({keyboard:true});
+	};
 	
 	this.showRevisions = function(event) {
 		event.preventDefault();
@@ -126,13 +178,42 @@ function User(main, user) {
 			});
 		});
 	};
+	
+	this.addCheckout = function(checkout) {
+		$(".user .nocheckouts").hide();
+		$(".user .checkoutsTable").show();
+		var checkoutRow = $("<tr>");
+		checkoutRow.data("checkout", checkout);
+		checkoutRow.data("revision", checkout.revision);
+		checkoutRow.click(othis.checkoutClick);
 
+		checkoutRow.append("<td>" + checkout.revision.id + "</td>");
+		checkoutRow.append("<td><span title=\"" + formatDateTime(new Date(checkout.date)) + "\" class=\"timespan\" datetime=\"" + checkout.date + "\">" + formatTimeSpan(new Date().getTime() - checkout.date, false) + "</span></td>");
+		var userTd = $("<td></td>");
+		var userA = $("<a>loading...</a>");
+		userA.attr("uoid", checkout.userId);
+		userA.click(othis.userClick);
+		userTd.append(userA);
+		loadUser(userA);
+		checkoutRow.append(userTd);
+
+		var actions = newSplitDropDownTd("Download", othis.downloadCheckoutClick);
+		checkoutRow.append(actions);
+		$(".user .checkoutsTable tbody").prepend(checkoutRow);
+	};
+	
 	this.showCheckouts = function(event) {
 		event.preventDefault();
 		$(".user .nav li").removeClass("active");
 		$(".user .checkoutsLink").addClass("active");
 		$(".user .content > div").hide();
 		$(".user .checkouts").show();
+		bimServerApi.call("ServiceInterface", "getAllCheckoutsByUser", {uoid: othis.user.oid}, function(data){
+			$(".user .checkoutsTable tbody tr").remove();
+			data.forEach(function(checkout){
+				othis.addCheckout(checkout);
+			});
+		});
 	};
 
 	this.addProject = function(project) {

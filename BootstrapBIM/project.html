@@ -9,6 +9,7 @@
 	  <li class="detailsLink active"><a>Details</a></li>
 	  <li class="subprojectsLink"><a>Subprojects</a></li>
 	  <li class="revisionsLink"><a>Revisions</a></li>
+	  <li class="checkoutsLink"><a>Checkouts</a></li>
 	  <li class="servicesLink"><a>Services</a></li>
 	  <li class="queryLink"><a>Query</a></li>
 	  <li class="extendedDataLink"><a>Extended Data</a></li>
@@ -43,6 +44,21 @@
 						<th>User</th>
 						<th>Comment</th>
 						<th>Size</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+		<div class="tab-pane checkouts initialhide">
+			<div class="well well-small nocheckouts">No checkouts</div>
+			<table class="checkoutsTable initialhide table table-striped table-hover">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Date</th>
+						<th>User</th>
 						<th>Actions</th>
 					</tr>
 				</thead>
@@ -223,6 +239,14 @@ var Project = function(main, project) {
 		$(".project .usersTable").append(tr);
 	};
 	
+	this.share = function(roid) {
+		var div = $("<div class=\"modal fade\">");
+		$(document.body).append(div);
+		div.load("share.html", function(){
+			new Share(roid);
+		}).modal({keyboard:true});
+	};
+
 	this.addRevision = function(revision) {
 		$(".project .norevisions").hide();
 		$(".project .revisionsTable").show();
@@ -262,10 +286,38 @@ var Project = function(main, project) {
 					var li = $("<li><a>No services configured</a></li>");
 					actions.find("ul").append(li);
 				}
+				var shareLi = $("<li><a>Share...</a></li>");
+				shareLi.find("a").click(function(){
+					othis.share(revision.oid);
+				});
+				actions.find("ul").append(shareLi);
 			});
 		});
 		revisionRow.append(actions);
 		$(".project .revisionsTable tbody").prepend(revisionRow);
+	};
+
+	this.addCheckout = function(checkout) {
+		$(".project .nocheckouts").hide();
+		$(".project .checkoutsTable").show();
+		var checkoutRow = $("<tr>");
+		checkoutRow.data("checkout", checkout);
+		checkoutRow.data("revision", checkout.revision);
+		checkoutRow.click(othis.checkoutClick);
+
+		checkoutRow.append("<td>" + checkout.revision.id + "</td>");
+		checkoutRow.append("<td><span title=\"" + formatDateTime(new Date(checkout.date)) + "\" class=\"timespan\" datetime=\"" + checkout.date + "\">" + formatTimeSpan(new Date().getTime() - checkout.date, false) + "</span></td>");
+		var userTd = $("<td></td>");
+		var userA = $("<a>loading...</a>");
+		userA.attr("uoid", checkout.userId);
+		userA.click(othis.userClick);
+		userTd.append(userA);
+		loadUser(userA);
+		checkoutRow.append(userTd);
+
+		var actions = newSplitDropDownTd("Download", othis.downloadCheckoutClick);
+		checkoutRow.append(actions);
+		$(".project .checkoutsTable tbody").prepend(checkoutRow);
 	};
 
 	this.serviceClick = function(event){
@@ -327,6 +379,20 @@ var Project = function(main, project) {
 			$(".project .revisionsTable tbody tr").remove();
 			data.forEach(function(revision){
 				othis.addRevision(revision);
+			});
+		});
+	};
+
+	this.loadCheckouts = function(event) {
+		event.preventDefault();
+		$(".project .nav li").removeClass("active");
+		$(".project .checkoutsLink").addClass("active");
+		$(".project .content > div").hide();
+		$(".project .checkouts").show();
+		bimServerApi.call("ServiceInterface", "getAllCheckoutsOfProject", {poid: othis.project.oid}, function(data){
+			$(".project .checkoutsTable tbody tr").remove();
+			data.forEach(function(checkout){
+				othis.addCheckout(checkout);
 			});
 		});
 	};
@@ -505,6 +571,7 @@ var Project = function(main, project) {
 	$(".project .detailsLink").click(othis.loadDetails);
 	$(".project .subprojectsLink").click(othis.loadSubProjects);
 	$(".project .revisionsLink").click(othis.loadRevisions);
+	$(".project .checkoutsLink").click(othis.loadCheckouts);
 	$(".project .servicesLink").click(othis.loadServices);
 	$(".project .queryLink").click(othis.loadQuery);
 	$(".project .extendedDataLink").click(othis.loadExtendedData);

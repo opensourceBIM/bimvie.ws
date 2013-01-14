@@ -4,7 +4,7 @@
 	</div>
 	<table class="usersTable table table-striped table-hover">
 		<thead>
-			<tr><th>Name</th><th>Actions</th></tr>
+			<tr><th>Name</th><th>Type</th><th>Actions</th></tr>
 		</thead>
 		<tbody>
 		</tbody>
@@ -16,7 +16,7 @@ function Users(main) {
 
 	this.userClick = function(event) {
 		if (!$(event.target).is("a, button, span.caret")) {
-			main.showUser($(this).parents("tr").andSelf().data("user"), event)
+			main.showUser($(this).parents("tr").andSelf().data("user"), null, true);
 			othis.close();
 		}
 	};
@@ -25,20 +25,69 @@ function Users(main) {
 		bimServerApi.unregister(othis.newLogAction);
 	};
 
+	this.deleteUser = function(user) {
+		bimServerApi.callWithFullIndication("ServiceInterface", "deleteUser", {uoid: user.oid}, function(){
+			othis.loadUsers();
+		});
+	};
+	
+	this.undeleteUser = function(user) {
+		bimServerApi.callWithFullIndication("ServiceInterface", "undeleteUser", {uoid: user.oid}, function(){
+			othis.loadUsers();
+		});
+	};
+	
+	this.loginAs = function(user) {
+		
+	};
+	
+	this.sendPasswordReset = function(user){
+		bimServerApi.callWithFullIndication("ServiceInterface", "requestPasswordChange", {username: user.username, resetUrl: getBaseURL() + "?page=ResetPassword"}, function(){
+			
+		});
+	};
+	
 	this.addUser = function(user) {
 		var userRow = $("<tr>");
 		userRow.click(othis.userClick);
 		userRow.data("user", user);
 		userRow.append("<td>" + user.name + "</td>");
-		userRow.append(newDropdownTd("Actions"));
+		userRow.append("<td>" + formatUserType(user.userType) + "</td>");
+		var actions = newDropdownTd("Actions");
+		
+		actions.find(".dropdown-toggle").click(function(){
+			actions.find("ul li").remove();
+			var user = $(this).parents("tr").data("user");
+			if (user.state == "ACTIVE") {
+				var li = $("<li><a>Delete</a></li>");
+				li.find("a").click(function(){othis.deleteUser(user)});
+				actions.find("ul").append(li);
+			} else {
+				var li = $("<li><a>Undelete</a></li>");
+				li.find("a").click(function(){othis.undeleteUser(user)});
+				actions.find("ul").append(li);
+			}
+			var loginAs = $("<li><a>Login as</a></li>");
+			loginAs.find("a").click(function(){othis.loginAs(user)});
+			actions.find("ul").append(loginAs);
+
+			var loginAs = $("<li><a>Send password reset</a></li>");
+			loginAs.find("a").click(function(){othis.sendPasswordReset(user)});
+			actions.find("ul").append(loginAs);
+		});
+
+		userRow.append(actions);
 		$(".usersTable tbody").append(userRow);
 	};
-	
-	bimServerApi.call("ServiceInterface", "getAllUsers", {}, function(data){
-		data.forEach(function(user){
-			othis.addUser(user);
+
+	this.loadUsers = function(){
+		$(".usersTable tbody tr").remove();
+		bimServerApi.call("ServiceInterface", "getAllUsers", {}, function(data){
+			data.forEach(function(user){
+				othis.addUser(user);
+			});
 		});
-	});
+	};
 	
 	this.newLogAction = function(uuid, logAction, serviceIdentifier, profileIdentifier, token, apiUrl){
 		if (logAction.__type == "SNewUserAdded") {
@@ -47,6 +96,8 @@ function Users(main) {
 			});
 		}
 	};
+	
+	othis.loadUsers();
 	
 	bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
 	$(".users .addUserButton").click(main.showAddUser);

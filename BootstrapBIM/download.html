@@ -85,7 +85,6 @@ function Download(data) {
 		var el = $(".downloadpopup .revisionsdownloadcheckoutselect");
 		var val = el.val();
 		var text = el.find(":selected").text();
-		console.log(text);
 		if ((text != "Ifc2x3" && text != "IfcXML") || !othis.userHasCheckinRights) {
 			$(".downloadpopup .checkoutButton").hide();
 		} else {
@@ -162,6 +161,15 @@ function Download(data) {
 		if (data.downloadType == "query") {
 			bimServerApi.call("ServiceInterface", "downloadQuery", data, function(data){
 				$(".downloadpopup .downloadStatus").html("Preparing download...");
+				othis.laid = parseInt(data);
+				bimServerApi.register("NotificationInterface", "progress", othis.progressHandler);
+			}, function(){
+				$(".downloadpopup .downloadStatus").html("Error: " + textStatus);
+				$(".downloadpopup .checkoutMessage").show();
+			});
+		} else if (data.downloadType == "checkout") {
+			bimServerApi.call("ServiceInterface", "checkout", data, function(data){
+				$(".downloadpopup .downloadStatus").html("Preparing checkout...");
 				othis.laid = parseInt(data);
 				bimServerApi.register("NotificationInterface", "progress", othis.progressHandler);
 			}, function(){

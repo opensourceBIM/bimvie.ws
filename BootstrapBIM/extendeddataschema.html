@@ -38,7 +38,6 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<button type="button" class="btn saveButton btn-primary">Save</button>
 			<button type="button" class="btn cancelButton">Cancel</button>
 		</div>
 	</form>
@@ -62,7 +61,7 @@ function ExtendedDataSchema(main, extendedDataSchema) {
 	
 	this.cancelClick = function(event) {
 		event.preventDefault();
-		main.showServerSettings(null, function(){
+		main.showServerSettings(function(){
 			main.current.showExtendedDataSchemas();
 		});
 	};

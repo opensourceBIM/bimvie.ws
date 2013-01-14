@@ -117,6 +117,15 @@ function newButton(title, click) {
 	return button;
 }
 
+function newLiLink(title, callback) {
+	var link = $("<a>");
+	link.html(title);
+	link.click(callback);
+	var li = $("<li>");
+	li.append(link);
+	return li;
+}
+
 function newButtonTd(title, click) {
 	var td = $("<td>");
 	td.append(newButton(title, click));
@@ -135,6 +144,13 @@ function newDropdownTd(title) {
 	return td;
 }
 
+function stripHttp(url) {
+	if (url.startsWith("http://")) {
+		return url.substring(7);
+	}
+	return url;
+}
+
 // http://stackoverflow.com/questions/4498866/actual-numbers-to-the-human-readable-values/4506030#4506030 //
 var SizePrefixes = ' KMGTPEZYXWVU';
 
@@ -144,3 +160,19 @@ function getHumanSize(size) {
 	return (Math.round(size * 100 / Math.pow(1024, t2)) / 100) + SizePrefixes.charAt(t2).replace(' ', '') + 'B';
 }
 //http://stackoverflow.com/questions/4498866/actual-numbers-to-the-human-readable-values/4506030#4506030 //
+
+function getBaseURL () {
+	return location.protocol + "//" + location.hostname + (location.port && ":" + location.port) + "/";
+}
+
+function getParameterByName(name)
+{
+  name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+  var regexS = "[\\?&]" + name + "=([^&#]*)";
+  var regex = new RegExp(regexS);
+  var results = regex.exec(window.location.search);
+  if(results == null)
+    return "";
+  else
+    return decodeURIComponent(results[1].replace(/\+/g, " "));
+}
