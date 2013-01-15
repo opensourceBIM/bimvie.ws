@@ -1,5 +1,9 @@
 <div class="revision">
 	<h1></h1>
+	<div class="btn-group well well-small">
+		<button class="btn branchButton">Branch</button>
+	</div>
+	
 	<ul class="nav nav-tabs">
 	  <li class="detailsLink active"><a href="#details" data-toggle="tab">Details</a></li>
 	  <li class="queryLink"><a href="#query" data-toggle="tab">Query</a></li>
@@ -10,7 +14,7 @@
 		<div class="tab-pane active details" id="details">
 			Not implemented
 		</div>
-		<div class="tab-pane query" id="query">
+		<div class="tab-pane query" class="query" id="query">
 			Not implemented
 		</div>
 		<div class="tab-pane extendeddata" id="extendeddata">
@@ -33,7 +37,7 @@ function Revision(main, revision) {
 		} else {
 			othis.reloadRevision(revision);
 		}
-		bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
+		Global.bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
 	};
 	
 	this.updateRevision = function() {
@@ -45,25 +49,28 @@ function Revision(main, revision) {
 		if (roid == null) {
 			roid = othis.revision.oid;
 		}
-		bimServerApi.call("ServiceInterface", "getRevision", {roid: roid}, function(revision){
+		Global.bimServerApi.call("ServiceInterface", "getRevision", {roid: roid}, function(revision){
 			othis.revision = revision;
 			othis.updateRevision();
 		});
 	};
 	
 	this.close = function(){
-		bimServerApi.unregister(othis.newLogAction);
+		Global.bimServerApi.unregister(othis.newLogAction);
 	};
 
 	this.showDetails = function(){
 	};
 	
 	this.showQuery = function(){
+		$(".revision .query").load("query.html", function(){
+			new Query($(this), main, revision.projectId, revision.oid);
+		});
 	};
 	
 	this.newLogAction = function(uuid, logAction, serviceIdentifier, profileIdentifier, token, apiUrl){
 		if (logAction.__type == "SExtendedDataAddedToRevision") {
-			bimServerApi.call("ServiceInterface", "getExtendedData", {oid: logAction.extendedDataId}, function(data){
+			Global.bimServerApi.call("ServiceInterface", "getExtendedData", {oid: logAction.extendedDataId}, function(data){
 				//othis.addExtendedData(data);
 			});
 		}
@@ -87,9 +94,18 @@ function Revision(main, revision) {
 		});
 	};
 	
+	this.showBranch = function(){
+		var div = $("<div class=\"modal fade\">");
+		$(document.body).append(div);
+		div.load("branch.html", function(){
+			new Branch(main, othis.revision.oid);
+		}).modal({keyboard:true});
+	};
+	
 	$(".revision .detailsLink").click(othis.showDetails);
 	$(".revision .queryLink").click(othis.showQuery);
 	$(".revision .extendedDataLink").click(othis.showExtendedData);
 	$(".revision .browserLink").click(othis.showBrowser);
+	$(".revision .branchButton").click(othis.showBranch);
 };
 </script>

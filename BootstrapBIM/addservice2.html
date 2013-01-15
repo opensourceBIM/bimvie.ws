@@ -55,7 +55,7 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 	othis.token = null;
 
 	this.loadProjects = function(targetElement) {
-		bimServerApi.call("ServiceInterface", "getAllProjects", {onlyTopLevel: false}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getAllProjects", {onlyTopLevel: false}, function(data){
 			targetElement.empty();
 			targetElement.append("<option value=\"[SELECT_A_PROJECT]\">[Select a project]</option>");
 			data.forEach(function(project){
@@ -105,7 +105,7 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 		var td1 = $("<td></td>");
 		tr1.append(td1);
 		$(".addservice2 .rightsTable").append(tr1);	
-		bimServerApi.call("ServiceInterface", "getExtendedDataSchemaByNamespace", {namespace: serviceDescriptor.readExtendedData}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaByNamespace", {namespace: serviceDescriptor.readExtendedData}, function(data){
 			othis.readExtendedDataOid = data.oid;
 			td1.append(main.createExtendedDataSchemaLink(data));
 		}, function(){
@@ -118,7 +118,7 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 		var td2 = $("<td></td>");
 		tr2.append(td2);
 		$(".addservice2 .rightsTable").append(tr2);	
-		bimServerApi.call("ServiceInterface", "getExtendedDataSchemaByNamespace", {namespace: serviceDescriptor.writeExtendedData}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaByNamespace", {namespace: serviceDescriptor.writeExtendedData}, function(data){
 			othis.writeExtendedDataOid = data.oid;
 			td2.append(main.createExtendedDataSchemaLink(data));
 		}, function(){
@@ -128,7 +128,7 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 			var addEds2 = $("<a>Add extended data schema</a>");
 			td2.append(addEds2);
 			addEds2.click(function(){
-				bimServerApi.call("ServiceInterface", "getExtendedDataSchemaFromRepository", {namespace: serviceDescriptor.writeExtendedData}, function(data){
+				Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaFromRepository", {namespace: serviceDescriptor.writeExtendedData}, function(data){
 					var exs = data;
 					main.showServerSettings(null, function(){
 						main.current.showAddNewExtendedDataSchema(exs);
@@ -156,14 +156,14 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 	this.loadPublicProfiles = function() {
 		if (isLocal) {
 			$(".addservice2 .loadPrivateProfilesLink").hide();
-			bimServerApi.call("ServiceInterface", "getAllLocalProfiles", {serviceIdentifier: othis.serviceDescriptor.identifier}, function(data){
+			Global.bimServerApi.call("ServiceInterface", "getAllLocalProfiles", {serviceIdentifier: othis.serviceDescriptor.identifier}, function(data){
 				$(".addservice2 .profilesTable tbody tr.publicprofiledescriptor").remove();
 				data.forEach(function(profileDescriptor){
 					othis.addProfileDescriptor(profileDescriptor);
 				});
 			});
 		} else {
-			bimServerApi.call("ServiceInterface", "getAllPublicProfiles", {notificationsUrl: othis.serviceDescriptor.url, serviceIdentifier: othis.serviceDescriptor.identifier}, function(data){
+			Global.bimServerApi.call("ServiceInterface", "getAllPublicProfiles", {notificationsUrl: othis.serviceDescriptor.url, serviceIdentifier: othis.serviceDescriptor.identifier}, function(data){
 				$(".addservice2 .profilesTable tbody tr.publicprofiledescriptor").remove();
 				data.forEach(function(profileDescriptor){
 					othis.addProfileDescriptor(profileDescriptor);
@@ -213,13 +213,13 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 				writeExtendedDataId: othis.writeExtendedDataOid
 			};
 			if (isLocal) {
-				bimServerApi.call("ServiceInterface", "addLocalServiceToProject", {poid: othis.project.oid, sService: service, internalServiceOid: profileDescriptor.identifier}, function(data){
+				Global.bimServerApi.call("ServiceInterface", "addLocalServiceToProject", {poid: othis.project.oid, sService: service, internalServiceOid: profileDescriptor.identifier}, function(data){
 					main.showProject(othis.project, null, function(){
 						this.reloadProject();
 					});
 				});
 			} else {
-				bimServerApi.call("ServiceInterface", "addServiceToProject", {poid: othis.project.oid, sService: service}, function(data){
+				Global.bimServerApi.call("ServiceInterface", "addServiceToProject", {poid: othis.project.oid, sService: service}, function(data){
 					main.showProject(othis.project, null, function(){
 						this.reloadProject();
 					});
@@ -229,7 +229,7 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 	};
 
 	this.loadPrivateProfiles = function(token) {
-		bimServerApi.call("ServiceInterface", "getAllPrivateProfiles", {notificationsUrl: othis.serviceDescriptor.url, serviceIdentifier: othis.serviceDescriptor.identifier, token: token}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getAllPrivateProfiles", {notificationsUrl: othis.serviceDescriptor.url, serviceIdentifier: othis.serviceDescriptor.identifier, token: token}, function(data){
 			othis.token = token;
 			$(".addservice2 .profilesTable tbody tr.privateprofiledescriptor").remove();
 			data.forEach(function(profileDescriptor){

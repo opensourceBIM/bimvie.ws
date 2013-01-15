@@ -61,7 +61,7 @@ function Surfer(revision) {
 				showOwn: true,
 				sync: true
 			}, function(laid){
-				var url = bimServerApi.generateRevisionDownloadUrl({
+				var url = Global.bimServerApi.generateRevisionDownloadUrl({
 					serializerOid: serializer.oid,
 					laid: laid
 				});
@@ -86,7 +86,7 @@ function Surfer(revision) {
 			includeAllSubtypes: true,
 			sync: true
 		}, function(laid){
-			var url = bimServerApi.generateRevisionDownloadUrl({
+			var url = Global.bimServerApi.generateRevisionDownloadUrl({
 				serializerOid: soid,
 				laid: laid
 			});

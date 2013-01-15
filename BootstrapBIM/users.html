@@ -22,17 +22,17 @@ function Users(main) {
 	};
 	
 	this.close = function() {
-		bimServerApi.unregister(othis.newLogAction);
+		Global.bimServerApi.unregister(othis.newLogAction);
 	};
 
 	this.deleteUser = function(user) {
-		bimServerApi.callWithFullIndication("ServiceInterface", "deleteUser", {uoid: user.oid}, function(){
+		Global.bimServerApi.callWithFullIndication("ServiceInterface", "deleteUser", {uoid: user.oid}, function(){
 			othis.loadUsers();
 		});
 	};
 	
 	this.undeleteUser = function(user) {
-		bimServerApi.callWithFullIndication("ServiceInterface", "undeleteUser", {uoid: user.oid}, function(){
+		Global.bimServerApi.callWithFullIndication("ServiceInterface", "undeleteUser", {uoid: user.oid}, function(){
 			othis.loadUsers();
 		});
 	};
@@ -42,7 +42,7 @@ function Users(main) {
 	};
 	
 	this.sendPasswordReset = function(user){
-		bimServerApi.callWithFullIndication("ServiceInterface", "requestPasswordChange", {username: user.username, resetUrl: getBaseURL() + "?page=ResetPassword"}, function(){
+		Global.bimServerApi.callWithFullIndication("ServiceInterface", "requestPasswordChange", {username: user.username, resetUrl: getBaseURL() + "?page=ResetPassword"}, function(){
 			
 		});
 	};
@@ -82,7 +82,7 @@ function Users(main) {
 
 	this.loadUsers = function(){
 		$(".usersTable tbody tr").remove();
-		bimServerApi.call("ServiceInterface", "getAllUsers", {}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getAllUsers", {}, function(data){
 			data.forEach(function(user){
 				othis.addUser(user);
 			});
@@ -91,7 +91,7 @@ function Users(main) {
 	
 	this.newLogAction = function(uuid, logAction, serviceIdentifier, profileIdentifier, token, apiUrl){
 		if (logAction.__type == "SNewUserAdded") {
-			bimServerApi.call("ServiceInterface", "getUserByUoid", {uoid: logAction.userId}, function(data){
+			Global.bimServerApi.call("ServiceInterface", "getUserByUoid", {uoid: logAction.userId}, function(data){
 				othis.addUser(data);
 			});
 		}
@@ -99,7 +99,7 @@ function Users(main) {
 	
 	othis.loadUsers();
 	
-	bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
+	Global.bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
 	$(".users .addUserButton").click(main.showAddUser);
 }
 </script>

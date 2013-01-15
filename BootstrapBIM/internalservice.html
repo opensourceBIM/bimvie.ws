@@ -31,7 +31,7 @@ function InternalService(main, usersettings, internalService) {
 	$(".internalservice .detailsTable tbody").append("<tr><td>Remote Accessible</td><td><input class=\"remoteAccessible\" type=\"checkbox\"" + (internalService.remoteAccessible ? " checked=\"checked\"" : "") + "/></td></tr>");
 
 	this.loadPluginSettings = function() {
-		bimServerApi.call("ServiceInterface", "getPluginSettings", {poid: internalService.oid}, function(objectDefinition){
+		Global.bimServerApi.call("ServiceInterface", "getPluginSettings", {poid: internalService.oid}, function(objectDefinition){
 			if (objectDefinition.parameters != null) {
 				objectDefinition.parameters.forEach(function(parameter){
 					var input = $(".internalservice").find("input[parameter=\"" + parameter.name + "\"]");
@@ -47,7 +47,7 @@ function InternalService(main, usersettings, internalService) {
 	};
 	
 	this.loadPluginObjectDefinition = function() {
-		bimServerApi.call("ServiceInterface", "getPluginObjectDefinition", {className: internalService.className}, function(objectDefinition){
+		Global.bimServerApi.call("ServiceInterface", "getPluginObjectDefinition", {className: internalService.className}, function(objectDefinition){
 			objectDefinition.parameters.forEach(function(parameter){
 				$(".internalservice .nosettings").hide();
 				var tr = $("<tr></tr>");
@@ -113,7 +113,7 @@ function InternalService(main, usersettings, internalService) {
 			};
 			settings.parameters.push(parameter);
 		});
-		bimServerApi.call("ServiceInterface", "setPluginSettings", {poid: othis.internalService.oid, settings: settings}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "setPluginSettings", {poid: othis.internalService.oid, settings: settings}, function(data){
 			
 		});
 	};
@@ -121,7 +121,7 @@ function InternalService(main, usersettings, internalService) {
 	this.savePlugin = function() {
 		var internalService = othis.internalService;
 		internalService.remoteAccessible = $(".internalservice .remoteAccessible").is(":checked");
-		bimServerApi.call("ServiceInterface", "updateInternalService", {internalService: internalService}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "updateInternalService", {internalService: internalService}, function(data){
 			othis.saveSettings();
 		});
 	};

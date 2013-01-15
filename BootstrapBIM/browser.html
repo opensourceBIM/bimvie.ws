@@ -23,7 +23,7 @@ function Browser(revision) {
 	
 	this.loadObject = function(oid) {
 		othis.oid = oid;
-		bimServerApi.call("ServiceInterface", "getDataObjectByOid", {roid: othis.revision.oid, oid: oid}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getDataObjectByOid", {roid: othis.revision.oid, oid: oid}, function(data){
 			$(".browser .objectTable tr[fieldName], .revision .objectTable tr.extra").remove();
 			$(".browser table").hide();
 			$(".browser .3dviewport").hide();
@@ -98,7 +98,7 @@ function Browser(revision) {
 	this.typeClick = function(event) {
 		event.preventDefault();
 		var className = $(this).parents("tr").attr("className");
-		bimServerApi.call("ServiceInterface", "getDataObjectsByType", {roid: othis.revision.oid, className: className}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getDataObjectsByType", {roid: othis.revision.oid, className: className}, function(data){
 			$(".browser .objectsTable tr[className]").remove();
 			$(".browser table").hide();
 			$(".browser .load3dButton, .browser .3dviewport").hide();
@@ -130,7 +130,7 @@ function Browser(revision) {
 	};
 
 	this.loadRevision = function() {
-		bimServerApi.call("ServiceInterface", "getRevisionSummary", {roid: othis.revision.oid}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getRevisionSummary", {roid: othis.revision.oid}, function(data){
 			$(".browser table").hide();
 			$(".browser .load3dButton, .browser .3dviewport").hide();
 			data.list.forEach(function(revisionSummaryContainer){
@@ -155,19 +155,19 @@ function Browser(revision) {
 	};
 
 	this.bimserverImport = function(roid) {
-		bimServerApi.call("ServiceInterface", "getSerializerByName", {serializerName: "StreamingSceneJS"}, function(serializer){
+		Global.bimServerApi.call("ServiceInterface", "getSerializerByName", {serializerName: "StreamingSceneJS"}, function(serializer){
 			othis.loadType(roid, serializer.oid);
 	    });
 	  };
 
 	  this.loadType = function(roid, soid) {
-		  bimServerApi.call("ServiceInterface", "downloadByOids", {
+		  Global.bimServerApi.call("ServiceInterface", "downloadByOids", {
 	  	  roids: [roid],
 	  	  oids: [othis.oid],
 	  	  serializerOid: soid,
 	  	  sync: true
 		  }, function(laid){
-			  var url = bimServerApi.generateRevisionDownloadUrl({
+			  var url = Global.bimServerApi.generateRevisionDownloadUrl({
 				  serializerOid: soid,
 				  laid: laid
 			  });

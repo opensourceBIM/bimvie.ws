@@ -75,7 +75,7 @@ function AddExtendedDataSchema(main, serversettings, extendedDataSchema) {
 	
 	$(".addnewextendeddataschema .addButton").click(function(event){
 		event.preventDefault();
-		bimServerApi.call("ServiceInterface", "addExtendedDataSchema", {extendedDataSchema: othis.createObject()}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "addExtendedDataSchema", {extendedDataSchema: othis.createObject()}, function(data){
 			serversettings.showExtendedDataSchemas();
 		});
 	});

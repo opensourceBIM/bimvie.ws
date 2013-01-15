@@ -59,7 +59,7 @@ function Login(address, username) {
 			} else if (serverInfo.serverState == "FATAL_ERROR") {
 			} else if (serverInfo.serverState == "RUNNING") {
 				var username = $("#inputEmail").val()
-				bimServerApi.login(username, $("#inputPassword").val(), $("#rememberMe").is(":checked"), function(data){
+				Global.bimServerApi.login(username, $("#inputPassword").val(), $("#rememberMe").is(":checked"), function(data){
 					$(".indexcontainer").load("main.html", function(){
 						new Main(address, username).show(false);
 					});
@@ -106,7 +106,7 @@ function Login(address, username) {
 			} else if (serverInfo.serverState == "MIGRATION_IMPOSSIBLE") {
 			} else if (serverInfo.serverState == "FATAL_ERROR") {
 			} else if (serverInfo.serverState == "RUNNING") {
-				bimServerApi.callWithFullIndication("ServiceInterface", "requestPasswordChange", {username: $(".username").val(), resetUrl: getBaseURL() + "?page=ResetPassword"}, function(){});
+				Global.bimServerApi.callWithFullIndication("ServiceInterface", "requestPasswordChange", {username: $(".username").val(), resetUrl: getBaseURL() + "?page=ResetPassword"}, function(){});
 			}
 		});
 	};

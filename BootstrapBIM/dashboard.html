@@ -24,7 +24,7 @@ function Dashboard(main) {
 	};
 
 	this.close = function() {
-		bimServerApi.unregister(othis.newLogAction);
+		Global.bimServerApi.unregister(othis.newLogAction);
 	};
 	
 	this.createProjectLink = function(poid) {
@@ -87,12 +87,12 @@ function Dashboard(main) {
 		$(".logTable tbody").prepend(tr);
 	}
 
-	bimServerApi.call("ServiceInterface", "getLogs", {}, function(data){
+	Global.bimServerApi.call("ServiceInterface", "getLogs", {}, function(data){
 		data.forEach(function(logAction){
 			othis.newLogAction("", logAction);
 		});
 	});
 	
-	bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
+	Global.bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
 }
 </script>

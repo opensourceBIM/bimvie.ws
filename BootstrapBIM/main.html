@@ -61,7 +61,7 @@ function Main(address, username) {
 
 	this.logout = function(event) {
 		event.preventDefault();
-		bimServerApi.logout(function(){
+		Global.bimServerApi.logout(function(){
 			$(".indexcontainer").load("login.html", function(){
 				new Login();
 			});
@@ -74,11 +74,15 @@ function Main(address, username) {
 		}
 		$(".main .nav li").removeClass("active");
 		linkElement.addClass("active");
-		$(".maincontainer").load(page, function(){
-			constructorFunction();
-			if (callback != null) {
-				//callback.call(othis.current);
-			}
+		$(".maincontainer").load(page, function(response, status, xhr) {
+			if (status == "error") {
+				console.log(msg, xhr.status, xhr.statusText);
+			} else {
+				constructorFunction();
+				if (callback != null) {
+					//callback.call(othis.current);
+				}
+			} 
 		});
 	};
 
@@ -234,7 +238,7 @@ function Main(address, username) {
 	$(".logoutLink").click(othis.logout);
 	
 	$(".userButton").click(function(){
-		bimServerApi.call("ServiceInterface", "getCurrentUser", {}, function(user){
+		Global.bimServerApi.call("ServiceInterface", "getCurrentUser", {}, function(user){
 			othis.showUser(user);
 		});
 	});

@@ -22,7 +22,7 @@ function ExtendedDataList(main, revision) {
 	var othis = this;
 	othis.revision = revision;
 
-	bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
+	Global.bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
 	
 	this.userClick = function(event){
 		if (!$(event.target).is("a, button, span.caret")) {
@@ -55,7 +55,7 @@ function ExtendedDataList(main, revision) {
 	
 	this.newLogAction = function(uuid, logAction, serviceIdentifier, profileIdentifier, token, apiUrl){
 		if (logAction.__type == "SExtendedDataAddedToRevision") {
-			bimServerApi.call("ServiceInterface", "getExtendedData", {oid: logAction.extendedDataId}, function(data){
+			Global.bimServerApi.call("ServiceInterface", "getExtendedData", {oid: logAction.extendedDataId}, function(data){
 				othis.addExtendedData(data);
 			});
 		}
@@ -87,7 +87,7 @@ function ExtendedDataList(main, revision) {
 		
 		var actions = newSplitDropDownTd("Download", othis.download);
 		actions.find("button.dropdown-toggle").click(function(){
-			bimServerApi.call("ServiceInterface", "getAllServicesOfProject", {poid: othis.revision.projectId}, function(data){
+			Global.bimServerApi.call("ServiceInterface", "getAllServicesOfProject", {poid: othis.revision.projectId}, function(data){
 				actions.find("ul li").remove();
 				var added = 0;
 				data.forEach(function(service){
@@ -95,7 +95,7 @@ function ExtendedDataList(main, revision) {
 						var li = $("<li><a>Run \"" + service.name + "\"</a></li>");
 						added++;
 						li.find("a").click(function(event){
-							bimServerApi.call("ServiceInterface", "triggerNewExtendedData", {edid: extendedData.oid, soid: service.oid}, function(data){
+							Global.bimServerApi.call("ServiceInterface", "triggerNewExtendedData", {edid: extendedData.oid, soid: service.oid}, function(data){
 							});
 						});
 						actions.find("ul").append(li);
@@ -114,11 +114,11 @@ function ExtendedDataList(main, revision) {
 	
 	this.download = function(event) {
 		var extendedData = $(this).parents("tr").data("extendeddata");
-		document.location = bimServerApi.generateExtendedDataDownloadUrl(extendedData.oid);
+		document.location = Global.bimServerApi.generateExtendedDataDownloadUrl(extendedData.oid);
 	};
 	
 	this.loadExtendedData = function() {
-		bimServerApi.call("ServiceInterface", "getAllExtendedDataOfRevision", {roid: revision.oid}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getAllExtendedDataOfRevision", {roid: revision.oid}, function(data){
 			data.forEach(function(extendedData){
 				othis.addExtendedData(extendedData);
 			});
@@ -126,7 +126,7 @@ function ExtendedDataList(main, revision) {
 	};
 	
 	this.close = function(){
-		bimServerApi.unregister(othis.newLogAction);
+		Global.bimServerApi.unregister(othis.newLogAction);
 	};
 	
 	othis.loadExtendedData();

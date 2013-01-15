@@ -141,7 +141,7 @@ var Project = function(main, project) {
 	othis.lastRevision = null;
 
 	this.close = function () {
-		bimServerApi.unregister(othis.newLogAction);
+		Global.bimServerApi.unregister(othis.newLogAction);
 	};
 
 	this.show = function() {
@@ -151,12 +151,12 @@ var Project = function(main, project) {
 			othis.project = project;
 			othis.updateProject();
 		}
-		bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
+		Global.bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
 	};
 	
 	this.revisionClick = function(event) {
 		if (!$(event.target).is("a, button, span.caret")) {
-			main.showRevision($(this).parents("tr").andSelf().data("revision"), event);
+			main.showRevision($(this).parents("tr").andSelf().data("revision"), null, true);
 			othis.close();
 		}
 	};
@@ -202,7 +202,7 @@ var Project = function(main, project) {
 		$(".project .subprojectsLink").addClass("active");
 		$(".project .content > div").hide();
 		$(".project .subprojects").show();
-		bimServerApi.call("ServiceInterface", "getSubProjects", {poid: othis.project.oid}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getSubProjects", {poid: othis.project.oid}, function(data){
 			$(".project .subprojectsTable tr.project").remove();
 			data.forEach(function(subProject){
 				othis.addSubProject(subProject);
@@ -219,7 +219,7 @@ var Project = function(main, project) {
 
 	this.revokeUser = function() {
 		var user = $(this).parents("tr").data("user");
-		bimServerApi.call("ServiceInterface", "removeUserFromProject", {
+		Global.bimServerApi.call("ServiceInterface", "removeUserFromProject", {
 			uoid: user.oid,
 			poid: othis.project.oid
 		}, function(data){
@@ -268,7 +268,7 @@ var Project = function(main, project) {
 
 		var actions = newSplitDropDownTd("Download", othis.downloadCheckoutClick);
 		actions.find("button.dropdown-toggle").click(function(){
-			bimServerApi.call("ServiceInterface", "getAllServicesOfProject", {poid: othis.project.oid}, function(data){
+			Global.bimServerApi.call("ServiceInterface", "getAllServicesOfProject", {poid: othis.project.oid}, function(data){
 				actions.find("ul li").remove();
 				var added = 0;
 				data.forEach(function(service){
@@ -276,7 +276,7 @@ var Project = function(main, project) {
 						var li = $("<li><a>Run \"" + service.name + "\"</a></li>");
 						added++;
 						li.find("a").click(function(event){
-							bimServerApi.call("ServiceInterface", "triggerNewRevision", {roid: revision.oid, soid: service.oid}, function(data){
+							Global.bimServerApi.call("ServiceInterface", "triggerNewRevision", {roid: revision.oid, soid: service.oid}, function(data){
 							});
 						});
 						actions.find("ul").append(li);
@@ -375,7 +375,7 @@ var Project = function(main, project) {
 		$(".project .revisionsLink").addClass("active");
 		$(".project .content > div").hide();
 		$(".project .revisions").show();
-		bimServerApi.call("ServiceInterface", "getAllRevisionsOfProject", {poid: othis.project.oid}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getAllRevisionsOfProject", {poid: othis.project.oid}, function(data){
 			$(".project .revisionsTable tbody tr").remove();
 			data.forEach(function(revision){
 				othis.addRevision(revision);
@@ -389,7 +389,7 @@ var Project = function(main, project) {
 		$(".project .checkoutsLink").addClass("active");
 		$(".project .content > div").hide();
 		$(".project .checkouts").show();
-		bimServerApi.call("ServiceInterface", "getAllCheckoutsOfProject", {poid: othis.project.oid}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getAllCheckoutsOfProject", {poid: othis.project.oid}, function(data){
 			$(".project .checkoutsTable tbody tr").remove();
 			data.forEach(function(checkout){
 				othis.addCheckout(checkout);
@@ -402,7 +402,7 @@ var Project = function(main, project) {
 		$(".project .usersLink").addClass("active");
 		$(".project .content > div").hide();
 		$(".project .users").show();
-		bimServerApi.call("ServiceInterface", "getAllAuthorizedUsersOfProject", {poid: othis.project.oid}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getAllAuthorizedUsersOfProject", {poid: othis.project.oid}, function(data){
 			$(".project .usersTable tbody tr").remove();
 			data.forEach(function(user){
 				othis.addUser(user);
@@ -416,7 +416,7 @@ var Project = function(main, project) {
 		$(".project .servicesLink").addClass("active");
 		$(".project .content > div").hide();
 		$(".project .services").show();
-		bimServerApi.call("ServiceInterface", "getAllServicesOfProject", {poid: othis.project.oid}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getAllServicesOfProject", {poid: othis.project.oid}, function(data){
 			$(".servicesTable tr.service").remove();
 			data.forEach(function(service){
 				othis.addService(service);
@@ -456,7 +456,7 @@ var Project = function(main, project) {
 		if (poid == null) {
 			poid = othis.project.oid;
 		}
-		bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: poid}, function(project){
+		Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: poid}, function(project){
 			othis.project = project;
 			othis.updateProject();
 		});
@@ -472,7 +472,7 @@ var Project = function(main, project) {
 		$(".project .revisionsLink a").html("Revisions" + (othis.project.revisions.length == 0 ? "" : (" (" + othis.project.revisions.length + ")")));
 		$(".project .servicesLink a").html("Services" + (othis.project.services.length == 0 ? "" : (" (" + othis.project.services.length + ")")));
 		if (othis.project.lastRevisionId != -1) {
-			bimServerApi.call("ServiceInterface", "getRevision", {roid: othis.project.lastRevisionId}, function(data){
+			Global.bimServerApi.call("ServiceInterface", "getRevision", {roid: othis.project.lastRevisionId}, function(data){
 				othis.lastRevision = data;
 			});
 			$(".project .browserLink").show();
@@ -541,7 +541,7 @@ var Project = function(main, project) {
 	};
 	
 	this.addUserLinkClick = function() {
-		bimServerApi.call("ServiceInterface", "getAllNonAuthorizedUsersOfProject", {poid: othis.project.oid}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getAllNonAuthorizedUsersOfProject", {poid: othis.project.oid}, function(data){
 			$(".project .addUserToProjectDiv select option").remove();
 			if (data.length == 0) {
 				$(".project .addUserLink").show();
@@ -559,7 +559,7 @@ var Project = function(main, project) {
 
 	this.addUserToProject = function(event){
 		event.preventDefault();
-		bimServerApi.call("ServiceInterface", "addUserToProject", {
+		Global.bimServerApi.call("ServiceInterface", "addUserToProject", {
 			uoid: $(".project .addUserToProjectDiv select option:selected").val(),
 			poid: othis.project.oid
 		}, function(data){
@@ -584,12 +584,12 @@ var Project = function(main, project) {
 	$(".project .addUserLink").click(othis.addUserLinkClick);
 	
 	$(".project .checkinButton").click(othis.showCheckinPopup);
-	$(".project .addServiceButton").click(othis.addServiceClick);
+	$(".project .addServiceButton").click(othis.a ddServiceClick);
 	$(".project .addSubProjectButton").click(othis.addSubProjectClick);
 
 	this.newLogAction = function(uuid, logAction, serviceIdentifier, profileIdentifier, token, apiUrl){
 		if (logAction.__type == "SNewRevisionAdded") {
-			bimServerApi.call("ServiceInterface", "getRevision", {roid: logAction.revisionId}, function(data){
+			Global.bimServerApi.call("ServiceInterface", "getRevision", {roid: logAction.revisionId}, function(data){
 				othis.reloadProject(logAction.projectId);
 				othis.addRevision(data);
 			});

@@ -36,7 +36,7 @@ function InternalServices(main, usersettings) {
 	};
 
 	this.loadInternalServices = function(){
-		bimServerApi.call("ServiceInterface", "getAllInternalServices", {onlyEnabled: false}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getAllInternalServices", {onlyEnabled: false}, function(data){
 			$(".internalservices .internalServicesTable tbody").empty();
 			data.forEach(function(internalService){
 				othis.addInternalService(internalService);

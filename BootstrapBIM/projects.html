@@ -28,20 +28,20 @@ function Projects(main) {
 	};
 
 	this.close = function() {
-		bimServerApi.unregister(othis.newLogAction);
+		Global.bimServerApi.unregister(othis.newLogAction);
 	};
 
 	this.show = function() {
 	};
 	
 	this.deleteProject = function(project){
-		bimServerApi.callWithFullIndication("ServiceInterface", "deleteProject", {poid: project.oid}, function(){
+		Global.bimServerApi.callWithFullIndication("ServiceInterface", "deleteProject", {poid: project.oid}, function(){
 			othis.loadProjects();
 		});
 	};
 	
 	this.undeleteProject = function(project){
-		bimServerApi.callWithFullIndication("ServiceInterface", "undeleteProject", {poid: project.oid}, function(){
+		Global.bimServerApi.callWithFullIndication("ServiceInterface", "undeleteProject", {poid: project.oid}, function(){
 			othis.loadProjects();
 		});
 	};
@@ -79,7 +79,7 @@ function Projects(main) {
 	
 	this.loadProjects = function(){
 		$(".projectsTable tbody tr").remove();
-		bimServerApi.call("ServiceInterface", "getAllProjects", {onlyTopLevel: true}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getAllProjects", {onlyTopLevel: true}, function(data){
 			data.forEach(function(project){
 				othis.addProject(project);
 			});
@@ -88,7 +88,7 @@ function Projects(main) {
 	
 	this.newLogAction = function(uuid, logAction, serviceIdentifier, profileIdentifier, token, apiUrl){
 		if (logAction.__type == "SNewProjectAdded") {
-			bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: logAction.projectId}, function(data){
+			Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: logAction.projectId}, function(data){
 				othis.addProject(data);
 			});
 		}
@@ -98,6 +98,6 @@ function Projects(main) {
 
 	othis.loadProjects();
 	
-	bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
+	Global.bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
 }
 </script>

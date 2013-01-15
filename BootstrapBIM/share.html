@@ -14,7 +14,7 @@
 		</div>
 	</div>
 	<div class="modal-footer">
-		<a class="btn" class="closeButton" style="margin-right: 8px" data-dismiss="modal">Close</a>
+		<a class="btn closeButton" style="margin-right: 8px" data-dismiss="modal">Close</a>
 	</div>
 </div>
 <script>
@@ -23,7 +23,7 @@ function Share(roid) {
 	
 	bimServerApi.call("ServiceInterface", "shareRevision", {roid: roid}, function(token){
 		$(".linkInput").val(token).select();
-		$(".bimsurferInput").val("http://localhost/bimsurfer/?token=" + token + "&server=" + bimServerApi.baseUrl + "&roid=" + roid);
+		$(".bimsurferInput").val("http://localhost/bimsurfer/?token=" + token + "&server=" + Global.bimServerApi.baseUrl + "&roid=" + roid);
 	});
 }
 </script>

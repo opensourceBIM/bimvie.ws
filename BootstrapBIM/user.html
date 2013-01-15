@@ -72,7 +72,7 @@ function User(main, user) {
 		if (uoid == null) {
 			uoid = othis.user.oid;
 		}
-		bimServerApi.call("ServiceInterface", "getUserByUoid", {uoid: uoid}, function(user){
+		Global.bimServerApi.call("ServiceInterface", "getUserByUoid", {uoid: uoid}, function(user){
 			othis.user = user;
 			othis.updateUser();
 		});
@@ -103,13 +103,13 @@ function User(main, user) {
 	
 	this.revisionClick = function(event) {
 		if (!$(event.target).is("a, button, span.caret")) {
-			main.showRevision($(this).parents("tr").andSelf().data("revision"), event);
+			main.showRevision($(this).parents("tr").andSelf().data("revision"), null, true);
 			othis.close();
 		}
 	};
 
 	this.loadUserName = function(uoid, targetElement) {
-		bimServerApi.call("ServiceInterface", "getUserByUoid", {uoid: uoid}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getUserByUoid", {uoid: uoid}, function(data){
 			targetElement.html(data.username);
 			targetElement.data("user", data);
 		});
@@ -171,7 +171,7 @@ function User(main, user) {
 		$(".user .revisionsLink").addClass("active");
 		$(".user .content > div").hide();
 		$(".user .revisions").show();
-		bimServerApi.call("ServiceInterface", "getAllRevisionsByUser", {uoid: othis.user.oid}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getAllRevisionsByUser", {uoid: othis.user.oid}, function(data){
 			$(".revisionsTable tr.revision").remove();
 			data.forEach(function(revision){
 				othis.addRevision(revision);
@@ -208,7 +208,7 @@ function User(main, user) {
 		$(".user .checkoutsLink").addClass("active");
 		$(".user .content > div").hide();
 		$(".user .checkouts").show();
-		bimServerApi.call("ServiceInterface", "getAllCheckoutsByUser", {uoid: othis.user.oid}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getAllCheckoutsByUser", {uoid: othis.user.oid}, function(data){
 			$(".user .checkoutsTable tbody tr").remove();
 			data.forEach(function(checkout){
 				othis.addCheckout(checkout);
@@ -242,7 +242,7 @@ function User(main, user) {
 		$(".user .projectsLink").addClass("active");
 		$(".user .content > div").hide();
 		$(".user .projects").show();
-		bimServerApi.call("ServiceInterface", "getUsersProjects", {uoid: othis.user.oid}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getUsersProjects", {uoid: othis.user.oid}, function(data){
 			$(".projectsTable tr.project").remove();
 			data.forEach(function(project){
 				othis.addProject(project);

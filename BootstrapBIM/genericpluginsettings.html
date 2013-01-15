@@ -36,7 +36,7 @@ function GenericPluginSettings(main, usersettings, pluginsettings, configuration
 	};
 	
 	this.loadPluginSettings = function() {
-		bimServerApi.call("ServiceInterface", "getPluginSettings", {poid: othis.pluginsettings.oid}, function(objectDefinition){
+		Global.bimServerApi.call("ServiceInterface", "getPluginSettings", {poid: othis.pluginsettings.oid}, function(objectDefinition){
 			if (objectDefinition != null) {
 				if (objectDefinition.parameters != null) {
 					objectDefinition.parameters.forEach(function(parameter){
@@ -54,7 +54,7 @@ function GenericPluginSettings(main, usersettings, pluginsettings, configuration
 	};
 	
 	this.loadPluginObjectDefinition = function() {
-		bimServerApi.call("ServiceInterface", "getPluginObjectDefinition", {className: othis.pluginsettings.className}, function(objectDefinition){
+		Global.bimServerApi.call("ServiceInterface", "getPluginObjectDefinition", {className: othis.pluginsettings.className}, function(objectDefinition){
 			if (objectDefinition != null && objectDefinition.parameters != null) {
 				objectDefinition.parameters.forEach(function(parameter){
 					$(".genericpluginsettings .nosettings").hide();
@@ -122,7 +122,7 @@ function GenericPluginSettings(main, usersettings, pluginsettings, configuration
 			};
 			settings.parameters.push(parameter);
 		});
-		bimServerApi.call("ServiceInterface", "setPluginSettings", {poid: othis.pluginsettings.oid, settings: settings}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "setPluginSettings", {poid: othis.pluginsettings.oid, settings: settings}, function(data){
 			
 		});
 	};
@@ -130,7 +130,7 @@ function GenericPluginSettings(main, usersettings, pluginsettings, configuration
 	this.savePlugin = function() {
 		if (configuration.title == "Internal Service") {
 			othis.pluginsettings.remoteAccessible = $(".genericpluginsettings .remoteAccessible").is(":checked");
-			bimServerApi.call("ServiceInterface", "updateInternalService", {internalService: othis.pluginsettings}, function(data){
+			Global.bimServerApi.call("ServiceInterface", "updateInternalService", {internalService: othis.pluginsettings}, function(data){
 			});
 		}
 		othis.saveSettings();
@@ -142,7 +142,7 @@ function GenericPluginSettings(main, usersettings, pluginsettings, configuration
 	};
 
 	if (typeof pluginsettings == "number") {
-		bimServerApi.call("ServiceInterface", configuration.getMethod, {oid: pluginsettings}, function(data){
+		Global.bimServerApi.call("ServiceInterface", configuration.getMethod, {oid: pluginsettings}, function(data){
 			othis.pluginsettings = data;
 			othis.loadGenericPluginSettings();
 		});

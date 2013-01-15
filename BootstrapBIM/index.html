@@ -1,31 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title>BIMserver Demo</title>
 	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-	<meta content="utf-8" http-equiv="encoding">    <title>BIMserver Demo</title>
+	<meta content="utf-8" http-equiv="encoding">
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
 	<link rel="shortcut icon" type="image/ico" href="img/logo_small.png"/>
-    <script src="js/jquery-1.8.2.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/String.js"></script>
-    <script src="js/utils.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/jquery.ui.widget.js"></script>
-    <script src="js/jquery.history.js"></script>
-    <script src="js/jquery.numeric.js"></script>
-    <script src="js/jquery.iframe.transport.js"></script>
-    <script src="js/jquery.fileupload.js"></script>
-    <script src="js/jquery.enterpress.js"></script>
-    <script src="js/formatters.js"></script>
-    <script src="js/jquery.cookie.js"></script>
-    <script src="js/settings.js"></script>
-    <script src="js/bimserverapibootstrap.js"></script>
-    <script src="js/sha256.js"></script>
-    <script src="js/scenejs.js"></script>
-    <script src="js/scenejs.math.extra.js"></script>
-    <script src="js/scenejs.math.js"></script>
-    <script src="js/scenejs.viewer.js"></script>  </head>
+    <script data-main="js/main" src="js/require-jquery.js"></script>
+  </head>
   <body>
 	<div class="alert fade in genericErrors" id="login-error" style="display:none;">
 		<span class="text"></span>
@@ -36,126 +19,157 @@
 	</div>
 	<div class="indexcontainer container-fluid"></div>
 	<script>
-		var bimServerApi;
-		var objectcache = {};
-		var timeoutId; // timeout id is a global variable
+		Global = {};
+	
+		require(["main", "jquery.history", "jquery.cookie", "jquery.numeric", "jquery.enterpress", "String", "bimserverapibootstrap", "bootstrap.min", "sha256", "utils", "formatters"], function(util) {
+			pushInitialState();
 
-		pushInitialState();
-		
-		$(".status").hide();
-		
-		var notifier = {
-			error: function(message){
-				$(".genericErrors .text").html(message).parent().show();
-			},
-			info: function(message) {
-				$(".genericErrors .text").html(message).parent().show();						
-			},
-			clear: function() {
-				$(".genericErrors .text").html("").parent().hide();
-			},
-			resetStatus: function(){
-				$(".status").stop(true, true);
-				$(".status").fadeOut(1000);
-			},
-			resetStatusQuick: function(){
-				$(".status").hide();
-			},
-			setStatus: function(status, timeToShow) {
-				if (timeToShow == null) {
-					timeToShow = 5000;
+			Global.bimServerApi = null;
+			Global.objectcache = {};
+			Global.timeoutId;
+			
+			$(".status").hide();
+			
+			var notifier = {
+				error: function(message){
+					$(".genericErrors .text").html(message).parent().show();
+				},
+				info: function(message) {
+					$(".genericErrors .text").html(message).parent().show();						
+				},
+				clear: function() {
+					$(".genericErrors .text").html("").parent().hide();
+				},
+				resetStatus: function(){
+					$(".status").stop(true, true);
+					$(".status").fadeOut(1000);
+				},
+				resetStatusQuick: function(){
+					$(".status").hide();
+				},
+				setStatus: function(status, timeToShow) {
+					if (timeToShow == null) {
+						timeToShow = 5000;
+					}
+					$(".status").stop(true, true);
+					if (this.lastTimeOut != null) {
+						clearTimeout(this.lastTimeOut);
+						this.lastTimeOut = null;
+					}
+					$(".status").show().html(status).removeClass("error");
+					var notifier = this;
+					if (timeToShow != -1) {
+						this.lastTimeOut = setTimeout(function(){
+							notifier.resetStatus();
+						}, timeToShow);
+					}
+				},
+				setError: function(error) {
+					$(".status").html(error).addClass("error").show();
 				}
-				$(".status").stop(true, true);
-				if (this.lastTimeOut != null) {
-					clearTimeout(this.lastTimeOut);
-					this.lastTimeOut = null;
-				}
-				$(".status").show().html(status).removeClass("error");
-				var notifier = this;
-				if (timeToShow != -1) {
-					this.lastTimeOut = setTimeout(function(){
-						notifier.resetStatus();
-					}, timeToShow);
-				}
-			},
-			setError: function(error) {
-				$(".status").html(error).addClass("error").show();
+			};
+
+			function loadError() {
+				window.clearTimeout(Global.timeoutId);
+				notifier.error("Could not connect");
+				$.removeCookie("username");
+				$.removeCookie("autologin");
+				$.removeCookie("address");
+				$(".indexcontainer").load("login.html", function(){
+					new Login();
+				});
 			}
-		};
-
-		function loadError() {
-			window.clearTimeout(timeoutId);
-			notifier.error("Could not connect");
-			$.removeCookie("username");
-			$.removeCookie("autologin");
-			$.removeCookie("address");
-			$(".indexcontainer").load("login.html", function(){
-				new Login();
-			});
-		}
-		
-		this.showResetPassword = function() {
-			$(".indexcontainer").load("resetpassword.html", function(){
-				new ResetPassword();
-			});
-		};
-		
-		this.tryAutoLogin = function(){
-			$(function(){
-				timeoutId = window.setTimeout(function() {
-					loadError();
-				}, 3000);
-				var address = $.cookie("address");
-				$.getScript(address + "/js/bimserverapi.js")
-				.done(function(script, textStatus) {
-					window.clearTimeout(timeoutId);
-					bimServerApi = new BimServerApi($.cookie("address"), notifier);
-					bimServerApi.call("ServiceInterface", "getServerInfo", {}, function(serverInfo){
-						if (serverInfo.serverState == "NOT_SETUP") {
-							$(".indexcontainer").load("setup.html", function(){
-								new Setup(address);
-							});
-						} else if (serverInfo.serverState == "UNDEFINED") {
-						} else if (serverInfo.serverState == "MIGRATION_REQUIRED") {
-						} else if (serverInfo.serverState == "MIGRATION_IMPOSSIBLE") {
-						} else if (serverInfo.serverState == "FATAL_ERROR") {
-						} else if (serverInfo.serverState == "RUNNING") {
-							if ($.cookie("autologin") != null) {
-								bimServerApi.autologin($.cookie("username"), $.cookie("autologin"), function(){
-									$(".indexcontainer").load("main.html", function(){
-										new Main($.cookie("address"), $.cookie("username")).show(false);
+			
+			this.showResetPassword = function() {
+				$(".indexcontainer").load("resetpassword.html", function(){
+					new ResetPassword();
+				});
+			};
+			
+			this.tryAutoLogin = function(){
+				$(function(){
+					Global.timeoutId = window.setTimeout(function() {
+						loadError();
+					}, 3000);
+					var address = $.cookie("address");
+					$.getScript(address + "/js/bimserverapi.js")
+					.done(function(script, textStatus) {
+						window.clearTimeout(Global.timeoutId);
+						Global.bimServerApi = new BimServerApi($.cookie("address"), notifier);
+						Global.bimServerApi.call("ServiceInterface", "getServerInfo", {}, function(serverInfo){
+							if (serverInfo.serverState == "NOT_SETUP") {
+								$(".indexcontainer").load("setup.html", function(){
+									new Setup(address);
+								});
+							} else if (serverInfo.serverState == "UNDEFINED") {
+							} else if (serverInfo.serverState == "MIGRATION_REQUIRED") {
+							} else if (serverInfo.serverState == "MIGRATION_IMPOSSIBLE") {
+							} else if (serverInfo.serverState == "FATAL_ERROR") {
+							} else if (serverInfo.serverState == "RUNNING") {
+								if ($.cookie("autologin") != null) {
+									Global.bimServerApi.autologin($.cookie("username"), $.cookie("autologin"), function(){
+										$(".indexcontainer").load("main.html", function(){
+											new Main($.cookie("address"), $.cookie("username")).show(false);
+										});
+									}, function(){
+										$(".indexcontainer").load("login.html", function(){
+											new Login();
+										});
 									});
-								}, function(){
+								} else {
 									$(".indexcontainer").load("login.html", function(){
 										new Login();
 									});
-								});
-							} else {
-								$(".indexcontainer").load("login.html", function(){
-									new Login();
-								});
+								}
 							}
-						}
+						});
+					}).fail(function(jqxhr, settings, exception){
+						loadError();
 					});
-				}).fail(function(jqxhr, settings, exception){
-					loadError();
+					
+					setInterval(function() {
+						var now = new Date().getTime();
+						$(".timespan").each(function() {
+							$(this).html(formatTimeSpan(now - $(this).attr("datetime"), false));
+						});
+					}, 60000);
 				});
-				
-				setInterval(function() {
-					var now = new Date().getTime();
-					$(".timespan").each(function() {
-						$(this).html(formatTimeSpan(now - $(this).attr("datetime"), false));
-					});
-				}, 60000);
-			});
-		};
-		
-		var history = History.getState().data;
-		if (history.page == "ResetPassword") {
-			showResetPassword();
-		} else {
-			tryAutoLogin();
-		}
+			};
+			
+			var history = History.getState().data;
+			if (history.page == "ResetPassword") {
+				showResetPassword();
+			} else {
+				tryAutoLogin();
+			}
+		}, function (err) {
+			console.log(err);
+		    //The errback, error callback
+		    //The error has a list of modules that failed
+		    var failedId = err.requireModules && err.requireModules[0];
+		    if (failedId === 'jquery') {
+		        //undef is function only on the global requirejs object.
+		        //Use it to clear internal knowledge of jQuery. Any modules
+		        //that were dependent on jQuery and in the middle of loading
+		        //will not be loaded yet, they will wait until a valid jQuery
+		        //does load.
+		        requirejs.undef(failedId);
+
+		        //Set the path to jQuery to local path
+		        requirejs.config({
+		            paths: {
+		                jquery: 'local/jquery'
+		            }
+		        });
+
+		        //Try again. Note that the above require callback
+		        //with the "Do something with $ here" comment will
+		        //be called if this new attempt to load jQuery succeeds.
+		        require(['jquery'], function () {});
+		    } else {
+		        //Some other error. Maybe show message to the user.
+		    }
+		});
 	</script>
   </body>
 </html>

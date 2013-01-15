@@ -48,7 +48,7 @@ function ServerInfo(main) {
 	}
 	
 	this.loadData = function() {
-		bimServerApi.call("ServiceInterface", "getDatabaseInformation", {}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getDatabaseInformation", {}, function(data){
 			$(".database table").append("<tr><td colspan=\"2\" class=\"header\">General Information</td></tr>");
 			$(".database table").append("<tr><td>Size</td><td>" + data.databaseSizeInBytes + "</td></tr>");
 			$(".database table").append("<tr><td>Type</td><td>" + data.type + "</td></tr>");
@@ -62,7 +62,7 @@ function ServerInfo(main) {
 				});
 			});
 		});
-		bimServerApi.call("ServiceInterface", "getSystemInfo", {}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getSystemInfo", {}, function(data){
 			$(".system table").append("<tr><td colspan=\"2\" class=\"header\">Machine</td></tr>");
 			$(".system table").append("<tr><td>Number of cores</td><td>" + data.cpucores + "</td></tr>");
 			$(".system table").append("<tr><td>Current date/time</td><td>" + formatDateTime(new Date(data.datetime)) + "</td></tr>");
@@ -75,7 +75,7 @@ function ServerInfo(main) {
 			$(".system table").append("<tr><td>User dir</td><td>" + data.userDir + "</td></tr>");
 		});
 		
-		bimServerApi.call("ServiceInterface", "getJavaInfo", {}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getJavaInfo", {}, function(data){
 			$(".java table").append("<tr><td colspan=\"2\" class=\"header\">Heap memory</td></tr>");
 			$(".java table").append("<tr><td>Total</td><td>" + getHumanSize(data.heapTotal) + "</td></tr>");
 			$(".java table").append("<tr><td>Used</td><td>" + getHumanSize(data.heapUsed) + "</td></tr>");
@@ -125,7 +125,7 @@ function ServerInfo(main) {
 			$(".java table").append("<tr><td>Line separator</td><td>" + data.javaLineSeparator + "</td></tr>");
 		});
 		
-		bimServerApi.call("ServiceInterface", "getBimServerInfo", {}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getBimServerInfo", {}, function(data){
 			$(".bimserver table").append("<tr><td colspan=\"2\" class=\"header\">Current version</td></tr>");
 			$(".bimserver table").append("<tr><td>Current version</td><td>" + data.currentVersion + "</td></tr>");
 			$(".bimserver table").append("<tr><td>Current version date</td><td>" + formatDate(new Date(data.currentDate)) + "</td></tr>");

@@ -7,23 +7,23 @@ $.ajaxSetup({
 
 function loadGeneric(targetElement, oidField, displayField, methodName, objectField, paramFunction) {
 	var oid = targetElement.attr(oidField);
-	if (objectcache[oid] != null) {
-		if (objectcache[oid] instanceof Array) {
-			objectcache[oid].push(targetElement);
+	if (Global.objectcache[oid] != null) {
+		if (Global.objectcache[oid] instanceof Array) {
+			Global.objectcache[oid].push(targetElement);
 		} else {
-			targetElement.html(objectcache[oid][displayField]);
-			targetElement.data(objectField, objectcache[oid]);
+			targetElement.html(Global.objectcache[oid][displayField]);
+			targetElement.data(objectField, Global.objectcache[oid]);
 		}
 	} else {
-		objectcache[oid] = [targetElement];
-		bimServerApi.call("ServiceInterface", methodName, paramFunction(oid), function(data){
-			if (objectcache[oid] instanceof Array) {
-				for(var i in objectcache[oid]) {
-					var target = objectcache[oid][i];
+		Global.objectcache[oid] = [targetElement];
+		Global.bimServerApi.call("ServiceInterface", methodName, paramFunction(oid), function(data){
+			if (Global.objectcache[oid] instanceof Array) {
+				for(var i in Global.objectcache[oid]) {
+					var target = Global.objectcache[oid][i];
 					target.html(data[displayField]);
 					target.data(objectField, data);
 				}
-				objectcache[oid] = data;
+				Global.objectcache[oid] = data;
 			} else {
 				targetElement.html(data[displayField]);
 				targetElement.data(objectField, data);

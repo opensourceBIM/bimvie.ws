@@ -8,7 +8,7 @@
 			</ul>
 		</div>
 	</form>
-	<textarea rows="16" class="queryText" style="width: 100%"></textarea>
+	<textarea id="editor" rows="16" class="queryText" style="width: 100%"></textarea>
 	<button class="btn queryButton pull-right btn-primary">Query</button>
 </div>
 <script>
@@ -16,7 +16,7 @@ function Query(containerDiv, main, poid, roid) {
 	var othis = this;
 	
 	this.loadEngines = function(){
-		bimServerApi.call("ServiceInterface", "getAllQueryEngines", {onlyEnabled: true}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getAllQueryEngines", {onlyEnabled: true}, function(data){
 			containerDiv.find(".queryEngineSelect option").remove();
 			data.forEach(function(queryEngine){
 				var option = $("<option value=\"" + queryEngine.oid + "\">" + queryEngine.name + "</option>");
@@ -28,13 +28,13 @@ function Query(containerDiv, main, poid, roid) {
 	
 	this.exampleClick = function(){
 		var qeid = containerDiv.find(".queryEngineSelect option:selected").val();
-		bimServerApi.call("ServiceInterface", "getQueryEngineExample", {qeid: qeid, key: $(this).html()}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getQueryEngineExample", {qeid: qeid, key: $(this).html()}, function(data){
 			containerDiv.find(".queryText").val(data);
 		});
 	};
 	
 	this.loadExampleKeys = function(qeid){
-		bimServerApi.call("ServiceInterface", "getQueryEngineExampleKeys", {qeid: qeid}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getQueryEngineExampleKeys", {qeid: qeid}, function(data){
 			containerDiv.find(".examplesDropdown li").remove();
 			data.forEach(function(key){
 				var li = $("<li></li>");
@@ -67,9 +67,15 @@ function Query(containerDiv, main, poid, roid) {
 			new Download(params);
 		}).modal({keyboard:true});
 	};
-	
+
 	othis.loadEngines();
 	containerDiv.find(".queryEngineSelect").change(othis.queryEngineChange);
 	containerDiv.find(".queryButton").click(othis.queryButtonClick);
+
+//	requirejs(["ace/ace"], function(ace){
+//	    var editor = ace.edit("editor");
+//	    editor.setTheme("ace/theme/monokai");
+//	    editor.getSession().setMode("ace/mode/javascript");
+//	});
 }
 </script>

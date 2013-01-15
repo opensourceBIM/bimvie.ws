@@ -32,7 +32,7 @@ function GenericPluginSettingsList(main, usersettings, configuration) {
 		var link = $(this);
 		var state = $(this).parents("tr").find(".state");
 		plugin.enabled = !plugin.enabled;
-		bimServerApi.callWithFullIndication("ServiceInterface", configuration.updateMethodName, configuration.createUpdateObject(plugin), function(){
+		Global.bimServerApi.callWithFullIndication("ServiceInterface", configuration.updateMethodName, configuration.createUpdateObject(plugin), function(){
 			if (plugin.enabled) {
 				link.html("disable");
 				state.html("Enabled");
@@ -64,7 +64,7 @@ function GenericPluginSettingsList(main, usersettings, configuration) {
 	};
 
 	this.loadPluginConfigurations = function(){
-		bimServerApi.call("ServiceInterface", configuration.getAllMethodName, {onlyEnabled: false}, function(data){
+		Global.bimServerApi.call("ServiceInterface", configuration.getAllMethodName, {onlyEnabled: false}, function(data){
 			$(".genericpluginsettingslist table tbody").empty();
 			data.forEach(function(plugin){
 				othis.addPlugin(plugin);

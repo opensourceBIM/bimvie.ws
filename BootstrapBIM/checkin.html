@@ -61,7 +61,7 @@ function Checkin(project, successFunction) {
 	
 	$(".uploadajaxloader").hide();
 
-	bimServerApi.call("ServiceInterface", "getAllDeserializers", {onlyEnabled: true}, function(data){
+	Global.bimServerApi.call("ServiceInterface", "getAllDeserializers", {onlyEnabled: true}, function(data){
 		data.forEach(function(deserializer){
 			var option = $("<option value=\"" + deserializer.oid + "\">" + deserializer.name + "</option>");
 			$(".checkin .deserializerName").append(option);
@@ -82,7 +82,7 @@ function Checkin(project, successFunction) {
 				$(".uploadStatus").append("<div class=\"alert alert-block alert-error\">" + error + "</div>");
 			});
 			othis.showUpload();
-			bimServerApi.unregister(othis.progressHandler);
+			Global.bimServerApi.unregister(othis.progressHandler);
 		} else {
 			$(".uploadStatus").html(state.title);
 			if (oldStage != state.stage) {
@@ -98,7 +98,7 @@ function Checkin(project, successFunction) {
 			}
 			if (state.state == "FINISHED") {
 				$(".checkin").parent().modal("hide").remove();
-				bimServerApi.unregister(othis.progressHandler);
+				Global.bimServerApi.unregister(othis.progressHandler);
 				if (successFunction != null) {
 					successFunction();
 				}
@@ -119,7 +119,7 @@ function Checkin(project, successFunction) {
 	
 	$(".fileupload").fileupload({
 		dataType: "json",
-        url: bimServerApi.baseUrl + '/upload',
+        url: Global.bimServerApi.baseUrl + '/upload',
 		replaceFileInput: false,
 		submit: function(e, data){
 			if (!shouldsend) {
@@ -151,7 +151,7 @@ function Checkin(project, successFunction) {
 		    var lastIndex = path.lastIndexOf(".");
 		    if (lastIndex != -1) {
 			    var extension = path.substring(path.lastIndexOf(".") + 1);
-				bimServerApi.call("ServiceInterface", "getSuggestedDeserializerForExtension", {extension: extension}, function(data){
+			    Global.bimServerApi.call("ServiceInterface", "getSuggestedDeserializerForExtension", {extension: extension}, function(data){
 					$(".checkin .deserializerName").val(data.oid);
 					othis.updateSubmitButton();
 				});
@@ -165,7 +165,7 @@ function Checkin(project, successFunction) {
 				currentCheckinId = data.result.checkinid;
 				$(".progressBarHolder .uploadProgressBar").remove();
 				$(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"bar\"></div></div>");
-				bimServerApi.register("NotificationInterface", "progress", othis.progressHandler);
+				Global.bimServerApi.register("NotificationInterface", "progress", othis.progressHandler);
 			} else {
 				$(".uploadStatus").html("Error: " + data.result.error);
 				othis.showUpload();
@@ -180,7 +180,7 @@ function Checkin(project, successFunction) {
 	$(".uploadButton").click(function(event){
 		shouldsend = true;
 		submitdata.formData = {
-			token: bimServerApi.token,
+			token: Global.bimServerApi.token,
 			deserializerOid: $(".deserializerName").val(),
 			comment: $(".comment").val(),
 			merge: $(".merge").is(':checked'),

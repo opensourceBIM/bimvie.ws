@@ -58,13 +58,13 @@ function AddService(main, project) {
 	};
 	
 	this.loadServices = function() {
-		bimServerApi.call("ServiceInterface", "getAllServiceDescriptors", {}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getAllServiceDescriptors", {}, function(data){
 			$(".addservice .servicesTable tr.serviceDescriptor").remove();
 			data.forEach(function(serviceDescriptor){
 				othis.addServiceDescriptor($(".addservice .servicesTable"), serviceDescriptor, false);
 			});
 		});
-		bimServerApi.call("ServiceInterface", "getAllLocalServiceDescriptors", {}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getAllLocalServiceDescriptors", {}, function(data){
 			$(".addservice .localServicesTable tr.serviceDescriptor").remove();
 			data.forEach(function(serviceDescriptor){
 				othis.addServiceDescriptor($(".addservice .localServicesTable"), serviceDescriptor, true);
@@ -73,12 +73,12 @@ function AddService(main, project) {
 	};
 
 	this.addUrlButtonClick = function(event) {
-		bimServerApi.call("ServiceInterface", "getServiceDescriptor", {url: $(".addservice .inputUrl").val()}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getServiceDescriptor", {url: $(".addservice .inputUrl").val()}, function(data){
 			othis.proceedWithServiceDescriptor(data, null);
 		});
 	};
 
-	bimServerApi.call("ServiceInterface", "getServiceRepositoryUrl", {}, function(data){
+	Global.bimServerApi.call("ServiceInterface", "getServiceRepositoryUrl", {}, function(data){
 		$(".addservice .loadedFrom").html(" (loaded from: <a href=\"" + data + "\">" + data + "</a>)");
 	});
 	

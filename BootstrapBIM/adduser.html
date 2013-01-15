@@ -43,7 +43,7 @@ function AddUser(main) {
 	};
 	
 	this.addUser = function() {
-		bimServerApi.call("ServiceInterface", "addUser", {
+		Global.bimServerApi.call("ServiceInterface", "addUser", {
 			username: $(".adduser .inputUsername").val(),
 			name: $(".adduser .inputName").val(),
 			type: $(".adduser .selectType").val(),

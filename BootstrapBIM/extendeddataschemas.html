@@ -46,7 +46,7 @@ function ExtendedDataSchemas(main, serversettings) {
 	};
 
 	this.loadExtendedDataSchemas = function() {
-		bimServerApi.call("ServiceInterface", "getAllExtendedDataSchemas", {}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getAllExtendedDataSchemas", {}, function(data){
 			data.forEach(function(extendedDataSchema){
 				othis.addExtendedDataSchema(extendedDataSchema);
 			});
