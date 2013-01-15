@@ -1,0 +1,95 @@
+<div class="branch">
+	<div class="modal-header">
+    	<a class="close" data-dismiss="modal">&times;</a>
+    	<h3>Branch</h3>
+  	</div>
+	<div class="modal-body">
+		<label class="radio">To existing project<input class="existingRadio" type="radio" name="to" value="existing"/></label>
+		<label class="radio">To new project<input class="newRadio" type="radio" name="to" value="new"/></label>
+		<form class="form-horizontal">
+			<div class="control-group projectGroup">
+				<label class="projectLabel control-label">Project</label>
+				<div class="controls">
+					<select class="projectsSelect"></select>
+				</div>
+			</div>
+			<div class="control-group projectnameGroup">
+				<label class="projectNameLabel control-label">Project name</label>
+				<div class="controls">
+					<input type="text" class="projectName"/>
+				</div>
+			</div>
+			<div class="control-group commentGroup">
+				<label class="commentLabel control-label">Comment</label>
+				<div class="controls">
+					<input type="text" class="comment"/>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<a class="btn closeButton" style="margin-right: 8px" data-dismiss="modal">Close</a>
+		<a class="branchButton btn btn-primary" style="margin-right: 8px" data-dismiss="modal">Branch</a>
+	</div>
+</div>
+<script>
+function Branch(main, roid) {
+	var othis = this;
+
+	this.radioChange = function(){
+		var val = $(".branch input[type=radio]:checked").val();
+		if (val == "existing") {
+			$(".projectGroup").show();
+			$(".projectnameGroup").hide();
+			$(".commentGroup").show();
+		} else if (val == "new") {
+			$(".projectGroup").hide();
+			$(".projectnameGroup").show();
+			$(".commentGroup").show();
+		} else {
+			$(".projectGroup").hide();
+			$(".projectnameGroup").hide();
+			$(".commentGroup").hide();
+		}
+	};
+
+	this.branch = function(){
+		var val = $(".branch input[type=radio]:checked").val();
+		if (val == "existing") {
+			Global.bimServerApi.call("ServiceInterface", "branchToExistingProject", {
+				roid: roid,
+				destPoid: $(".branch .projectsSelect").val(),
+				comment: $(".branch .comment").val(),
+				sync: true
+			}, function(longId){
+				Global.bimServerApi.call("ServiceInterface", "getLongActionState", {actionId: longId}, function(data){
+					console.log(data.state);
+				});
+			});
+		} else if (val == "new") {
+			Global.bimServerApi.call("ServiceInterface", "branchToNewProject", {
+				roid: roid,
+				projectName: $(".branch .projectName").val(),
+				comment: $(".branch .comment").val(),
+				sync: true
+			}, function(longId){
+				Global.bimServerApi.call("ServiceInterface", "getLongActionState", {actionId: longId}, function(data){
+					console.log(data.state);
+				});
+			});
+		}
+	};
+	
+	Global.bimServerApi.call("ServiceInterface", "getAllProjects", {onlyTopLevel: false}, function(projects){
+		projects.forEach(function(project){
+			var option = $("<option value=\"" + project.oid + "\">" + project.name + "</option>");
+			$(".projectsSelect").append(option);
+		});
+	});
+
+	$(".branch .existingRadio, .branch .newRadio").change(othis.radioChange);
+	$(".branch .branchButton").click(othis.branch);
+	
+	othis.radioChange();
+}
+</script>
