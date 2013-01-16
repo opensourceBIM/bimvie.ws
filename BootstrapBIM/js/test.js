@@ -1,142 +1,3 @@
-<div class="project">
-	<h1></h1>
-	<div class="btn-group well well-small">
-		<button class="btn checkinButton">Checkin</button>
-		<button class="btn addServiceButton">Add service</button>
-		<button class="btn addSubProjectButton">Add sub project</button>
-		<button class="btn testButton">Test</button>
-	</div>
-	<ul class="nav nav-tabs">
-	  <li class="detailsLink active"><a>Details</a></li>
-	  <li class="subprojectsLink"><a>Subprojects</a></li>
-	  <li class="revisionsLink"><a>Revisions</a></li>
-	  <li class="checkoutsLink"><a>Checkouts</a></li>
-	  <li class="servicesLink"><a>Services</a></li>
-	  <li class="queryLink"><a>Query</a></li>
-	  <li class="extendedDataLink"><a>Extended Data</a></li>
-	  <li class="browserLink"><a>Browse</a></li>
-	  <!--  <li class="surferLink"><a>Surf</a></li>-->
-	  <li class="usersLink"><a>Users</a></li>
-	</ul>
-	<div class="content">
-		<div class="tab-pane details">
-			Not implemented
-		</div>
-		<div class="tab-pane subprojects initialhide">
-			<div class="well well-small nosubprojects">No sub projects</div>
-			<table class="subprojectsTable initialhide table table-striped table-hover">
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-		</div>
-		<div class="tab-pane revisions initialhide">
-			<div class="well well-small norevisions">No revisions</div>
-			<table class="revisionsTable initialhide table table-striped table-hover">
-				<thead>
-					<tr>
-						<th>Id</th>
-						<th>Date</th>
-						<th>User</th>
-						<th>Comment</th>
-						<th>Size</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-		</div>
-		<div class="tab-pane checkouts initialhide">
-			<div class="well well-small nocheckouts">No checkouts</div>
-			<table class="checkoutsTable initialhide table table-striped table-hover">
-				<thead>
-					<tr>
-						<th>Id</th>
-						<th>Date</th>
-						<th>User</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-		</div>
-		<div class="tab-pane services initialhide">
-			<div class="well well-small noservices">No services</div>
-			<table class="servicesTable initialhide table table-striped table-hover">
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Profile</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody></tbody>
-			</table>
-		</div>
-		<div class="tab-pane query initialhide" id="query">
-			Not implemented
-		</div>
-		<div class="tab-pane extendeddata initialhide">
-			<div class="">
-				
-			</div>
-			<div class="list"></div>
-		</div>
-		<div class="tab-pane browser initialhide" id="browser">
-			Not implemented
-		</div>
-		<div class="tab-pane users initialhide" id="users">
-			<div class="linkspacer">
-				<a class="addUserLink">Add user</a>
-			</div>
-			<div class="addUserToProjectDiv initialhide">
-				<form class="inline-form">
-					<select></select>
-					<button class="btn">Add</button>
-				</form>
-			</div>
-			<div class="nousers well well-small">
-				No users
-			</div>
-			<table class="table usersTable table-striped table-hover">
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-		</div>
-	  	<div class="tab-pane surfer initialhide" id="surfer">
-		</div>
-	</div>
-	<div class="initialhide dropdowntemplaterevision">
-		<div class="btn-group">
-			<button class="btn downloadCheckoutRevisionButton">Download</button>
-			<a class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
-			<ul class="dropdown-menu">
-			</ul>
-		</div>
-	</div>
-	<div class="initialhide dropdowntemplateproject">
-		<div class="btn-group">
-			<button class="btn">Download</button>
-			<button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
-			<ul class="dropdown-menu">
-			</ul>
-		</div>
-	</div>
-</div>
-<script>
 var Project = function(main, project) {
 	var othis = this;
 	othis.lastRevision = null;
@@ -585,7 +446,7 @@ var Project = function(main, project) {
 	$(".project .addUserLink").click(othis.addUserLinkClick);
 	
 	$(".project .checkinButton").click(othis.showCheckinPopup);
-	$(".project .addServiceButton").click(othis.addServiceClick);
+	$(".project .addServiceButton").click(othis.a ddServiceClick);
 	$(".project .addSubProjectButton").click(othis.addSubProjectClick);
 
 	this.newLogAction = function(uuid, logAction, serviceIdentifier, profileIdentifier, token, apiUrl){
@@ -596,12 +457,5 @@ var Project = function(main, project) {
 			});
 		}
 	};
-	
-	$(".testButton").click(function(){
-		var model = Global.bimServerApi.getModel(othis.project.lastRevisionId, true);
-		model.getAllOfType("IfcWindow", true, function(window){
-			console.log(window);
-		});
-	});
 }
 </script>

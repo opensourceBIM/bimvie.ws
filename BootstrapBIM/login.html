@@ -48,7 +48,7 @@ function Login(address, username) {
 	var othis = this;
 	
 	this.login = function(address) {
-		loadBimServerApi(address, notifier, function(serverInfo){
+		loadBimServerApi(address, Global.notifier, function(serverInfo){
 			if (serverInfo.serverState == "NOT_SETUP") {
 				$(".indexcontainer").load("setup.html", function(){
 					new Setup(address);
@@ -96,7 +96,7 @@ function Login(address, username) {
 	});
 	
 	this.resetPassword = function(address){
-		loadBimServerApi(address, notifier, function(serverInfo){
+		loadBimServerApi(address, Global.notifier, function(serverInfo){
 			if (serverInfo.serverState == "NOT_SETUP") {
 				$(".indexcontainer").load("setup.html", function(){
 					new Setup(address);

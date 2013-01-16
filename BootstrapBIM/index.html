@@ -21,7 +21,8 @@
 	<script>
 		Global = {};
 	
-		require(["main", "jquery.history", "jquery.cookie", "jquery.numeric", "jquery.enterpress", "String", "bimserverapibootstrap", "bootstrap.min", "sha256", "utils", "formatters"], function(util) {
+		require(["main", "jquery.history", "jquery.cookie", "jquery.numeric", "jquery.enterpress", "String", "bimserverapibootstrap", 
+		         "bootstrap.min", "sha256", "utils", "formatters", "settings", "jquery.fileupload"], function(util) {
 			pushInitialState();
 
 			Global.bimServerApi = null;
@@ -30,7 +31,7 @@
 			
 			$(".status").hide();
 			
-			var notifier = {
+			Global.notifier = {
 				error: function(message){
 					$(".genericErrors .text").html(message).parent().show();
 				},
@@ -71,7 +72,7 @@
 
 			function loadError() {
 				window.clearTimeout(Global.timeoutId);
-				notifier.error("Could not connect");
+				Global.notifier.error("Could not connect");
 				$.removeCookie("username");
 				$.removeCookie("autologin");
 				$.removeCookie("address");
@@ -95,7 +96,7 @@
 					$.getScript(address + "/js/bimserverapi.js")
 					.done(function(script, textStatus) {
 						window.clearTimeout(Global.timeoutId);
-						Global.bimServerApi = new BimServerApi($.cookie("address"), notifier);
+						Global.bimServerApi = new BimServerApi($.cookie("address"), Global.notifier);
 						Global.bimServerApi.call("ServiceInterface", "getServerInfo", {}, function(serverInfo){
 							if (serverInfo.serverState == "NOT_SETUP") {
 								$(".indexcontainer").load("setup.html", function(){
