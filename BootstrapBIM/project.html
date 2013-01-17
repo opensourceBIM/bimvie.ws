@@ -4,7 +4,6 @@
 		<button class="btn checkinButton">Checkin</button>
 		<button class="btn addServiceButton">Add service</button>
 		<button class="btn addSubProjectButton">Add sub project</button>
-		<button class="btn testButton">Test</button>
 	</div>
 	<ul class="nav nav-tabs">
 	  <li class="detailsLink active"><a>Details</a></li>
@@ -596,12 +595,5 @@ var Project = function(main, project) {
 			});
 		}
 	};
-	
-	$(".testButton").click(function(){
-		var model = Global.bimServerApi.getModel(othis.project.lastRevisionId, true);
-		model.getAllOfType("IfcWindow", true, function(window){
-			console.log(window);
-		});
-	});
 }
 </script>

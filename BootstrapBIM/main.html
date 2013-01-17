@@ -7,6 +7,7 @@
 			<li class="usersettingsLink"><a>User Settings</a></li>
 			<li class="serversettingsLink"><a>Server Settings</a></li>
 			<li class="serverinfoLink"><a>Server Info</a></li>
+			<li class="testingLink"><a>Testing</a></li>
 		</ul>
 	</div>
 	<div class="btn-group pull-right">
@@ -54,6 +55,8 @@ function Main(address, username) {
 			othis.showServerSettings(null, alterState);
 		} else if (history.page == "ServerInfo") {
 			othis.showServerInfo(null, alterState);
+		} else if (history.page == "Testing") {
+			othis.showTesting(null, alterState);
 		} else {
 			othis.showDashboard(null, alterState);
 		}
@@ -217,6 +220,15 @@ function Main(address, username) {
 		}, callback);
 	};
 
+	this.showTesting = function(callback, alterState) {
+		othis.changePage($(".testingLink"), "testing.html", function(){
+			othis.current = new Testing(othis);
+			if (alterState) {
+				pushHistory({page: "Testing"});
+			}
+		}, callback);
+	};
+
 	this.extendedDataSchemaClick = function(event){
 		event.preventDefault();
 		othis.showExtendedDataSchema($(this).data("extendeddataschema"));
@@ -235,6 +247,7 @@ function Main(address, username) {
 	$(".usersettingsLink").click(function(event){othis.showUserSettings(null, true)});
 	$(".serverinfoLink").click(function(event){othis.showServerInfo(null, true)});
 	$(".serversettingsLink").click(function(event){othis.showServerSettings(null, true)});
+	$(".testingLink").click(function(event){othis.showTesting(null, true)});
 	$(".logoutLink").click(othis.logout);
 	
 	$(".userButton").click(function(){
