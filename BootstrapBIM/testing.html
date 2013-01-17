@@ -1,0 +1,56 @@
+<div class="testing">
+	<select class="projectSelect"></select>
+	<select class="revisionSelect"></select>
+	<button class="btn goButton">GO!</button>
+	<button class="btn commitButton">Commit!</button>
+</div>
+<script>
+function Testing() {
+	var othis = this;
+	
+	this.close = function(){};
+	
+	Global.bimServerApi.call("ServiceInterface", "getAllProjects", {onlyTopLevel: false}, function(projects){
+		$(".projectSelect option").remove();
+		projects.forEach(function(project){
+			var option = $("<option value=\"" + project.oid + "\">" + project.name + "</option>");
+			$(".projectSelect").append(option);
+		});
+		othis.loadRevisions($(".projectSelect").val());
+	});
+	
+	this.loadRevisions = function(poid){
+		Global.bimServerApi.call("ServiceInterface", "getAllRevisionsOfProject", {poid: poid}, function(revisions){
+			$(".revisionSelect option").remove();
+			revisions.forEach(function(revision){
+				var option = $("<option value=\"" + revision.oid + "\">" + revision.id + "</option>");
+				$(".revisionSelect").append(option);
+			});
+		});
+	};
+	
+	$(".projectSelect").change(function(){othis.loadRevisions($(this).val())});
+	
+	$(".goButton").click(function(){
+		othis.model = Global.bimServerApi.getModel($(".projectSelect").val(), $(".revisionSelect").val(), false);
+		othis.model.getAllOfType("IfcWindow", true, function(window){
+			console.log(window);
+			window.setOverallHeight(window.getOverallHeight() * 1.1);
+			window.getOwnerHistory(function(ownerHistory){
+				ownerHistory.getOwningUser(function(user){
+					user.getThePerson(function(person){
+						console.log("new person name");
+						person.setGivenName("This is a test");
+					});
+				});
+			});
+		});
+	});
+	
+	$(".commitButton").click(function(){
+		othis.model.commit("comment", function(roid){
+			console.log("New revision: " + roid);
+		});
+	});
+};
+</script>
