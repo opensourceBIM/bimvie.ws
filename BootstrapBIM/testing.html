@@ -10,14 +10,11 @@
 		</thead>
 		<tbody></tbody>
 	</table>
-	<select class="projectSelect"></select>
-	<select class="revisionSelect"></select>
-	<button class="btn goButton">GO!</button>
 </div>
 <script>
 function Testing() {
 	var othis = this;
-	
+
 	this.close = function(){};
 	
 	this.addTest = function(name, description, test){
@@ -35,11 +32,11 @@ function Testing() {
 		tr.append("<td class=\"result\"></td>");
 		$(".testing table tbody").append(tr);
 	};
-	
+
 	this.addTest("Test 1", "Create furnishing + GUID", function(doneCallback){
 		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 1" + Math.random()}, function(project){
 			Global.bimServerApi.createModel(project.oid, function(model){
-				model.create("IfcFurnishingElement", function(furnishingElement){
+				model.create("IfcFurnishingElement", {}, function(furnishingElement){
 					furnishingElement.setGlobalId("blablabla");
 				});
 			}).done(function(model){
@@ -70,14 +67,14 @@ function Testing() {
 			});
 		});
 	});
-	
+
 	this.addTest("Test 2", "Create 10 walls, delete 1", function(doneCallback){
-		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 1" + Math.random()}, function(project){
+		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 2" + Math.random()}, function(project){
 			// Stage 1: create 10 walls
 			Global.bimServerApi.createModel(project.oid, function(model){
 				for (var i=1; i<=10; i++) {
 					(function(i){
-						model.create("IfcWall", function(wall){
+						model.create("IfcWall", {}, function(wall){
 							wall.setName("wall " + i);
 							wall.setGlobalId("wall" + i); // yes not using real GUID, this is just for testing
 						});
@@ -114,48 +111,86 @@ function Testing() {
 			});
 		});
 	});
-	
-	Global.bimServerApi.call("ServiceInterface", "getAllProjects", {onlyTopLevel: false}, function(projects){
-		$(".projectSelect option").remove();
-		projects.forEach(function(project){
-			var option = $("<option value=\"" + project.oid + "\">" + project.name + "</option>");
-			$(".projectSelect").append(option);
-		});
-		othis.loadRevisions($(".projectSelect").val());
-	});
-	
-	this.loadRevisions = function(poid){
-		Global.bimServerApi.call("ServiceInterface", "getAllRevisionsOfProject", {poid: poid}, function(revisions){
-			$(".revisionSelect option").remove();
-			revisions.forEach(function(revision){
-				var option = $("<option value=\"" + revision.oid + "\">" + revision.id + "</option>");
-				$(".revisionSelect").append(option);
-			});
-		});
-	};
-	
-	$(".projectSelect").change(function(){othis.loadRevisions($(this).val())});
-	
-	$(".goButton").click(function(){
-		Global.bimServerApi.getModel($(".projectSelect").val(), $(".revisionSelect").val(), false, function(model){
-			model.getAllOfType("IfcWindow", true, function(window){
-				console.log(window);
-				window.setOverallHeight(window.getOverallHeight() * 1.1);
-				window.getOwnerHistory(function(ownerHistory){
-					ownerHistory.getOwningUser(function(user){
-						user.getThePerson(function(person){
-							console.log(person, "new name");
-							person.setGivenName("This is a test");
-						});
-					});
+
+	this.addTest("Test 3", "Create a wall with a window with actual geometry", function(doneCallback){
+		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 3" + Math.random()}, function(project){
+			Global.bimServerApi.createModel(project.oid, function(model){
+				var ifcCartesianPoint = model.create("IfcCartesianPoint", {
+					Coordinates: [0.0, 0.0, 0.0]
+				});
+
+				var ifcAxis2Placement = model.create("IfcAxis2Placement", {
+					Location: ifcCartesianPoint
+				});
+				
+				var ifcGeometricRepresentationContext = model.create("IfcGeometricRepresentationContext", {
+					ContextType: "Model",
+					CoordinateSpaceDimension: 3,
+					Precision: 1.000E-5,
+					WorldCoordinateSystem: ifcAxis2Placement
+				});
+
+				var ifcPerson = model.create("IfcPerson", {
+					FamilyName: "de Laat",
+					GivenName: "Ruben",
+					PrefixTitles: "BSc"
+				});
+				
+				var ifcPersonAndOrganization = model.create("IfcPersonAndOrganization", {
+					ThePerson: ifcPerson,
+					TheOrganization: ifcOrganization
+				});
+				
+				var ifcOrganization = model.create("IfcOrganization", {
+					Name: "TNO",
+					Description: "TNO Building Innovation"
+				});
+				
+				var ifcApplication = model.create("IfcApplication", {
+					ApplicationDeveloper: ifcOrganization,
+					Version: "1.2",
+					ApplicationFullName: "BIMserver",
+					ApplicationIdentifier: "BIMserver"
+				});
+				
+				var ownerHistory = model.create("IfcOwnerHistory", {
+					ChangeAction: "ADDED",
+					CreationDate: 1216884646,
+					OwningUser: ifcPersonAndOrganization
+				})
+				
+				var ifcProject = model.create("IfcProject", {
+					GlobalId: "2o1ykWxGT4ZxPjHNe4gayR",
+					Name: "Default Project",
+					Description: "Description of Default Project",
+					RepresentationContexts: [ifcGeometricRepresentationContext],
+					OwnerHistory: ownerHistory
+				});
+
+				var ifcUnitAssignment = model.create("IfcUnitAssignment", {});
+				
+				ifcUnitAssignment.getUnits().add(model.create("IfcSIUnit", {
+					UnitType: "LENGTHUNIT",
+					Prefix: "MILLI",
+					Name: "METRE"
+				}));
+				ifcUnitAssignment.getUnits().add(model.create("IfcSIUnit", {
+					UnitType: "AREAUNIT",
+					Name: "SQUARE_METRE"
+				}));
+				
+				var ifcDimensionalComponents = model.create("IfcDimensionalExponents");
+
+				var ifcMeasureWithUnit = model.create("IfcMeasureWithUnit");
+				
+				var ifcConversionBasedUnit = model.create("IfcConversionBasedUnit", {
+					Dimensions: ifcDimensionalComponents,
+					UnitType: "PLANEANGLEUNIT",
+					Name: "DEGREE",
+					ConversionFactor: ifcMeasureWithUnit
 				});
 			});
-		}).done(function(model){
-			console.log("done");
-			model.commit("comment", function(roid){
-				console.log("New revision: " + roid);
-			});
 		});
 	});
-};
+}
 </script>
