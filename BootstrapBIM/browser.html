@@ -1,8 +1,17 @@
 <div class="browser">
 	<table class="typesTable initialhide table table-striped table-hover">
+		<thead></thead>
+		<tbody></tbody>
 	</table>
 	<table class="objectsTable initialhide table table-striped table-hover">
-		<tr><th>Oid</th><th>Name</th><th>GUID</th></tr>
+		<thead>
+			<tr>
+				<th>Oid</th>
+				<th>Name</th>
+				<th>GUID</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
 	</table>
 	<div class="linkspacer">
 		<a class="load3dButton initialhide">Show object in 3D</a>
@@ -13,7 +22,12 @@
 		</canvas>
 	</div>
 	<table class="objectTable initialhide table table-striped">
-		<tr><th>Property</th><th>Value</th></tr>
+		<thead></thead>
+			<tr>
+				<th>Property</th>
+				<th>Value</th>
+			</tr>
+		<tbody></tbody>
 	</table>
 </div>
 <script>
@@ -24,11 +38,11 @@ function Browser(revision) {
 	this.loadObject = function(oid) {
 		othis.oid = oid;
 		Global.bimServerApi.call("ServiceInterface", "getDataObjectByOid", {roid: othis.revision.oid, oid: oid}, function(data){
-			$(".browser .objectTable tr[fieldName], .revision .objectTable tr.extra").remove();
+			$(".browser .objectTable tbody tr").remove();
 			$(".browser table").hide();
 			$(".browser .3dviewport").hide();
-			$(".browser .objectTable").append("<tr class=\"extra\"><td>Type</td><td>" + data.type + "</td></tr>");
-			$(".browser .objectTable").append("<tr class=\"extra\"><td>Oid</td><td>" + oid + "</td></tr>");
+			$(".browser .objectTable tbody").append("<tr class=\"extra\"><td>Type</td><td>" + data.type + "</td></tr>");
+			$(".browser .objectTable tbody").append("<tr class=\"extra\"><td>Oid</td><td>" + oid + "</td></tr>");
 			data.values.forEach(function(value){
 				if (value.__type == "SListDataValue") {
 					var tr = $("<tr></tr>");
@@ -52,13 +66,13 @@ function Browser(revision) {
 						}
 					});
 					tr.append(td);
-					$(".browser .objectTable").append(tr);
+					$(".browser .objectTable tbody").append(tr);
 				} else if (value.__type == "SSimpleDataValue") {
 					var tr = $("<tr></tr>");
 					tr.attr("fieldName", value.fieldName);
 					tr.append("<td>" + value.fieldName + "</td>");
 					tr.append("<td>" + (value.stringValue == null ? "" : value.stringValue) + "</td>");
-					$(".browser .objectTable").append(tr);
+					$(".browser .objectTable tbody").append(tr);
 				} else if (value.__type == "SReferenceDataValue") {
 					var tr = $("<tr></tr>");
 					tr.attr("fieldName", value.fieldName);
@@ -70,7 +84,7 @@ function Browser(revision) {
 					a.click(othis.referenceClick);
 					valueTd.append(a);
 					tr.append(valueTd);
-					$(".browser .objectTable").append(tr);
+					$(".browser .objectTable tbody").append(tr);
 				}
 			});
 			$(".browser .objectTable").show();
@@ -99,7 +113,7 @@ function Browser(revision) {
 		event.preventDefault();
 		var className = $(this).parents("tr").attr("className");
 		Global.bimServerApi.call("ServiceInterface", "getDataObjectsByType", {roid: othis.revision.oid, className: className}, function(data){
-			$(".browser .objectsTable tr[className]").remove();
+			$(".browser .objectsTable tbody tr").remove();
 			$(".browser table").hide();
 			$(".browser .load3dButton, .browser .3dviewport").hide();
 			data.forEach(function(dataObject){
@@ -123,7 +137,7 @@ function Browser(revision) {
 				guidA.click(othis.objectClick);
 				guidTd.append(guidA);
 				tr.append(guidTd);
-				$(".browser .objectsTable").append(tr);				
+				$(".browser .objectsTable tbody").append(tr);				
 			});
 			$(".browser .objectsTable").show();
 		});
@@ -131,12 +145,13 @@ function Browser(revision) {
 
 	this.loadRevision = function() {
 		Global.bimServerApi.call("ServiceInterface", "getRevisionSummary", {roid: othis.revision.oid}, function(data){
+			$(".browser .typesTable tbody tr").remove();
 			$(".browser table").hide();
 			$(".browser .load3dButton, .browser .3dviewport").hide();
 			data.list.forEach(function(revisionSummaryContainer){
 				if (revisionSummaryContainer.types.length > 0) {
 					var tr = $("<tr class=\"header\"><td>" + revisionSummaryContainer.name + "</td><td>Occurances</td></tr>");
-					$(".browser .typesTable").append(tr);
+					$(".browser .typesTable tbody").append(tr);
 					revisionSummaryContainer.types.forEach(function(revisionSummaryType){
 						var tr = $("<tr></tr>");
 						tr.attr("className", revisionSummaryType.name);
@@ -146,7 +161,7 @@ function Browser(revision) {
 						nameTd.append(nameA);
 						tr.append(nameTd);
 						tr.append("<td>" + revisionSummaryType.count + "</td>");
-						$(".browser  .typesTable").append(tr);
+						$(".browser .typesTable tbody").append(tr);
 					});
 				}
 			});

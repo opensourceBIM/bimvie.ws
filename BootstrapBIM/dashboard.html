@@ -15,14 +15,6 @@
 function Dashboard(main) {
 	var othis = this;
 	
-	this.showUser = function(event) {
-		main.showUser($(this).data("user"), event);
-	};
-	
-	this.showProject = function(event) {
-		main.showProject($(this).data("project"), event);
-	};
-
 	this.close = function() {
 		Global.bimServerApi.unregister(othis.newLogAction);
 	};
@@ -30,7 +22,9 @@ function Dashboard(main) {
 	this.createProjectLink = function(poid) {
 		var link = $("<a>Loading...</a>");
 		link.attr("poid", poid);
-		link.click(othis.showProject);
+		link.click(function(){
+			main.showProject(poid, null, true);
+		});
 		loadProject(link);
 		return link;
 	};
@@ -38,7 +32,9 @@ function Dashboard(main) {
 	this.createUserLink = function(uoid) {
 		var link = $("<a>Loading...</a>");
 		link.attr("uoid", uoid);
-		link.click(othis.showUser);
+		link.click(function(){
+			main.showUser(uoid, null, true);
+		});
 		loadUser(link);
 		return link;
 	};

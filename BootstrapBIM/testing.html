@@ -1,14 +1,119 @@
 <div class="testing">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Description</th>
+				<th>Run</th>
+				<th>Results</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
 	<select class="projectSelect"></select>
 	<select class="revisionSelect"></select>
 	<button class="btn goButton">GO!</button>
-	<button class="btn commitButton">Commit!</button>
 </div>
 <script>
 function Testing() {
 	var othis = this;
 	
 	this.close = function(){};
+	
+	this.addTest = function(name, description, test){
+		var tr = $("<tr>");
+		tr.append("<td>" + name + "</td>");
+		tr.append("<td>" + description + "</td>");
+		tr.append("<td><button class=\"btn\">Run</button></td>");
+		tr.find("button").click(function(){
+			var resultTd = $(this).parents("tr").find(".result");
+			test(function(result){
+				console.log("result", result);
+				resultTd.html(result);
+			});
+		});
+		tr.append("<td class=\"result\"></td>");
+		$(".testing table tbody").append(tr);
+	};
+	
+	this.addTest("Test 1", "Create furnishing + GUID", function(doneCallback){
+		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 1" + Math.random()}, function(project){
+			Global.bimServerApi.createModel(project.oid, function(model){
+				model.create("IfcFurnishingElement", function(furnishingElement){
+					furnishingElement.setGlobalId("blablabla");
+				});
+			}).done(function(model){
+				console.log("done");
+				model.commit("initial revision", function(roid){
+					// Now we will test and see if the objects are really there
+					Global.bimServerApi.getModel(project.oid, roid, false, function(model){
+						var first = true;
+						model.getAllOfType("IfcFurnishingElement", true, function(furnishingElement){
+							if (first) {
+								first = false;
+								console.log(furnishingElement);
+								furnishingElement.getGlobalId(function(globallyUniqueId){
+									if (globallyUniqueId == null) {
+										doneCallback("Error: No GUID");
+									} else if (globallyUniqueId == "blablabla") {
+										doneCallback("Success");
+									} else {
+										doneCallback("Error: Not the right GUID value");
+									}
+								});
+							} else {
+								doneCallback("Error: Multiple IfcFurnishingElement");
+							}
+						});
+					});
+				});
+			});
+		});
+	});
+	
+	this.addTest("Test 2", "Create 10 walls, delete 1", function(doneCallback){
+		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 1" + Math.random()}, function(project){
+			// Stage 1: create 10 walls
+			Global.bimServerApi.createModel(project.oid, function(model){
+				for (var i=1; i<=10; i++) {
+					(function(i){
+						model.create("IfcWall", function(wall){
+							wall.setName("wall " + i);
+							wall.setGlobalId("wall" + i); // yes not using real GUID, this is just for testing
+						});
+					})(i);
+				}
+			}).done(function(model){
+				model.commit("initial revision with 10 walls", function(roid){
+					// Stage 2: count the walls and remove the 6th
+					Global.bimServerApi.getModel(project.oid, roid, false, function(model){
+						model.count("IfcWall", true, function(count){
+							if (count == 10) {
+								model.getByGuid("wall6", function(wall6){
+									wall6.remove();
+								});
+							} else {
+								doneCallback("Error: " + count + " walls found, should be 10");
+							}
+						});
+					}).done(function(model){
+						model.commit("removing the 6th wall", function(roid){
+							// Stage 3: count again
+							Global.bimServerApi.getModel(project.oid, roid, false, function(model){
+								model.count("IfcWall", true, function(count){
+									if (count == 9) {
+										doneCallback("Success");
+									} else {
+										doneCallback("Error: Found " + count + " walls, should be 9");
+									}
+								});
+							});			
+						});
+					});
+				});
+			});
+		});
+	});
 	
 	Global.bimServerApi.call("ServiceInterface", "getAllProjects", {onlyTopLevel: false}, function(projects){
 		$(".projectSelect option").remove();
@@ -32,24 +137,24 @@ function Testing() {
 	$(".projectSelect").change(function(){othis.loadRevisions($(this).val())});
 	
 	$(".goButton").click(function(){
-		othis.model = Global.bimServerApi.getModel($(".projectSelect").val(), $(".revisionSelect").val(), false);
-		othis.model.getAllOfType("IfcWindow", true, function(window){
-			console.log(window);
-			window.setOverallHeight(window.getOverallHeight() * 1.1);
-			window.getOwnerHistory(function(ownerHistory){
-				ownerHistory.getOwningUser(function(user){
-					user.getThePerson(function(person){
-						console.log("new person name");
-						person.setGivenName("This is a test");
+		Global.bimServerApi.getModel($(".projectSelect").val(), $(".revisionSelect").val(), false, function(model){
+			model.getAllOfType("IfcWindow", true, function(window){
+				console.log(window);
+				window.setOverallHeight(window.getOverallHeight() * 1.1);
+				window.getOwnerHistory(function(ownerHistory){
+					ownerHistory.getOwningUser(function(user){
+						user.getThePerson(function(person){
+							console.log(person, "new name");
+							person.setGivenName("This is a test");
+						});
 					});
 				});
 			});
-		});
-	});
-	
-	$(".commitButton").click(function(){
-		othis.model.commit("comment", function(roid){
-			console.log("New revision: " + roid);
+		}).done(function(model){
+			console.log("done");
+			model.commit("comment", function(roid){
+				console.log("New revision: " + roid);
+			});
 		});
 	});
 };
