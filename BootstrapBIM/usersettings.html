@@ -47,6 +47,8 @@
 				othis.current = new GenericPluginSettingsList(main, othis, {
 					getAllMethodName: "getAllSerializers",
 					updateMethodName: "updateSerializer",
+					setDefaultMethodName: "setDefaultSerializer",
+					defaultFieldName: "defaultSerializerId",
 					createUpdateObject: function(pluginConfiguration){return {serializer: pluginConfiguration}},
 					listTitle: "Serializers",
 					showDetailsFunction: othis.showSerializer
@@ -77,6 +79,8 @@
 				othis.current = new GenericPluginSettingsList(main, othis, {
 					getAllMethodName: "getAllObjectIDMs",
 					updateMethodName: "updateObjectIDM",
+					setDefaultMethodName: "setDefaultObjectIDM",
+					defaultFieldName: "defaultObjectIDMId",
 					createUpdateObject: function(pluginConfiguration){return {objectIDM: pluginConfiguration}},
 					listTitle: "Object IDMs",
 					showDetailsFunction: othis.showObjectIdm
@@ -92,6 +96,8 @@
 				othis.current = new GenericPluginSettingsList(main, othis, {
 					getAllMethodName: "getAllIfcEngines",
 					updateMethodName: "updateIfcEngine",
+					setDefaultMethodName: "setDefaultIfcEngine",
+					defaultFieldName: "defaultIfcEngineId",
 					createUpdateObject: function(pluginConfiguration){return {ifcEngine: pluginConfiguration}},
 					listTitle: "Render Engines",
 					showDetailsFunction: othis.showRenderEngine
@@ -107,6 +113,8 @@
 				othis.current = new GenericPluginSettingsList(main, othis, {
 					getAllMethodName: "getAllQueryEngines",
 					updateMethodName: "updateQueryEngine",
+					setDefaultMethodName: "setDefaultQueryEngine",
+					defaultFieldName: "defaultQueryEngineId",
 					createUpdateObject: function(pluginConfiguration){return {queryEngine: pluginConfiguration}},
 					listTitle: "Query Engines",
 					showDetailsFunction: othis.showQueryEngine
@@ -122,6 +130,8 @@
 				othis.current = new GenericPluginSettingsList(main, othis, {
 					getAllMethodName: "getAllModelMergers",
 					updateMethodName: "updateModelMerger",
+					setDefaultMethodName: "setDefaultModelMerger",
+					defaultFieldName: "defaultModelMergerId",
 					createUpdateObject: function(pluginConfiguration){return {modelMerger: pluginConfiguration}},
 					listTitle: "Model Mergers",
 					showDetailsFunction: othis.showModelMerger
@@ -137,6 +147,8 @@
 				othis.current = new GenericPluginSettingsList(main, othis, {
 					getAllMethodName: "getAllModelCompares",
 					updateMethodName: "updateModelCompare",
+					setDefaultMethodName: "setDefaultModelCompare",
+					defaultFieldName: "defaultModelCompareId",
 					createUpdateObject: function(pluginConfiguration){return {modelCompare: pluginConfiguration}},
 					listTitle: "Model Compares",
 					showDetailsFunction: othis.showModelCompare

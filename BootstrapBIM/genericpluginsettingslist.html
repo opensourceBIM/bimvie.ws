@@ -7,6 +7,7 @@
 				<th>Description</th>
 				<th>State</th>
 				<th>Actions</th>
+				<th class="defaultHeader">Default</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -18,10 +19,14 @@ function GenericPluginSettingsList(main, usersettings, configuration) {
 	var othis = this;
 
 	$(".genericpluginsettingslist h3").html(configuration.listTitle);
+
+	if (configuration.setDefaultMethodName == null) {
+		$(".genericpluginsettingslist .defaultHeader").hide();
+	}
 	
 	this.pluginClick = function(event) {
-		event.preventDefault();
-		if (!$(event.target).is("a, button, span.caret")) {
+		if (!$(event.target).is("a, button, span.caret, input")) {
+			event.preventDefault();
 			var plugin = $(this).parents("tr").andSelf().data("plugin");
 			configuration.showDetailsFunction(plugin, null, true);
 		}
@@ -43,6 +48,13 @@ function GenericPluginSettingsList(main, usersettings, configuration) {
 		});
 	};
 	
+	this.setDefaultClick = function(){
+		var oid = $(this).parents("tr").data("plugin").oid;
+		Global.bimServerApi.callWithFullIndication("ServiceInterface", configuration.setDefaultMethodName, {
+			oid: oid
+		}, function(){});
+	};
+	
 	this.addPlugin = function(plugin) {
 		var tr = $("<tr>");
 		tr.data("plugin", plugin);
@@ -60,14 +72,24 @@ function GenericPluginSettingsList(main, usersettings, configuration) {
 		var td = $("<td>");
 		td.append(link);
 		tr.append(td);
+		if (configuration.setDefaultMethodName != null) {
+			tr.append("<td><input name=\"default\" type=\"radio\"></td>");
+			tr.find("input").change(othis.setDefaultClick);
+			if (othis.userSettings[configuration.defaultFieldName] == plugin.oid) {
+				tr.find("input").attr("checked", "checked");
+			}
+		}
 		$(".genericpluginsettingslist table tbody").append(tr);
 	};
 
 	this.loadPluginConfigurations = function(){
-		Global.bimServerApi.call("ServiceInterface", configuration.getAllMethodName, {onlyEnabled: false}, function(data){
-			$(".genericpluginsettingslist table tbody").empty();
-			data.forEach(function(plugin){
-				othis.addPlugin(plugin);
+		Global.bimServerApi.call("ServiceInterface", "getUserSettings", {}, function(userSettings){
+			othis.userSettings = userSettings;
+			Global.bimServerApi.call("ServiceInterface", configuration.getAllMethodName, {onlyEnabled: false}, function(data){
+				$(".genericpluginsettingslist table tbody").empty();
+				data.forEach(function(plugin){
+					othis.addPlugin(plugin);
+				});
 			});
 		});
 	};

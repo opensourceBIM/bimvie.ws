@@ -75,6 +75,9 @@ function GenericPluginSettings(main, usersettings, pluginsettings, configuration
 						} else if (primitiveDefinition.type == "STRING") {
 							var input = $("<input parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
 							td.append(input);
+						} else if (primitiveDefinition.type == "BYTE_ARRAY") {
+							var input = $("<input parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"file\"/>");
+							td.append(input);
 						} else if (primitiveDefinition.type == "BOOLEAN") {
 							var input = $("<input parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"checkbox\"/>");
 							td.append(input);
@@ -122,7 +125,7 @@ function GenericPluginSettings(main, usersettings, pluginsettings, configuration
 			};
 			settings.parameters.push(parameter);
 		});
-		Global.bimServerApi.call("ServiceInterface", "setPluginSettings", {poid: othis.pluginsettings.oid, settings: settings}, function(data){
+		Global.bimServerApi.callWithFullIndication("ServiceInterface", "setPluginSettings", {poid: othis.pluginsettings.oid, settings: settings}, function(data){
 			
 		});
 	};

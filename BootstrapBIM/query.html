@@ -16,13 +16,18 @@ function Query(containerDiv, main, poid, roid) {
 	var othis = this;
 	
 	this.loadEngines = function(){
-		Global.bimServerApi.call("ServiceInterface", "getAllQueryEngines", {onlyEnabled: true}, function(data){
-			containerDiv.find(".queryEngineSelect option").remove();
-			data.forEach(function(queryEngine){
-				var option = $("<option value=\"" + queryEngine.oid + "\">" + queryEngine.name + "</option>");
-				containerDiv.find(".queryEngineSelect").append(option);
+		Global.bimServerApi.call("ServiceInterface", "getDefaultQueryEngine", {}, function(defaultQueryEngine){
+			Global.bimServerApi.call("ServiceInterface", "getAllQueryEngines", {onlyEnabled: true}, function(data){
+				containerDiv.find(".queryEngineSelect option").remove();
+				data.forEach(function(queryEngine){
+					var option = $("<option value=\"" + queryEngine.oid + "\">" + queryEngine.name + "</option>");
+					if (defaultQueryEngine != null && queryEngine.oid == defaultQueryEngine.oid) {
+						option.attr("selected", "selected");
+					}
+					containerDiv.find(".queryEngineSelect").append(option);
+				});
+				othis.queryEngineChange();
 			});
-			othis.loadExampleKeys(data[0].oid);
 		});
 	};
 	
@@ -47,7 +52,7 @@ function Query(containerDiv, main, poid, roid) {
 	};
 	
 	this.queryEngineChange = function(){
-		othis.loadExampleKeys($(this).find(":selected").val());
+		othis.loadExampleKeys($(".query .queryEngineSelect").find(":selected").val());
 	};
 	
 	this.queryButtonClick = function(){
