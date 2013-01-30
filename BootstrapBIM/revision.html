@@ -3,24 +3,23 @@
 	<div class="btn-group well well-small">
 		<button class="btn branchButton">Branch</button>
 	</div>
-	
 	<ul class="nav nav-tabs">
-	  <li class="detailsLink active"><a href="#details" data-toggle="tab">Details</a></li>
-	  <li class="queryLink"><a href="#query" data-toggle="tab">Query</a></li>
-	  <li class="extendedDataLink"><a href="#extendeddata" data-toggle="tab">Extended Data</a></li>
-	  <li class="browserLink"><a href="#browser" data-toggle="tab">Browser</a></li>
+	  <li class="detailsLink"><a>Details</a></li>
+	  <li class="queryLink"><a>Query</a></li>
+	  <li class="extendedDataLink"><a>Extended Data</a></li>
+	  <li class="browserLink"><a>Browser</a></li>
 	</ul>
-	<div class="tab-content">	
-		<div class="tab-pane active details" id="details">
+	<div class="tab-content content">	
+		<div class="tab-pane details">
 			Not implemented
 		</div>
-		<div class="tab-pane query" class="query" id="query">
+		<div class="tab-pane query">
 			Not implemented
 		</div>
-		<div class="tab-pane extendeddata" id="extendeddata">
+		<div class="tab-pane extendeddata">
 			Not implemented
 		</div>
-		<div class="tab-pane browser" id="browser">
+		<div class="tab-pane browser">
 			Not implemented
 		</div>
 	</div>
@@ -43,6 +42,18 @@ function Revision(main, revision) {
 	this.updateRevision = function() {
 		$(".revision h1").html("Revision " + othis.revision.id);
 		$(".revision .extendedDataLink a").html("Extended Data" + (othis.revision.extendedData.length == 0 ? "" : (" (" + othis.revision.extendedData.length + ")")));
+		var history = History.getState().data;
+		if (history.tab == "details") {
+			othis.showDetails();
+		} else if (history.tab == "query") {
+			othis.showQuery();
+		} else if (history.tab == "extendeddata") {
+			othis.showExtendedData();
+		} else if (history.tab == "browser") {
+			othis.showBrowser();
+		} else {
+			othis.showDetails();
+		}
 	};
 	
 	this.reloadRevision = function(roid) {
@@ -60,9 +71,19 @@ function Revision(main, revision) {
 	};
 
 	this.showDetails = function(){
+		pushHistoryAppend({tab: "details"});
+		$(".revision .nav li").removeClass("active");
+		$(".revision .detailsLink").addClass("active");
+		$(".revision .content > div").hide();
+		$(".revision .details").show();
 	};
 	
 	this.showQuery = function(){
+		pushHistoryAppend({tab: "query"});
+		$(".revision .nav li").removeClass("active");
+		$(".revision .queryLink").addClass("active");
+		$(".revision .content > div").hide();
+		$(".revision .query").show();
 		$(".revision .query").load("query.html", function(){
 			new Query($(this), main, revision.projectId, revision.oid);
 		});
@@ -77,6 +98,11 @@ function Revision(main, revision) {
 	};
 	
 	this.showExtendedData = function(){
+		pushHistoryAppend({tab: "extendeddata"});
+		$(".revision .nav li").removeClass("active");
+		$(".revision .extendedDataLink").addClass("active");
+		$(".revision .content > div").hide();
+		$(".revision .extendeddata").show();
 		if (othis.current != null) {
 			othis.current.close();
 		}
@@ -86,10 +112,15 @@ function Revision(main, revision) {
 	};
 
 	this.showBrowser = function(){
+		pushHistoryAppend({tab: "browser"});
+		$(".revision .nav li").removeClass("active");
+		$(".revision .browserLink").addClass("active");
+		$(".revision .content > div").hide();
+		$(".revision .browser").show();
 		if (othis.current != null) {
 			othis.current.close();
 		}
-		$(".revision #browser").load("browser.html", function(){
+		$(".revision .browser").load("browser.html", function(){
 			othis.current = new Browser(othis.revision);
 		});
 	};

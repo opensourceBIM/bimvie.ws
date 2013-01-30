@@ -84,20 +84,30 @@ function User(main, user) {
 		$(".user .checkoutsLink a").html("Checkouts" + (othis.user.checkouts == null || othis.user.checkouts.length == 0 ? "" : (" (" + othis.user.checkouts.length + ")")));
 		$(".user .projectsLink a").html("Projects" + (othis.user.hasRightsOn.length == 0 ? "" : (" (" + othis.user.hasRightsOn.length + ")")));
 		$(".user .tokenSpan").html(othis.user.token);
+		var history = History.getState().data;
+		if (history.tab == "details") {
+			othis.showDetails();
+		} else if (history.tab == "revisions") {
+			othis.showRevisions();
+		} else if (history.tab == "checkouts") {
+			othis.showCheckouts();
+		} else if (history.tab == "projects") {
+			othis.showProjects();
+		} else {
+			othis.showDetails();
+		}
 	};
 	
-	this.showDetails = function(event) {
-		if (event != null) {
-			event.preventDefault();
-		}
+	this.showDetails = function() {
+		pushHistoryAppend({tab: "details"});
 		$(".user .nav li").removeClass("active");
 		$(".user .detailsLink").addClass("active");
 		$(".user .content > div").hide();
 		$(".user .details").show();
 	};
 	
-	this.projectClick = function(event) {
-		main.showProject($(this).data("project"), event);
+	this.projectClick = function() {
+		main.showProject($(this).data("project"), null, true);
 		othis.close();
 	};
 	
@@ -165,8 +175,8 @@ function User(main, user) {
 		}).modal({keyboard:true});
 	};
 	
-	this.showRevisions = function(event) {
-		event.preventDefault();
+	this.showRevisions = function() {
+		pushHistoryAppend({tab: "revisions"});
 		$(".user .nav li").removeClass("active");
 		$(".user .revisionsLink").addClass("active");
 		$(".user .content > div").hide();
@@ -202,8 +212,8 @@ function User(main, user) {
 		$(".user .checkoutsTable tbody").prepend(checkoutRow);
 	};
 	
-	this.showCheckouts = function(event) {
-		event.preventDefault();
+	this.showCheckouts = function() {
+		pushHistoryAppend({tab: "checkouts"});
 		$(".user .nav li").removeClass("active");
 		$(".user .checkoutsLink").addClass("active");
 		$(".user .content > div").hide();
@@ -236,8 +246,8 @@ function User(main, user) {
 		$(".projectsTable").append(projectRow);
 	};
 	
-	this.showProjects = function(event) {
-		event.preventDefault();
+	this.showProjects = function() {
+		pushHistoryAppend({tab: "projects"});
 		$(".user .nav li").removeClass("active");
 		$(".user .projectsLink").addClass("active");
 		$(".user .content > div").hide();
@@ -254,7 +264,5 @@ function User(main, user) {
 	$(".user .revisionsLink").click(othis.showRevisions);
 	$(".user .checkoutsLink").click(othis.showCheckouts);
 	$(".user .projectsLink").click(othis.showProjects);
-	
-	othis.showDetails();
 }
 </script>

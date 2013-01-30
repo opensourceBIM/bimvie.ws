@@ -42,6 +42,25 @@ RegExp.escape = function(str) {
   return str.replace(/[[\]\\$().{},?*+|^-]/g, "\\$&");
 };
 
+function pushHistoryAppend(obj) {
+	var current = History.getState();
+	for (var k in current.data) {
+		if (obj[k] == null) {
+			obj[k] = current.data[k];
+		}
+	}
+	pushing = true;
+	var str = "?";
+	for (var i in obj) {
+		str += i + "=" + obj[i] + "&";
+	}
+	if (str.endsWith("&")) {
+		str = str.substring(0, str.length - 1);
+	}
+	History.pushState(obj, null, str);
+	pushing = false;
+}
+
 function pushHistory(obj) {
 	var current = History.getState();
 	pushing = true;

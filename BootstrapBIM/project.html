@@ -161,9 +161,8 @@ var Project = function(main, project) {
 		}
 	};
 
-	this.loadDetails = function(event) {
-		event.preventDefault();
-		pushHistory({tab: "details"});
+	this.loadDetails = function() {
+		pushHistoryAppend({tab: "details"});
 		$(".project .nav li").removeClass("active");
 		$(".project .detailsLink").addClass("active");
 		$(".project .content > div").hide();
@@ -196,8 +195,8 @@ var Project = function(main, project) {
 		$(".project .subprojectsTable").append(subProjectRow);
 	};
 	
-	this.loadSubProjects = function(event) {
-		event.preventDefault();
+	this.loadSubProjects = function() {
+		pushHistoryAppend({tab: "subprojects"});
 		$(".project .nav li").removeClass("active");
 		$(".project .subprojectsLink").addClass("active");
 		$(".project .content > div").hide();
@@ -358,8 +357,8 @@ var Project = function(main, project) {
 		$(".project .servicesTable tbody").append(tr);
 	};
 	
-	this.loadExtendedData = function(event) {
-		event.preventDefault();
+	this.loadExtendedData = function() {
+		pushHistoryAppend({tab: "extendeddata"});
 		$(".project .nav li").removeClass("active");
 		$(".project .extendedDataLink").addClass("active");
 		$(".project .content > div").hide();
@@ -369,8 +368,8 @@ var Project = function(main, project) {
 		});
 	};
 	
-	this.loadRevisions = function(event) {
-		event.preventDefault();
+	this.loadRevisions = function() {
+		pushHistoryAppend({tab: "revisions"});
 		$(".project .nav li").removeClass("active");
 		$(".project .revisionsLink").addClass("active");
 		$(".project .content > div").hide();
@@ -383,8 +382,8 @@ var Project = function(main, project) {
 		});
 	};
 
-	this.loadCheckouts = function(event) {
-		event.preventDefault();
+	this.loadCheckouts = function() {
+		pushHistoryAppend({tab: "checkouts"});
 		$(".project .nav li").removeClass("active");
 		$(".project .checkoutsLink").addClass("active");
 		$(".project .content > div").hide();
@@ -398,6 +397,7 @@ var Project = function(main, project) {
 	};
 
 	this.loadUsers = function() {
+		pushHistoryAppend({tab: "users"});
 		$(".project .nav li").removeClass("active");
 		$(".project .usersLink").addClass("active");
 		$(".project .content > div").hide();
@@ -410,8 +410,8 @@ var Project = function(main, project) {
 		});
 	};
 
-	this.loadServices = function(event) {
-		event.preventDefault();
+	this.loadServices = function() {
+		pushHistoryAppend({tab: "services"});
 		$(".project .nav li").removeClass("active");
 		$(".project .servicesLink").addClass("active");
 		$(".project .content > div").hide();
@@ -474,17 +474,22 @@ var Project = function(main, project) {
 		if (othis.project.lastRevisionId != -1) {
 			Global.bimServerApi.call("ServiceInterface", "getRevision", {roid: othis.project.lastRevisionId}, function(data){
 				othis.lastRevision = data;
+				$(".project .browserLink").show();
+				$(".project .surferLink").show();
+				$(".project .queryLink").show();
+				$(".project .extendedDataLink").show();
+				othis.loadHistory();
 			});
-			$(".project .browserLink").show();
-			$(".project .surferLink").show();
-			$(".project .queryLink").show();
-			$(".project .extendedDataLink").show();
 		} else {
 			$(".project .browserLink").hide();
 			$(".project .surferLink").hide();
 			$(".project .queryLink").hide();
 			$(".project .extendedDataLink").hide();
+			othis.loadHistory();
 		}
+	};
+
+	this.loadHistory = function(){
 		var history = History.getState().data;
 		if (history.tab == "details") {
 			othis.loadDetails();
@@ -492,6 +497,10 @@ var Project = function(main, project) {
 			othis.loadQuery();
 		} else if (history.tab == "browser") {
 			othis.loadBrowser();
+		} else if (history.tab == "checkouts") {
+			othis.loadCheckouts();
+		} else if (history.tab == "extendeddata") {
+			othis.loadExtendedData();
 		} else if (history.tab == "services") {
 			othis.loadServices();
 		} else if (history.tab == "users") {
@@ -503,8 +512,8 @@ var Project = function(main, project) {
 		}
 	};
 	
-	this.loadBrowser = function(event) {
-		event.preventDefault();
+	this.loadBrowser = function() {
+		pushHistoryAppend({tab: "browser"});
 		$(".project .nav li").removeClass("active");
 		$(".project .browserLink").addClass("active");
 		$(".project .content > div").hide();
@@ -514,8 +523,8 @@ var Project = function(main, project) {
 		});
 	};
 
-	this.loadQuery = function(event) {
-		event.preventDefault();
+	this.loadQuery = function() {
+		pushHistoryAppend({tab: "query"});
 		$(".project .nav li").removeClass("active");
 		$(".project .queryLink").addClass("active");
 		$(".project .content > div").hide();
@@ -529,8 +538,8 @@ var Project = function(main, project) {
 		main.showAddProject(event, null, othis.project);
 	};
 
-	this.loadSurfer = function(event) {
-		event.preventDefault();
+	this.loadSurfer = function() {
+		pushHistoryAppend({tab: "surfer"});
 		$(".project .nav li").removeClass("active");
 		$(".project .surferLink").addClass("active");
 		$(".project .content > div").hide();
