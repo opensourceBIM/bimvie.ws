@@ -86,3 +86,15 @@ table .btn {
 .classpath {
 	max-width: 400px;	
 }
+
+.error {
+	color: red;
+}
+
+.success {
+	color: green;
+}
+
+.running {
+	color: blue;
+}

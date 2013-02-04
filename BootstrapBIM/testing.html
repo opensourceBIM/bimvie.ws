@@ -1,4 +1,6 @@
 <div class="testing">
+	<button class="btn testAllSequentiallyButton">Test all sequentially</button>
+	<button class="btn testAllConcurrentlyButton">Test all concurrently</button>
 	<table class="table">
 		<thead>
 			<tr>
@@ -14,33 +16,79 @@
 <script>
 function Testing() {
 	var othis = this;
+	var tests = [];
 
 	this.close = function(){};
 	
+	this.testAllConcurrently = function(){
+		for (var i=0; i<tests.length; i++) {
+			var test = tests[i];
+			var resultTd = $(".testing tr[testid=\"" + i + "\"] td.result");
+			resultTd.html("");
+			othis.runTest(i, test, resultTd);
+		}
+	};
+
+	this.testSingleSequentially = function(testid, callback){
+		var test = tests[testid];
+		var resultTd = $(".testing tr[testid=\"" + testid + "\"] td.result");
+		othis.runTest(testid, test, resultTd, function(){
+			if (testid < tests.length) {
+				othis.testSingleSequentially(testid + 1, callback);
+			}
+		});
+	};
+	
+	this.testAllSequentially = function(){
+		for (var i=0; i<tests.length; i++) {
+			var resultTd = $(".testing tr[testid=\"" + i + "\"] td.result");
+			resultTd.html("");
+		}
+		othis.testSingleSequentially(0);
+	};
+
+	this.runTest = function(testid, test, resultTd, callback) {
+		resultTd.html("RUNNING").addClass("running").removeClass("error").removeClass("success");
+		test(function(code, result){
+			if (code == "ERROR") {
+				resultTd.addClass("error").removeClass("success").removeClass("running");
+				resultTd.html("ERROR");
+			} else if (code == "SUCCESS") {
+				resultTd.addClass("success").removeClass("running").removeClass("error");
+				resultTd.html("SUCCESS");
+			}
+			if (result != null) {
+				resultTd.html(result);
+			}
+			if (callback != null) {
+				callback();
+			}
+		});
+	};
+	
 	this.addTest = function(name, description, test){
-		var tr = $("<tr>");
+		var testid = tests.push(test) - 1;
+		var tr = $("<tr class=\"testtr\" testid=\"" + testid + "\">");
 		tr.append("<td>" + name + "</td>");
 		tr.append("<td>" + description + "</td>");
 		tr.append("<td><button class=\"btn\">Run</button></td>");
-		tr.find("button").click(function(){
-			var resultTd = $(this).parents("tr").find(".result");
-			test(function(result){
-				console.log("result", result);
-				resultTd.html(result);
-			});
-		});
 		tr.append("<td class=\"result\"></td>");
 		$(".testing table tbody").append(tr);
+		tr.find("button").click(function(){
+			othis.runTest(0, test, $(this).parents("tr").find(".result"));
+		});
 	};
 
+	$(".testing .testAllSequentiallyButton").click(othis.testAllSequentially);
+	$(".testing .testAllConcurrentlyButton").click(othis.testAllConcurrently);
+	
 	this.addTest("Test 1", "Create furnishing + GUID", function(doneCallback){
-		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 1" + Math.random()}, function(project){
+		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 1 - " + Math.random()}, function(project){
 			Global.bimServerApi.createModel(project.oid, function(model){
 				model.create("IfcFurnishingElement", {}, function(furnishingElement){
 					furnishingElement.setGlobalId("blablabla");
 				});
 			}).done(function(model){
-				console.log("done");
 				model.commit("initial revision", function(roid){
 					// Now we will test and see if the objects are really there
 					Global.bimServerApi.getModel(project.oid, roid, false, function(model){
@@ -48,18 +96,17 @@ function Testing() {
 						model.getAllOfType("IfcFurnishingElement", true, function(furnishingElement){
 							if (first) {
 								first = false;
-								console.log(furnishingElement);
 								furnishingElement.getGlobalId(function(guid){
 									if (guid == null) {
-										doneCallback("Error: No GUID");
+										doneCallback("ERROR", "No GUID");
 									} else if (guid == "blablabla") {
-										doneCallback("Success");
+										doneCallback("SUCCESS");
 									} else {
-										doneCallback("Error: Not the right GUID value (" + guid + ")");
+										doneCallback("ERROR", "Not the right GUID value (" + guid + ")");
 									}
 								});
 							} else {
-								doneCallback("Error: Multiple IfcFurnishingElement");
+								doneCallback("ERROR", "Multiple IfcFurnishingElement");
 							}
 						});
 					});
@@ -69,7 +116,7 @@ function Testing() {
 	});
 
 	this.addTest("Test 2", "Create 10 walls, delete 1", function(doneCallback){
-		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 2" + Math.random()}, function(project){
+		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 2 - " + Math.random()}, function(project){
 			// Stage 1: create 10 walls
 			Global.bimServerApi.createModel(project.oid, function(model){
 				for (var i=1; i<=10; i++) {
@@ -90,7 +137,7 @@ function Testing() {
 									wall6.remove();
 								});
 							} else {
-								doneCallback("Error: " + count + " walls found, should be 10");
+								doneCallback("ERROR", count + " walls found, should be 10");
 							}
 						});
 					}).done(function(model){
@@ -99,12 +146,12 @@ function Testing() {
 							Global.bimServerApi.getModel(project.oid, roid, false, function(model){
 								model.count("IfcWall", true, function(count){
 									if (count == 9) {
-										doneCallback("Success");
+										doneCallback("SUCCESS");
 									} else {
-										doneCallback("Error: Found " + count + " walls, should be 9");
+										doneCallback("ERROR", "Found " + count + " walls, should be 9");
 									}
 								});
-							});			
+							});
 						});
 					});
 				});
@@ -112,1539 +159,186 @@ function Testing() {
 		});
 	});
 
-	this.addTest("Test 3", "Create a wall with a window with actual geometry", function(doneCallback){
-		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 3" + Math.random()}, function(project){
-			Global.bimServerApi.createModel({
-				   "objects":[
-				              {
-				                 "__oid":92078403,
-				                 "__type":"IfcFaceOuterBound",
-				                 "__refBound":93848019,
-				                 "Orientation":"TRUE"
-				              },
-				              {
-				                 "__oid":92078400,
-				                 "__type":"IfcFace",
-				                 "__refBounds":[
-				                    92078403
-				                 ]
-				              },
-				              {
-				                 "__oid":92471616,
-				                 "__type":"IfcFace",
-				                 "__refBounds":[
-				                    92471619
-				                 ]
-				              },
-				              {
-				                 "__oid":146604286,
-				                 "__type":"IfcDirection",
-				                 "DirectionRatios":[
-				                    1.0,
-				                    0.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":870514855,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    0.0,
-				                    200.0,
-				                    1400.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":94044627,
-				                 "__type":"IfcPolyLoop",
-				                 "__refPolygon":[
-				                    870383783,
-				                    870449319,
-				                    870187175,
-				                    870252711
-				                 ]
-				              },
-				              {
-				                 "__oid":92471619,
-				                 "__type":"IfcFaceOuterBound",
-				                 "__refBound":94372307,
-				                 "Orientation":"TRUE"
-				              },
-				              {
-				                 "__oid":869269671,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    0.0,
-				                    0.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":92012867,
-				                 "__type":"IfcFaceOuterBound",
-				                 "__refBound":94044627,
-				                 "Orientation":"TRUE"
-				              },
-				              {
-				                 "__oid":92012864,
-				                 "__type":"IfcFace",
-				                 "__refBounds":[
-				                    92012867
-				                 ]
-				              },
-				              {
-				                 "__oid":93979091,
-				                 "__type":"IfcPolyLoop",
-				                 "__refPolygon":[
-				                    870252711,
-				                    870187175,
-				                    870121639,
-				                    870056103
-				                 ]
-				              },
-				              {
-				                 "__oid":92406080,
-				                 "__type":"IfcFace",
-				                 "__refBounds":[
-				                    92406083
-				                 ]
-				              },
-				              {
-				                 "__oid":146538750,
-				                 "__type":"IfcDirection",
-				                 "DirectionRatios":[
-				                    0.0,
-				                    0.0,
-				                    1.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":870449319,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    1600.0,
-				                    200.0,
-				                    1400.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":92406083,
-				                 "__type":"IfcFaceOuterBound",
-				                 "__refBound":94110163,
-				                 "Orientation":"TRUE"
-				              },
-				              {
-				                 "__oid":869335207,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    0.0,
-				                    0.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":193855623,
-				                 "__type":"IfcAxis2Placement3D",
-				                 "__refLocation":869073063,
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":92209472,
-				                 "__type":"IfcFace",
-				                 "__refBounds":[
-				                    92209475
-				                 ]
-				              },
-				              {
-				                 "__oid":92209475,
-				                 "__type":"IfcFaceOuterBound",
-				                 "__refBound":94437843,
-				                 "Orientation":"TRUE"
-				              },
-				              {
-				                 "__oid":7274681,
-				                 "__type":"IfcClosedShell",
-				                 "__refCfsFaces":[
-				                    91357504,
-				                    91488576,
-				                    91423040,
-				                    91685184,
-				                    91554112,
-				                    91619648
-				                 ]
-				              },
-				              {
-				                 "__oid":92340547,
-				                 "__type":"IfcFaceOuterBound",
-				                 "__refBound":94306771,
-				                 "Orientation":"TRUE"
-				              },
-				              {
-				                 "__oid":92340544,
-				                 "__type":"IfcFace",
-				                 "__refBounds":[
-				                    92340547
-				                 ]
-				              },
-				              {
-				                 "__oid":7340357,
-				                 "__type":"IfcFacetedBrep",
-				                 "Dim":0,
-				                 "__refOuter":7340217
-				              },
-				              {
-				                 "__oid":146735358,
-				                 "__type":"IfcDirection",
-				                 "DirectionRatios":[
-				                    1.0,
-				                    0.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":870383783,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    1600.0,
-				                    200.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":93913555,
-				                 "__type":"IfcPolyLoop",
-				                 "__refPolygon":[
-				                    870056103,
-				                    870121639,
-				                    870514855,
-				                    870318247
-				                 ]
-				              },
-				              {
-				                 "__oid":869400743,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    0.0,
-				                    0.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":193921159,
-				                 "__type":"IfcAxis2Placement3D",
-				                 "__refLocation":869138599,
-				                 "Dim":0,
-				                 "__refAxis":146079998,
-				                 "__refRefDirection":146145534
-				              },
-				              {
-				                 "__oid":92143936,
-				                 "__type":"IfcFace",
-				                 "__refBounds":[
-				                    92143939
-				                 ]
-				              },
-				              {
-				                 "__oid":92143939,
-				                 "__type":"IfcFaceOuterBound",
-				                 "__refBound":94175699,
-				                 "Orientation":"TRUE"
-				              },
-				              {
-				                 "__oid":92275011,
-				                 "__type":"IfcFaceOuterBound",
-				                 "__refBound":94241235,
-				                 "Orientation":"TRUE"
-				              },
-				              {
-				                 "__oid":93848019,
-				                 "__type":"IfcPolyLoop",
-				                 "__refPolygon":[
-				                    870318247,
-				                    870514855,
-				                    870449319,
-				                    870383783
-				                 ]
-				              },
-				              {
-				                 "__oid":92275008,
-				                 "__type":"IfcFace",
-				                 "__refBounds":[
-				                    92275011
-				                 ]
-				              },
-				              {
-				                 "__oid":7405893,
-				                 "__type":"IfcFacetedBrep",
-				                 "Dim":0,
-				                 "__refOuter":7405753
-				              },
-				              {
-				                 "__oid":146669822,
-				                 "__type":"IfcDirection",
-				                 "DirectionRatios":[
-				                    0.0,
-				                    0.0,
-				                    1.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":870318247,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    0.0,
-				                    200.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":869466279,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    5400.0,
-				                    0.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":262511,
-				                 "__type":"IfcGeometricRepresentationContext",
-				                 "ContextType":"Model",
-				                 "__refRepresentationsInContext":[
-				                    86049380,
-				                    86114916,
-				                    86180452,
-				                    86245988,
-				                    86311524,
-				                    86377060
-				                 ],
-				                 "CoordinateSpaceDimension":3,
-				                 "Precision":1.0E-5,
-				                 "__refWorldCoordinateSystem":193855623
-				              },
-				              {
-				                 "__oid":91816259,
-				                 "__type":"IfcFaceOuterBound",
-				                 "__refBound":93913555,
-				                 "Orientation":"TRUE"
-				              },
-				              {
-				                 "__oid":91816256,
-				                 "__type":"IfcFace",
-				                 "__refBounds":[
-				                    91816259
-				                 ]
-				              },
-				              {
-				                 "__oid":1180249,
-				                 "__type":"IfcSIUnit",
-				                 "UnitType":"THERMODYNAMICTEMPERATUREUNIT",
-				                 "Prefix":"NULL",
-				                 "Name":"DEGREE_CELSIUS"
-				              },
-				              {
-				                 "__oid":869531815,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    5400.0,
-				                    200.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":146342142,
-				                 "__type":"IfcDirection",
-				                 "DirectionRatios":[
-				                    0.0,
-				                    0.0,
-				                    1.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":870776999,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    0.0,
-				                    120.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":94306771,
-				                 "__type":"IfcPolyLoop",
-				                 "__refPolygon":[
-				                    870842535,
-				                    870908071,
-				                    870973607,
-				                    871039143
-				                 ]
-				              },
-				              {
-				                 "__oid":91750723,
-				                 "__type":"IfcFaceOuterBound",
-				                 "__refBound":93716947,
-				                 "Orientation":"TRUE"
-				              },
-				              {
-				                 "__oid":91750720,
-				                 "__type":"IfcFace",
-				                 "__refBounds":[
-				                    91750723
-				                 ]
-				              },
-				              {
-				                 "__oid":78250385,
-				                 "__type":"IfcLocalPlacement",
-				                 "__refPlacesObject":[
-				                    13566697
-				                 ],
-				                 "__refPlacementRelTo":78184849,
-				                 "__refRelativePlacement":194248839
-				              },
-				              {
-				                 "__oid":77464039,
-				                 "__type":"IfcProductDefinitionShape",
-				                 "__refRepresentations":[
-				                    86311524,
-				                    86377060
-				                 ]
-				              },
-				              {
-				                 "__oid":869597351,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    0.0,
-				                    200.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":94241235,
-				                 "__type":"IfcPolyLoop",
-				                 "__refPolygon":[
-				                    870711463,
-				                    871104679,
-				                    870908071,
-				                    870842535
-				                 ]
-				              },
-				              {
-				                 "__oid":131193,
-				                 "__type":"IfcApplication",
-				                 "__refApplicationDeveloper":197047,
-				                 "Version":"0.10",
-				                 "ApplicationFullName":"Test Application",
-				                 "ApplicationIdentifier":"TA 1001"
-				              },
-				              {
-				                 "__oid":146276606,
-				                 "__type":"IfcDirection",
-				                 "DirectionRatios":[
-				                    0.0,
-				                    0.0,
-				                    1.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":870711463,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    1600.0,
-				                    120.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":91947328,
-				                 "__type":"IfcFace",
-				                 "__refBounds":[
-				                    91947331
-				                 ]
-				              },
-				              {
-				                 "__oid":91947331,
-				                 "__type":"IfcFaceOuterBound",
-				                 "__refBound":93979091,
-				                 "Orientation":"TRUE"
-				              },
-				              {
-				                 "__oid":131687,
-				                 "__type":"IfcSite",
-				                 "GlobalId":"0X4tGlJqHCcwlHMZaCq8EN",
-				                 "__refOwnerHistory":131515,
-				                 "Name":"Default Site",
-				                 "Description":"Description of Default Site",
-				                 "__refIsDecomposedBy":[
-				                    590361
-				                 ],
-				                 "__refDecomposes":[
-				                    655897
-				                 ],
-				                 "__refObjectPlacement":77922705,
-				                 "CompositionType":"ELEMENT",
-				                 "RefLatitude":[
-				                    24,
-				                    28,
-				                    0
-				                 ],
-				                 "RefLongitude":[
-				                    54,
-				                    25,
-				                    0
-				                 ],
-				                 "RefElevation":0.0
-				              },
-				              {
-				                 "__oid":869662887,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    5400.0,
-				                    0.0,
-				                    5000.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":78184849,
-				                 "__type":"IfcLocalPlacement",
-				                 "__refPlacesObject":[
-				                    18874804
-				                 ],
-				                 "__refReferencedByPlacements":[
-				                    78250385
-				                 ],
-				                 "__refPlacementRelTo":78119313,
-				                 "__refRelativePlacement":194183303
-				              },
-				              {
-				                 "__oid":77398503,
-				                 "__type":"IfcProductDefinitionShape",
-				                 "__refRepresentations":[
-				                    86180452,
-				                    86245988
-				                 ]
-				              },
-				              {
-				                 "__oid":1049177,
-				                 "__type":"IfcSIUnit",
-				                 "UnitType":"MASSUNIT",
-				                 "Prefix":"NULL",
-				                 "Name":"GRAM"
-				              },
-				              {
-				                 "__oid":146473214,
-				                 "__type":"IfcDirection",
-				                 "DirectionRatios":[
-				                    1.0,
-				                    0.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":870645927,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    0.0,
-				                    0.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":94175699,
-				                 "__type":"IfcPolyLoop",
-				                 "__refPolygon":[
-				                    871039143,
-				                    870776999,
-				                    870711463,
-				                    870842535
-				                 ]
-				              },
-				              {
-				                 "__oid":91881792,
-				                 "__type":"IfcFace",
-				                 "__refBounds":[
-				                    91881795
-				                 ]
-				              },
-				              {
-				                 "__oid":91881795,
-				                 "__type":"IfcFaceOuterBound",
-				                 "__refBound":93782483,
-				                 "Orientation":"TRUE"
-				              },
-				              {
-				                 "__oid":721636,
-				                 "__type":"IfcWall",
-				                 "GlobalId":"3Ep4r0uuX5ywPYOUG2H2A4",
-				                 "__refOwnerHistory":131515,
-				                 "Name":"Front Wall",
-				                 "Description":"Description of Wall",
-				                 "__refObjectPlacement":78119313,
-				                 "__refRepresentation":77332967,
-				                 "__refHasOpenings":[
-				                    18874953
-				                 ]
-				              },
-				              {
-				                 "__oid":78119313,
-				                 "__type":"IfcLocalPlacement",
-				                 "__refPlacesObject":[
-				                    721636
-				                 ],
-				                 "__refReferencedByPlacements":[
-				                    78184849
-				                 ],
-				                 "__refPlacementRelTo":78053777,
-				                 "__refRelativePlacement":194117767
-				              },
-				              {
-				                 "__oid":77332967,
-				                 "__type":"IfcProductDefinitionShape",
-				                 "__refRepresentations":[
-				                    86049380,
-				                    86114916
-				                 ]
-				              },
-				              {
-				                 "__oid":869728423,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    0.0,
-				                    0.0,
-				                    5000.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":1114713,
-				                 "__type":"IfcSIUnit",
-				                 "UnitType":"LUMINOUSINTENSITYUNIT",
-				                 "Prefix":"NULL",
-				                 "Name":"LUMEN"
-				              },
-				              {
-				                 "__oid":18874953,
-				                 "__type":"IfcRelVoidsElement",
-				                 "GlobalId":"1i97QLJ_T9zemX5ekDXx_$",
-				                 "__refOwnerHistory":131515,
-				                 "__refRelatingBuildingElement":721636,
-				                 "__refRelatedOpeningElement":18874804
-				              },
-				              {
-				                 "__oid":94110163,
-				                 "__type":"IfcPolyLoop",
-				                 "__refPolygon":[
-				                    870973607,
-				                    870908071,
-				                    871104679,
-				                    871170215
-				                 ]
-				              },
-				              {
-				                 "__oid":146407678,
-				                 "__type":"IfcDirection",
-				                 "DirectionRatios":[
-				                    1.0,
-				                    0.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":870580391,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    0.0,
-				                    40.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":93520339,
-				                 "__type":"IfcPolyLoop",
-				                 "__refPolygon":[
-				                    869597351,
-				                    869859495,
-				                    869793959,
-				                    869531815
-				                 ]
-				              },
-				              {
-				                 "__oid":146079998,
-				                 "__type":"IfcDirection",
-				                 "DirectionRatios":[
-				                    0.0,
-				                    0.0,
-				                    1.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":871039143,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    0.0,
-				                    0.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":65688,
-				                 "__type":"IfcBoundingBox",
-				                 "__refCorner":869990567,
-				                 "XDim":5400.0,
-				                 "YDim":200.0,
-				                 "ZDim":5000.0,
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":131515,
-				                 "__type":"IfcOwnerHistory",
-				                 "__refOwningUser":131522,
-				                 "__refOwningApplication":131193,
-				                 "State":"NULL",
-				                 "ChangeAction":"ADDED",
-				                 "LastModifiedDate":0,
-				                 "CreationDate":1216884381
-				              },
-				              {
-				                 "__oid":86049380,
-				                 "__type":"IfcShapeRepresentation",
-				                 "__refContextOfItems":262511,
-				                 "RepresentationIdentifier":"Body",
-				                 "RepresentationType":"Brep",
-				                 "__refItems":[
-				                    7274821
-				                 ],
-				                 "__refOfProductRepresentation":[
-				                    77332967
-				                 ]
-				              },
-				              {
-				                 "__oid":78053777,
-				                 "__type":"IfcLocalPlacement",
-				                 "__refPlacesObject":[
-				                    393377
-				                 ],
-				                 "__refReferencedByPlacements":[
-				                    78119313
-				                 ],
-				                 "__refPlacementRelTo":77988241,
-				                 "__refRelativePlacement":194052231
-				              },
-				              {
-				                 "__oid":94372307,
-				                 "__type":"IfcPolyLoop",
-				                 "__refPolygon":[
-				                    871039143,
-				                    870973607,
-				                    871170215,
-				                    870776999
-				                 ]
-				              },
-				              {
-				                 "__oid":721433,
-				                 "__type":"IfcRelAggregates",
-				                 "GlobalId":"2QTqyzvgj6qBjsx1U3rHkG",
-				                 "__refOwnerHistory":131515,
-				                 "Name":"BuildingContainer",
-				                 "Description":"BuildingContainer for BuildigStories",
-				                 "__refRelatingObject":131226,
-				                 "__refRelatedObjects":[
-				                    393377
-				                 ]
-				              },
-				              {
-				                 "__oid":983641,
-				                 "__type":"IfcSIUnit",
-				                 "UnitType":"TIMEUNIT",
-				                 "Prefix":"NULL",
-				                 "Name":"SECOND"
-				              },
-				              {
-				                 "__oid":869793959,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    5400.0,
-				                    200.0,
-				                    5000.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":91554115,
-				                 "__type":"IfcFaceOuterBound",
-				                 "__refBound":93585875,
-				                 "Orientation":"TRUE"
-				              },
-				              {
-				                 "__oid":91554112,
-				                 "__type":"IfcFace",
-				                 "__refBounds":[
-				                    91685187
-				                 ]
-				              },
-				              {
-				                 "__oid":870973607,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    0.0,
-				                    0.0,
-				                    1400.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":93454803,
-				                 "__type":"IfcPolyLoop",
-				                 "__refPolygon":[
-				                    869400743,
-				                    869728423,
-				                    869859495,
-				                    869597351
-				                 ]
-				              },
-				              {
-				                 "__oid":869859495,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    0.0,
-				                    200.0,
-				                    5000.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":77988241,
-				                 "__type":"IfcLocalPlacement",
-				                 "__refPlacesObject":[
-				                    131226
-				                 ],
-				                 "__refReferencedByPlacements":[
-				                    78053777
-				                 ],
-				                 "__refPlacementRelTo":77922705,
-				                 "__refRelativePlacement":193986695
-				              },
-				              {
-				                 "__oid":94437843,
-				                 "__type":"IfcPolyLoop",
-				                 "__refPolygon":[
-				                    870776999,
-				                    871170215,
-				                    871104679,
-				                    870711463
-				                 ]
-				              },
-				              {
-				                 "__oid":655897,
-				                 "__type":"IfcRelAggregates",
-				                 "GlobalId":"1hGct2v1LFjuexLy7xe$Mo",
-				                 "__refOwnerHistory":131515,
-				                 "Name":"ProjectContainer",
-				                 "Description":"ProjectContainer for Sites",
-				                 "__refRelatingObject":131564,
-				                 "__refRelatedObjects":[
-				                    131687
-				                 ]
-				              },
-				              {
-				                 "__oid":918105,
-				                 "__type":"IfcSIUnit",
-				                 "UnitType":"SOLIDANGLEUNIT",
-				                 "Prefix":"NULL",
-				                 "Name":"STERADIAN"
-				              },
-				              {
-				                 "__oid":194248839,
-				                 "__type":"IfcAxis2Placement3D",
-				                 "__refLocation":870580391,
-				                 "Dim":0,
-				                 "__refAxis":146800894,
-				                 "__refRefDirection":146735358
-				              },
-				              {
-				                 "__oid":197047,
-				                 "__type":"IfcOrganization",
-				                 "Name":"TNO",
-				                 "Description":"TNO Building Innovation",
-				                 "__refEngages":[
-				                    131522
-				                 ]
-				              },
-				              {
-				                 "__oid":91488579,
-				                 "__type":"IfcFaceOuterBound",
-				                 "__refBound":93389267,
-				                 "Orientation":"TRUE"
-				              },
-				              {
-				                 "__oid":91488576,
-				                 "__type":"IfcFace",
-				                 "__refBounds":[
-				                    91488579
-				                 ]
-				              },
-				              {
-				                 "__oid":93389267,
-				                 "__type":"IfcPolyLoop",
-				                 "__refPolygon":[
-				                    869728423,
-				                    869662887,
-				                    869793959,
-				                    869859495
-				                 ]
-				              },
-				              {
-				                 "__oid":146211070,
-				                 "__type":"IfcDirection",
-				                 "DirectionRatios":[
-				                    1.0,
-				                    0.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":870908071,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    1600.0,
-				                    0.0,
-				                    1400.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":196760,
-				                 "__type":"IfcBoundingBox",
-				                 "__refCorner":871235751,
-				                 "XDim":1600.0,
-				                 "YDim":120.0,
-				                 "ZDim":1400.0,
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":77922705,
-				                 "__type":"IfcLocalPlacement",
-				                 "__refPlacesObject":[
-				                    131687
-				                 ],
-				                 "__refReferencedByPlacements":[
-				                    77988241
-				                 ],
-				                 "__refRelativePlacement":193921159
-				              },
-				              {
-				                 "__oid":590361,
-				                 "__type":"IfcRelAggregates",
-				                 "GlobalId":"1_M0EvY2z24AX0l7nBeVj1",
-				                 "__refOwnerHistory":131515,
-				                 "Name":"SiteContainer",
-				                 "Description":"SiteContainer For Buildings",
-				                 "__refRelatingObject":131687,
-				                 "__refRelatedObjects":[
-				                    131226
-				                 ]
-				              },
-				              {
-				                 "__oid":852569,
-				                 "__type":"IfcSIUnit",
-				                 "UnitType":"PLANEANGLEUNIT",
-				                 "Prefix":"NULL",
-				                 "Name":"RADIAN"
-				              },
-				              {
-				                 "__oid":869925031,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    3000.0,
-				                    0.0,
-				                    1000.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":86180452,
-				                 "__type":"IfcShapeRepresentation",
-				                 "__refContextOfItems":262511,
-				                 "RepresentationIdentifier":"Body",
-				                 "RepresentationType":"Brep",
-				                 "__refItems":[
-				                    7340357
-				                 ],
-				                 "__refOfProductRepresentation":[
-				                    77398503
-				                 ]
-				              },
-				              {
-				                 "__oid":131486,
-				                 "__type":"IfcMeasureWithUnit",
-				                 "__embValueComponent":{
-				                    "__type":"IfcPlaneAngleMeasure",
-				                    "value":0.01745
-				                 },
-				                 "__refUnitComponent":852569
-				              },
-				              {
-				                 "__oid":91685184,
-				                 "__type":"IfcFace",
-				                 "__refBounds":[
-				                    91619651
-				                 ]
-				              },
-				              {
-				                 "__oid":3670582,
-				                 "__type":"IfcRelContainedInSpatialStructure",
-				                 "GlobalId":"3DvJ_Cxfb5mhww8XtlkBwl",
-				                 "__refOwnerHistory":131515,
-				                 "Name":"Default Building",
-				                 "Description":"Description of Default Building",
-				                 "__refRelatedElements":[
-				                    721636
-				                 ],
-				                 "__refRelatingStructure":393377
-				              },
-				              {
-				                 "__oid":146800894,
-				                 "__type":"IfcDirection",
-				                 "DirectionRatios":[
-				                    0.0,
-				                    0.0,
-				                    1.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":91685187,
-				                 "__type":"IfcFaceOuterBound",
-				                 "__refBound":93651411,
-				                 "Orientation":"TRUE"
-				              },
-				              {
-				                 "__oid":131226,
-				                 "__type":"IfcBuilding",
-				                 "GlobalId":"1MW5jGD1fBiRPPs7T9I5O8",
-				                 "__refOwnerHistory":131515,
-				                 "Name":"Default Building",
-				                 "Description":"Description of Default Building",
-				                 "__refIsDecomposedBy":[
-				                    721433
-				                 ],
-				                 "__refDecomposes":[
-				                    590361
-				                 ],
-				                 "__refObjectPlacement":77988241,
-				                 "CompositionType":"ELEMENT",
-				                 "ElevationOfRefHeight":0.0,
-				                 "ElevationOfTerrain":0.0
-				              },
-				              {
-				                 "__oid":146145534,
-				                 "__type":"IfcDirection",
-				                 "DirectionRatios":[
-				                    1.0,
-				                    0.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":870842535,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    1600.0,
-				                    0.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":131224,
-				                 "__type":"IfcBoundingBox",
-				                 "__refCorner":870645927,
-				                 "XDim":1600.0,
-				                 "YDim":200.0,
-				                 "ZDim":1400.0,
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":93323731,
-				                 "__type":"IfcPolyLoop",
-				                 "__refPolygon":[
-				                    869400743,
-				                    869597351,
-				                    869531815,
-				                    869466279
-				                 ]
-				              },
-				              {
-				                 "__oid":869990567,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    0.0,
-				                    0.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":787033,
-				                 "__type":"IfcSIUnit",
-				                 "UnitType":"VOLUMEUNIT",
-				                 "Prefix":"NULL",
-				                 "Name":"CUBIC_METRE"
-				              },
-				              {
-				                 "__oid":86114916,
-				                 "__type":"IfcShapeRepresentation",
-				                 "__refContextOfItems":262511,
-				                 "RepresentationIdentifier":"Box",
-				                 "RepresentationType":"BoundingBox",
-				                 "__refItems":[
-				                    65688
-				                 ],
-				                 "__refOfProductRepresentation":[
-				                    77332967
-				                 ]
-				              },
-				              {
-				                 "__oid":18874804,
-				                 "__type":"IfcOpeningElement",
-				                 "GlobalId":"3IBJ3tMBDCEhOoDMqspCog",
-				                 "__refOwnerHistory":131515,
-				                 "Name":"Kitchen Window Opening",
-				                 "Description":"Description of Opening",
-				                 "__refObjectPlacement":78184849,
-				                 "__refRepresentation":77398503,
-				                 "__refVoidsElements":18874953,
-				                 "__refHasFillings":[
-				                    18612797
-				                 ]
-				              },
-				              {
-				                 "__oid":91619648,
-				                 "__type":"IfcFace",
-				                 "__refBounds":[
-				                    91554115
-				                 ]
-				              },
-				              {
-				                 "__oid":91619651,
-				                 "__type":"IfcFaceOuterBound",
-				                 "__refBound":93520339,
-				                 "Orientation":"TRUE"
-				              },
-				              {
-				                 "__oid":86311524,
-				                 "__type":"IfcShapeRepresentation",
-				                 "__refContextOfItems":262511,
-				                 "RepresentationIdentifier":"Body",
-				                 "RepresentationType":"Brep",
-				                 "__refItems":[
-				                    7405893
-				                 ],
-				                 "__refOfProductRepresentation":[
-				                    77464039
-				                 ]
-				              },
-				              {
-				                 "__oid":869073063,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    0.0,
-				                    0.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":721497,
-				                 "__type":"IfcSIUnit",
-				                 "UnitType":"AREAUNIT",
-				                 "Prefix":"NULL",
-				                 "Name":"SQUARE_METRE"
-				              },
-				              {
-				                 "__oid":870056103,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    0.0,
-				                    0.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":93782483,
-				                 "__type":"IfcPolyLoop",
-				                 "__refPolygon":[
-				                    870121639,
-				                    870187175,
-				                    870449319,
-				                    870514855
-				                 ]
-				              },
-				              {
-				                 "__oid":7274821,
-				                 "__type":"IfcFacetedBrep",
-				                 "Dim":0,
-				                 "__refOuter":7274681
-				              },
-				              {
-				                 "__oid":7340217,
-				                 "__type":"IfcClosedShell",
-				                 "__refCfsFaces":[
-				                    91750720,
-				                    91881792,
-				                    91816256,
-				                    92078400,
-				                    92012864,
-				                    91947328
-				                 ]
-				              },
-				              {
-				                 "__oid":393377,
-				                 "__type":"IfcBuildingStorey",
-				                 "GlobalId":"36_p3GiZXEHxQ3gWcOhQPE",
-				                 "__refOwnerHistory":131515,
-				                 "Name":"Default Building Storey",
-				                 "Description":"Description of Default Building Storey",
-				                 "__refDecomposes":[
-				                    721433
-				                 ],
-				                 "__refObjectPlacement":78053777,
-				                 "CompositionType":"ELEMENT",
-				                 "__refContainsElements":[
-				                    3670582
-				                 ],
-				                 "Elevation":0.0
-				              },
-				              {
-				                 "__oid":194052231,
-				                 "__type":"IfcAxis2Placement3D",
-				                 "__refLocation":869269671,
-				                 "Dim":0,
-				                 "__refAxis":146342142,
-				                 "__refRefDirection":146407678
-				              },
-				              {
-				                 "__oid":131325,
-				                 "__type":"IfcDimensionalExponents",
-				                 "LengthExponent":0,
-				                 "MassExponent":0,
-				                 "TimeExponent":0,
-				                 "ElectricCurrentExponent":0,
-				                 "ThermodynamicTemperatureExponent":0,
-				                 "AmountOfSubstanceExponent":0,
-				                 "LuminousIntensityExponent":0
-				              },
-				              {
-				                 "__oid":86245988,
-				                 "__type":"IfcShapeRepresentation",
-				                 "__refContextOfItems":262511,
-				                 "RepresentationIdentifier":"Box",
-				                 "RepresentationType":"BoundingBox",
-				                 "__refItems":[
-				                    131224
-				                 ],
-				                 "__refOfProductRepresentation":[
-				                    77398503
-				                 ]
-				              },
-				              {
-				                 "__oid":870121639,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    0.0,
-				                    0.0,
-				                    1400.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":131564,
-				                 "__type":"IfcProject",
-				                 "GlobalId":"2o1ykWxGT4ZxPjHNe4gayR",
-				                 "__refOwnerHistory":131515,
-				                 "Name":"Default Project",
-				                 "Description":"Description of Default Project",
-				                 "__refIsDecomposedBy":[
-				                    655897
-				                 ],
-				                 "__refRepresentationContexts":[
-				                    262511
-				                 ],
-				                 "__refUnitsInContext":131801
-				              },
-				              {
-				                 "__oid":131801,
-				                 "__type":"IfcUnitAssignment",
-				                 "__refUnits":[
-				                    655961,
-				                    721497,
-				                    787033,
-				                    131290,
-				                    918105,
-				                    1049177,
-				                    983641,
-				                    1180249,
-				                    1114713
-				                 ]
-				              },
-				              {
-				                 "__oid":655961,
-				                 "__type":"IfcSIUnit",
-				                 "UnitType":"LENGTHUNIT",
-				                 "Prefix":"MILLI",
-				                 "Name":"METRE"
-				              },
-				              {
-				                 "__oid":871235751,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    0.0,
-				                    0.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":93716947,
-				                 "__type":"IfcPolyLoop",
-				                 "__refPolygon":[
-				                    870056103,
-				                    870318247,
-				                    870383783,
-				                    870252711
-				                 ]
-				              },
-				              {
-				                 "__oid":7405753,
-				                 "__type":"IfcClosedShell",
-				                 "__refCfsFaces":[
-				                    92143936,
-				                    92406080,
-				                    92471616,
-				                    92209472,
-				                    92275008,
-				                    92340544
-				                 ]
-				              },
-				              {
-				                 "__oid":193986695,
-				                 "__type":"IfcAxis2Placement3D",
-				                 "__refLocation":869204135,
-				                 "Dim":0,
-				                 "__refAxis":146276606,
-				                 "__refRefDirection":146211070
-				              },
-				              {
-				                 "__oid":870187175,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    1600.0,
-				                    0.0,
-				                    1400.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":869204135,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    0.0,
-				                    0.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":93651411,
-				                 "__type":"IfcPolyLoop",
-				                 "__refPolygon":[
-				                    869531815,
-				                    869793959,
-				                    869662887,
-				                    869466279
-				                 ]
-				              },
-				              {
-				                 "__oid":871170215,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    0.0,
-				                    120.0,
-				                    1400.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":13566697,
-				                 "__type":"IfcWindow",
-				                 "GlobalId":"1IStBPudzARhXt_tIk8i2q",
-				                 "__refOwnerHistory":131515,
-				                 "Name":"Kitchen Window",
-				                 "Description":"Description of Window",
-				                 "__refObjectPlacement":78250385,
-				                 "__refRepresentation":77464039,
-				                 "__refFillsVoids":[
-				                    18612797
-				                 ],
-				                 "OverallHeight":0.0,
-				                 "OverallWidth":0.0
-				              },
-				              {
-				                 "__oid":91423040,
-				                 "__type":"IfcFace",
-				                 "__refBounds":[
-				                    91423043
-				                 ]
-				              },
-				              {
-				                 "__oid":91423043,
-				                 "__type":"IfcFaceOuterBound",
-				                 "__refBound":93454803,
-				                 "Orientation":"TRUE"
-				              },
-				              {
-				                 "__oid":194183303,
-				                 "__type":"IfcAxis2Placement3D",
-				                 "__refLocation":869925031,
-				                 "Dim":0,
-				                 "__refAxis":146669822,
-				                 "__refRefDirection":146604286
-				              },
-				              {
-				                 "__oid":870252711,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    1600.0,
-				                    0.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":869138599,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    0.0,
-				                    0.0,
-				                    0.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":86377060,
-				                 "__type":"IfcShapeRepresentation",
-				                 "__refContextOfItems":262511,
-				                 "RepresentationIdentifier":"Box",
-				                 "RepresentationType":"BoundingBox",
-				                 "__refItems":[
-				                    196760
-				                 ],
-				                 "__refOfProductRepresentation":[
-				                    77464039
-				                 ]
-				              },
-				              {
-				                 "__oid":131290,
-				                 "__type":"IfcConversionBasedUnit",
-				                 "__refDimensions":131325,
-				                 "UnitType":"PLANEANGLEUNIT",
-				                 "Name":"DEGREE",
-				                 "__refConversionFactor":131486
-				              },
-				              {
-				                 "__oid":18612797,
-				                 "__type":"IfcRelFillsElement",
-				                 "GlobalId":"1IVTY4qFDEb8SFSUrRX70m",
-				                 "__refOwnerHistory":131515,
-				                 "__refRelatingOpeningElement":18874804,
-				                 "__refRelatedBuildingElement":13566697
-				              },
-				              {
-				                 "__oid":871104679,
-				                 "__type":"IfcCartesianPoint",
-				                 "Coordinates":[
-				                    1600.0,
-				                    120.0,
-				                    1400.0
-				                 ],
-				                 "Dim":0
-				              },
-				              {
-				                 "__oid":93585875,
-				                 "__type":"IfcPolyLoop",
-				                 "__refPolygon":[
-				                    869466279,
-				                    869662887,
-				                    869728423,
-				                    869400743
-				                 ]
-				              },
-				              {
-				                 "__oid":91357504,
-				                 "__type":"IfcFace",
-				                 "__refBounds":[
-				                    91357507
-				                 ]
-				              },
-				              {
-				                 "__oid":91357507,
-				                 "__type":"IfcFaceOuterBound",
-				                 "__refBound":93323731,
-				                 "Orientation":"UNDEFINED"
-				              },
-				              {
-				                 "__oid":131521,
-				                 "__type":"IfcPerson",
-				                 "Id":"ID001",
-				                 "FamilyName":"Bonsma",
-				                 "GivenName":"Peter",
-				                 "__refEngagedIn":[
-				                    131522
-				                 ]
-				              },
-				              {
-				                 "__oid":194117767,
-				                 "__type":"IfcAxis2Placement3D",
-				                 "__refLocation":869335207,
-				                 "Dim":0,
-				                 "__refAxis":146538750,
-				                 "__refRefDirection":146473214
-				              },
-				              {
-				                 "__oid":131522,
-				                 "__type":"IfcPersonAndOrganization",
-				                 "__refThePerson":131521,
-				                 "__refTheOrganization":197047
-				              }
-				           ]
-				        });
+	this.addTest("Test 3", "Create a few objects and find it back by name", function(doneCallback){
+		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 3 - " + Math.random()}, function(project){
+			// Stage 1: create 10 windows
+			Global.bimServerApi.createModel(project.oid, function(model){
+				for (var i=1; i<=10; i++) {
+					(function(i){
+						model.create("IfcWindow", {}, function(window){
+							window.setName("window" + i);
+							window.setGlobalId("window" + i); // yes not using real GUID, this is just for testing
+						});
+					})(i);
+				}
+			}).done(function(model){
+				model.commit("10 windows", function(roid){
+					// Stage 2: count the walls and remove the 6th
+					Global.bimServerApi.getModel(project.oid, roid, false, function(model){
+						model.getByName("window7", function(window7){
+							if (window7 == null) {
+								doneCallback("ERROR", "Window not found");
+							} else if (window7.getGlobalId() == "window7") {
+								doneCallback("SUCCESS");
+							} else {
+								doneCallback("ERROR", "Wrong GUID (" + window7.getGlobalId() + ")");
+							}
+						});
+					});
+				});
+			});
+		});
+	});
+
+	this.addTest("Test 4", "Unset attribute", function(doneCallback){
+		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 4 - " + Math.random()}, function(project){
+			// Stage 1: create 1 window
+			Global.bimServerApi.createModel(project.oid, function(model){
+				model.create("IfcWindow", {}, function(window){
+					window.setName("window");
+					window.setGlobalId("window"); // yes not using real GUID, this is just for testing
+				});
+			}).done(function(model){
+				model.commit("1 window", function(roid){
+					Global.bimServerApi.getModel(project.oid, roid, false, function(model){
+						model.getByName("window", function(window){
+							window.setName(null);
+						});
+					}).done(function(model){
+						model.commit("name unset", function(roid){
+							Global.bimServerApi.getModel(project.oid, roid, false, function(model){
+								model.getByGuid("window", function(window){
+									if (window.getName() == null) {
+										doneCallback("SUCCESS");
+									} else if (window.getName() == "window") {
+										doneCallback("ERROR", "Window name unchanged");
+									} else {
+										doneCallback("ERROR", "Unknown error");
+									}
+								});
+							});							
+						});
+					});
+				});
+			});
+		});
+	});
+
+	this.addTest("Test 5", "Unset reference", function(doneCallback){
+		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 5 - " + Math.random()}, function(project){
+			// Stage 1: create 1 window
+			Global.bimServerApi.createModel(project.oid, function(model){
+				model.create("IfcWindow", {}, function(window){
+					window.setName("window");
+					window.setGlobalId("window");
+					model.create("IfcOwnerHistory", {}, function(ownerHistory){
+						window.setOwnerHistory(ownerHistory);
+					});
+				});
+			}).done(function(model){
+				model.commit("1 window + ownerhistory", function(roid){
+					Global.bimServerApi.getModel(project.oid, roid, false, function(model){
+						model.getByName("window", function(window){
+							window.getOwnerHistory(function(ownerHistory){
+								if (ownerHistory == null) {
+									doneCallback("ERROR", "OwnerHistory already not set");
+								} else {
+									window.setOwnerHistory(null);
+								}
+							});
+						});
+					}).done(function(model){
+						model.commit("unsetting owner history of window", function(roid){
+							Global.bimServerApi.getModel(project.oid, roid, false, function(model){
+								model.getByGuid("window", function(window){
+									if (window.getOwnerHistory() == null) {
+										doneCallback("SUCCESS");
+									} else {
+										doneCallback("ERROR", "OwnerHistory still present");
+									}
+								});
+							});							
+						});
+					});
+				});
+			});
+		});
+	});
+	
+	this.addTest("Test 6", "Setting and reading enum and integer values", function(doneCallback){
+		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 6 - " + Math.random()}, function(project){
+			var ownerHistoryOid = -1;
+			var timestamp = -1;
+			Global.bimServerApi.createModel(project.oid, function(model){
+				model.create("IfcOwnerHistory", {}, function(ownerHistory){
+					ownerHistory.setState("READWRITELOCKED");
+					timestamp = Math.floor(new Date().getTime() / 1000);
+					ownerHistory.setCreationDate(timestamp);
+					ownerHistoryOid = ownerHistory.__oid;
+				});
+			}).done(function(model){
+				model.commit("ownerhistory with state and creation date", function(roid){
+					Global.bimServerApi.getModel(project.oid, roid, false, function(model){
+						model.get(ownerHistoryOid, function(ownerHistory){
+							if (ownerHistory.getState() == "READWRITELOCKED" && ownerHistory.getCreationDate() == timestamp) {
+								doneCallback("SUCCESS");
+							} else {
+								doneCallback("ERROR", "Mismatch");
+							}
+						});
+					});
+				});
+			});
+		});
+	});
+
+	this.addTest("Test 7", "Settings and reading boolean values", function(doneCallback){
+		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 7 - " + Math.random()}, function(project){
+			var ifcRectangularTrimmedSurfaceOid = -1;
+			Global.bimServerApi.createModel(project.oid, function(model){
+				model.create("IfcRectangularTrimmedSurface", {}, function(ifcRectangularTrimmedSurface){
+					ifcRectangularTrimmedSurface.setUsense(true);
+					ifcRectangularTrimmedSurface.setVsense(false);
+					ifcRectangularTrimmedSurfaceOid = ifcRectangularTrimmedSurface.__oid;
+				});
+			}).done(function(model){
+				model.commit("IfcRectangularTrimmedSurface with booleans", function(roid){
+					Global.bimServerApi.getModel(project.oid, roid, false, function(model){
+						model.get(ifcRectangularTrimmedSurfaceOid, function(ifcRectangularTrimmedSurface){
+							if (ifcRectangularTrimmedSurface.getUsense() == true && ifcRectangularTrimmedSurface.getVsense() == false) {
+								doneCallback("SUCCESS");
+							} else {
+								doneCallback("ERROR", "Mismatch");
+							}
+						});
+					});
+				});
+			});
+		});
+	});
+
+	this.addTest("Test 8", "Primitive lists", function(doneCallback){
+		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 8 - " + Math.random()}, function(project){
+			var oid; 
+			Global.bimServerApi.createModel(project.oid, function(model){
+				model.create("IfcCartesianPoint", {}, function(ifcCartesianPoint){
+					ifcCartesianPoint.setCoordinates([0.1, 0.2, 0.3]);
+					oid = ifcCartesianPoint.__oid;
+				});
+			}).done(function(model){
+				model.commit("IfcCartesianPoint with values", function(roid){
+					Global.bimServerApi.getModel(project.oid, roid, false, function(model){
+						model.get(oid, function(ifcCartesianPoint){
+							console.log(ifcCartesianPoint.getCoordinates());
+							if (ifcCartesianPoint.getCoordinates()[0] == 0.1 && ifcCartesianPoint.getCoordinates()[1] == 0.2 && ifcCartesianPoint.getCoordinates()[2] == 0.3) {
+								doneCallback("SUCCESS");
+							} else {
+								doneCallback("ERROR", "Mismatch");
+							}
+						});
+					});
+				});
+			});
 		});
 	});
 }
