@@ -30,13 +30,17 @@ function Dashboard(main) {
 	};
 	
 	this.createUserLink = function(uoid) {
-		var link = $("<a>Loading...</a>");
-		link.attr("uoid", uoid);
-		link.click(function(){
-			main.showUser(uoid, null, true);
-		});
-		loadUser(link);
-		return link;
+		if (uoid == -1) {
+			return "";			
+		} else {
+			var link = $("<a>Loading...</a>");
+			link.attr("uoid", uoid);
+			link.click(function(){
+				main.showUser(uoid, null, true);
+			});
+			loadUser(link);
+			return link;
+		}
 	};
 
 	this.newLogAction = function(uuid, logAction, serviceIdentifier, profileIdentifier, token, apiUrl) {
