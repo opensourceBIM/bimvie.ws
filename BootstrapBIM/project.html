@@ -95,6 +95,7 @@
 			<div class="linkspacer">
 				<a class="addUserLink">Add user</a>
 			</div>
+			<div class="noUsersMessage"></div>
 			<div class="addUserToProjectDiv initialhide">
 				<form class="inline-form">
 					<select></select>
@@ -447,7 +448,7 @@ var Project = function(main, project) {
 		var div = $("<div class=\"modal fade\">");
 		$(document.body).append(div);
 		div.load("checkin.html", function(){
-			new Checkin(othis.project, function(){
+			new Checkin($(this), othis.project, function(){
 			});
 		}).modal({keyboard:true});
 	};
@@ -553,6 +554,7 @@ var Project = function(main, project) {
 		Global.bimServerApi.call("ServiceInterface", "getAllNonAuthorizedUsersOfProject", {poid: othis.project.oid}, function(data){
 			$(".project .addUserToProjectDiv select option").remove();
 			if (data.length == 0) {
+				$(".project .noUsersMessage").html("No users available to add");
 				$(".project .addUserLink").show();
 				$(".project .addUserToProjectDiv").hide();
 			} else {

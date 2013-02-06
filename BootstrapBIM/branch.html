@@ -33,33 +33,33 @@
 	</div>
 </div>
 <script>
-function Branch(main, roid) {
+function Branch(containerDiv, main, roid) {
 	var othis = this;
 
 	this.radioChange = function(){
-		var val = $(".branch input[type=radio]:checked").val();
+		var val = containerDiv.find("input[type=radio]:checked").val();
 		if (val == "existing") {
-			$(".projectGroup").show();
-			$(".projectnameGroup").hide();
-			$(".commentGroup").show();
+			containerDiv.find(".projectGroup").show();
+			containerDiv.find(".projectnameGroup").hide();
+			containerDiv.find(".commentGroup").show();
 		} else if (val == "new") {
-			$(".projectGroup").hide();
-			$(".projectnameGroup").show();
-			$(".commentGroup").show();
+			containerDiv.find(".projectGroup").hide();
+			containerDiv.find(".projectnameGroup").show();
+			containerDiv.find(".commentGroup").show();
 		} else {
-			$(".projectGroup").hide();
-			$(".projectnameGroup").hide();
-			$(".commentGroup").hide();
+			containerDiv.find(".projectGroup").hide();
+			containerDiv.find(".projectnameGroup").hide();
+			containerDiv.find(".commentGroup").hide();
 		}
 	};
 
 	this.branch = function(){
-		var val = $(".branch input[type=radio]:checked").val();
+		var val = containerDiv.find("input[type=radio]:checked").val();
 		if (val == "existing") {
 			Global.bimServerApi.call("ServiceInterface", "branchToExistingProject", {
 				roid: roid,
-				destPoid: $(".branch .projectsSelect").val(),
-				comment: $(".branch .comment").val(),
+				destPoid: containerDiv.find(".projectsSelect").val(),
+				comment: containerDiv.find(".comment").val(),
 				sync: true
 			}, function(longId){
 				Global.bimServerApi.call("ServiceInterface", "getLongActionState", {actionId: longId}, function(data){
@@ -69,8 +69,8 @@ function Branch(main, roid) {
 		} else if (val == "new") {
 			Global.bimServerApi.call("ServiceInterface", "branchToNewProject", {
 				roid: roid,
-				projectName: $(".branch .projectName").val(),
-				comment: $(".branch .comment").val(),
+				projectName: containerDiv.find(".projectName").val(),
+				comment: containerDiv.find(".comment").val(),
 				sync: true
 			}, function(longId){
 				Global.bimServerApi.call("ServiceInterface", "getLongActionState", {actionId: longId}, function(data){
@@ -83,12 +83,12 @@ function Branch(main, roid) {
 	Global.bimServerApi.call("ServiceInterface", "getAllProjects", {onlyTopLevel: false}, function(projects){
 		projects.forEach(function(project){
 			var option = $("<option value=\"" + project.oid + "\">" + project.name + "</option>");
-			$(".projectsSelect").append(option);
+			containerDiv.find(".projectsSelect").append(option);
 		});
 	});
 
-	$(".branch .existingRadio, .branch .newRadio").change(othis.radioChange);
-	$(".branch .branchButton").click(othis.branch);
+	containerDiv.find(".existingRadio, .branch .newRadio").change(othis.radioChange);
+	containerDiv.find(".branchButton").click(othis.branch);
 	
 	othis.radioChange();
 }

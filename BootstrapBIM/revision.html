@@ -129,7 +129,7 @@ function Revision(main, revision) {
 		var div = $("<div class=\"modal fade\">");
 		$(document.body).append(div);
 		div.load("branch.html", function(){
-			new Branch(main, othis.revision.oid);
+			new Branch($(this), main, othis.revision.oid);
 		}).modal({keyboard:true});
 	};
 	
