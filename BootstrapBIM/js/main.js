@@ -49,6 +49,11 @@ function pushHistoryAppend(obj) {
 			obj[k] = current.data[k];
 		}
 	}
+	for (var k in obj) {
+		if (obj[k] == false) {
+			delete obj[k];
+		}
+	}
 	pushing = true;
 	var str = "?";
 	for (var i in obj) {

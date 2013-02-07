@@ -1,0 +1,919 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+
+  <!--meta http-equiv="Content-Type" content="text/html; charset=windows-1252"-->
+
+  <!--meta name="ProgId" content="Excel.Sheet"-->
+
+  <!--meta name="Generator" content="Microsoft Excel 10"-->
+
+  <!--link rel="File-List" href="lastIFC2x3_TC1-deprecated-constructs_files/filelist.xml"-->
+
+  <!--link rel="Edit-Time-Data" href="lastIFC2x3_TC1-deprecated-constructs_files/editdata.mso"-->
+
+  <!--link rel="OLE-Object-Data" href="lastIFC2x3_TC1-deprecated-constructs_files/oledata.mso"-->
+
+
+
+  <title>Deprecated Constructs - IFC2x3 TC1</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Kent Reed</o:Author>
+  <o:LastAuthor>Kent A. Reed</o:LastAuthor>
+  <o:LastPrinted>2007-04-12T03:05:48Z</o:LastPrinted>
+  <o:Created>2004-05-28T16:42:41Z</o:Created>
+  <o:LastSaved>2007-06-23T13:01:54Z</o:LastSaved>
+  <o:Company>NIST</o:Company>
+  <o:Version>10.6830</o:Version>
+ </o:DocumentProperties>
+ <o:OfficeDocumentSettings>
+  <o:DownloadComponents/>
+  <o:LocationOfComponents HRef="file:///\\"/>
+ </o:OfficeDocumentSettings>
+</xml><![endif]-->
+  <style>
+<!--table
+	{mso-displayed-decimal-separator:"\.";
+	mso-displayed-thousand-separator:"\,";}
+@page
+	{mso-header-data:"&CDeprecated Concepts\000AIFC2x3 TC1";
+	mso-footer-data:"&LIAI Model Support Group&CEditor\: Thomas Liebich&RPage &P of &N";
+	margin:.98in .79in .98in .79in;
+	mso-header-margin:.51in;
+	mso-footer-margin:.51in;}
+.font7
+	{color:windowtext;
+	font-size:10.0pt;
+	font-weight:700;
+	font-style:italic;
+	text-decoration:none;
+	font-family:"Arial Narrow", sans-serif;
+	mso-font-charset:0;}
+tr
+	{mso-height-source:auto;}
+col
+	{mso-width-source:auto;}
+br
+	{mso-data-placement:same-cell;}
+.style0
+	{mso-number-format:General;
+	text-align:general;
+	vertical-align:bottom;
+	white-space:nowrap;
+	mso-rotate:0;
+	mso-background-source:auto;
+	mso-pattern:auto;
+	color:windowtext;
+	font-size:10.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:Arial;
+	mso-generic-font-family:auto;
+	mso-font-charset:0;
+	border:none;
+	mso-protection:locked visible;
+	mso-style-name:Normal;
+	mso-style-id:0;}
+td
+	{mso-style-parent:style0;
+	padding-top:1px;
+	padding-right:1px;
+	padding-left:1px;
+	mso-ignore:padding;
+	color:windowtext;
+	font-size:10.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:Arial;
+	mso-generic-font-family:auto;
+	mso-font-charset:0;
+	mso-number-format:General;
+	text-align:general;
+	vertical-align:bottom;
+	border:none;
+	mso-background-source:auto;
+	mso-pattern:auto;
+	mso-protection:locked visible;
+	white-space:nowrap;
+	mso-rotate:0;}
+.xl24
+	{mso-style-parent:style0;
+	font-family:"Arial Narrow", sans-serif;
+	mso-font-charset:0;
+	vertical-align:top;}
+.xl25
+	{mso-style-parent:style0;
+	font-family:"Arial Narrow", sans-serif;
+	mso-font-charset:0;
+	vertical-align:top;
+	border-top:none;
+	border-right:none;
+	border-bottom:none;
+	border-left:.5pt solid windowtext;}
+.xl26
+	{mso-style-parent:style0;
+	font-weight:700;
+	font-family:"Arial Narrow", sans-serif;
+	mso-font-charset:0;
+	vertical-align:top;}
+.xl27
+	{mso-style-parent:style0;
+	font-weight:700;
+	font-family:"Arial Narrow", sans-serif;
+	mso-font-charset:0;
+	vertical-align:top;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid windowtext;
+	border-left:.5pt solid windowtext;}
+.xl28
+	{mso-style-parent:style0;
+	font-weight:700;
+	font-family:"Arial Narrow", sans-serif;
+	mso-font-charset:0;
+	vertical-align:top;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid windowtext;
+	border-left:none;}
+.xl29
+	{mso-style-parent:style0;
+	font-weight:700;
+	font-family:"Arial Narrow", sans-serif;
+	mso-font-charset:0;
+	vertical-align:top;
+	border-top:none;
+	border-right:none;
+	border-bottom:none;
+	border-left:.5pt solid windowtext;}
+.xl30
+	{mso-style-parent:style0;
+	font-weight:700;
+	font-style:italic;
+	font-family:"Arial Narrow", sans-serif;
+	mso-font-charset:0;
+	vertical-align:top;}
+.xl31
+	{mso-style-parent:style0;
+	font-family:"Arial Narrow", sans-serif;
+	mso-font-charset:0;
+	vertical-align:top;
+	border-top:none;
+	border-right:none;
+	border-bottom:none;
+	border-left:.5pt solid windowtext;
+	background:silver;
+	mso-pattern:auto none;}
+.xl32
+	{mso-style-parent:style0;
+	font-family:"Arial Narrow", sans-serif;
+	mso-font-charset:0;
+	vertical-align:top;
+	background:silver;
+	mso-pattern:auto none;}
+.xl33
+	{mso-style-parent:style0;
+	font-family:"Arial Narrow", sans-serif;
+	mso-font-charset:0;
+	vertical-align:top;
+	white-space:normal;}
+.xl34
+	{mso-style-parent:style0;
+	font-weight:700;
+	font-family:"Arial Narrow", sans-serif;
+	mso-font-charset:0;
+	vertical-align:top;
+	border-top:.5pt solid windowtext;
+	border-right:none;
+	border-bottom:none;
+	border-left:.5pt solid windowtext;}
+.xl35
+	{mso-style-parent:style0;
+	font-weight:700;
+	font-family:"Arial Narrow", sans-serif;
+	mso-font-charset:0;
+	vertical-align:top;
+	border-top:.5pt solid windowtext;
+	border-right:none;
+	border-bottom:none;
+	border-left:none;}
+.xl36
+	{mso-style-parent:style0;
+	font-family:"Arial Narrow", sans-serif;
+	mso-font-charset:0;
+	vertical-align:top;
+	border-top:.5pt solid windowtext;
+	border-right:.5pt solid windowtext;
+	border-bottom:none;
+	border-left:none;
+	white-space:normal;}
+.xl37
+	{mso-style-parent:style0;
+	font-family:"Arial Narrow", sans-serif;
+	mso-font-charset:0;
+	vertical-align:top;
+	border-top:none;
+	border-right:.5pt solid windowtext;
+	border-bottom:none;
+	border-left:none;
+	white-space:normal;}
+.xl38
+	{mso-style-parent:style0;
+	font-weight:700;
+	font-family:"Arial Narrow", sans-serif;
+	mso-font-charset:0;
+	vertical-align:top;
+	border-top:none;
+	border-right:.5pt solid windowtext;
+	border-bottom:.5pt solid windowtext;
+	border-left:none;
+	white-space:normal;}
+.xl39
+	{mso-style-parent:style0;
+	font-family:"Arial Narrow", sans-serif;
+	mso-font-charset:0;
+	vertical-align:top;
+	border-top:.5pt solid windowtext;
+	border-right:.5pt solid windowtext;
+	border-bottom:none;
+	border-left:none;
+	background:silver;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl40
+	{mso-style-parent:style0;
+	font-family:"Arial Narrow", sans-serif;
+	mso-font-charset:0;
+	vertical-align:top;
+	border-top:none;
+	border-right:.5pt solid windowtext;
+	border-bottom:none;
+	border-left:none;
+	background:silver;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl41
+	{mso-style-parent:style0;
+	font-family:"Arial Narrow", sans-serif;
+	mso-font-charset:0;
+	vertical-align:top;
+	border-top:none;
+	border-right:.5pt solid windowtext;
+	border-bottom:.5pt solid windowtext;
+	border-left:none;
+	white-space:normal;}
+.xl42
+	{mso-style-parent:style0;
+	font-family:"Arial Narrow", sans-serif;
+	mso-font-charset:0;
+	vertical-align:top;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid windowtext;
+	border-left:none;}
+.xl43
+	{mso-style-parent:style0;
+	font-family:"Arial Narrow", sans-serif;
+	mso-font-charset:0;
+	vertical-align:top;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid windowtext;
+	border-left:.5pt solid windowtext;}
+-->
+  </style><!--[if gte mso 9]><xml>
+ <x:ExcelWorkbook>
+  <x:ExcelWorksheets>
+   <x:ExcelWorksheet>
+    <x:Name>Tabelle1</x:Name>
+    <x:WorksheetOptions>
+     <x:FitToPage/>
+     <x:FitToPage/>
+     <x:Print>
+      <x:ValidPrinterInfo/>
+      <x:PaperSizeIndex>9</x:PaperSizeIndex>
+      <x:Scale>91</x:Scale>
+      <x:HorizontalResolution>300</x:HorizontalResolution>
+      <x:VerticalResolution>300</x:VerticalResolution>
+     </x:Print>
+     <x:CodeName>Sheet1</x:CodeName>
+     <x:PageBreakZoom>100</x:PageBreakZoom>
+     <x:Selected/>
+     <x:TopRowVisible>1</x:TopRowVisible>
+     <x:Panes>
+      <x:Pane>
+       <x:Number>3</x:Number>
+       <x:ActiveRow>22</x:ActiveRow>
+       <x:ActiveCol>6</x:ActiveCol>
+      </x:Pane>
+     </x:Panes>
+     <x:ProtectContents>False</x:ProtectContents>
+     <x:ProtectObjects>False</x:ProtectObjects>
+     <x:ProtectScenarios>False</x:ProtectScenarios>
+    </x:WorksheetOptions>
+    <x:PublishObjects>
+     <x:PublishObject>
+      <x:Id>687</x:Id>
+      <x:DivID>IFC2x2add1-to-IFC2x2add2_change-log_687</x:DivID>
+      <x:SourceType>SourceRange</x:SourceType>
+      <x:Source>$A$1:$F$32</x:Source>
+      <x:HtmlType>HtmlStatic</x:HtmlType>
+      <x:Location HRef="D:\Daten\IAI\R2x3\ChangeLog\Seite.htm"/>
+      <x:Title>IFC2x2 Add1 to IFC2x3 change log</x:Title>
+     </x:PublishObject>
+    </x:PublishObjects>
+   </x:ExcelWorksheet>
+  </x:ExcelWorksheets>
+  <x:WindowHeight>11640</x:WindowHeight>
+  <x:WindowWidth>15480</x:WindowWidth>
+  <x:WindowTopX>19260</x:WindowTopX>
+  <x:WindowTopY>-15</x:WindowTopY>
+  <x:ProtectStructure>False</x:ProtectStructure>
+  <x:ProtectWindows>False</x:ProtectWindows>
+ </x:ExcelWorkbook>
+ <x:ExcelName>
+  <x:Name>Print_Titles</x:Name>
+  <x:SheetIndex>1</x:SheetIndex>
+  <x:Formula>=Tabelle1!$1:$1</x:Formula>
+ </x:ExcelName>
+</xml><![endif]-->
+</head>
+
+
+<body class="xl24" link="blue" vlink="purple">
+<span style="font-weight: bold;">Deprecated IFC Constructs</span><br>
+
+<br>
+
+The purpose of this section is to tabulate in one place all the
+deprecated constructs identified in this specification and to clarify
+the meaning of deprecation in the context of the IFC.<br>
+
+<br>
+
+This specification, Technical Corrigendum 1 of Edition 3 of IFC2x,
+contains all of the IFC2x Platform on which it is based. The IFC2x
+Platform was released with the intent to establish a set of schemas
+which would remain unchanged through subsequent editions except for
+extensions in capability. However, some of the information structures
+defined in the IFC2x Platform, or some specific uses of them, have been
+found deficient or have been superseded by new capabilities introduced
+in subsequent editions. These constructs are now deprecated and have
+been identified as such where they are defined in the specification.<br>
+
+<br>
+
+Deprecation of an information structure or some specific use of it
+means that it shall not be used in originating applications that are
+conformant to this specification. Hence instances of these deprecated
+constructs shall not occur in an exchange file or repository that is
+conformant to this specification. Receiving applications shall not be
+required to process instances of the deprecated concepts into
+meaningful internal representations. Application developers are free to
+choose how to deal with such instances should they occur. Commercial
+software tools exist that can be used to verify exchange files and
+repositories for conformance to these and other requirements based on
+appropriate rulesets. A list of IFC software tools is maintained online
+and can be accessed through the &ldquo;Software&rdquo; tab at <a href="http://www.iai-international.org/">http://www.iai-international.org</a>.<br>
+<br>
+
+
+<table x:str="" style="border-collapse: collapse; table-layout: fixed; width: 617pt;" border="0" cellpadding="0" cellspacing="0" width="824">
+
+ <col class="xl24" span="4" style="width: 14pt;" width="19">
+ <col class="xl24" style="width: 109pt;" width="145">
+ <col class="xl33" style="width: 332pt;" width="443">
+ <col class="xl24" span="2" style="width: 60pt;" width="80">
+ <col class="xl24" span="248" style="width: 60pt;" width="80">
+ <tbody>
+    <tr style="height: 12.75pt;" height="17">
+
+  <td class="xl34" colspan="5" style="height: 12.75pt; width: 165pt;" height="17" width="221">ARCHITECTURE LAYER</td>
+
+  <td class="xl36" style="width: 332pt;" width="443">&nbsp;</td>
+
+  <td class="xl24" style="width: 60pt;" width="80"></td>
+
+  <td class="xl24" style="width: 60pt;" width="80"></td>
+
+ </tr>
+
+ <tr style="height: 12.75pt;" height="17">
+
+  <td class="xl25" style="height: 12.75pt;" height="17">&nbsp;</td>
+
+  <td class="xl26" colspan="3" style="">Schema</td>
+
+  <td class="xl24"></td>
+
+  <td class="xl37" style="width: 332pt;" width="443">&nbsp;</td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+ </tr>
+
+ <tr style="height: 12.75pt;" height="17">
+
+  <td class="xl25" style="height: 12.75pt;" height="17">&nbsp;</td>
+
+  <td class="xl24"></td>
+
+  <td class="xl26" colspan="3" style="">Entity / <font class="font7">Function</font></td>
+
+  <td class="xl37" style="width: 332pt;" width="443">&nbsp;</td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+ </tr>
+
+ <tr class="xl26" style="height: 12.75pt;" height="17">
+
+  <td class="xl27" style="height: 12.75pt;" height="17">&nbsp;</td>
+
+  <td class="xl28">&nbsp;</td>
+
+  <td class="xl28">&nbsp;</td>
+
+  <td class="xl28" colspan="2" style="">Attribute / <font class="font7">WR</font></td>
+
+  <td class="xl38" style="width: 332pt;" width="443">Deprecation description</td>
+
+  <td colspan="2" class="xl26" style=""></td>
+
+ </tr>
+
+ <tr style="height: 12.75pt;" height="17">
+
+  <td class="xl31" colspan="5" style="height: 12.75pt;" height="17">RESOURCE
+  LAYER</td>
+
+  <td class="xl39" style="border-top: medium none; width: 332pt;" width="443">&nbsp;</td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+ </tr>
+
+ <tr class="xl26" style="height: 12.75pt;" height="17">
+
+  <td class="xl29" style="height: 12.75pt;" height="17">&nbsp;</td>
+
+  <td class="xl30" colspan="4" style="">IfcGeometryConstraintResource</td>
+
+  <td class="xl37" style="width: 332pt;" width="443">&nbsp;</td>
+
+  <td colspan="2" class="xl26" style=""></td>
+
+ </tr>
+
+ <tr class="xl26" style="height: 12.75pt;" height="17">
+
+  <td class="xl29" style="height: 12.75pt;" height="17">&nbsp;</td>
+
+  <td class="xl26"></td>
+
+  <td class="xl24" colspan="3" style="">IfcConnectionPortGeometry</td>
+
+  <td class="xl37" style="width: 332pt;" width="443">The entity
+  IfcConnectionPortGeometry is deprecated and shall not be used.</td>
+
+  <td colspan="2" class="xl26" style=""></td>
+
+ </tr>
+
+ <tr class="xl26" style="height: 12.75pt;" height="17">
+
+  <td class="xl29" style="height: 12.75pt;" height="17">&nbsp;</td>
+
+  <td class="xl26"></td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+  <td class="xl26"></td>
+
+  <td class="xl37" style="width: 332pt;" width="443">&nbsp;</td>
+
+  <td colspan="2" class="xl26" style=""></td>
+
+ </tr>
+
+ <tr class="xl26" style="height: 12.75pt;" height="17">
+
+  <td class="xl29" style="height: 12.75pt;" height="17">&nbsp;</td>
+
+  <td class="xl30" colspan="4" style="">IfcGeometryResource</td>
+
+  <td class="xl37" style="width: 332pt;" width="443">&nbsp;</td>
+
+  <td colspan="2" class="xl26" style=""></td>
+
+ </tr>
+
+ <tr class="xl26" style="height: 12.75pt;" height="17">
+
+  <td class="xl29" style="height: 12.75pt;" height="17">&nbsp;</td>
+
+  <td class="xl26"></td>
+
+  <td class="xl24" colspan="3" style="">Ifc2DCompositeCurve</td>
+
+  <td class="xl37" style="width: 332pt;" width="443">The entity Ifc2DCompositeCurve
+  is deprecated and shall not be used.</td>
+
+  <td colspan="2" class="xl26" style=""></td>
+
+ </tr>
+
+ <tr class="xl26" style="height: 12.75pt;" height="17">
+
+  <td class="xl29" style="height: 12.75pt;" height="17">&nbsp;</td>
+
+  <td class="xl26"></td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+  <td class="xl26"></td>
+
+  <td class="xl37" style="width: 332pt;" width="443">NOTE: Refinement of the
+  IfcCurveBoundedPlane definition made this entity unnecessary</td>
+
+  <td colspan="2" class="xl26" style=""></td>
+
+ </tr>
+
+ <tr class="xl26" style="height: 12.75pt;" height="17">
+
+  <td class="xl29" style="height: 12.75pt;" height="17">&nbsp;</td>
+
+  <td class="xl26"></td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+  <td class="xl26"></td>
+
+  <td class="xl37" style="width: 332pt;" width="443">&nbsp;</td>
+
+  <td colspan="2" class="xl26" style=""></td>
+
+ </tr>
+
+ <tr style="height: 12.75pt;" height="17">
+
+  <td class="xl25" style="height: 12.75pt;" height="17">&nbsp;</td>
+
+  <td class="xl30" colspan="4" style="">IfcPresentationAppearanceResource</td>
+
+  <td class="xl37" style="width: 332pt;" width="443">&nbsp;</td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+ </tr>
+
+ <tr style="height: 12.75pt;" height="17">
+
+  <td class="xl25" style="height: 12.75pt;" height="17">&nbsp;</td>
+
+  <td class="xl30"></td>
+
+  <td class="xl24" colspan="3" style="">IfcFillAreaStyleHatching</td>
+
+  <td class="xl37" style="width: 332pt;" width="443">&nbsp;</td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+ </tr>
+
+ <tr style="height: 26.25pt;" height="35">
+
+  <td class="xl25" style="height: 26.25pt;" height="35">&nbsp;</td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+  <td class="xl24" colspan="2" style="">PointOfReferenceHatchLine</td>
+
+  <td class="xl37" style="width: 332pt;" width="443">The OPTIONAL attribute
+  PointOfReferenceHatchLine is deprecated and shall not be used, i.e., shall
+  not contain a reference to an IfcCartesianPoint</td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+ </tr>
+
+ <tr style="height: 12.75pt;" height="17">
+
+  <td class="xl25" style="height: 12.75pt;" height="17">&nbsp;</td>
+
+  <td colspan="4" class="xl24" style=""></td>
+
+  <td class="xl37" style="width: 332pt;" width="443">&nbsp;</td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+ </tr>
+
+ <tr style="height: 12.75pt;" height="17">
+
+  <td class="xl25" style="height: 12.75pt;" height="17">&nbsp;</td>
+
+  <td class="xl30" colspan="4" style="">IfcRepresentationResource</td>
+
+  <td class="xl37" style="width: 332pt;" width="443">&nbsp;</td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+ </tr>
+
+ <tr style="height: 51pt;" height="68">
+
+  <td class="xl25" style="height: 51pt;" height="68">&nbsp;</td>
+
+  <td class="xl24"></td>
+
+  <td class="xl24" colspan="3" style="">IfcProductRepresentation</td>
+
+  <td class="xl37" style="width: 332pt;" width="443">The entity
+  IfcProductRepresentation shall not be instantiated explicitly (although it
+  may be instantiated implicitly through an instantiation of one of its
+  subtypes).<br>
+
+    NOTE: This entity will be changed to an ABSTRACT supertype in a future
+  edition of the specification.</td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+ </tr>
+
+ <tr style="height: 63.75pt;" height="85">
+
+  <td class="xl25" style="height: 63.75pt;" height="85">&nbsp;</td>
+
+  <td class="xl24"></td>
+
+  <td class="xl24" colspan="3" style="">IfcRepresentation</td>
+
+  <td class="xl37" style="width: 332pt;" width="443">The entity IfcRepresentation
+  shall not be instantiated explicitly (although it may be instantiated
+  implicitly through an instantiation of one of its subtypes)<br>
+
+    NOTE: This entity will be made into an ABSTRACT supertype in a future
+  edition of the specification.</td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+ </tr>
+
+ <tr style="height: 51pt;" height="68">
+
+  <td class="xl25" style="height: 51pt;" height="68">&nbsp;</td>
+
+  <td class="xl24"></td>
+
+  <td class="xl24" colspan="3" style="">IfcRepresentationContext</td>
+
+  <td class="xl37" style="width: 332pt;" width="443">The entity
+  IfcRepresentationContext shall not be instantiated explicitly (although it
+  may be instantiated implicitly through an instantiation of one of its
+  subtypes).<br>
+
+    NOTE: This entity will be changed to an ABSTRACT supertype in a future
+  edition of the specification.</td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+ </tr>
+
+ <tr style="height: 12.75pt;" height="17">
+
+  <td class="xl25" style="height: 12.75pt;" height="17">&nbsp;</td>
+
+  <td class="xl30"></td>
+
+  <td colspan="3" class="xl24" style=""></td>
+
+  <td class="xl37" style="width: 332pt;" width="443">&nbsp;</td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+ </tr>
+
+ <tr style="height: 12.75pt;" height="17">
+
+  <td class="xl25" style="height: 12.75pt;" height="17">&nbsp;</td>
+
+  <td class="xl30" colspan="4" style="">IfcUtilityResource</td>
+
+  <td class="xl37" style="width: 332pt;" width="443">&nbsp;</td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+ </tr>
+
+ <tr style="height: 25.5pt;" height="34">
+
+  <td class="xl25" style="height: 25.5pt;" height="34">&nbsp;</td>
+
+  <td class="xl30"></td>
+
+  <td class="xl24" colspan="3" style="">IfcChangeActionEnum</td>
+
+  <td class="xl37" style="width: 332pt;" width="443">The enumeration values
+  MODIFIEDADDED and MODIFIEDDELETED are deprecated and shall not be used.</td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+ </tr>
+
+ <tr style="height: 12.75pt;" height="17">
+
+  <td class="xl25" style="height: 12.75pt;" height="17">&nbsp;</td>
+
+  <td class="xl30"></td>
+
+  <td colspan="3" class="xl24" style=""></td>
+
+  <td class="xl37" style="width: 332pt;" width="443">&nbsp;</td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+ </tr>
+
+ <tr style="height: 12.75pt;" height="17">
+
+  <td class="xl31" colspan="4" style="height: 12.75pt;" height="17">CORE
+  LAYER</td>
+
+  <td class="xl32">&nbsp;</td>
+
+  <td class="xl40" style="width: 332pt;" width="443">&nbsp;</td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+ </tr>
+
+ <tr style="height: 12.75pt;" height="17">
+
+  <td class="xl25" style="height: 12.75pt;" height="17">&nbsp;</td>
+
+  <td class="xl30" colspan="3" style="">IfcKernel</td>
+
+  <td class="xl24"></td>
+
+  <td class="xl37" style="width: 332pt;" width="443">&nbsp;</td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+ </tr>
+
+ <tr style="height: 51pt;" height="68">
+
+  <td class="xl25" style="height: 51pt;" height="68">&nbsp;</td>
+
+  <td class="xl30"></td>
+
+  <td class="xl24" colspan="3" style="">IfcRelAssociates</td>
+
+  <td class="xl37" style="width: 332pt;" width="443">The entity IfcRelAssociates
+  shall not be instantiated explicitly (although it may be instantiated
+  implicitly through an instantiation of one of its subtypes)<br>
+
+    NOTE: This entity will be changed into an ABSTRACT supertype in a future
+  edition of the specification.</td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+ </tr>
+
+ <tr style="height: 12.75pt;" height="17">
+
+  <td class="xl25" style="height: 12.75pt;" height="17">&nbsp;</td>
+
+  <td class="xl30"></td>
+
+  <td colspan="3" class="xl24" style=""></td>
+
+  <td class="xl37" style="width: 332pt;" width="443">&nbsp;</td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+ </tr>
+
+ <tr style="height: 12.75pt;" height="17">
+
+  <td class="xl25" style="height: 12.75pt;" height="17">&nbsp;</td>
+
+  <td class="xl30" colspan="4" style="">IfcProductExtension</td>
+
+  <td class="xl37" style="width: 332pt;" width="443">&nbsp;</td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+ </tr>
+
+ <tr style="height: 51pt;" height="68">
+
+  <td class="xl25" style="height: 51pt;" height="68">&nbsp;</td>
+
+  <td class="xl30"></td>
+
+  <td class="xl24" colspan="3" style="">IfcElectricalElement</td>
+
+  <td class="xl37" style="width: 332pt;" width="443">The entity IfcElectricalElement
+  is deprecated and shall not be used.<br>
+
+    NOTE: The various electrical elements are now handled as distribution
+  elements and class definitions are provided by subtypes of
+  IfcDistributionElement for occurrences and IfcDistributionElementType for
+  types.</td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+ </tr>
+
+ <tr style="height: 51pt;" height="68">
+
+  <td class="xl25" style="height: 51pt;" height="68">&nbsp;</td>
+
+  <td class="xl30"></td>
+
+  <td class="xl24" colspan="3" style="">IfcElement</td>
+
+  <td class="xl37" style="width: 332pt;" width="443">The property set Pset_Draughting
+  is deprecated and shall not be used.<br>
+
+    NOTE: curve colours are handled by IfcCurveStyle and layer assignment is
+  handled by IfcPresentationLayerAssignment</td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+ </tr>
+
+ <tr style="height: 76.5pt;" height="102">
+
+  <td class="xl25" style="height: 76.5pt;" height="102">&nbsp;</td>
+
+  <td class="xl30"></td>
+
+  <td class="xl24" colspan="3" style="">IfcEquipmentElement</td>
+
+  <td class="xl37" style="width: 332pt;" width="443">The entity IfcEquipmentElement
+  is deprecated and shall not be used.<br>
+
+    NOTE: The concept of equipment that has a distribution function, such as
+  electrical equipment, is now handled as distribution elements and class
+  definitions are provided by subtypes of IfcDistributionElement for
+  occurrences and IfcDistributionElementType for types. Equipment that has no
+  distribution function is now handled within the IfcSharedComponentElements
+  schema</td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+ </tr>
+
+ <tr style="height: 13.5pt;" height="18">
+
+  <td class="xl43" style="height: 13.5pt;" height="18">&nbsp;</td>
+
+  <td class="xl42">&nbsp;</td>
+
+  <td class="xl42">&nbsp;</td>
+
+  <td class="xl42">&nbsp;</td>
+
+  <td class="xl42">&nbsp;</td>
+
+  <td class="xl41" style="width: 332pt;" width="443">&nbsp;</td>
+
+  <td colspan="2" class="xl24" style=""></td>
+
+ </tr>
+
+ <!--[if supportMisalignedColumns]-->
+ <tr style="display: none;" height="0">
+
+  <td style="width: 14pt;" width="19"></td>
+
+  <td style="width: 14pt;" width="19"></td>
+
+  <td style="width: 14pt;" width="19"></td>
+
+  <td style="width: 14pt;" width="19"></td>
+
+  <td style="width: 109pt;" width="145"></td>
+
+  <td style="width: 332pt;" width="443"></td>
+
+  <td style="width: 60pt;" width="80"></td>
+
+  <td style="width: 60pt;" width="80"></td>
+
+ </tr>
+
+ <!--[endif]-->
+  </tbody>
+</table>
+
+
+</body>
+</html>

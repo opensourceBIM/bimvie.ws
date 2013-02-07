@@ -1,0 +1,410 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IFCPROPERTYRESOURCE</title>
+<link rel="stylesheet" href="../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="img/schema_navbar_e2.gif" alt="Navigation" height="46" width="629" border="0" usemap="#schema-navbar"/><br/>
+<map name="schema-navbar">
+  <area shape="rect" coords="0,0,63,22" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="64,0,197,22" alt="Navigate"href="#interfaced_schemas">
+  <area shape="rect" coords="198,0,287,22" alt="Navigate"href="#constants">
+  <area shape="rect" coords="288,0,356,22" alt="Navigate"href="#entities">
+  <area shape="rect" coords="357,0,475,22" alt="Navigate"href="#defined_types">
+  <area shape="rect" coords="0,23,70,44" alt="Navigate"href="#select_types">
+  <area shape="rect" coords="71,23,171,44" alt="Navigate"href="#enumerations">
+  <area shape="rect" coords="172,23,231,44" alt="Navigate"href="#global_rules">
+  <area shape="rect" coords="232,23,315,44" alt="Navigate"href="#functions">
+  <area shape="rect" coords="316,23,475,44" alt="Navigate"href="#procedures">
+  <area shape="rect" coords="476,0,628,22" alt="Navigate"href="#subtype_constraints">
+</map><p CLASS="schema-heading">IFCPROPERTYRESOURCE</p><p CLASS="list-content">The data model consists of the following:</p>
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td align="right" width="10">
+            </td>
+            <td align="right">11&nbsp;
+            </td>
+            <td><a href="#entities">Entities</a>
+            </td>
+          </tr>
+
+          <tr valign="top">
+            <td align="right" width="10">
+            </td>
+            <td align="right">1&nbsp;
+            </td>
+            <td><a href="#select_types">Select types</a>
+            </td>
+          </tr>
+
+          <tr valign="top">
+            <td align="right" width="10">
+            </td>
+            <td align="right">1&nbsp;
+            </td>
+            <td><a href="#functions">Functions</a>
+            </td>
+          </tr>
+
+        </table>        
+	 <P> The <I>IfcPropertyResource</I> defines a basic set of property types
+		that can be associated with occurrence objects (subtypes of <I>IfcObject</I>)
+		and type objects (subtypes of <I>IfcTypeObject</I>) through the
+		<I>IfcPropertySet</I> (defined in the Kernel). These properties are used to
+		assign property definitions that are semantically defined by a name string and
+		are extensible in terms of their definitions.</P> 
+	 <BLOCKQUOTE> 
+		<P><FONT SIZE="-1">NOTE: Frequently, there is a need to extend the
+		  attributes that are attached to an individual object or group of objects. Yet
+		  it may not be necessary to extend the attributes for every object within the
+		  same class. Using the same capabilities as for types of an element, it is
+		  possible to define such sets of attributes and associate them with individual
+		  objects.</FONT></P></BLOCKQUOTE> 
+	 <P>The association of attributes to objects can be defined by two different
+		ways:</P> 
+	 <UL> 
+		<LI>by defining a type object (<I>IfcTypeObject</I>) which defines a
+		  specific object information (including the relevant properties) which are
+		  attached to all instances (or occurrences) of the type object (via the
+		  <I>IfcRelDefinedByType</I> relationship).</LI> 
+		<LI>by defining a property set (<I>IfcPropertySet</I>, a logical grouping
+		  of related properties) which defines the common property information for a
+		  group of instances (or occurrences), this is done via the
+		  <I>IfcRelDefinedByProperties</I> relationship.</LI> 
+	 </UL> 
+	 <P>The semantic information of what an individual property denotes has to
+		be given by the <I>Name</I> attribute. The <I>Name</I> is human interpretable
+		and can also be computer interpretable by convention. This convention has to be
+		established by implementers' agreements.</P> 
+	 <BLOCKQUOTE> 
+		<P><FONT SIZE="-1">NOTE: The IFC specification defines a set of property
+		  sets, which provides a recommended usage of property sets for objects in the
+		  IFC model. In addition to the IFC property set specification also regional or
+		  project specific definitions of property sets are possible. Thereby property
+		  sets provide an mechanism to localize IFC definitions.</FONT></P></BLOCKQUOTE> 
+	 <P>All subtypes of <I>IfcProperty</I> are referenced later by the
+		<I>IfcPropertySet</I>. Thereby the <I>IfcPropertySet</I> establishes a tree of
+		property definitions through the <I>IfcSimpleProperty</I> (and its subtypes)
+		and <I>IfcComplexProperty</I>. It should be noted, that any instance of
+		<I>IfcSimpleProperty</I> (and its subtypes) shall only be referenced once (by
+		either <I>IfcPropertySet</I> or <I>IfcComplexProperty</I>).</P>
+	 <BLOCKQUOTE>
+		<P><FONT SIZE="-1">NOTE: The property set attached to an object shall
+		  have a tree structure, therefore all properties (either
+		  <I>IfcSimpleProperty</I> -and subtypes- or <I>IfcComplexProperty</I>) shall be
+		  used only once within that structure.</FONT></P></BLOCKQUOTE>
+<p CLASS="list-heading"><a name="interfaced_schemas">Interfaced schemas (8):</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcactorresource/ifcactorresource.htm">IFCACTORRESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifcactorresource/lexical/ifcperson.htm">IfcPerson</a>,<br/><a href="../ifcactorresource/lexical/ifcorganization.htm">IfcOrganization</a>,<br/><a href="../ifcactorresource/lexical/ifcpostaladdress.htm">IfcPostalAddress</a>,<br/><a href="../ifcactorresource/lexical/ifcpersonandorganization.htm">IfcPersonAndOrganization</a>,<br/><a href="../ifcactorresource/lexical/ifcaddress.htm">IfcAddress</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcconstraintresource/ifcconstraintresource.htm">IFCCONSTRAINTRESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifccostresource/ifccostresource.htm">IFCCOSTRESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifccostresource/lexical/ifcappliedvalue.htm">IfcAppliedValue</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcdatetimeresource/ifcdatetimeresource.htm">IFCDATETIMERESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifcdatetimeresource/lexical/ifcdateandtime.htm">IfcDateAndTime</a>,<br/><a href="../ifcdatetimeresource/lexical/ifccalendardate.htm">IfcCalendarDate</a>,<br/><a href="../ifcdatetimeresource/lexical/ifclocaltime.htm">IfcLocalTime</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcexternalreferenceresource/ifcexternalreferenceresource.htm">IFCEXTERNALREFERENCERESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifcexternalreferenceresource/lexical/ifcdocumentreference.htm">IfcDocumentReference</a>,<br/><a href="../ifcexternalreferenceresource/lexical/ifclibraryreference.htm">IfcLibraryReference</a>,<br/><a href="../ifcexternalreferenceresource/lexical/ifcclassificationreference.htm">IfcClassificationReference</a>,<br/><a href="../ifcexternalreferenceresource/lexical/ifcexternalreference.htm">IfcExternalReference</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcmaterialresource/ifcmaterialresource.htm">IFCMATERIALRESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifcmaterialresource/lexical/ifcmaterial.htm">IfcMaterial</a>,<br/><a href="../ifcmaterialresource/lexical/ifcmateriallist.htm">IfcMaterialList</a>,<br/><a href="../ifcmaterialresource/lexical/ifcmateriallayer.htm">IfcMaterialLayer</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcmeasureresource/ifcmeasureresource.htm">IFCMEASURERESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifcmeasureresource/lexical/ifcvalue.htm">IfcValue</a>,<br/><a href="../ifcmeasureresource/lexical/ifcunit.htm">IfcUnit</a>,<br/><a href="../ifcmeasureresource/lexical/ifcderivedunit.htm">IfcDerivedUnit</a>,<br/><a href="../ifcmeasureresource/lexical/ifcnamedunit.htm">IfcNamedUnit</a>,<br/><a href="../ifcmeasureresource/lexical/ifccontextdependentunit.htm">IfcContextDependentUnit</a>,<br/><a href="../ifcmeasureresource/lexical/ifcconversionbasedunit.htm">IfcConversionBasedUnit</a>,<br/><a href="../ifcmeasureresource/lexical/ifcsiunit.htm">IfcSiUnit</a>,<br/><a href="../ifcmeasureresource/lexical/ifcmeasurevalue.htm">IfcMeasureValue</a>,<br/><a href="../ifcmeasureresource/lexical/ifclabel.htm">IfcLabel</a>,<br/><a href="../ifcmeasureresource/lexical/ifcidentifier.htm">IfcIdentifier</a>,<br/><a href="../ifcmeasureresource/lexical/ifcreal.htm">IfcReal</a>,<br/><a href="../ifcmeasureresource/lexical/ifclengthmeasure.htm">IfcLengthMeasure</a>,<br/><a href="../ifcmeasureresource/lexical/ifcareameasure.htm">IfcAreaMeasure</a>,<br/><a href="../ifcmeasureresource/lexical/ifcvolumemeasure.htm">IfcVolumeMeasure</a>,<br/><a href="../ifcmeasureresource/lexical/ifcratiomeasure.htm">IfcRatioMeasure</a>,<br/><a href="../ifcmeasureresource/lexical/ifctext.htm">IfcText</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifctimeseriesresource/ifctimeseriesresource.htm">IFCTIMESERIESRESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifctimeseriesresource/lexical/ifctimeseries.htm">IfcTimeSeries</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="list-heading"><a name="entities">Entities (11):</a></p>
+
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifccomplexproperty.htm" target="SOURCE">IfcComplexProperty</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcproperty.htm" target="SOURCE">IfcProperty</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcpropertyboundedvalue.htm" target="SOURCE">IfcPropertyBoundedValue</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcpropertydependencyrelationship.htm" target="SOURCE">IfcPropertyDependencyRelationship</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcpropertyenumeratedvalue.htm" target="SOURCE">IfcPropertyEnumeratedValue</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcpropertyenumeration.htm" target="SOURCE">IfcPropertyEnumeration</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcpropertylistvalue.htm" target="SOURCE">IfcPropertyListValue</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcpropertyreferencevalue.htm" target="SOURCE">IfcPropertyReferenceValue</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcpropertysinglevalue.htm" target="SOURCE">IfcPropertySingleValue</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcpropertytablevalue.htm" target="SOURCE">IfcPropertyTableValue</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcsimpleproperty.htm" target="SOURCE">IfcSimpleProperty</a>
+            </td>
+          </tr>
+        </table><p CLASS="list-heading"><a name="select_types">Select types (1):</a></p>
+
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcobjectreferenceselect.htm" target="SOURCE">IfcObjectReferenceSelect</a>
+            </td>
+          </tr>
+        </table><p CLASS="list-heading"><a name="functions">Functions (1):</a></p>
+
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="middle">
+            <td><a href="lexical/ifcuniquepropertyname.htm" target="SOURCE">IfcUniquePropertyName</a>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

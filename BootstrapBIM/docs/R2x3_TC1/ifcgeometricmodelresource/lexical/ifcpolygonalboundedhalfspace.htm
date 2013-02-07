@@ -1,0 +1,431 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcPolygonalBoundedHalfSpace</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/entity_navbar.gif" alt="Navigation" height="24" width="625" border="0" usemap="#entity-navbar"/><br/>
+<map name="entity-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcgeometricmodelresource.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0003.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,398,23" alt="Navigate"href="#attribute_description">
+  <area shape="rect" coords="399,0,442,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="443,0,526,23" alt="Navigate"href="#inheritance">
+  <area shape="rect" coords="527,0,623,23" alt="Navigate"href="ifcpolygonalboundedhalfspace.htm#references">
+</map><p CLASS="object-heading">IfcPolygonalBoundedHalfSpace</p>         
+<p><u>Definition from IAI</u>: The polygonal bounded
+half space is a special subtype of a half space solid, where the
+material of the half space used in Boolean expressions is bounded by a
+polygonal boundary. <font color="#0000ff">The base
+surface of the half space is positioned by its normal relativeto the
+object coordinate system
+(as defined at the supertype <i>IfcHalfSpaceSolid</i>),&nbsp;and
+its polygonal (with or without arc segments) boundary is defined in the
+XY plane of the position
+coordinate system established by the <i>Position</i>
+attribute, the subtraction body is extruded perpendicular to the XY
+plane of the position coordinate system, i.e. into the direction of the
+positive Z axis defined by the <i>Position</i> attribute</font>.</p>
+<p>The boundary is defined by a 2 dimensional polyline <font
+ color="#0000ff">(or 2 dimensional composite curve,
+consisting of straight segments and circular arc segments)</font>
+within the
+XY plane of the position coordinate system. The side of the surface
+which is in the half space is determined by the surface normal and the
+agreement flag. If the agreement flag is TRUE, then the subset is the
+one the normal points away from. If the agreement flag is FALSE, then
+the subset is the one the normal points into. </p>
+<blockquote>
+  <p><small>NOTE&nbsp; A polygonal
+bounded half
+space is not a subtype of <i>IfcSolidModel</i>,
+half space solids are only useful as operands in Boolean expressions.</small></p>
+</blockquote>
+<blockquote>
+  <p><small><font color="#0000ff">HISTORY&nbsp;
+New class in IFC Release 2x </font></small></p>
+</blockquote>
+<p><u>Informal propositions</u>:</p>
+<ol>
+  <li>The <i>IfcPolyline</i> <font
+ color="#0000ff">or the <i>IfcCompositeCurve</i></font>
+providing the <i>PolygonalBoundary</i>
+shall be closed.</li>
+  <li>If the <i>PolygonalBoundary</i>
+is given by an <i>IfcCompositeCurve</i>, it shall only
+have&nbsp;<font color="#0000ff"><i><font
+ color="#000000">I</font><font color="#000000">fcCompositeCurveSegment</font></i><font
+ color="#000000">'s of type <i>IfcPolyline</i>,
+or <i>IfcTrimmedCurve</i> (having a <i>BasisCurve</i>
+of type <i>IfcLine</i>, or <i>IfcCircle</i>)</font></font></li>
+</ol>
+<p><u>Illustration</u>:</p>
+<table border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td width="650"><a
+ href="drawings/IfcPolygonalBoundedHalfSpace-Layout1.dwf"><img
+ alt="polygonal bounded halfspace"
+ src="figures/IfcPolygonalBoundedHalfSpace-Layout1.png"
+ border="0" height="480" width="640"></a></td>
+      <td align="left" valign="top"><small><u>black
+coordinates</u><br>
+      </small>
+      <ul>
+        <li><small>Object coordinate system (usually
+provided by <i>IfcLocalPlacement</i>)</small></li>
+      </ul>
+      <small><br>
+      <u>green coordinates</u><br>
+      </small>
+      <ul>
+        <li><small>Position coordinate system, the <i>PolygonalBoundary</i>
+is given within this coordinate system. It is provided by <i>IfcPolygonalBoundedHalfSpace.Position</i>.
+This coordinate system is relative to the object coordinate system. The
+extrusion direction of the subtraction body is the positve Z axis.</small></li>
+      </ul>
+      <small><u>red coordinates</u><br>
+      </small>
+      <ul>
+        <li><small>Normal of the plane. It is provided by
+the <i>BaseSurface</i>, i.e.&nbsp; <i>IfcSurface.Position</i>.
+This normal is also relative to the object coordinate system.</small></li>
+      </ul>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" rowspan="1" align="left"
+ valign="top">
+      <p><font size="-1"><u>Purpose</u><br>
+The polygonal bounded half space is used to limit the volume of the
+half space in Boolean difference expressions. Only the part that is
+defined by a theoretical intersection between the half space solid and
+an extruded area solid, defined by extruding the polygonal boundary, is
+used for Boolean expressions.</font></p>
+      <p><font size="-1"><u>Parameter</u><br>
+The <i>PolygonalBoundary</i> defines the 2D polyline which
+bounds the effectiveness of the half space in Boolean expressions. The <i>BaseSurface</i>
+is defined by a plane, and the normal of the plane together with the <i>AgreementFlag</i>
+defines the side of the material of the half space.</font></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">ENTITY</a></SPAN> IfcPolygonalBoundedHalfSpace
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">SUBTYPE</SPAN>&nbsp;<SPAN CLASS="all-express-keywords">OF</SPAN>&nbsp;(
+                        </td>
+                        <td><a href="ifchalfspacesolid.htm">IfcHalfSpaceSolid</a>);
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Position
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcgeometryresource/lexical/ifcaxis2placement3d.htm">IfcAxis2Placement3D</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>PolygonalBoundary
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcgeometryresource/lexical/ifcboundedcurve.htm">IfcBoundedCurve</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td><SPAN CLASS="all-express-keywords">WHERE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="10%">WR41
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td>PolygonalBoundary.Dim = 2;
+                              </td>
+                            </tr>
+                            <tr valign="top">
+                              <td width="10%">WR42
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td>SIZEOF(TYPEOF(PolygonalBoundary) * [
+  'IFCGEOMETRYRESOURCE.IFCPOLYLINE', 
+  'IFCGEOMETRYRESOURCE.IFCCOMPOSITECURVE']
+) = 1;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="object-express-specification"><a name="attribute_description">Attribute definitions:</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">Position
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              
+<P>Definition of the position coordinate system for the bounding polyline <STRIKE>and the base surface</STRIKE>.</P>
+
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">PolygonalBoundary
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              
+Two-dimensional <strike>polyline</strike> bounded curve, defined in the xy plane of the position coordinate system.
+<blockquote><small><font color="#ff0000">
+IFC2x Edition 3 CHANGE&nbsp; The attribute type has been changed from <i>IfcPolyline</i> to its supertype <i>IfcBoundedCurve</i> with upward compatibility for file based exchange.
+</font></small></blockquote>
+
+            </td>
+          </tr>
+        </table><p CLASS="object-express-specification"><a name="constraint_description">Formal Propositions:</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td CLASS="constraint-description-name" width="20%">WR41
+            </td>
+            <td CLASS="constraint-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="constraint-description">              The bounding polyline should have the dimensionality of 2.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="constraint-description-name" width="20%">WR42
+            </td>
+            <td CLASS="constraint-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="constraint-description">              
+Only bounded curves of type <i>IfcCompositeCurve</i>, or <i>IfcPolyline</i> are valid boundaries.
+
+            </td>
+          </tr>
+        </table><p CLASS="inheritance-heading"><a name="inheritance">Inheritance graph</a></p>
+        <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">ENTITY</SPAN> IfcPolygonalBoundedHalfSpace;
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="../../ifcgeometryresource/lexical/ifcrepresentationitem.htm">IfcRepresentationItem</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">INVERSE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>LayerAssignments
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifcpresentationorganizationresource/lexical/ifcpresentationlayerassignment.htm">IfcPresentationLayerAssignment</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> AssignedItems;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>StyledByItem
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> [0:1] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifcpresentationappearanceresource/lexical/ifcstyleditem.htm">IfcStyledItem</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> Item;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="../../ifcgeometryresource/lexical/ifcgeometricrepresentationitem.htm">IfcGeometricRepresentationItem</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifchalfspacesolid.htm">IfcHalfSpaceSolid</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>BaseSurface
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcgeometryresource/lexical/ifcsurface.htm">IfcSurface</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>AgreementFlag
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td> <SPAN CLASS="all-express-keywords">BOOLEAN</SPAN>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">DERIVE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Dim
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcgeometryresource/lexical/ifcdimensioncount.htm">IfcDimensionCount</a>&nbsp;:=&nbsp;                                3;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcpolygonalboundedhalfspace.htm">IfcPolygonalBoundedHalfSpace</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Position
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcgeometryresource/lexical/ifcaxis2placement3d.htm">IfcAxis2Placement3D</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>PolygonalBoundary
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcgeometryresource/lexical/ifcboundedcurve.htm">IfcBoundedCurve</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

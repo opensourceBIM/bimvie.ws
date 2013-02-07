@@ -1,0 +1,343 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcTrapeziumProfileDef</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/entity_navbar.gif" alt="Navigation" height="24" width="625" border="0" usemap="#entity-navbar"/><br/>
+<map name="entity-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcprofileresource.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0002.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,398,23" alt="Navigate"href="#attribute_description">
+  <area shape="rect" coords="399,0,442,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="443,0,526,23" alt="Navigate"href="#inheritance">
+  <area shape="rect" coords="527,0,623,23" alt="Navigate"href="ifctrapeziumprofiledef.htm#references">
+</map><p CLASS="object-heading">IfcTrapeziumProfileDef</p>        
+<p><u>Definition
+from IAI</u>: The <i>IfcTrapeziumProfileDef</i>
+defines a trapezium as the profile definition used by the swept surface
+geometry or the swept area solid. It is given by its Top X and Bottom X
+extent and its Y extent as well as by the offset of the Top X extend,
+and placed within the 2D position coordinate system, established by the
+<i>Position</i>
+attribute. It is placed <font
+ color="#ff0000">centric</font>
+within the position coordinate system,
+i.e. in the center of the bounding box. </p>
+<blockquote><font
+ color="#0000ff" size="-1">HISTORY: New class
+in IFC
+Release 1.5. The use definition has changed in IFC Release 2x.</font></blockquote>
+<u>Illustration:</u>
+<table frame="border" width="100%">
+  <tbody>
+    <tr>
+      <td width="420"><a
+ href="drawings/IfcTrapeziumProfileDef-Layout1.dwf"><img
+ src="figures/IfcTrapeziumProfileDef-Layout1.gif"
+ alt="trapezium profile" border="0" height="300"
+ width="400"></a></td>
+      <td align="left" valign="top"
+ width="100%"><u>Position</u>
+      <br>
+The parameterized profile defines its own position coordinate system.
+The underlying
+coordinate system is defined by the swept surface or swept area solid
+that uses the profile definition. It is the xy plane of either:
+      <ul>
+        <li style="font-style: italic;">IfcSweptSurface.Position</li>
+        <li style="font-style: italic;">IfcSweptAreaSolid.Position</li>
+      </ul>
+or in case of sectioned spines the xy plane of each list member of <span
+ style="font-style: italic;">IfcSectionedSpine.CrossSectionPositions.</span>
+      <br>
+      <br>
+By using offsets of the position location, the parameterized profile
+can be positioned centric (using x,y offsets = 0.), or at any position
+relative to the profile. Explicit coordinate offsets are used to define
+cardinal points (e.g. upper-left bound).
+      <p><u>Parameter</u>
+      <br>
+The <i>IfcTrapeziumProfileDef</i>
+is defined within the position
+coordinate system, where the <i>BottomDim</i>
+defines the length
+measure for the bottom line (half along the positive x-axis) and the <i>YDim</i>
+defines the length measure for the parallel distance of bottom and top
+line (half along the positive y-axis). The top line starts with a
+distance of <i>TopXOffset</i>
+from [-BottomLine/2,YDim] (which can be
+negative, zero, or positive) and has a length of <i>TopXDim</i>
+along
+the positive x-axis.</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p> Table: Parameter of trapezium profile definition </p>
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">ENTITY</a></SPAN> IfcTrapeziumProfileDef
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">SUBTYPE</SPAN>&nbsp;<SPAN CLASS="all-express-keywords">OF</SPAN>&nbsp;(
+                        </td>
+                        <td><a href="ifcparameterizedprofiledef.htm">IfcParameterizedProfileDef</a>);
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>BottomXDim
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcmeasureresource/lexical/ifcpositivelengthmeasure.htm">IfcPositiveLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>TopXDim
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcmeasureresource/lexical/ifcpositivelengthmeasure.htm">IfcPositiveLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>YDim
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcmeasureresource/lexical/ifcpositivelengthmeasure.htm">IfcPositiveLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>TopXOffset
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcmeasureresource/lexical/ifclengthmeasure.htm">IfcLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="object-express-specification"><a name="attribute_description">Attribute definitions:</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">BottomXDim
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              The extent of the bottom line measured along the implicit x-axis.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">TopXDim
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              The extent of the top line measured along the implicit x-axis.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">YDim
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              The extent of the distance between the parallel bottom and top lines measured along the implicit y-axis.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">TopXOffset
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Offset from the beginning of the top line to the bottom line, measured along the implicit x-axis.
+            </td>
+          </tr>
+        </table><p CLASS="inheritance-heading"><a name="inheritance">Inheritance graph</a></p>
+        <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">ENTITY</SPAN> IfcTrapeziumProfileDef;
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcprofiledef.htm">IfcProfileDef</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ProfileType
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="ifcprofiletypeenum.htm">IfcProfileTypeEnum</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ProfileName
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifclabel.htm">IfcLabel</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcparameterizedprofiledef.htm">IfcParameterizedProfileDef</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Position
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcgeometryresource/lexical/ifcaxis2placement2d.htm">IfcAxis2Placement2D</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifctrapeziumprofiledef.htm">IfcTrapeziumProfileDef</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>BottomXDim
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcmeasureresource/lexical/ifcpositivelengthmeasure.htm">IfcPositiveLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>TopXDim
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcmeasureresource/lexical/ifcpositivelengthmeasure.htm">IfcPositiveLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>YDim
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcmeasureresource/lexical/ifcpositivelengthmeasure.htm">IfcPositiveLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>TopXOffset
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcmeasureresource/lexical/ifclengthmeasure.htm">IfcLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

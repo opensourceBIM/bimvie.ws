@@ -1,0 +1,821 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcDoorLiningProperties</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/entity_navbar.gif" alt="Navigation" height="24" width="625" border="0" usemap="#entity-navbar"/><br/>
+<map name="entity-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcsharedbldgelements.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0003.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,398,23" alt="Navigate"href="#attribute_description">
+  <area shape="rect" coords="399,0,442,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="443,0,526,23" alt="Navigate"href="#inheritance">
+  <area shape="rect" coords="527,0,623,23" alt="Navigate"href="ifcdoorliningproperties.htm#references">
+</map><p CLASS="object-heading">IfcDoorLiningProperties</p>         
+<p><u>Definition
+of IAI</u>: The door lining is the
+frame which enables the door leaf to be fixed in position. The door
+lining is used to hang the door leaf. The parameters of the door lining
+(<i>IfcDoorLiningProperties</i>)
+define the geometrically relevant parameter of the lining.</p>
+<p>The <i>IfcDoorLiningProperties</i>
+are included in the list of properties (<i>HasPropertySets</i>)
+of the <i>IfcDoorStyle</i>.
+More information about the door lining can be included in the same list
+of the <i>IfcDoorStyle</i>
+using the <i>IfcPropertySet</i>
+for dynamic extensions. </p>
+<blockquote><font
+ color="#0000ff" size="-1">HISTORY: New entity
+in IFC Release 2.0</font></blockquote>
+<p><u><b>Geometry
+Use Definitions</b></u></p>
+<p>The <i>IfcDoorLiningProperties</i>
+does not hold its own geometric representation. However it defines
+parameters which can be used to create the shape of the door style
+(which is inserted by the <i>IfcDoor</i>
+into the spatial context of the project).</p>
+<p><b>Interpretation
+of parameter</b></p>
+<p>The parameters of the <i>IfcDoorLiningProperties</i>
+define a standard door lining, including (if given) a threshold and a
+transom. The outer boundary of the lining is determined by the
+occurrence parameter assigned to the <i>IfcDoor</i>,
+which inserts the <i>IfcDoorStyle</i>.</p>
+<table border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr valign="top">
+      <td align="left" valign="top"><img
+ src="figures/IfcDoorLiningProperties-Fig01.gif" alt="lining 1"
+ border="0" height="155" width="247"></td>
+      <td align="left" valign="top">The
+lining is applied to the left, right and upper side of the opening
+reveal. The parameters are:
+      <ul>
+        <li><i>LiningDepth</i>,
+          <font color="#0000ff">if
+omitted, equal to wall thickness - this only takes effect if a value for
+          <i>LiningThickness</i>
+is given. If both parameters are not given, then there is no lining.</font></li>
+        <li><i>LiningThickness</i></li>
+      </ul>
+      </td>
+    </tr>
+    <tr valign="top">
+      <td align="left" valign="top"><img
+ src="figures/IfcDoorLiningProperties-Fig02.gif" alt="lining 2"
+ border="0" height="129" width="210"> </td>
+      <td align="left" valign="top">The
+lining can only cover part of the opening reveal.
+      <ul>
+        <li><i>LiningOffset</i>
+: given if lining edge has an offset to the x axis of the local
+placement.</li>
+      </ul>
+      <blockquote><small>NOTE
+&nbsp;In addition to the&nbsp;<i>LiningOffset</i>,
+the local placement of the <i>IfcDoor</i>
+can already have an offset to the wall edge and thereby shift the
+lining along the y axis. The actual position of the lining is
+calculated from the origin of the local placement along the positive y
+axis with the distance given by <i>LiningOffset</i>.</small></blockquote>
+      </td>
+    </tr>
+    <tr valign="top">
+      <td align="left" valign="top"><img
+ src="figures/IfcDoorLiningProperties-Fig03.gif" alt="lining 3"
+ border="0" height="132" width="227"></td>
+      <td align="left" valign="top">The
+lining may include a casing, which covers part of the wall faces around
+the opening. The casing covers the left, right and upper side of the
+lining on both sides of the wall. The parameters are:
+      <ul>
+        <li><i>CasingDepth</i></li>
+        <li><i>CasingThickness</i></li>
+      </ul>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top"><img
+ src="figures/IfcDoorLiningProperties-Fig04.gif" alt="lining 4"
+ border="0" height="206" width="181"></td>
+      <td align="left" valign="top">The
+lining may include a threshold, which covers the bottom side of the
+opening. The parameters are:
+      <ul>
+        <li><i>ThresholdDepth<font
+ color="#0000ff">, </font></i><font
+ color="#0000ff">if omitted, equal to wall thickness -
+this only takes effect if a value for <i>ThresholdThickness
+          </i>is given. If both
+parameters are not given, then there is no threshold.</font></li>
+        <li><i>ThresholdThickness</i></li>
+        <li><i>ThresholdOffset</i>
+(not shown in figure): given, if the threshold edge has an offset to
+the x axis of the local placement. </li>
+      </ul>
+      </td>
+    </tr>
+    <tr valign="top">
+      <td align="left" valign="top"><img
+ src="figures/IfcDoorLiningProperties-Fig05.gif" alt="lining 5"
+ border="0" height="332" width="342"></td>
+      <td align="left" valign="top">The
+lining may have a transom which separates the door panel from a window
+panel. The transom, if given, is defined by:
+      <ul>
+        <li><i>TransomOffset</i>
+: a parallel edge to the x axis of the local placement</li>
+        <li><i>TransomThickness</i></li>
+      </ul>
+      <p>The depth of the transom
+is identical to the depth of the lining and not given as separate
+parameter.</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote>
+  <p><font
+ size="-1">NOTE: special agreement on <i>LiningDepth</i>
+  <br>
+It describes the length of the lining along the reveal of the door
+opening. It can be given by an absolute value, if the door lining has a
+specific depth depending on the door style. However often it is equal
+to the wall thickness. If the same door style is used (like the same
+type of single swing door), but inserted into different walls with
+different thicknesses, it would be necessary to create a special door
+style for each wall thickness. Therefore several CAD systems allow to
+set the value to "automatically aligned" to wall thickness. This should
+be exchanged by leaving the optional attribute LiningDepth unassigned.</font></p>
+</blockquote>
+<blockquote>
+  <p><font
+ size="-1">NOTE: the same agreement applies to <i>ThresholdDepth</i></font></p>
+</blockquote>
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">ENTITY</a></SPAN> IfcDoorLiningProperties
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">SUBTYPE</SPAN>&nbsp;<SPAN CLASS="all-express-keywords">OF</SPAN>&nbsp;(
+                        </td>
+                        <td><a href="../../ifckernel/lexical/ifcpropertysetdefinition.htm">IfcPropertySetDefinition</a>);
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>LiningDepth
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcpositivelengthmeasure.htm">IfcPositiveLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>LiningThickness
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcpositivelengthmeasure.htm">IfcPositiveLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ThresholdDepth
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcpositivelengthmeasure.htm">IfcPositiveLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ThresholdThickness
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcpositivelengthmeasure.htm">IfcPositiveLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>TransomThickness
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcpositivelengthmeasure.htm">IfcPositiveLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>TransomOffset
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifclengthmeasure.htm">IfcLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>LiningOffset
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifclengthmeasure.htm">IfcLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ThresholdOffset
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifclengthmeasure.htm">IfcLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>CasingThickness
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcpositivelengthmeasure.htm">IfcPositiveLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>CasingDepth
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcpositivelengthmeasure.htm">IfcPositiveLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ShapeAspectStyle
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcrepresentationresource/lexical/ifcshapeaspect.htm">IfcShapeAspect</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td><SPAN CLASS="all-express-keywords">WHERE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="10%">WR31
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td>NOT(NOT(EXISTS(LiningDepth)) AND EXISTS(LiningThickness));
+                              </td>
+                            </tr>
+                            <tr valign="top">
+                              <td width="10%">WR32
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td>NOT(NOT(EXISTS(ThresholdDepth)) AND EXISTS(ThresholdThickness));
+                              </td>
+                            </tr>
+                            <tr valign="top">
+                              <td width="10%">WR33
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td>(EXISTS(TransomOffset) AND EXISTS(TransomThickness)) XOR
+(NOT(EXISTS(TransomOffset)) AND NOT(EXISTS(TransomThickness)));
+                              </td>
+                            </tr>
+                            <tr valign="top">
+                              <td width="10%">WR34
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td>(EXISTS(CasingDepth) AND EXISTS(CasingThickness)) XOR
+(NOT(EXISTS(CasingDepth)) AND NOT(EXISTS(CasingThickness)));
+                              </td>
+                            </tr>
+                            <tr valign="top">
+                              <td width="10%">WR35
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td>EXISTS(SELF\IfcPropertySetDefinition.DefinesType[1]) AND 
+('IFCSHAREDBLDGELEMENTS.IFCDOORSTYLE' IN TYPEOF(SELF\IfcPropertySetDefinition.DefinesType[1]));
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="object-express-specification"><a name="attribute_description">Attribute definitions:</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">LiningDepth
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Depth of the door lining, measured perpendicular to the plane of the door lining. If omitted (and with
+              a given value to lining thickness) it indicates an adjustable depth (i.e. a depth that adjusts to the
+              thickness of the wall into which the occurrence of this door style is inserted).
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">LiningThickness
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Thickness (width in plane parallel to door leaf) of the door lining.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">ThresholdDepth
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Depth (dimension in plane perpendicular to door leaf) of the door threshold. Only given if the door lining
+              includes a threshold. If omitted (and with a given value to threshold thickness) it indicates an adjustable
+              depth (i.e. a depth that adjusts to the thickness of the wall into which the occurrence of this door
+              style is inserted).
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">ThresholdThickness
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Thickness (width in plane parallel to door leaf) of the door threshold. Only given if the door lining
+              includes a threshold and the parameter is known.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">TransomThickness
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Thickness (width in plane parallel to door leaf) of the transom (if given) which divides the door leaf
+              from a glazing (or window) above.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">TransomOffset
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Offset of the transom (if given) which divides the door leaf from a glazing (or window) above. The offset
+              is given from the bottom of the door opening.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">LiningOffset
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Offset (dimension in plane perpendicular to door leaf) of the door lining. The offset is given as distance
+              to the x axis of the local placement. 
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">ThresholdOffset
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Offset (dimension in plane perpendicular to door leaf) of the door threshold. The offset is given as
+              distance to the x axis of the local placement. Only given if the door lining includes a threshold and
+              the parameter is known.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">CasingThickness
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Thickness of the casing (dimension in plane of the door leaf). If given it is applied equally to all
+              four sides of the adjacent wall.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">CasingDepth
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Depth of the casing (dimension in plane perpendicular to door leaf). If given it is applied equally to
+              all four sides of the adjacent wall.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">ShapeAspectStyle
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Pointer to the shape aspect, if given. The shape aspect reflects the part of the door shape, which represents
+              the door lining.
+            </td>
+          </tr>
+        </table><p CLASS="object-express-specification"><a name="constraint_description">Formal Propositions:</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td CLASS="constraint-description-name" width="20%">WR31
+            </td>
+            <td CLASS="constraint-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="constraint-description">              
+Either both parameter, <i>LiningDepth</i> and <i>LiningThickness</i> are given, or only the <i>LiningThickness</i>, then the <i>LiningDepth</i> is variable. It is not valid to only assert the <i>LiningDepth</i>.
+<blockquote><small>
+NOTE&nbsp; A <i>LiningDepth</i> with NIL ($) value indicates a door style with a lining equal to the wall thickness.
+<small><blockquote>
+<br>
+
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="constraint-description-name" width="20%">WR32
+            </td>
+            <td CLASS="constraint-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="constraint-description">              
+Either both parameter, <i>ThresholdDepth</i> and <i>ThresholdThickness</i> are given, or only the <i>ThresholdThickness</i>, then the <i>ThresholdDepth</i> is variable. It is not valid to only assert the <i>ThresholdDepth</i>.
+<blockquote><small>
+NOTE&nbsp; A <i>ThresholdDepth</i> with NIL ($) value indicates a door style with a lining equal to the wall thickness.
+<small><blockquote>
+<br>
+
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="constraint-description-name" width="20%">WR33
+            </td>
+            <td CLASS="constraint-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="constraint-description">              
+Either both parameter, <i>TransomDepth</i> and <i>TransomThickness</i> are given, or none of them.
+<br>
+
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="constraint-description-name" width="20%">WR34
+            </td>
+            <td CLASS="constraint-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="constraint-description">              
+Either both parameter, the <i>CasingDepth</i> and the <i>CasingThickness</i>, are given, or none of them.
+<br>
+
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="constraint-description-name" width="20%">WR35
+            </td>
+            <td CLASS="constraint-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="constraint-description">              
+The <i>IfcDoorLiningProperties</i> shall only be used in the context of an <i>IfcDoorStyle</i>.
+<br>
+
+            </td>
+          </tr>
+        </table><p CLASS="inheritance-heading"><a name="inheritance">Inheritance graph</a></p>
+        <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">ENTITY</SPAN> IfcDoorLiningProperties;
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="../../ifckernel/lexical/ifcroot.htm">IfcRoot</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>GlobalId
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcutilityresource/lexical/ifcgloballyuniqueid.htm">IfcGloballyUniqueId</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>OwnerHistory
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcutilityresource/lexical/ifcownerhistory.htm">IfcOwnerHistory</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Name
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifclabel.htm">IfcLabel</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Description
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifctext.htm">IfcText</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="../../ifckernel/lexical/ifcpropertydefinition.htm">IfcPropertyDefinition</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">INVERSE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>HasAssociations
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifckernel/lexical/ifcrelassociates.htm">IfcRelAssociates</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> RelatedObjects;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="../../ifckernel/lexical/ifcpropertysetdefinition.htm">IfcPropertySetDefinition</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">INVERSE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>PropertyDefinitionOf
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> [0:1] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifckernel/lexical/ifcreldefinesbyproperties.htm">IfcRelDefinesByProperties</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> RelatingPropertyDefinition;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>DefinesType
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> [0:1] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifckernel/lexical/ifctypeobject.htm">IfcTypeObject</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> HasPropertySets;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcdoorliningproperties.htm">IfcDoorLiningProperties</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>LiningDepth
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcpositivelengthmeasure.htm">IfcPositiveLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>LiningThickness
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcpositivelengthmeasure.htm">IfcPositiveLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ThresholdDepth
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcpositivelengthmeasure.htm">IfcPositiveLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ThresholdThickness
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcpositivelengthmeasure.htm">IfcPositiveLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>TransomThickness
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcpositivelengthmeasure.htm">IfcPositiveLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>TransomOffset
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifclengthmeasure.htm">IfcLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>LiningOffset
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifclengthmeasure.htm">IfcLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ThresholdOffset
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifclengthmeasure.htm">IfcLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>CasingThickness
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcpositivelengthmeasure.htm">IfcPositiveLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>CasingDepth
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcpositivelengthmeasure.htm">IfcPositiveLengthMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ShapeAspectStyle
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcrepresentationresource/lexical/ifcshapeaspect.htm">IfcShapeAspect</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

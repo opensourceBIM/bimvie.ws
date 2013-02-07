@@ -1,0 +1,403 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IFCPROFILERESOURCE</title>
+<link rel="stylesheet" href="../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="img/schema_navbar_e2.gif" alt="Navigation" height="46" width="629" border="0" usemap="#schema-navbar"/><br/>
+<map name="schema-navbar">
+  <area shape="rect" coords="0,0,63,22" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="64,0,197,22" alt="Navigate"href="#interfaced_schemas">
+  <area shape="rect" coords="198,0,287,22" alt="Navigate"href="#constants">
+  <area shape="rect" coords="288,0,356,22" alt="Navigate"href="#entities">
+  <area shape="rect" coords="357,0,475,22" alt="Navigate"href="#defined_types">
+  <area shape="rect" coords="0,23,70,44" alt="Navigate"href="#select_types">
+  <area shape="rect" coords="71,23,171,44" alt="Navigate"href="#enumerations">
+  <area shape="rect" coords="172,23,231,44" alt="Navigate"href="#global_rules">
+  <area shape="rect" coords="232,23,315,44" alt="Navigate"href="#functions">
+  <area shape="rect" coords="316,23,475,44" alt="Navigate"href="#procedures">
+  <area shape="rect" coords="476,0,628,22" alt="Navigate"href="#subtype_constraints">
+</map><p CLASS="schema-heading">IFCPROFILERESOURCE</p><p CLASS="list-content">The data model consists of the following:</p>
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td align="right" width="10">
+            </td>
+            <td align="right">24&nbsp;
+            </td>
+            <td><a href="#entities">Entities</a>
+            </td>
+          </tr>
+
+          <tr valign="top">
+            <td align="right" width="10">
+            </td>
+            <td align="right">1&nbsp;
+            </td>
+            <td><a href="#enumerations">Enumerations</a>
+            </td>
+          </tr>
+
+        </table>         
+<hr color="#0000ff" size="4"
+ width="80%">
+<h2>IfcProfileResource</h2>
+<p>The schema <i>IfcProfileResource</i>
+defines the two dimensional profiles or cross sections, used to define
+geometric shape representations. Profile definitions are applied to:</p>
+<ul>
+  <li>swept surfaces</li>
+  <li>swept area solids</li>
+  <li>sectioned spines</li>
+</ul>
+<blockquote><font
+ color="#0000ff" size="-1">NOTE: Profile
+definitions are not subtypes of geometric representation item and can
+not be used directly to geometrically represent an object.</font></blockquote>
+<p>Profiles can be used to either
+define a curve or an area. In case of a curve, only the boundary is in
+the domain of the profile definition, in case of an area the boundary
+and the inside is in the domain of the profile definition. A curve can
+be used for</p>
+<ul>
+  <li>swept surfaces</li>
+  <li>sectioned spines</li>
+</ul>
+<p>and an area can be used for</p>
+<ul>
+  <li>swept area solids</li>
+  <li>sectioned spines</li>
+</ul>
+<blockquote><font
+ color="#0000ff" size="-1">NOTE: The use of
+profile definitions is the preferred way to define prismatic shapes to
+represent products.</font></blockquote>
+<p>The profile definition (<i>IfcProfileDef</i>)
+can be instantiated by the various subtypes. There are four different
+groups of profile definitions:</p>
+<ul>
+  <li>parametrically defined
+profiles, these profiles are defined by a 2D position coordinate system
+and dimension parameters to generate a 2D form.</li>
+  <li>explicitly defined profiles,
+these profiles are defined by a (single or multiple) 2D curve(s) defined
+in the parent coordinate system.</li>
+  <li>derived profiles, these
+profiles are created by a Cartesian transformation of a parent profile.</li>
+  <li>composite profiles, these
+profiles are compositions of other profiles</li>
+</ul>
+<p>When used as the curve or area
+to be swept into a surface or solid, the 2D coordinate system of the
+profile is mapped into the xy plane of the 3D coordinate system of the
+swept surface (subtypes of <i>IfcSweptSurface</i>),
+the swept area solid (subtypes of <i>IfcSweptAreaSolid</i>),
+or the sectioned spine (<i>IfcSectionedSpine</i>).
+The extrusion direction is along the z axis of the 3D coordinate system
+(or an extrusion vector being not perpendicular to the z axis, or a
+rotation that has a tangent into the z axis at the point of origin).</p>
+<blockquote>
+  <p><font
+ color="#0000ff" size="-1">NOTE: The use of
+coordinate axes in IFC is not identical with the general convention for
+the use of coordinate axes in structural analysis. The following
+conversion should be used:</font></p>
+</blockquote>
+<table>
+  <tbody>
+    <tr valign="top">
+      <td><a
+ href="lexical/drawings/IfcProfileResource-CoordinateSystem.dwf"><img
+ src="lexical/figures/IfcProfileResource-CoordinateSystem.gif"
+ alt="coordinates in IFC and structural" border="0"
+ height="300" width="400"></a></td>
+      <td>
+      <table cellspacing="4">
+        <tbody>
+          <tr>
+            <td><font
+ color="#0000ff" size="-1">IFC axes<br>
+convention</font></td>
+            <td><font
+ color="#0000ff" size="-1">structural analysis <br>
+axes convention</font></td>
+          </tr>
+          <tr>
+            <td><font
+ color="#0000ff" size="-1">+X</font></td>
+            <td><font
+ color="#0000ff" size="-1">-Y</font></td>
+          </tr>
+          <tr>
+            <td><font
+ color="#0000ff" size="-1">+Y</font></td>
+            <td><font
+ color="#0000ff" size="-1">-Z</font></td>
+          </tr>
+          <tr>
+            <td><font
+ color="#0000ff" size="-1">+Z</font></td>
+            <td><font
+ color="#0000ff" size="-1">+X</font></td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote><font
+ color="#0000ff" size="-1">HISTORY: New schema
+in IFC 2x, definitions had been part of the <i>IfcGeometryResource</i>
+in earlier IFC Releases.</font></blockquote>
+<p CLASS="list-heading"><a name="interfaced_schemas">Interfaced schemas (3):</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcgeometryresource/ifcgeometryresource.htm">IFCGEOMETRYRESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifcgeometryresource/lexical/ifcaxis2placement2d.htm">IfcAxis2Placement2D</a>,<br/><a href="../ifcgeometryresource/lexical/ifcpolyline.htm">IfcPolyline</a>,<br/><a href="../ifcgeometryresource/lexical/ifcline.htm">IfcLine</a>,<br/><a href="../ifcgeometryresource/lexical/ifcvectorsum.htm">IfcVectorSum</a>,<br/><a href="../ifcgeometryresource/lexical/ifctrimmedcurve.htm">IfcTrimmedCurve</a>,<br/><a href="../ifcgeometryresource/lexical/ifcaxis2placement.htm">IfcAxis2Placement</a>,<br/><a href="../ifcgeometryresource/lexical/ifccurve.htm">IfcCurve</a>,<br/><a href="../ifcgeometryresource/lexical/ifcconic.htm">IfcConic</a>,<br/><a href="../ifcgeometryresource/lexical/ifccircle.htm">IfcCircle</a>,<br/><a href="../ifcgeometryresource/lexical/ifcellipse.htm">IfcEllipse</a>,<br/><a href="../ifcgeometryresource/lexical/ifccartesiantransformationoperator2d.htm">IfcCartesianTransformationOperator2D</a>,<br/><a href="../ifcgeometryresource/lexical/ifc2dcompositecurve.htm">Ifc2DCompositeCurve</a>,<br/><a href="../ifcgeometryresource/lexical/ifccompositecurve.htm">IfcCompositeCurve</a>,<br/><a href="../ifcgeometryresource/lexical/ifcboundedcurve.htm">IfcBoundedCurve</a>,<br/><a href="../ifcgeometryresource/lexical/ifcbeziercurve.htm">IfcBezierCurve</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcmeasureresource/ifcmeasureresource.htm">IFCMEASURERESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifcmeasureresource/lexical/ifclengthmeasure.htm">IfcLengthMeasure</a>,<br/><a href="../ifcmeasureresource/lexical/ifclabel.htm">IfcLabel</a>,<br/><a href="../ifcmeasureresource/lexical/ifcpositivelengthmeasure.htm">IfcPositiveLengthMeasure</a>,<br/><a href="../ifcmeasureresource/lexical/ifcplaneanglemeasure.htm">IfcPlaneAngleMeasure</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcpresentationappearanceresource/ifcpresentationappearanceresource.htm">IFCPRESENTATIONAPPEARANCERESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifcpresentationappearanceresource/lexical/ifcnullstyle.htm">IfcNullStyle</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="list-heading"><a name="entities">Entities (24):</a></p>
+
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0006.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 6"/></a>
+            </td>
+            <td><a href="lexical/ifcarbitraryclosedprofiledef.htm" target="SOURCE">IfcArbitraryClosedProfileDef</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0006.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 6"/></a>
+            </td>
+            <td><a href="lexical/ifcarbitraryopenprofiledef.htm" target="SOURCE">IfcArbitraryOpenProfileDef</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0006.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 6"/></a>
+            </td>
+            <td><a href="lexical/ifcarbitraryprofiledefwithvoids.htm" target="SOURCE">IfcArbitraryProfileDefWithVoids</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcasymmetricishapeprofiledef.htm" target="SOURCE">IfcAsymmetricIShapeProfileDef</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0005.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 5"/></a>
+            </td>
+            <td><a href="lexical/ifccshapeprofiledef.htm" target="SOURCE">IfcCShapeProfileDef</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0006.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 6"/></a>
+            </td>
+            <td><a href="lexical/ifccenterlineprofiledef.htm" target="SOURCE">IfcCenterLineProfileDef</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifccirclehollowprofiledef.htm" target="SOURCE">IfcCircleHollowProfileDef</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifccircleprofiledef.htm" target="SOURCE">IfcCircleProfileDef</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0006.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 6"/></a>
+            </td>
+            <td><a href="lexical/ifccompositeprofiledef.htm" target="SOURCE">IfcCompositeProfileDef</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0007.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 7"/></a>
+            </td>
+            <td><a href="lexical/ifccranerailashapeprofiledef.htm" target="SOURCE">IfcCraneRailAShapeProfileDef</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0007.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 7"/></a>
+            </td>
+            <td><a href="lexical/ifccranerailfshapeprofiledef.htm" target="SOURCE">IfcCraneRailFShapeProfileDef</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0006.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 6"/></a>
+            </td>
+            <td><a href="lexical/ifcderivedprofiledef.htm" target="SOURCE">IfcDerivedProfileDef</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcellipseprofiledef.htm" target="SOURCE">IfcEllipseProfileDef</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcishapeprofiledef.htm" target="SOURCE">IfcIShapeProfileDef</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifclshapeprofiledef.htm" target="SOURCE">IfcLShapeProfileDef</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcparameterizedprofiledef.htm" target="SOURCE">IfcParameterizedProfileDef</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcprofiledef.htm" target="SOURCE">IfcProfileDef</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcrectanglehollowprofiledef.htm" target="SOURCE">IfcRectangleHollowProfileDef</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcrectangleprofiledef.htm" target="SOURCE">IfcRectangleProfileDef</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcroundedrectangleprofiledef.htm" target="SOURCE">IfcRoundedRectangleProfileDef</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0004.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 4"/></a>
+            </td>
+            <td><a href="lexical/ifctshapeprofiledef.htm" target="SOURCE">IfcTShapeProfileDef</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifctrapeziumprofiledef.htm" target="SOURCE">IfcTrapeziumProfileDef</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0004.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 4"/></a>
+            </td>
+            <td><a href="lexical/ifcushapeprofiledef.htm" target="SOURCE">IfcUShapeProfileDef</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0005.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 5"/></a>
+            </td>
+            <td><a href="lexical/ifczshapeprofiledef.htm" target="SOURCE">IfcZShapeProfileDef</a>
+            </td>
+          </tr>
+        </table><p CLASS="list-heading"><a name="enumerations">Enumerations (1):</a></p>
+
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcprofiletypeenum.htm" target="SOURCE">IfcProfileTypeEnum</a>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

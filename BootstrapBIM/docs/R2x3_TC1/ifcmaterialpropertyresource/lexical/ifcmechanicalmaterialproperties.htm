@@ -1,0 +1,364 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcMechanicalMaterialProperties</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/entity_navbar.gif" alt="Navigation" height="24" width="625" border="0" usemap="#entity-navbar"/><br/>
+<map name="entity-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcmaterialpropertyresource.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0004.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,398,23" alt="Navigate"href="#attribute_description">
+  <area shape="rect" coords="399,0,442,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="443,0,526,23" alt="Navigate"href="#inheritance">
+  <area shape="rect" coords="527,0,623,23" alt="Navigate"href="ifcmechanicalmaterialproperties.htm#references">
+</map><p CLASS="object-heading">IfcMechanicalMaterialProperties</p>        
+
+<P><U>Definition from IAI</U>: This is a collection of mechanical material properties normally used for structural analysis purpose. It contains all properties which are independent of the actual material type.</P> 
+	 
+<BLOCKQUOTE> <FONT COLOR="#0000FF" SIZE="-1">HISTORY: New entity in Release IFC2x.</FONT>
+</BLOCKQUOTE> 
+
+<br/>
+        <p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">ENTITY</a></SPAN> IfcMechanicalMaterialProperties
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">SUPERTYPE</SPAN>&nbsp;<SPAN CLASS="all-express-keywords">OF</SPAN>
+                        </td>
+                        <td height="1%">(<SPAN CLASS="all-express-keywords">ONEOF</SPAN>(<a href="ifcmechanicalsteelmaterialproperties.htm">IfcMechanicalSteelMaterialProperties</a>, <a href="ifcmechanicalconcretematerialproperties.htm">IfcMechanicalConcreteMaterialProperties</a>))
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">SUBTYPE</SPAN>&nbsp;<SPAN CLASS="all-express-keywords">OF</SPAN>&nbsp;(
+                        </td>
+                        <td><a href="ifcmaterialproperties.htm">IfcMaterialProperties</a>);
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>DynamicViscosity
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcdynamicviscositymeasure.htm">IfcDynamicViscosityMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>YoungModulus
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcmodulusofelasticitymeasure.htm">IfcModulusOfElasticityMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ShearModulus
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcmodulusofelasticitymeasure.htm">IfcModulusOfElasticityMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>PoissonRatio
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcpositiveratiomeasure.htm">IfcPositiveRatioMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ThermalExpansionCoefficient
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcthermalexpansioncoefficientmeasure.htm">IfcThermalExpansionCoefficientMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td><SPAN CLASS="all-express-keywords">UNIQUE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="10%">UR11
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td>Material;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td><SPAN CLASS="all-express-keywords">WHERE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="10%">WR21
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td>NOT(EXISTS(YoungModulus)) OR (YoungModulus &gt;= 0.0);
+                              </td>
+                            </tr>
+                            <tr valign="top">
+                              <td width="10%">WR22
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td>NOT(EXISTS(ShearModulus)) OR (ShearModulus &gt;= 0.0);
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="object-express-specification"><a name="attribute_description">Attribute definitions:</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">DynamicViscosity
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              A measure of the viscous resistance of the material. 
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">YoungModulus
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              A measure of the Young’s modulus of elasticity of the material. 
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">ShearModulus
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              A measure of the shear modulus of elasticity of the material. 
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">PoissonRatio
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              A measure of the lateral deformations in the elastic range.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">ThermalExpansionCoefficient
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              A measure of the expansion coefficient for warming up the material about one Kelvin. 
+            </td>
+          </tr>
+        </table><p CLASS="object-express-specification"><a name="constraint_description">Formal Propositions:</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td CLASS="constraint-description-name" width="20%">WR21
+            </td>
+            <td CLASS="constraint-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="constraint-description">              Young modulus of a material may not be negative.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="constraint-description-name" width="20%">WR22
+            </td>
+            <td CLASS="constraint-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="constraint-description">              Shear modulus of a material may not be negative.
+            </td>
+          </tr>
+        </table><p CLASS="inheritance-heading"><a name="inheritance">Inheritance graph</a></p>
+        <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">ENTITY</SPAN> IfcMechanicalMaterialProperties;
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcmaterialproperties.htm">IfcMaterialProperties</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Material
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcmaterialresource/lexical/ifcmaterial.htm">IfcMaterial</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcmechanicalmaterialproperties.htm">IfcMechanicalMaterialProperties</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>DynamicViscosity
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcdynamicviscositymeasure.htm">IfcDynamicViscosityMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>YoungModulus
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcmodulusofelasticitymeasure.htm">IfcModulusOfElasticityMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ShearModulus
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcmodulusofelasticitymeasure.htm">IfcModulusOfElasticityMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>PoissonRatio
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcpositiveratiomeasure.htm">IfcPositiveRatioMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ThermalExpansionCoefficient
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcthermalexpansioncoefficientmeasure.htm">IfcThermalExpansionCoefficientMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

@@ -1,0 +1,678 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcStructuralLinearActionVarying</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/entity_navbar.gif" alt="Navigation" height="24" width="625" border="0" usemap="#entity-navbar"/><br/>
+<map name="entity-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcstructuralanalysisdomain.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0004.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,398,23" alt="Navigate"href="#attribute_description">
+  <area shape="rect" coords="399,0,442,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="443,0,526,23" alt="Navigate"href="#inheritance">
+  <area shape="rect" coords="527,0,623,23" alt="Navigate"href="ifcstructurallinearactionvarying.htm#references">
+</map><p CLASS="object-heading">IfcStructuralLinearActionVarying</p>        
+	 <P><U>Definition from IAI:</U> Instances of the entity
+		<I>IfcStructuralLinearActionVarying</I> are used to define varying linear
+		actions. <I>IfcStructuralLinearActionVarying</I> inherits the needed attributes
+		and applicable structural load types from its superclass
+		<I>IfcStructuralLinearAction</I>.</P> 
+	 <BLOCKQUOTE> 
+		<P><FONT SIZE="-1">NOTE: This entity definition inherits from its
+		  superclass <I>IfcStructuralActivity</I> the mandatory attribute
+		  <I>AppliedLoad</I>. It is used as the first list member of the derived list
+		  <I>VaryingAppliedLoads</I></FONT></P> </BLOCKQUOTE> 
+	 <BLOCKQUOTE> 
+		<P><FONT COLOR="#0000FF" SIZE="-1"> HISTORY: New entity in Release IFC2x
+		  Edition 2. </FONT></P> </BLOCKQUOTE> 
+	 <P><B><U>Topology Use Definition</U></B></P> 
+	 <P>Instances of <I>IfcStructuralLinearActionVarying</I> shall have a
+		topology representation. It includes a placement and a product representation.
+		The <I>IfcProductRepresentation</I> shall be given by an item of
+		<I>Representations</I> being of type "<I>IfcTopologyRepresentation</I>". The
+		definition of the topological representation is given at the supertype
+		<I>IfcStructuralLinearAction</I>. One additional constraint applies:</P> 
+	 <UL> 
+		<LI>The topology representation has to be given by an <I>IfcEdgeCurve</I>
+		  to provide a parameterized geometric representation of the curve between both
+		  vertices. This parameterization is needed for the location of the varying
+		  loads.</LI> 
+	 </UL> 
+	 <P><U><B>Shape Aspect Use Definition</B></U></P> 
+	 <P>The attribute <I>VaryingAppliedLoadLocation</I> reference a shape
+		aspect, that has a list of <I>ShapeRepresentations</I>. Each individual
+		<I>IfcShapeRepresentation</I> within that list shall have a single item within
+		its list of <I>Items</I>. The type of the item shall be either:</P> 
+	 <UL> 
+		<LI><I>IfcCartesianPoint</I>, or</LI> 
+		<LI><I>IfcPointOnCurve</I></LI> 
+	 </UL> 
+	 <P>Each list member within the list of <I>ShapeRepresentations</I>
+		corresponds to the list member (at same position) of the list
+		<I>VaryingAppliedLoads</I>, and provides the position of the applied load. At
+		least two applied load values shall be given, the distribution of the applied
+		linear loads across the surface of the planar action is constructed by linear
+		interpolation.</P> 
+	 <P>The following examples shows a definition of a varying applied loads by
+		four points on curve.</P> 
+	 <TABLE CELLSPACING="2" CELLPADDING="2" BORDER="1"> 
+		<TR VALIGN="TOP"> 
+		  <TD VALIGN="TOP"><FONT
+			 SIZE="-1"><B>VaryingAppliedLoads<BR>Position</B></FONT></TD> 
+		  <TD VALIGN="TOP"><FONT
+			 SIZE="-1"><B>VaryingAppliedLoads<BR>Value</B></FONT></TD> 
+		  <TD VALIGN="TOP"><FONT
+			 SIZE="-1"><B>VaryingThicknessLocation</B></FONT></TD> 
+		  <TD VALIGN="TOP"><FONT SIZE="-1"><B>Point on curve</B></FONT></TD> 
+		  <TD VALIGN="TOP"><FONT SIZE="-1"><B>Parameter value</B></FONT></TD> 
+		</TR> 
+		<TR VALIGN="TOP"> 
+		  <TD VALIGN="TOP"><FONT SIZE="-1">[1]</FONT><BR><FONT
+			 SIZE="-1">identical with <I>AppliedLoad</I></FONT></TD> 
+		  <TD VALIGN="TOP"><FONT SIZE="-1">8</FONT></TD> 
+		  <TD VALIGN="TOP"><FONT SIZE="-1">IfcShapeAspect.
+			 ShapeRepresentations[1]</FONT></TD> 
+		  <TD VALIGN="TOP"><FONT SIZE="-1">Items[1]<BR>TYPEOF
+			 IfcPointOnCurve</FONT></TD> 
+		  <TD VALIGN="TOP"><FONT SIZE="-1">0.</FONT></TD> 
+		</TR> 
+		<TR VALIGN="TOP"> 
+		  <TD VALIGN="TOP"><FONT SIZE="-1">[2]</FONT></TD> 
+		  <TD VALIGN="TOP"><FONT SIZE="-1">8</FONT></TD> 
+		  <TD VALIGN="TOP"><FONT SIZE="-1">IfcShapeAspect.
+			 ShapeRepresentations[2]</FONT></TD> 
+		  <TD VALIGN="TOP"><FONT SIZE="-1">Items[2]<BR>TYPEOF
+			 IfcPointOnCurve</FONT></TD> 
+		  <TD VALIGN="TOP"><FONT SIZE="-1">0.35</FONT></TD> 
+		</TR> 
+		<TR VALIGN="TOP"> 
+		  <TD VALIGN="TOP"><FONT SIZE="-1">[3]</FONT></TD> 
+		  <TD VALIGN="TOP"><FONT SIZE="-1">12</FONT></TD> 
+		  <TD VALIGN="TOP"><FONT SIZE="-1">IfcShapeAspect.
+			 ShapeRepresentations[3]</FONT></TD> 
+		  <TD VALIGN="TOP"><FONT SIZE="-1">Items[3]<BR>TYPEOF
+			 IfcPointOnCurve</FONT></TD> 
+		  <TD VALIGN="TOP"><FONT SIZE="-1">0.35</FONT></TD> 
+		</TR> 
+		<TR VALIGN="TOP"> 
+		  <TD VALIGN="TOP"><FONT SIZE="-1">[4]</FONT></TD> 
+		  <TD VALIGN="TOP"><FONT SIZE="-1">12</FONT></TD> 
+		  <TD VALIGN="TOP"><FONT SIZE="-1">IfcShapeAspect.
+			 ShapeRepresentations[4]</FONT></TD> 
+		  <TD VALIGN="TOP"><FONT SIZE="-1">Items[4]<BR>TYPEOF
+			 IfcPointOnCurve</FONT></TD> 
+		  <TD VALIGN="TOP"><FONT SIZE="-1">0.65</FONT></TD> 
+		</TR> 
+		<TR VALIGN="TOP"> 
+		  <TD VALIGN="TOP"><FONT SIZE="-1">[5]</FONT></TD> 
+		  <TD VALIGN="TOP"><FONT SIZE="-1">0</FONT></TD> 
+		  <TD VALIGN="TOP"><FONT
+			 SIZE="-1">IfcShapeAspect.ShapeRepresentations[5]</FONT></TD> 
+		  <TD VALIGN="TOP"><FONT SIZE="-1">Items[4]<BR>TYPEOF
+			 IfcPointOnCurve</FONT></TD> 
+		  <TD VALIGN="TOP"><FONT SIZE="-1">0.85</FONT></TD> 
+		</TR> 
+	 </TABLE> 
+	 <P><U>Example:</U></P> 
+	 <TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0"> 
+		<TR> 
+		  <TD><IMG SRC="figures/IfcStructuralLinearActionVarying-Fig1.gif"
+			 ALT="linear action varying" WIDTH="560" HEIGHT="360" BORDER="0"></TD> 
+		</TR> 
+		<TR> 
+		  <TD VALIGN="TOP" HEIGHT="40"> 
+			 <P>&nbsp;<FONT SIZE="-1">Example for the definition of a varying
+				linear action. </FONT></P></TD> 
+		</TR> 
+	 </TABLE>
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">ENTITY</a></SPAN> IfcStructuralLinearActionVarying
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">SUBTYPE</SPAN>&nbsp;<SPAN CLASS="all-express-keywords">OF</SPAN>&nbsp;(
+                        </td>
+                        <td><a href="ifcstructurallinearaction.htm">IfcStructuralLinearAction</a>);
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>VaryingAppliedLoadLocation
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcrepresentationresource/lexical/ifcshapeaspect.htm">IfcShapeAspect</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>SubsequentAppliedLoads
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">LIST</SPAN> [1:?] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifcstructuralloadresource/lexical/ifcstructuralload.htm">IfcStructuralLoad</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">DERIVE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>VaryingAppliedLoads
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">LIST</SPAN> [2:?] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifcstructuralloadresource/lexical/ifcstructuralload.htm">IfcStructuralLoad</a>&nbsp;:=&nbsp;                                IfcAddToBeginOfList(SELF\IfcStructuralActivity.AppliedLoad,&nbsp;SubsequentAppliedLoads);
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="object-express-specification"><a name="attribute_description">Attribute definitions:</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">VaryingAppliedLoadLocation
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              A shape aspect, containing a list of shape representations, each defining either one Cartesian point
+              or one point on curve (by parameter values) which are needed to provide the positions of the VaryingAppliedLoads.
+              The values contained in the list of IfcShapeAspect.ShapeRepresentations correspond to the values at the
+              same position in the list VaryingAppliedLoads.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">SubsequentAppliedLoads
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              A list containing load values which are assigned to the position defined through the shape aspect. The
+              first load is already defined by the inherited attribute AppliedLoad and shall not be contained in this
+              list.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">VaryingAppliedLoads
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Derived list of all varying applied loads by pushing the inherited AppliedLoad value to the beginning
+              of the list of SubsequentAppliedLoads.
+            </td>
+          </tr>
+        </table><p CLASS="inheritance-heading"><a name="inheritance">Inheritance graph</a></p>
+        <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">ENTITY</SPAN> IfcStructuralLinearActionVarying;
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="../../ifckernel/lexical/ifcroot.htm">IfcRoot</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>GlobalId
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcutilityresource/lexical/ifcgloballyuniqueid.htm">IfcGloballyUniqueId</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>OwnerHistory
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcutilityresource/lexical/ifcownerhistory.htm">IfcOwnerHistory</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Name
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifclabel.htm">IfcLabel</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Description
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifctext.htm">IfcText</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="../../ifckernel/lexical/ifcobjectdefinition.htm">IfcObjectDefinition</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">INVERSE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>HasAssignments
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifckernel/lexical/ifcrelassigns.htm">IfcRelAssigns</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> RelatedObjects;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>IsDecomposedBy
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifckernel/lexical/ifcreldecomposes.htm">IfcRelDecomposes</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> RelatingObject;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Decomposes
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> [0:1] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifckernel/lexical/ifcreldecomposes.htm">IfcRelDecomposes</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> RelatedObjects;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>HasAssociations
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifckernel/lexical/ifcrelassociates.htm">IfcRelAssociates</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> RelatedObjects;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="../../ifckernel/lexical/ifcobject.htm">IfcObject</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ObjectType
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifclabel.htm">IfcLabel</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">INVERSE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>IsDefinedBy
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifckernel/lexical/ifcreldefines.htm">IfcRelDefines</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> RelatedObjects;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="../../ifckernel/lexical/ifcproduct.htm">IfcProduct</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ObjectPlacement
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcgeometricconstraintresource/lexical/ifcobjectplacement.htm">IfcObjectPlacement</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Representation
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcrepresentationresource/lexical/ifcproductrepresentation.htm">IfcProductRepresentation</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">INVERSE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ReferencedBy
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifckernel/lexical/ifcrelassignstoproduct.htm">IfcRelAssignsToProduct</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> RelatingProduct;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcstructuralactivity.htm">IfcStructuralActivity</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>AppliedLoad
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcstructuralloadresource/lexical/ifcstructuralload.htm">IfcStructuralLoad</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>GlobalOrLocal
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcrepresentationresource/lexical/ifcglobalorlocalenum.htm">IfcGlobalOrLocalEnum</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">INVERSE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>AssignedToStructuralItem
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="ifcrelconnectsstructuralactivity.htm">IfcRelConnectsStructuralActivity</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> RelatedStructuralActivity;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcstructuralaction.htm">IfcStructuralAction</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>DestabilizingLoad
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td> <SPAN CLASS="all-express-keywords">BOOLEAN</SPAN>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>CausedBy
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="ifcstructuralreaction.htm">IfcStructuralReaction</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcstructurallinearaction.htm">IfcStructuralLinearAction</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ProjectedOrTrue
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="ifcprojectedortruelengthenum.htm">IfcProjectedOrTrueLengthEnum</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcstructurallinearactionvarying.htm">IfcStructuralLinearActionVarying</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>VaryingAppliedLoadLocation
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcrepresentationresource/lexical/ifcshapeaspect.htm">IfcShapeAspect</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>SubsequentAppliedLoads
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">LIST</SPAN> [1:?] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifcstructuralloadresource/lexical/ifcstructuralload.htm">IfcStructuralLoad</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">DERIVE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>VaryingAppliedLoads
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">LIST</SPAN> [2:?] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifcstructuralloadresource/lexical/ifcstructuralload.htm">IfcStructuralLoad</a>&nbsp;:=&nbsp;                                IfcAddToBeginOfList(SELF\IfcStructuralActivity.AppliedLoad,&nbsp;SubsequentAppliedLoads);
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

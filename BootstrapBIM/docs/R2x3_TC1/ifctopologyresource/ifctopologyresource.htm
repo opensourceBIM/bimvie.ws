@@ -1,0 +1,305 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IFCTOPOLOGYRESOURCE</title>
+<link rel="stylesheet" href="../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="img/schema_navbar_e2.gif" alt="Navigation" height="46" width="629" border="0" usemap="#schema-navbar"/><br/>
+<map name="schema-navbar">
+  <area shape="rect" coords="0,0,63,22" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="64,0,197,22" alt="Navigate"href="#interfaced_schemas">
+  <area shape="rect" coords="198,0,287,22" alt="Navigate"href="#constants">
+  <area shape="rect" coords="288,0,356,22" alt="Navigate"href="#entities">
+  <area shape="rect" coords="357,0,475,22" alt="Navigate"href="#defined_types">
+  <area shape="rect" coords="0,23,70,44" alt="Navigate"href="#select_types">
+  <area shape="rect" coords="71,23,171,44" alt="Navigate"href="#enumerations">
+  <area shape="rect" coords="172,23,231,44" alt="Navigate"href="#global_rules">
+  <area shape="rect" coords="232,23,315,44" alt="Navigate"href="#functions">
+  <area shape="rect" coords="316,23,475,44" alt="Navigate"href="#procedures">
+  <area shape="rect" coords="476,0,628,22" alt="Navigate"href="#subtype_constraints">
+</map><p CLASS="schema-heading">IFCTOPOLOGYRESOURCE</p><p CLASS="list-content">The data model consists of the following:</p>
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td align="right" width="10">
+            </td>
+            <td align="right">19&nbsp;
+            </td>
+            <td><a href="#entities">Entities</a>
+            </td>
+          </tr>
+
+          <tr valign="top">
+            <td align="right" width="10">
+            </td>
+            <td align="right">1&nbsp;
+            </td>
+            <td><a href="#select_types">Select types</a>
+            </td>
+          </tr>
+
+          <tr valign="top">
+            <td align="right" width="10">
+            </td>
+            <td align="right">3&nbsp;
+            </td>
+            <td><a href="#functions">Functions</a>
+            </td>
+          </tr>
+
+        </table>        
+	 <P>The schema <I>IfcTopologyResource</I> defines the resources used for
+		topological representations. The primary application of this resource is its
+		use in the Boundary representation of the shape or geometric form of a product
+		model.</P> 
+	 <BLOCKQUOTE><FONT COLOR="#0000FF">NOTE: The definitions of this resource of
+		the IFC model have been taken from the Integrated Resource, part 42 "Integrated
+		generic resources: Geometric and topological representations" of the ISO
+		standard 10303: "Industrial automation systems and integration - Product data
+		representation and exchange". The IfcTopologyResource refers to the clause 5,
+		"Topology" of the standard. The reference is ISO/IS 10303-42:1994, pp. 122. The
+		improved definitions of the second edition, ISO/DIS 10303-42:1999 have been
+		used, when applicable.</FONT></BLOCKQUOTE> 
+	 <P>The definitions taken from ISO/IS 10303-42:1994 have undergone an
+		adaptation process, characterized by:</P> 
+	 <UL> 
+		<LI>adaptation of the IFC naming convention (inner majuscules and Ifc
+		  prefix)</LI> 
+		<LI>adaptation of the STEP entities, where multiple inheritance or
+		  non-exclusive inheritance (i.e. AND or ANDOR subtype constraints) are used</LI>
+		
+		<LI>selection of a subset of the IR, using subtype and select
+		  pruning</LI> 
+		<LI>omission of the name attribute at the representation item</LI> 
+	 </UL> 
+	 <P>The topological representation of the shape is defined following the
+		adaptation of the <B>ISO/CD 10303-42:1992</B>, <I>Industrial Automation Systems
+		and Integration: Product Data Representation and Exchange - Part 42: Integrated
+		Generic Resources. Geometric and Topological Representation</I>. The type,
+		class, and function semantic definition sections follow the adapted wording of
+		the working draft, which is clearly indicated and quoted at each reference. The
+		definitions on geometric and topological representation (when taken from ISO/CD
+		10303-42:1992) are explicitly excluded from the copyright of the International
+		Alliance of Interoperability. </P> 
+	 <BLOCKQUOTE><FONT COLOR="#0000FF">For more information on the definitions
+		as defined in the formal ISO standard please refer to: ISO/IS 10303-42:1994,
+		Industrial Automation Systems and Integration: Product Data Representation and
+		Exchange - Part 42: Integrated Generic Resources. Geometric and Topological
+		Representation. The formal standard can be obtained through the local
+		publishers of standards in each individual country.</FONT> </BLOCKQUOTE> 
+	 <P>The following are within the scope of the topology schema: </P> 
+	 <UL> 
+		<LI>definition of the fundamental topological entities vertex, edge, and
+		  face, each with a specialized subtype to enable it to be associated with the
+		  geometry of a point, curve, or surface, respectively; </LI> 
+		<LI>collections of the basic entities to form topological structures of
+		  path, loop and shell and constraints to ensure the integrity of these
+		  structures;</LI> 
+		<LI>orientation of topological entities.</LI> 
+	 </UL>
+<p CLASS="list-heading"><a name="interfaced_schemas">Interfaced schemas (2):</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcgeometryresource/ifcgeometryresource.htm">IFCGEOMETRYRESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifcgeometryresource/lexical/ifccartesianpoint.htm">IfcCartesianPoint</a>,<br/><a href="../ifcgeometryresource/lexical/ifcpoint.htm">IfcPoint</a>,<br/><a href="../ifcgeometryresource/lexical/ifccurve.htm">IfcCurve</a>,<br/><a href="../ifcgeometryresource/lexical/ifcline.htm">IfcLine</a>,<br/><a href="../ifcgeometryresource/lexical/ifcpolyline.htm">IfcPolyline</a>,<br/><a href="../ifcgeometryresource/lexical/ifctrimmedcurve.htm">IfcTrimmedCurve</a>,<br/><a href="../ifcgeometryresource/lexical/ifccompositecurve.htm">IfcCompositeCurve</a>,<br/><a href="../ifcgeometryresource/lexical/ifcaxis2placement2d.htm">IfcAxis2Placement2D</a>,<br/><a href="../ifcgeometryresource/lexical/ifcaxis2placement3d.htm">IfcAxis2Placement3D</a>,<br/><a href="../ifcgeometryresource/lexical/ifcrepresentationitem.htm">IfcRepresentationItem</a>,<br/><a href="../ifcgeometryresource/lexical/ifccircle.htm">IfcCircle</a>,<br/><a href="../ifcgeometryresource/lexical/ifcellipse.htm">IfcEllipse</a>,<br/><a href="../ifcgeometryresource/lexical/ifcsurface.htm">IfcSurface</a>,<br/><a href="../ifcgeometryresource/lexical/ifcplane.htm">IfcPlane</a>,<br/><a href="../ifcgeometryresource/lexical/ifccurveboundedplane.htm">IfcCurveBoundedPlane</a>,<br/><a href="../ifcgeometryresource/lexical/ifcbeziercurve.htm">IfcBezierCurve</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcpresentationappearanceresource/ifcpresentationappearanceresource.htm">IFCPRESENTATIONAPPEARANCERESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifcpresentationappearanceresource/lexical/ifcnullstyle.htm">IfcNullStyle</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="list-heading"><a name="entities">Entities (19):</a></p>
+
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcclosedshell.htm" target="SOURCE">IfcClosedShell</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcconnectedfaceset.htm" target="SOURCE">IfcConnectedFaceSet</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcedge.htm" target="SOURCE">IfcEdge</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcedgecurve.htm" target="SOURCE">IfcEdgeCurve</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcedgeloop.htm" target="SOURCE">IfcEdgeLoop</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcface.htm" target="SOURCE">IfcFace</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcfacebound.htm" target="SOURCE">IfcFaceBound</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcfaceouterbound.htm" target="SOURCE">IfcFaceOuterBound</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcfacesurface.htm" target="SOURCE">IfcFaceSurface</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcloop.htm" target="SOURCE">IfcLoop</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcopenshell.htm" target="SOURCE">IfcOpenShell</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcorientededge.htm" target="SOURCE">IfcOrientedEdge</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcpath.htm" target="SOURCE">IfcPath</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcpolyloop.htm" target="SOURCE">IfcPolyLoop</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcsubedge.htm" target="SOURCE">IfcSubedge</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifctopologicalrepresentationitem.htm" target="SOURCE">IfcTopologicalRepresentationItem</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcvertex.htm" target="SOURCE">IfcVertex</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcvertexloop.htm" target="SOURCE">IfcVertexLoop</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcvertexpoint.htm" target="SOURCE">IfcVertexPoint</a>
+            </td>
+          </tr>
+        </table><p CLASS="list-heading"><a name="select_types">Select types (1):</a></p>
+
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcshell.htm" target="SOURCE">IfcShell</a>
+            </td>
+          </tr>
+        </table><p CLASS="list-heading"><a name="functions">Functions (3):</a></p>
+
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="middle">
+            <td><a href="lexical/ifcbooleanchoose.htm" target="SOURCE">IfcBooleanChoose</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td><a href="lexical/ifcloopheadtotail.htm" target="SOURCE">IfcLoopHeadToTail</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td><a href="lexical/ifcpathheadtotail.htm" target="SOURCE">IfcPathHeadToTail</a>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

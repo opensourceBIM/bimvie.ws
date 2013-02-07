@@ -1,0 +1,93 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcScalarTimesVector</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/expression_navbar.gif" alt="Navigation" height="24" width="319" border="0" usemap="#expression-navbar"/><br/>
+<map name="expression-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcgeometryresource.htm">
+  <area shape="rect" coords="142,0,221,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="222,0,318,23" alt="Navigate"href="ifcscalartimesvector.htm#references">
+</map><p CLASS="object-heading">IfcScalarTimesVector</p>        
+<p><u>Definition from ISO/CD 10303-42:1992</u>: This
+function returns the vector that is the scalar multiple of the input
+vector. It accepts as input a scalar and a 'vector' which may be either
+a Direction or a Vector. The output is a Vector of the same units as
+the input vector or unitless if a direction is input. If either input
+argument is undefined then the returned vector is also undefined.</p>
+<blockquote> <small><font color="#0000ff">NOTE
+&nbsp;Corresponding STEP function: scalar_times_vector. Please refer
+to ISO/IS 10303-42:1994, p.107 for the final definition of the formal
+standard.&nbsp; <br>
+  <br>
+HISTORY&nbsp; New function in IFC Release 1.5 </font></small>
+</blockquote>
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">FUNCTION</a></SPAN> IfcScalarTimesVector
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td>
+                          &nbsp;&nbsp;(Scalar&nbsp;:&nbsp;REAL;&nbsp;Vec&nbsp;:&nbsp;IfcVectorOrDirection)<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;IfcVector;<br/>
+                          LOCAL<br/>
+                          &nbsp;&nbsp;V&nbsp;:&nbsp;IfcDirection;<br/>
+                          &nbsp;&nbsp;Mag&nbsp;:&nbsp;REAL;<br/>
+                          &nbsp;&nbsp;Result&nbsp;:&nbsp;IfcVector;<br/>
+                          END_LOCAL;<br/>
+                          <br/>
+                          &nbsp;&nbsp;IF&nbsp;NOT&nbsp;EXISTS&nbsp;(Scalar)&nbsp;OR&nbsp;NOT&nbsp;EXISTS&nbsp;(Vec)&nbsp;THEN<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;RETURN&nbsp;(?)&nbsp;;<br/>
+                          &nbsp;&nbsp;ELSE<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;'IFCGEOMETRYRESOURCE.IFCVECTOR'&nbsp;IN&nbsp;TYPEOF&nbsp;(Vec)&nbsp;THEN<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;V&nbsp;:=&nbsp;Vec\IfcVector.Orientation;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mag&nbsp;:=&nbsp;Scalar&nbsp;*&nbsp;Vec\IfcVector.Magnitude;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;ELSE<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;V&nbsp;:=&nbsp;Vec;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mag&nbsp;:=&nbsp;Scalar;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;END_IF;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;(Mag&nbsp;&#60;&nbsp;0.0&nbsp;)&nbsp;THEN<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;REPEAT&nbsp;i&nbsp;:=&nbsp;1&nbsp;TO&nbsp;SIZEOF(V.DirectionRatios);<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;V.DirectionRatios[i]&nbsp;:=&nbsp;-V.DirectionRatios[i];<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END_REPEAT;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mag&nbsp;:=&nbsp;-Mag;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;END_IF;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;Result&nbsp;:=&nbsp;IfcRepresentationItem()&nbsp;||&nbsp;IfcGeometricRepresentationItem&nbsp;()&nbsp;||&nbsp;IfcVector(IfcNormalise(V),&nbsp;Mag);<br/>
+                          &nbsp;&nbsp;END_IF;<br/>
+                          &nbsp;&nbsp;RETURN&nbsp;(Result);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_FUNCTION</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

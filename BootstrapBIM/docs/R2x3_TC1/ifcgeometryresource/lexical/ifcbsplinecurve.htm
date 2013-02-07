@@ -1,0 +1,527 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcBSplineCurve</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/entity_navbar.gif" alt="Navigation" height="24" width="625" border="0" usemap="#entity-navbar"/><br/>
+<map name="entity-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcgeometryresource.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0009.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,398,23" alt="Navigate"href="#attribute_description">
+  <area shape="rect" coords="399,0,442,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="443,0,526,23" alt="Navigate"href="#inheritance">
+  <area shape="rect" coords="527,0,623,23" alt="Navigate"href="ifcbsplinecurve.htm#references">
+</map><p CLASS="object-heading">IfcBSplineCurve</p>        
+	 <P><U>Definition from ISO/CD 10303-42:1992</U>: A B-spline curve is a
+		piecewise parametric polynomial or rational curve described in terms of
+		control points and basis functions. The B-spline curve has been selected as the
+		most stable format to represent all types of polynomial or rational parametric
+		curves. With appropriate attribute values it is capable of representing single
+		span or spline curves of explicit polynomial, rational, Bezier or B-spline
+		type.</P> 
+	 <P>Interpretation of the data is as follows:</P> 
+	 <OL> 
+		<LI> 
+		  <P>All weights shall be positive and the curve is given by</P><IMG
+		  SRC="figures/IfcBSplineCurve-Math1.gif" WIDTH="183" HEIGHT="115" BORDER="0"> 
+		  <TABLE> 
+			 <TR> 
+				<TD ALIGN="RIGHT" WIDTH="100"><I>k</I>+1</TD> 
+				<TD> = number of control points</TD> 
+			 </TR> 
+			 <TR> 
+				<TD ALIGN="RIGHT" WIDTH="100">P<SUB><I>i</I></SUB></TD> 
+				<TD>= control points</TD> 
+			 </TR> 
+			 <TR> 
+				<TD ALIGN="RIGHT" WIDTH="100"><I>w</I><SUB><I>i</I></SUB></TD> 
+				<TD>= weights</TD> 
+			 </TR> 
+			 <TR> 
+				<TD ALIGN="RIGHT" WIDTH="100"><I>d</I></TD> 
+				<TD>= degree</TD> 
+			 </TR> 
+		  </TABLE> 
+		  <P>The knot array is an array of (<I>k</I>+<I>d</I>+2) real numbers
+			 [<I>u</I><SUB>-<I>d</I></SUB> ... <I>u</I><SUB><I>k</I>+1</SUB>], such that for
+			 all indices j in [-<I>d</I>,<I>k</I>], <I>u</I><SUB>j</SUB> &lt;=
+			 <I>u</I><SUB>j+1</SUB>. This array is obtained from the knot data list by
+			 repeating each multiple knot according to the multiplicity. <I>N
+			 <SUP>d</SUP><SUB>i</SUB></I>, the <I>i</I>th normalized B-spline basis function
+			 of degree <I>d</I>, is defined on the subset [<I>u<SUB>i-d</SUB></I>, ... ,
+			 <I>u<SUB>i+1</SUB></I>] of this array.</P></LI> 
+		<LI> 
+		  <P>Let <I>L</I> denote the number of distinct values among the
+			 <I>d</I>+<I>k</I>+2 knots in the knot array; <I>L</I> will be referred to as
+			 the 'upper index on knots'. Let <I>m<SUB>j</SUB></I> denote the multiplicity
+			 (i.e. number of repetitions) of the <I>j</I>th distinct knot. Then</P>
+		  <IMG SRC="figures/IfcBSplineCurve-Math2.gif" WIDTH="149" HEIGHT="59"
+			BORDER="0"> 
+		  <P>All knot multiplicities except the first and the last shall be in
+			 the range 1 ... degree; the first and last may have a maximum value of degree +
+			 1. In evaluating the basis functions, a knot <I>u</I> of e.g. multiplicity 3 is
+			 interpreted as a string <I>u, u, u,</I> in the knot array. The B-spline curve
+			 has 3 special subtypes (<I>IAI note: only 1, Bezier curve, included in this IFC
+			 release</I>) where the knots and knot multiplicities are derived to provide
+			 simple default capabilities.</P></LI> 
+		<LI>Logical flag is provided to indicate whether the curve self
+		  intersects or not.</LI> 
+	 </OL> 
+	 <P><U>Illustration from ISO 10303-42</U>:</P><IMG
+	 SRC="figures/IfcBSplineCurve-Fig1.gif" ALT="control points" WIDTH="520"
+	 HEIGHT="200" BORDER="0"> 
+	 <BLOCKQUOTE> 
+		<P><FONT SIZE="-1" COLOR="#0000FF">NOTE: Corresponding STEP entity:
+		  b_spline_curve. Please refer to ISO/IS 10303-42:1994, p. 45 for the final
+		  definition of the formal standard. </FONT></P> 
+		<P><FONT SIZE="-1" COLOR="#0000FF">HISTORY: New entity in Release IFC2x
+		  Edition 2.</FONT></P> </BLOCKQUOTE>
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">ENTITY</a></SPAN> IfcBSplineCurve
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">ABSTRACT</SPAN>&nbsp;<SPAN CLASS="all-express-keywords">SUPERTYPE</SPAN>&nbsp;<SPAN CLASS="all-express-keywords">OF</SPAN>
+                        </td>
+                        <td height="1%">(<a href="ifcbeziercurve.htm">IfcBezierCurve</a>)
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">SUBTYPE</SPAN>&nbsp;<SPAN CLASS="all-express-keywords">OF</SPAN>&nbsp;(
+                        </td>
+                        <td><a href="ifcboundedcurve.htm">IfcBoundedCurve</a>);
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Degree
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td> <SPAN CLASS="all-express-keywords">INTEGER</SPAN>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ControlPointsList
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">LIST</SPAN> [2:?] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="ifccartesianpoint.htm">IfcCartesianPoint</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>CurveForm
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="ifcbsplinecurveform.htm">IfcBSplineCurveForm</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ClosedCurve
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td> <SPAN CLASS="all-express-keywords">LOGICAL</SPAN>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>SelfIntersect
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td> <SPAN CLASS="all-express-keywords">LOGICAL</SPAN>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">DERIVE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ControlPoints
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">ARRAY</SPAN> [0:255] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="ifccartesianpoint.htm">IfcCartesianPoint</a>&nbsp;:=&nbsp;                                IfcListToArray(ControlPointsList,0,UpperIndexOnControlPoints);
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>UpperIndexOnControlPoints
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td> <SPAN CLASS="all-express-keywords">INTEGER</SPAN>&nbsp;:=&nbsp;                                (SIZEOF(ControlPointsList)&nbsp;-&nbsp;1);
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td><SPAN CLASS="all-express-keywords">WHERE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="10%">WR41
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td>SIZEOF(QUERY(Temp &lt;* ControlPointsList |
+  Temp.Dim &lt;&gt; ControlPointsList[1].Dim))
+= 0;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="object-express-specification"><a name="attribute_description">Attribute definitions:</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">Degree
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              The algebraic degree of the basis functions.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">ControlPointsList
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              The list of control points for the curve.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">CurveForm
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Used to identify particular types of curve; it is for information only.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">ClosedCurve
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Indication of whether the curve is closed; it is for information only.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">SelfIntersect
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Indication whether the curve self-intersects or not; it is for information only.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">ControlPoints
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              The array of control points used to define the geometry of the curve. This is derived from the list of
+              control points.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">UpperIndexOnControlPoints
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              The upper index on the array of control points; the lower index is 0.<br/>
+              This value is derived from the control points list.
+            </td>
+          </tr>
+        </table><p CLASS="object-express-specification"><a name="constraint_description">Formal Propositions:</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td CLASS="constraint-description-name" width="20%">WR41
+            </td>
+            <td CLASS="constraint-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="constraint-description">              All control points shall have the same dimensionality.
+            </td>
+          </tr>
+        </table><p CLASS="inheritance-heading"><a name="inheritance">Inheritance graph</a></p>
+        <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">ENTITY</SPAN> IfcBSplineCurve;
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcrepresentationitem.htm">IfcRepresentationItem</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">INVERSE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>LayerAssignments
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifcpresentationorganizationresource/lexical/ifcpresentationlayerassignment.htm">IfcPresentationLayerAssignment</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> AssignedItems;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>StyledByItem
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> [0:1] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifcpresentationappearanceresource/lexical/ifcstyleditem.htm">IfcStyledItem</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> Item;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcgeometricrepresentationitem.htm">IfcGeometricRepresentationItem</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifccurve.htm">IfcCurve</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">DERIVE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Dim
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="ifcdimensioncount.htm">IfcDimensionCount</a>&nbsp;:=&nbsp;                                IfcCurveDim(SELF);
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcboundedcurve.htm">IfcBoundedCurve</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcbsplinecurve.htm">IfcBSplineCurve</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Degree
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td> <SPAN CLASS="all-express-keywords">INTEGER</SPAN>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ControlPointsList
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">LIST</SPAN> [2:?] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="ifccartesianpoint.htm">IfcCartesianPoint</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>CurveForm
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="ifcbsplinecurveform.htm">IfcBSplineCurveForm</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ClosedCurve
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td> <SPAN CLASS="all-express-keywords">LOGICAL</SPAN>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>SelfIntersect
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td> <SPAN CLASS="all-express-keywords">LOGICAL</SPAN>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">DERIVE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ControlPoints
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">ARRAY</SPAN> [0:255] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="ifccartesianpoint.htm">IfcCartesianPoint</a>&nbsp;:=&nbsp;                                IfcListToArray(ControlPointsList,0,UpperIndexOnControlPoints);
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>UpperIndexOnControlPoints
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td> <SPAN CLASS="all-express-keywords">INTEGER</SPAN>&nbsp;:=&nbsp;                                (SIZEOF(ControlPointsList)&nbsp;-&nbsp;1);
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

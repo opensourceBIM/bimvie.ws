@@ -1,0 +1,553 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IFCELECTRICALDOMAIN</title>
+<link rel="stylesheet" href="../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="img/schema_navbar_e2.gif" alt="Navigation" height="46" width="629" border="0" usemap="#schema-navbar"/><br/>
+<map name="schema-navbar">
+  <area shape="rect" coords="0,0,63,22" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="64,0,197,22" alt="Navigate"href="#interfaced_schemas">
+  <area shape="rect" coords="198,0,287,22" alt="Navigate"href="#constants">
+  <area shape="rect" coords="288,0,356,22" alt="Navigate"href="#entities">
+  <area shape="rect" coords="357,0,475,22" alt="Navigate"href="#defined_types">
+  <area shape="rect" coords="0,23,70,44" alt="Navigate"href="#select_types">
+  <area shape="rect" coords="71,23,171,44" alt="Navigate"href="#enumerations">
+  <area shape="rect" coords="172,23,231,44" alt="Navigate"href="#global_rules">
+  <area shape="rect" coords="232,23,315,44" alt="Navigate"href="#functions">
+  <area shape="rect" coords="316,23,475,44" alt="Navigate"href="#procedures">
+  <area shape="rect" coords="476,0,628,22" alt="Navigate"href="#subtype_constraints">
+</map><p CLASS="schema-heading">IFCELECTRICALDOMAIN</p><p CLASS="list-content">The data model consists of the following:</p>
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td align="right" width="10">
+            </td>
+            <td align="right">19&nbsp;
+            </td>
+            <td><a href="#entities">Entities</a>
+            </td>
+          </tr>
+
+          <tr valign="top">
+            <td align="right" width="10">
+            </td>
+            <td align="right">18&nbsp;
+            </td>
+            <td><a href="#enumerations">Enumerations</a>
+            </td>
+          </tr>
+
+        </table>         
+	 <P>The <I>IfcElectricalDomain</I> schema forms part of the Domain Layer of
+		the IFC Model. It extends the ideas concerning building services outlined in
+		the <I>IfcSharedBldgServicesElements</I> schema. It defines concepts of
+		electrical supply and provision and concepts of light fixtures and illuminance
+		within buildings. </P> 
+	 <H3>Scope</H3> 
+	 <P>The scope of the IfcElectrical domain is defined as:</P> 
+	 <OL> 
+		<LI>low voltage electrical installations from 12V (AC/DC) to 1000V (AC)
+		  or 1500 volts (DC) in accordance with IEC definitions where installations in
+		  scope are considered to commence at a meter where the public utility supply
+		  terminates or at a transformer where voltage is stepped down to the low voltage
+		  range in scope,</LI> 
+		<LI>connection of equipment to circuits, distribution points etc,</LI> 
+		<LI>steady state operation of electrical installations,</LI> 
+		<LI>light fixtures (fittings), their types and the provision of such
+		  information as is necessary to enable lighting calculations that provide
+		  physically accurate illuminance.</LI> 
+	 </OL> 
+	 <P>The <I>IfcElectricalDomain</I> schema supports ideas including types of:
+		</P> 
+	 <UL> 
+		<LI>cable carrier fittings (for conduit, cable tray, cable duct and
+		  ladder),</LI> 
+		<LI>electrical appliance,</LI> 
+		<LI>electric heater,</LI> 
+		<LI>electric motor,</LI> 
+		<LI>distribution points including various types of control, mimic and
+		  indicator panels,</LI> 
+		<LI>generator,</LI> 
+		<LI>junction box,</LI> 
+		<LI>light fixture,</LI> 
+		<LI>lamp,</LI> 
+		<LI>outlet,</LI> 
+		<LI>protective device,</LI> 
+		<LI>switching device,</LI> 
+		<LI>transformer,</LI>  
+	 </UL> 
+	 <H4>Out of Scope</H4> 
+	 <P>The following are deemed to be out of scope of the <I>IfcElectricalDomain</I> schema
+		at this time: </P> 
+	 <UL> 
+		<LI>medium and high voltage installations over 1000 volts AC and 1500
+		  volts DC</LI> 
+		<LI>systems with voltage of less than 12 volts (AC/DC)</LI> 
+		<LI>public utility supply of electrical services</LI> 
+		<LI>path of cables/conductors (other than as logical paths identifying
+		  connection sequence)</LI> 
+		<LI>cable routers (cable ladders)</LI> 
+		<LI>electrical appliances like fax machines, phones, printers etc other
+		  than as defined as electric appliances for the purposes of identification.</LI>
+		
+		<LI>non steady state/transient states of operation of electrical
+		  installations</LI> 
+		<LI>security arrangements associated with safety of electrical
+		  installations</LI> 
+		<LI>communication signals between automation devices or bus systems</LI> 
+		<LI>sensors (which are dealt with in the IfcBuildingControl domain
+		  schema)</LI> 
+		<LI>computer network cabling and devices used on networks</LI> 
+		<LI>spotlight mirror systems whereby a spotlight is directed towards a
+		  distant mirror that the distributes the light energy (other than as a group of
+		  separately defined objects)</LI> 
+		<LI>lighting for specialist purposes (e.g. stage, painting, etc.) </LI> 
+		<LI>properties and provisions that enable the visual display or rendering
+		  of surfaces under illuminance (rendering, as in VRML, and photo accurate
+		  simulation are within the scope of the <I>IfcPresentationResource</I>
+		  schema.</LI> 
+	 </UL> 
+	 <H3>Occurrence</H3> 
+	 <P>Many classes within this schema define types of elements that are used
+		in electrical building services. They are defined either as subtypes of
+		IfcTypeProduct or of other classes that are themselves subtypes of
+		IfcTypeProduct. </P> 
+	 <P>The objective is that a particular type of element is defined once in an
+		IFC exchange. Occurrences of elements conforming to a particular
+		type are defined by instances of related subtypes of IfcDistributionElement.
+		Details of the relevant occurrence subtype are provided in the documentation
+		for the type class. </P> 
+	 <H3>Electrical Circuit</H3> 
+	 <P>Electrical devices form part of an electrical circuit. An instance of an
+		electrical circuit is defined as a named instance of IfcSystem.</P> 
+	 <BLOCKQUOTE> 
+		<P><FONT COLOR="#0000FF" SIZE="-1"> HISTORY:New schema in
+		  IFC Release 2x.  </FONT></P></BLOCKQUOTE> 
+<p CLASS="list-heading"><a name="interfaced_schemas">Interfaced schemas (7):</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcexternalreferenceresource/ifcexternalreferenceresource.htm">IFCEXTERNALREFERENCERESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifcexternalreferenceresource/lexical/ifcclassificationreference.htm">IfcClassificationReference</a>,<br/><a href="../ifcexternalreferenceresource/lexical/ifcdocumentreference.htm">IfcDocumentReference</a>,<br/><a href="../ifcexternalreferenceresource/lexical/ifclibraryreference.htm">IfcLibraryReference</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcgeometryresource/ifcgeometryresource.htm">IFCGEOMETRYRESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifcgeometryresource/lexical/ifcaxis2placement3d.htm">IfcAxis2Placement3D</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifckernel/ifckernel.htm">IFCKERNEL</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcmeasureresource/ifcmeasureresource.htm">IFCMEASURERESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifcmeasureresource/lexical/ifclabel.htm">IfcLabel</a>,<br/><a href="../ifcmeasureresource/lexical/ifcsiunit.htm">IfcSIUnit</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcpresentationappearanceresource/ifcpresentationappearanceresource.htm">IFCPRESENTATIONAPPEARANCERESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifcpresentationappearanceresource/lexical/ifcnullstyle.htm">IfcNullStyle</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcproductextension/ifcproductextension.htm">IFCPRODUCTEXTENSION</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifcproductextension/lexical/ifcsystem.htm">IfcSystem</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcsharedbldgserviceelements/ifcsharedbldgserviceelements.htm">IFCSHAREDBLDGSERVICEELEMENTS</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifcsharedbldgserviceelements/lexical/ifcflowterminaltype.htm">IfcFlowTerminalType</a>,<br/><a href="../ifcsharedbldgserviceelements/lexical/ifcflowcontrollertype.htm">IfcFlowControllerType</a>,<br/><a href="../ifcsharedbldgserviceelements/lexical/ifcenergyconversiondevicetype.htm">IfcEnergyConversionDeviceType</a>,<br/><a href="../ifcsharedbldgserviceelements/lexical/ifcflowfittingtype.htm">IfcFlowFittingType</a>,<br/><a href="../ifcsharedbldgserviceelements/lexical/ifcflowstoragedevicetype.htm">IfcFlowStorageDeviceType</a>,<br/><a href="../ifcsharedbldgserviceelements/lexical/ifcflowsegmenttype.htm">IfcFlowSegmentType</a>,<br/><a href="../ifcsharedbldgserviceelements/lexical/ifcflowcontroller.htm">IfcFlowController</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="list-heading"><a name="entities">Entities (19):</a></p>
+
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifccablecarrierfittingtype.htm" target="SOURCE">IfcCableCarrierFittingType</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifccablecarriersegmenttype.htm" target="SOURCE">IfcCableCarrierSegmentType</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifccablesegmenttype.htm" target="SOURCE">IfcCableSegmentType</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcelectricappliancetype.htm" target="SOURCE">IfcElectricApplianceType</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcelectricdistributionpoint.htm" target="SOURCE">IfcElectricDistributionPoint</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcelectricflowstoragedevicetype.htm" target="SOURCE">IfcElectricFlowStorageDeviceType</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcelectricgeneratortype.htm" target="SOURCE">IfcElectricGeneratorType</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcelectricheatertype.htm" target="SOURCE">IfcElectricHeaterType</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcelectricmotortype.htm" target="SOURCE">IfcElectricMotorType</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcelectrictimecontroltype.htm" target="SOURCE">IfcElectricTimeControlType</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcelectricalcircuit.htm" target="SOURCE">IfcElectricalCircuit</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcjunctionboxtype.htm" target="SOURCE">IfcJunctionBoxType</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifclamptype.htm" target="SOURCE">IfcLampType</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifclightfixturetype.htm" target="SOURCE">IfcLightFixtureType</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcmotorconnectiontype.htm" target="SOURCE">IfcMotorConnectionType</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcoutlettype.htm" target="SOURCE">IfcOutletType</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcprotectivedevicetype.htm" target="SOURCE">IfcProtectiveDeviceType</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcswitchingdevicetype.htm" target="SOURCE">IfcSwitchingDeviceType</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifctransformertype.htm" target="SOURCE">IfcTransformerType</a>
+            </td>
+          </tr>
+        </table><p CLASS="list-heading"><a name="enumerations">Enumerations (18):</a></p>
+
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifccablecarrierfittingtypeenum.htm" target="SOURCE">IfcCableCarrierFittingTypeEnum</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifccablecarriersegmenttypeenum.htm" target="SOURCE">IfcCableCarrierSegmentTypeEnum</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifccablesegmenttypeenum.htm" target="SOURCE">IfcCableSegmentTypeEnum</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcelectricappliancetypeenum.htm" target="SOURCE">IfcElectricApplianceTypeEnum</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcelectricdistributionpointfunctionenum.htm" target="SOURCE">IfcElectricDistributionPointFunctionEnum</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcelectricflowstoragedevicetypeenum.htm" target="SOURCE">IfcElectricFlowStorageDeviceTypeEnum</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcelectricgeneratortypeenum.htm" target="SOURCE">IfcElectricGeneratorTypeEnum</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcelectricheatertypeenum.htm" target="SOURCE">IfcElectricHeaterTypeEnum</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcelectricmotortypeenum.htm" target="SOURCE">IfcElectricMotorTypeEnum</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcelectrictimecontroltypeenum.htm" target="SOURCE">IfcElectricTimeControlTypeEnum</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcjunctionboxtypeenum.htm" target="SOURCE">IfcJunctionBoxTypeEnum</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifclamptypeenum.htm" target="SOURCE">IfcLampTypeEnum</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifclightfixturetypeenum.htm" target="SOURCE">IfcLightFixtureTypeEnum</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcmotorconnectiontypeenum.htm" target="SOURCE">IfcMotorConnectionTypeEnum</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcoutlettypeenum.htm" target="SOURCE">IfcOutletTypeEnum</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcprotectivedevicetypeenum.htm" target="SOURCE">IfcProtectiveDeviceTypeEnum</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcswitchingdevicetypeenum.htm" target="SOURCE">IfcSwitchingDeviceTypeEnum</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifctransformertypeenum.htm" target="SOURCE">IfcTransformerTypeEnum</a>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

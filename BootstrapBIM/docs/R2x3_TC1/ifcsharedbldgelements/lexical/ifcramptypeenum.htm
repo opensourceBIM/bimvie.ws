@@ -1,0 +1,141 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcRampTypeEnum</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/type_navbar.gif" alt="Navigation" height="24" width="466" border="0" usemap="#type-navbar"/><br/>
+<map name="type-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcsharedbldgelements.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0001.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,367,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="368,0,464,23" alt="Navigate"href="ifcramptypeenum.htm#references">
+</map><p CLASS="object-heading">IfcRampTypeEnum</p>        
+	 <P><U>Definition from IAI</U>: This enumeration defines the basic
+		configuration of the ramp type in terms of the number and shape of ramp
+		flights. The type also distinguished turns by landings. In addition the
+		subdivision of the straight and changing direction ramps is included. The ramp
+		configurations are given for ramps without and with one and two landings.</P> 
+	 <P>Ramps which are subdivided into more than two landings have to be
+		defined by the geometry only. Also ramps with non-regular shapes have to be
+		defined by the geometry only. The type of such ramps is USERDEFINED.</P> 
+	 <BLOCKQUOTE><FONT COLOR="#0000FF" SIZE="-1">HISTORY New Enumeration in IFC
+		Release 2.0.</FONT></BLOCKQUOTE> 
+	 <P><U>Illustration</U></P> 
+	 <TABLE BORDER="1"> 
+		<TR VALIGN="TOP"> 
+		  <TD WIDTH="30%" VALIGN="TOP" ALIGN="LEFT"><I>Enumerator</I></TD> 
+		  <TD WIDTH="46%" VALIGN="TOP" ALIGN="LEFT"><I>Description</I></TD> 
+		  <TD WIDTH="23%" VALIGN="TOP" ALIGN="LEFT"><I>Figure</I></TD> 
+		</TR> 
+		<TR VALIGN="TOP"> 
+		  <TD WIDTH="30%" VALIGN="TOP" ALIGN="LEFT">StraightRunRamp</TD> 
+		  <TD WIDTH="46%" VALIGN="TOP" ALIGN="LEFT">A ramp - which is a sloping
+			 floor, walk, or roadway - connecting two levels. The straight ramp consists of
+			 one straight flight without turns or winders. </TD> 
+		  <TD WIDTH="23%" VALIGN="TOP" ALIGN="LEFT"><IMG
+			 SRC="figures/IfcRampTypeEnum-Fig01.gif" WIDTH="171" HEIGHT="39"
+			 BORDER="0"></TD> 
+		</TR> 
+		<TR VALIGN="TOP"> 
+		  <TD WIDTH="30%" VALIGN="TOP" ALIGN="LEFT">TwoStraightRunRamp</TD> 
+		  <TD WIDTH="46%" VALIGN="TOP" ALIGN="LEFT">A straight ramp consisting of
+			 two straight flights without turns but with one landing.</TD> 
+		  <TD WIDTH="23%" VALIGN="TOP" ALIGN="LEFT"><IMG
+			 SRC="figures/IfcRampTypeEnum-Fig02.gif" WIDTH="171" HEIGHT="39"
+			 BORDER="0"></TD> 
+		</TR> 
+		<TR VALIGN="TOP"> 
+		  <TD WIDTH="30%" VALIGN="TOP" ALIGN="LEFT">QuarterTurnRamp</TD> 
+		  <TD WIDTH="46%" VALIGN="TOP" ALIGN="LEFT">A ramp making a 90&deg; turn,
+			 consisting of two straight flights connected by a quarterspace landing. The
+			 direction of the turn is determined by the walking line.</TD> 
+		  <TD WIDTH="23%" VALIGN="TOP" ALIGN="LEFT"><IMG
+			 SRC="figures/IfcRampTypeEnum-Fig03.gif" WIDTH="171" HEIGHT="77"
+			 BORDER="0"></TD> 
+		</TR> 
+		<TR VALIGN="TOP"> 
+		  <TD WIDTH="30%" VALIGN="TOP" ALIGN="LEFT">TwoQuarterTurnRamp</TD> 
+		  <TD WIDTH="46%" VALIGN="TOP" ALIGN="LEFT">A ramp making a 180&deg;
+			 turn, consisting of three straight flights connected by two quarterspace
+			 landings. The direction of the turn is determined by the walking line.</TD> 
+		  <TD WIDTH="23%" VALIGN="TOP" ALIGN="LEFT"><IMG
+			 SRC="figures/IfcRampTypeEnum-Fig04.gif" WIDTH="171" HEIGHT="77"
+			 BORDER="0"></TD> 
+		</TR> 
+		<TR VALIGN="TOP"> 
+		  <TD WIDTH="30%" VALIGN="TOP" ALIGN="LEFT">HalfTurnRamp</TD> 
+		  <TD WIDTH="46%" VALIGN="TOP" ALIGN="LEFT">A ramp making a 180&deg;
+			 turn, consisting of two straight flights connected by a halfspace landing. The
+			 orientation of the turn is determined by the walking line.</TD> 
+		  <TD WIDTH="23%" VALIGN="TOP" ALIGN="LEFT"><IMG
+			 SRC="figures/IfcRampTypeEnum-Fig05.gif" WIDTH="171" HEIGHT="78"
+			 BORDER="0"></TD> 
+		</TR> 
+		<TR VALIGN="TOP"> 
+		  <TD WIDTH="30%" VALIGN="TOP" ALIGN="LEFT">SpiralRamp</TD> 
+		  <TD WIDTH="46%" VALIGN="TOP" ALIGN="LEFT">A ramp constructed around a
+			 circular or elliptical well without newels and landings.</TD> 
+		  <TD WIDTH="23%" VALIGN="TOP" ALIGN="LEFT"><IMG
+			 SRC="figures/IfcRampTypeEnum-Fig06.gif" WIDTH="171" HEIGHT="171"
+			 BORDER="0"></TD> 
+		</TR> 
+		<TR VALIGN="TOP"> 
+		  <TD WIDTH="30%" VALIGN="TOP" ALIGN="LEFT"> UserDefined</TD> 
+		  <TD WIDTH="46%" VALIGN="TOP" ALIGN="LEFT">Free form ramp (user defined
+			 operation type)</TD> 
+		  <TD WIDTH="23%" VALIGN="TOP" ALIGN="LEFT">&nbsp;</TD> 
+		</TR> 
+		<TR VALIGN="TOP"> 
+		  <TD WIDTH="30%" VALIGN="TOP" ALIGN="LEFT">NotDefined</TD> 
+		  <TD WIDTH="46%" VALIGN="TOP" ALIGN="LEFT">&nbsp;</TD> 
+		  <TD WIDTH="23%" VALIGN="TOP" ALIGN="LEFT">&nbsp;</TD> 
+		</TR> 
+	 </TABLE> 
+	 <BLOCKQUOTE>
+		<P><FONT SIZE="-1">NOTE: These figures are only shown as
+		  illustrations.</FONT></P></BLOCKQUOTE>
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">TYPE</a></SPAN> IfcRampTypeEnum = <SPAN CLASS="all-express-keywords">ENUMERATION </SPAN><SPAN CLASS="all-express-keywords">OF</SPAN>
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td>STRAIGHT_RUN_RAMP,<br/>TWO_STRAIGHT_RUN_RAMP,<br/>QUARTER_TURN_RAMP,<br/>TWO_QUARTER_TURN_RAMP,<br/>HALF_TURN_RAMP,<br/>SPIRAL_RAMP,<br/>USERDEFINED,<br/>NOTDEFINED);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_TYPE</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

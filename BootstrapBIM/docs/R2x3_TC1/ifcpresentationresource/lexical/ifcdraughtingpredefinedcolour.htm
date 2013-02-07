@@ -1,0 +1,246 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcDraughtingPreDefinedColour</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/entity_navbar.gif" alt="Navigation" height="24" width="625" border="0" usemap="#entity-navbar"/><br/>
+<map name="entity-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcpresentationresource.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0001.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,398,23" alt="Navigate"href="#attribute_description">
+  <area shape="rect" coords="399,0,442,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="443,0,526,23" alt="Navigate"href="#inheritance">
+  <area shape="rect" coords="527,0,623,23" alt="Navigate"href="ifcdraughtingpredefinedcolour.htm#references">
+</map><p CLASS="object-heading">IfcDraughtingPreDefinedColour</p>        
+<p><u>Definition from IAI</u>: The draughting pre
+defined colour is a pre defined colour for the purpose to identify a
+colour by name. Allowable names are:</p>
+<ul>
+  <li>'black',</li>
+  <li>'red',</li>
+  <li>'green', </li>
+  <li> 'blue',</li>
+  <li>'yellow',</li>
+  <li>'magenta',</li>
+  <li>'cyan',</li>
+  <li>'white',</li>
+</ul>
+<blockquote>
+  <p><font size="-1">NOTE&nbsp; The <i>IfcDraughtingPreDefinedColour</i>
+is an entity that had been adopted from ISO 10303, Industrial
+automation systems and integration&mdash;Product data
+representation and exchange, Part 202: Application protocol:
+Associative draughting.</font></p>
+</blockquote>
+<p>The following table states the RGB values associated with the
+names given by the <i>IfcDraughtingPreDefinedColour.</i> </p>
+<blockquote>
+  <table>
+    <tbody>
+      <tr>
+        <td><b>Colour name</b></td>
+        <td align="center"><b>Red</b></td>
+        <td align="center"><b>Green</b></td>
+        <td align="center"><b>Blue</b></td>
+      </tr>
+      <tr>
+        <td>black</td>
+        <td align="center">0</td>
+        <td align="center">0</td>
+        <td align="center">0</td>
+      </tr>
+      <tr>
+        <td>red</td>
+        <td align="center">1.0</td>
+        <td align="center">0</td>
+        <td align="center">0</td>
+      </tr>
+      <tr>
+        <td>green</td>
+        <td align="center">0</td>
+        <td align="center">1.0</td>
+        <td align="center">0</td>
+      </tr>
+      <tr>
+        <td>blue</td>
+        <td align="center">0</td>
+        <td align="center">0</td>
+        <td align="center">1.0</td>
+      </tr>
+      <tr>
+        <td>yellow</td>
+        <td align="center">1.0</td>
+        <td align="center">1.0</td>
+        <td align="center">0</td>
+      </tr>
+      <tr>
+        <td>magenta</td>
+        <td align="center">1.0</td>
+        <td align="center">0</td>
+        <td align="center">1.0</td>
+      </tr>
+      <tr>
+        <td>cyan</td>
+        <td align="center">0</td>
+        <td align="center">1.0</td>
+        <td align="center">1.0</td>
+      </tr>
+      <tr>
+        <td>white</td>
+        <td align="center">1.0</td>
+        <td align="center">1.0</td>
+        <td align="center">1.0</td>
+      </tr>
+    </tbody>
+  </table>
+</blockquote>
+<blockquote> <font color="#0000ff"><small>
+NOTE&nbsp; Corresponding STEP name: draughting_pre_defined_colour.
+Please refer to ISO/IS 10303-202:1994 page 194 for the final definition
+of the formal standard.</small> </font> </blockquote>
+<blockquote><small> <font color="#0000ff">HISTORY&nbsp;
+New entity in Release IFC2x Edition 2.</font> </small></blockquote>
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">ENTITY</a></SPAN> IfcDraughtingPreDefinedColour
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">SUBTYPE</SPAN>&nbsp;<SPAN CLASS="all-express-keywords">OF</SPAN>&nbsp;(
+                        </td>
+                        <td><a href="ifcpredefinedcolour.htm">IfcPreDefinedColour</a>);
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td><SPAN CLASS="all-express-keywords">WHERE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="10%">WR31
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td>SELF\IfcPreDefinedItem.Name IN ['black','red','green','blue','yellow',
+     'magenta','cyan','white','by layer'];
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="object-express-specification"><a name="constraint_description">Formal Propositions:</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td CLASS="constraint-description-name" width="20%">WR31
+            </td>
+            <td CLASS="constraint-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="constraint-description">              The inherited name for pre defined items shall only have the value of one of the following words.
+            </td>
+          </tr>
+        </table><p CLASS="inheritance-heading"><a name="inheritance">Inheritance graph</a></p>
+        <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">ENTITY</SPAN> IfcDraughtingPreDefinedColour;
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcpredefineditem.htm">IfcPreDefinedItem</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Name
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcmeasureresource/lexical/ifclabel.htm">IfcLabel</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcpredefinedcolour.htm">IfcPreDefinedColour</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcdraughtingpredefinedcolour.htm">IfcDraughtingPreDefinedColour</a>;
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

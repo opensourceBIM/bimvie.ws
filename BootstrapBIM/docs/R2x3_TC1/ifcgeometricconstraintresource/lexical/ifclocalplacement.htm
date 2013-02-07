@@ -1,0 +1,340 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcLocalPlacement</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/entity_navbar.gif" alt="Navigation" height="24" width="625" border="0" usemap="#entity-navbar"/><br/>
+<map name="entity-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcgeometricconstraintresource.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0001.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,398,23" alt="Navigate"href="#attribute_description">
+  <area shape="rect" coords="399,0,442,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="443,0,526,23" alt="Navigate"href="#inheritance">
+  <area shape="rect" coords="527,0,623,23" alt="Navigate"href="ifclocalplacement.htm#references">
+</map><p CLASS="object-heading">IfcLocalPlacement</p>         
+<p><u>Definition from IFC</u>: The <i>IfcLocalPlacement</i>
+defines the relative placement of a product in relation to the
+placement of another product or the absolute placement of a product
+within the geometric representation context of the project. </p>
+<p>The <i>IfcLocalPlacement</i> allows that an <i>IfcProduct</i>
+can be placed by this <i>IfcLocalPlacement</i> (through
+the attribute<i>ObjectPlacement</i>) within the local
+coordinate system of the object placement of another <i>IfcProduct</i>,
+which is referenced by the <i>PlacementRelTo</i>. Rules to
+prevent cyclic relative placements have to be introduced on the
+application level.</p>
+<p>If the <i>PlacementRelTo</i> is not given, then
+the <i>IfcProduct</i> is placed absolutely within the
+world coordinate system.</p>
+<blockquote>
+  <p><font color="#0000ff" size="-1">HISTORY:
+New entity in IFC Release 1.0.</font></p>
+</blockquote>
+<p><b><u>Geometry use definitions</u>:</b></p>
+<p>The following conventions shall apply as default relative
+positions if the relative placement is used. The conventions are given
+for all five direct subtypes of <i>IfcProduct</i>, the <i>IfcSpatialStructureElement</i>,
+<i>IfcElement</i>, <i>IfcAnnotation</i>, <i>IfcGrid</i>,
+<i>IfcPort</i>. More detailed placement information is
+given at the level of subtypes of those five types mentioned.</p>
+<ul>
+  <li>For the subtypes of <i>IfcSpatialStructureElement</i>
+the following conventions apply
+    <ul>
+      <li><i>IfcSite</i> shall be placed absolutely
+within the world coordinate system established by the geometric
+representation context of the <i>IfcProject</i> </li>
+      <li><i>IfcBuilding</i> shall be placed relative
+to the local placement of <i>IfcSite</i> </li>
+      <li><i>IfcBuildingStorey</i> shall be placed
+relative to the local placement of <i>IfcBuilding</i> </li>
+    </ul>
+  </li>
+  <li>For <i>IfcGrid</i> and <i>IfcAnnotation</i>
+the convention applies that it shall be placed relative
+    <ul>
+      <li> to the local placement of its container (<i>IfcSite,
+IfcBuilding, IfcBuildingStorey</i>)
+        <ul>
+          <li>it should be the same container element that is
+referenced by the <i>IfcRelContainedInSpatialStructure</i>
+containment relationship,</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>For <i>IfcPort</i> the convention applies that
+it shall be placed relative
+    <ul>
+      <li> to the local placement of the element it belongs to (<i>IfcElement</i>)
+        <ul>
+          <li>it should be the same element that is referenced by
+the <i>IfcRelConnectsPortToElement</i> connection
+relationship,</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li> For <i>IfcElement</i> the convention applies
+that it shall be placed relative:
+    <ul>
+      <li> to the local placement of its container (<i>IfcSite,
+IfcBuilding, IfcBuildingStorey</i>)
+        <ul>
+          <li>it should be the same container element that is
+referenced by the <i>IfcRelContainedInSpatialStructure</i>
+containment relationship,</li>
+        </ul>
+      </li>
+      <li>to the local placement of the <i>IfcElement</i>
+to which it is tied by an element composition relationship
+        <ul>
+          <li>for features that are located relative to the main
+component (such as openings), as expressed by <i>IfcRelVoidsElement</i>
+and<i> IfcRelProjectsElement</i>,</li>
+          <li>for elements that fill an opening (such as doors or
+windows), as expressed by<i>IfcRelFillsElement</i>,</li>
+          <li>for coverings that cover the element, as expressed
+by<i>IfcRelCoversBldgElements,</i></li>
+          <li>for sub components that are aggregated to the main
+component, as expressed by <i> IIfcRelAggregates</i> and <i>IfcRelNests</i>)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<p>If the <i>PlacementRelTo</i> relationship is not
+given, then it defaults to an absolute placement within the world
+coordinate system established by the referenced geometric
+representation context within the project. </p>
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">ENTITY</a></SPAN> IfcLocalPlacement
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">SUBTYPE</SPAN>&nbsp;<SPAN CLASS="all-express-keywords">OF</SPAN>&nbsp;(
+                        </td>
+                        <td><a href="ifcobjectplacement.htm">IfcObjectPlacement</a>);
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>PlacementRelTo
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="ifcobjectplacement.htm">IfcObjectPlacement</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>RelativePlacement
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcgeometryresource/lexical/ifcaxis2placement.htm">IfcAxis2Placement</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td><SPAN CLASS="all-express-keywords">WHERE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="10%">WR21
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td>IfcCorrectLocalPlacement(RelativePlacement, PlacementRelTo);
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="object-express-specification"><a name="attribute_description">Attribute definitions:</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">PlacementRelTo
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Reference to Object that provides the relative placement by its local coordinate system. If it is omitted,
+              then the local placement is given to the WCS, established by the geometric representation context.<br/>
+              
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">RelativePlacement
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Geometric placement that defines the transformation from the related coordinate system into the relating.
+              The placement can be either 2D or 3D, depending on the dimension count of the coordinate system.
+            </td>
+          </tr>
+        </table><p CLASS="object-express-specification"><a name="constraint_description">Formal Propositions:</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td CLASS="constraint-description-name" width="20%">WR21
+            </td>
+            <td CLASS="constraint-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="constraint-description">              Ensures that a 3D local placement can only be relative (if exists) to a 3D parent local placement (and
+              not to a 2D parent local placement).
+            </td>
+          </tr>
+        </table><p CLASS="inheritance-heading"><a name="inheritance">Inheritance graph</a></p>
+        <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">ENTITY</SPAN> IfcLocalPlacement;
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcobjectplacement.htm">IfcObjectPlacement</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">INVERSE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>PlacesObject
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> [1:1] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifckernel/lexical/ifcproduct.htm">IfcProduct</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> ObjectPlacement;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ReferencedByPlacements
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="ifclocalplacement.htm">IfcLocalPlacement</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> PlacementRelTo;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifclocalplacement.htm">IfcLocalPlacement</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>PlacementRelTo
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="ifcobjectplacement.htm">IfcObjectPlacement</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>RelativePlacement
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcgeometryresource/lexical/ifcaxis2placement.htm">IfcAxis2Placement</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

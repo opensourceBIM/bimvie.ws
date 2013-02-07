@@ -59,27 +59,31 @@ function GenericPluginSettings(main, usersettings, pluginsettings, configuration
 				objectDefinition.parameters.forEach(function(parameter){
 					$(".genericpluginsettings .nosettings").hide();
 					var tr = $("<tr></tr>");
-					tr.append("<td>" + parameter.name.firstUpper() + "</td>");
+					tr.append("<td></td>");
+					var link = $("<a>" + parameter.name.firstUpper() + "</a>");
+					link.tooltip({title: parameter.description});
+					tr.find("td").append(link);
 					var td = $("<td></td>");
 					tr.append(td);
 					if (parameter.type.__type == "SPrimitiveDefinition") {
 						var primitiveDefinition = parameter.type;
+						var input = null;
 						if (primitiveDefinition.type == "LONG") {
-							var input = $("<input parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
+							input = $("<input parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
 							input.numeric({ decimal: false, negative: false });
 							td.append(input);
 						} else if (primitiveDefinition.type == "DOUBLE") {
-							var input = $("<input parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
+							input = $("<input parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
 							input.numeric({ decimal: ".", negative: false });
 							td.append(input);
 						} else if (primitiveDefinition.type == "STRING") {
-							var input = $("<input parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
+							input = $("<input parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
 							td.append(input);
 						} else if (primitiveDefinition.type == "BYTE_ARRAY") {
-							var input = $("<input parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"file\"/>");
+							input = $("<input parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"file\"/>");
 							td.append(input);
 						} else if (primitiveDefinition.type == "BOOLEAN") {
-							var input = $("<input parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"checkbox\"/>");
+							input = $("<input parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"checkbox\"/>");
 							td.append(input);
 						}
 					}

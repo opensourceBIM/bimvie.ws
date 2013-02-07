@@ -1,0 +1,313 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcTextStyle</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/entity_navbar.gif" alt="Navigation" height="24" width="625" border="0" usemap="#entity-navbar"/><br/>
+<map name="entity-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcpresentationappearanceresource.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0003.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,398,23" alt="Navigate"href="#attribute_description">
+  <area shape="rect" coords="399,0,442,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="443,0,526,23" alt="Navigate"href="#inheritance">
+  <area shape="rect" coords="527,0,623,23" alt="Navigate"href="ifctextstyle.htm#references">
+</map><p CLASS="object-heading">IfcTextStyle</p>        
+<p><u>Definition
+from ISO/CD 10303-46:1992</u>: The
+text style is a presentation style for annotation text..</p>
+<p><u>Definition
+from IAI</u>: The <i>IfcTextStyle</i>
+provides the text style table for presentation information assigned to
+text literals. The style is defined by color, text font
+characteristics,
+and text box characteristics. The definitions are based upon:</p>
+<ul>
+  <li>definitions from ISO/IS
+10303-46:1994 for (old) vector based and monospace text.<br>
+  </li>
+  <li>definitions from <a
+ target="_blank" href="http://www.w3.org/TR/REC-CSS1">Cascading
+Style Sheets, level 1</a>, W3C
+Recommendation 17 Dec 1996, revised 11 Jan 1999, CSS1, for all true
+type text. The use of the CSS1 definitions is the preferred
+way to represent text styles.</li>
+</ul>
+An <i>IfcTextStyle</i>,
+when representing (old) vector based and
+monospace text, is instantiated with:<br>
+<ul>
+  <li><i>TextCharacterAppearance</i>::
+    <i>IfcTextStyleForDefinedFont</i>
+(with <i>BackgroundColour</i>
+= NIL)</li>
+  <li><i>TextStyle</i>::
+    <i>IfcTextStyleWithBoxCharacteristics</i></li>
+  <li><i>TextFontStyle</i>::
+    <i>IfcDraughtingPreDefinedTextFont</i>
+or <i>IfcExternallyDefinedTextFont</i></li>
+</ul>
+An <i>IfcTextStyle</i>,
+when representing (new) true type text, based
+on CSS1 definitions, is instantiated with:<br>
+<ul>
+  <li><i>TextCharacterAppearance</i>::
+    <i>IfcTextStyleForDefinedFont</i></li>
+  <li><i>TextStyle</i>::
+    <i>IfcTextStyleTextModel</i></li>
+  <li><i>TextFontStyle</i>::
+    <i>IfcTextStyleFontModel</i></li>
+</ul>
+<p>An <i>IfcTextStyle</i>
+can be
+assigned to <i>IfcTextLiteral</i>
+via the <i>IfcPresentationStyleAssignment</i>
+through an intermediate <i>IfcAnnotationTextOccurrence</i>.</p>
+<blockquote><small>
+  <font color="#0000ff">
+NOTE&nbsp; Corresponding
+STEP name: text_style. Please refer to ISO/IS 10303-46:1994 for the
+final definition of the formal standard. In order to avoid ANDOR
+subtype relationships, the <i>IfcTextBlockStyleSelect</i>
+has been introduced that allows the combination of a text style as
+having box characteristic, and/or having spacing, or having none of
+those additional properties.</font></small></blockquote>
+<blockquote><small><font
+ color="#0000ff">NOTE&nbsp;
+Corresponding CSS1 definitions are: Font properties (font-family,
+font-style, font-variant, font-weight, font-size), Color and background
+properties (color, background-color) and Text properties (word-spacing,
+letter-spacing, text-decoration, text-transform,
+text-align, text-indent, line-height).</font></small></blockquote>
+<blockquote><small><font
+ color="#0000ff">HISTORY&nbsp; New entity in
+Release IFC2x
+Edition 2.</font></small><br>
+  <small><font
+ color="#ff0000">IFC2x
+Edition 3
+CHANGE&nbsp; The <i>IfcTextStyle</i>
+has been changed
+by adding <i>TextFontStyle</i>
+and different data types for <i>TextStyle</i>
+and <i>IfcCharacterStyleSelect</i>.<br>
+  </font></small>
+</blockquote>
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">ENTITY</a></SPAN> IfcTextStyle
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">SUBTYPE</SPAN>&nbsp;<SPAN CLASS="all-express-keywords">OF</SPAN>&nbsp;(
+                        </td>
+                        <td><a href="ifcpresentationstyle.htm">IfcPresentationStyle</a>);
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>TextCharacterAppearance
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="ifccharacterstyleselect.htm">IfcCharacterStyleSelect</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>TextStyle
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="ifctextstyleselect.htm">IfcTextStyleSelect</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>TextFontStyle
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcpresentationresource/lexical/ifctextfontselect.htm">IfcTextFontSelect</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="object-express-specification"><a name="attribute_description">Attribute definitions:</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">TextCharacterAppearance
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              
+A character style to be used for presented text.
+
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">TextStyle
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              
+The style applied to the text block for its visual appearance.</br>
+It defines the text block characteristics, either for vector based or monospace text fonts (see select item <i>IfcTextStyleWithBoxCharacteristics</i>), or for true type text fonts (see select item <i>IfcTextStyleTextModel</i>.
+  <blockquote><small><font color="#0000ff">
+IFC2x Edition 3 CHANGE&nbsp; The <i>attribute <i>TextBlockStyle</i> has been changed from SET[1:?] to a non-aggregated optional, it has been renamed from TextStyles.
+  </font></small></blockquote>
+
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">TextFontStyle
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              
+The style applied to the text font for its visual appearance.</br>
+It defines the font family, font style, weight and size.
+  <blockquote><small><font color="#ff0000">
+IFC2x Edition 2 Addendum 2 CHANGE The attribute <i>TextFontStyle</i> is a new attribute attached to <i>IfcTextStyle</i>.
+  </font></small></blockquote>
+
+            </td>
+          </tr>
+        </table><p CLASS="inheritance-heading"><a name="inheritance">Inheritance graph</a></p>
+        <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">ENTITY</SPAN> IfcTextStyle;
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcpresentationstyle.htm">IfcPresentationStyle</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Name
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifclabel.htm">IfcLabel</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifctextstyle.htm">IfcTextStyle</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>TextCharacterAppearance
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="ifccharacterstyleselect.htm">IfcCharacterStyleSelect</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>TextStyle
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="ifctextstyleselect.htm">IfcTextStyleSelect</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>TextFontStyle
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcpresentationresource/lexical/ifctextfontselect.htm">IfcTextFontSelect</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

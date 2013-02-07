@@ -1,0 +1,131 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcInternalOrExternalEnum</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/type_navbar.gif" alt="Navigation" height="24" width="466" border="0" usemap="#type-navbar"/><br/>
+<map name="type-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcproductextension.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0003.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,367,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="368,0,464,23" alt="Navigate"href="ifcinternalorexternalenum.htm#references">
+</map><p CLASS="object-heading">IfcInternalOrExternalEnum</p>        
+    <p>
+      <u>Definition from IAI</u>: This enumeration defines the
+      different types of spaces or space boundaries in terms of
+      either being inside the building or outside the building.
+    </p>
+    <p>
+      <u>Enumeration</u>:
+    </p>
+    <table cellspacing="2" cellpadding="2">
+      <tr>
+        <td valign="top" align="left">
+          INTERNAL
+        </td>
+        <td valign="top" align="left">
+          <i>IfcSpace</i>
+        </td>
+        <td valign="top" align="left">
+          The space is an internal space, fully enclosed by
+          physical boundaries (directly or indirectly through
+          adjacent spaces).
+        </td>
+      </tr>
+      <tr>
+        <td valign="top" align="left">
+           
+        </td>
+        <td valign="top" align="left">
+          <i>IfcSpaceBoundary</i>
+        </td>
+        <td valign="top" align="left">
+          The space boundary faces to the inside of an internal
+          space.
+        </td>
+      </tr>
+      <tr>
+        <td valign="top" align="left">
+          EXTERNAL
+        </td>
+        <td valign="top" align="left">
+          <i>IfcSpace</i>
+        </td>
+        <td valign="top" align="left">
+          The space is an external space, not (or only partially)
+          enclosed by physical boundaries.
+        </td>
+      </tr>
+      <tr>
+        <td valign="top" align="left">
+           
+        </td>
+        <td valign="top" align="left">
+          <i>IfcSpaceBoundary</i>
+        </td>
+        <td valign="top" align="left">
+          The space boundary faces to the outer space, or the
+          inside of an external space.
+        </td>
+      </tr>
+      <tr>
+        <td valign="top" align="left">
+          NOTDEFINED
+        </td>
+        <td valign="top" align="left">
+           
+        </td>
+        <td valign="top" align="left">
+          No information available.
+        </td>
+      </tr>
+    </table>
+    <blockquote>
+      <small><font color="#0000FF">HISTORY: New enumeration in
+      IFC Release 2.0</font></small>
+    </blockquote>
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">TYPE</a></SPAN> IfcInternalOrExternalEnum = <SPAN CLASS="all-express-keywords">ENUMERATION </SPAN><SPAN CLASS="all-express-keywords">OF</SPAN>
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td>INTERNAL,<br/>EXTERNAL,<br/>NOTDEFINED);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_TYPE</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

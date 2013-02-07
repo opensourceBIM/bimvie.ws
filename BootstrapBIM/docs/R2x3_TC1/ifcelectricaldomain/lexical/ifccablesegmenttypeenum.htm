@@ -1,0 +1,97 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcCableSegmentTypeEnum</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/type_navbar.gif" alt="Navigation" height="24" width="466" border="0" usemap="#type-navbar"/><br/>
+<map name="type-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcelectricaldomain.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0002.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,367,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="368,0,464,23" alt="Navigate"href="ifccablesegmenttypeenum.htm#references">
+</map><p CLASS="object-heading">IfcCableSegmentTypeEnum</p>         
+	 <P><U>Definition from IAI</U>: The <I>IfcCableSegmentTypeEnum</I> defines
+		the range of different types of cable segment that can be specified.</P> 
+	 <BLOCKQUOTE> 
+		<P><FONT COLOR="#0000FF" SIZE="-1"> HISTORY: New type in IFC
+		  2x2</FONT></P> </BLOCKQUOTE> 
+	 <P><U>Enumeration</U></P> 
+	 <TABLE BORDER="1"> 
+		<TR> 
+		  <TD><I>Value</I></TD> 
+		  <TD><I>Definition</I></TD> 
+		  <TD><I>Pset</I></TD> 
+		</TR> 
+		<TR> 
+		  <TD>CABLESEGMENT</TD> 
+		  <TD>Electrical cable with a specific purpose to lead electric current
+			 within a circuit or any other electric construction. Includes all types of
+			 electric cables, mainly several electrical segments wrapped together, e.g.
+			 cable, tube, busbar. Note that the number of conductors within a cable is
+			 determined by an aggregation mechanism that aggregates the conductors within
+			 the cable.</TD> 
+		  <TD>YES</TD> 
+		</TR> 
+		<TR> 
+		  <TD>CONDUCTORSEGMENT</TD> 
+		  <TD>A single linear element with the specific purpose to lead electric
+			 current. The core of one lead is normaly single wired or multiwired which are
+			 intertwined.</TD> 
+		  <TD>YES</TD> 
+		</TR> 
+		<TR> 
+		  <TD>USERDEFINED</TD> 
+		  <TD></TD> 
+		  <TD></TD> 
+		</TR> 
+		<TR> 
+		  <TD>NOTDEFINED</TD> 
+		  <TD></TD> 
+		  <TD></TD> 
+		</TR> 
+	 </TABLE> 
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">TYPE</a></SPAN> IfcCableSegmentTypeEnum = <SPAN CLASS="all-express-keywords">ENUMERATION </SPAN><SPAN CLASS="all-express-keywords">OF</SPAN>
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td>CABLESEGMENT,<br/>CONDUCTORSEGMENT,<br/>USERDEFINED,<br/>NOTDEFINED);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_TYPE</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

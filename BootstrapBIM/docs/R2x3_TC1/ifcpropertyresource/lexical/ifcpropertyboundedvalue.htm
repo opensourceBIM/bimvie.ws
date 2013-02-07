@@ -1,0 +1,422 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcPropertyBoundedValue</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/entity_navbar.gif" alt="Navigation" height="24" width="625" border="0" usemap="#entity-navbar"/><br/>
+<map name="entity-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcpropertyresource.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0002.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,398,23" alt="Navigate"href="#attribute_description">
+  <area shape="rect" coords="399,0,442,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="443,0,526,23" alt="Navigate"href="#inheritance">
+  <area shape="rect" coords="527,0,623,23" alt="Navigate"href="ifcpropertyboundedvalue.htm#references">
+</map><p CLASS="object-heading">IfcPropertyBoundedValue</p>        
+	 <P><U>Definition from IAI</U>: A property with a bounded value
+		(<I>IfcPropertyBoundedValue</I>) defines a property object which has a maximum
+		of two (numeric or descriptive) values assigned, the first value specifying the
+		upper bound and the second value specifying the lower bound. It defines a
+		property - value bound (min-max) combination for which the property name, the
+		upper bound value with measure type, the lower bound value with measure type
+		(and optional the unit) is given.</P> 
+	 <P>The unit is handled by the <I>Unit</I> attribute:</P> 
+	 <UL> 
+		<LI>If the <I>Unit</I> attribute is not given, then the unit is already
+		  implied by the type of <I>IfcMeasureValue</I> or <I>IfcDerivedMeasureValue</I>.
+		  The associated unit can be found at the <I>IfcUnitAssignment</I> globally
+		  defined at the project level (<I>IfcProject.UnitsInContext</I>).</LI> 
+		<LI> If the <I>Unit</I> attribute is given, then the unit assigned by the
+		  <I>Unit</I> attribute overrides the globally assigned unit.</LI> 
+	 </UL> 
+	 <P>The <I>IfcPropertyBoundedValue</I> allows for the specification of an
+		interval for the value component of the property description.
+		<FONT COLOR="#0000FF">If either the <I>LowerBoundValue</I> or the
+		<I>UpperBoundValue</I> is not given, then it indicates an open bound (either a
+		minimum value or a maximum value). The interval is by definition inclusive,
+		i.e. the value given for the <I>LowerBoundValue</I> or the
+		<I>UpperBoundValue</I> is included in the interval.</FONT></P> 
+	 <P>Examples of a property with bounded value are:</P> 
+	 <TABLE BORDER="1"> 
+		<TR VALIGN="TOP"> 
+		  <TD VALIGN="TOP" WIDTH="15%"><B>Name</B></TD> 
+		  <TD VALIGN="TOP" WIDTH="15%"><B>UpperBoundValue</B></TD> 
+		  <TD VALIGN="TOP" WIDTH="15%"><B>LowerBoundValue</B></TD> 
+		  <TD VALIGN="TOP" WIDTH="25%"><B>Type <BR></B><FONT SIZE="-1">(through
+			 <I>IfcValue</I>, WR1 ensures same type for both values)</FONT></TD> 
+		  <TD VALIGN="TOP" WIDTH="30%"><B>Unit <BR></B></TD> 
+		</TR> 
+		<TR VALIGN="TOP"> 
+		  <TD WIDTH="15%" VALIGN="TOP" ALIGN="LEFT">OverallHeight</TD> 
+		  <TD WIDTH="30%" VALIGN="TOP" ALIGN="LEFT">1930</TD> 
+		  <TD WIDTH="25%" VALIGN="TOP" ALIGN="LEFT">2300</TD> 
+		  <TD WIDTH="25%" VALIGN="TOP"
+			ALIGN="LEFT"><I>IfcPositiveLengthMeasure</I></TD> 
+		  <TD WIDTH="30%" VALIGN="TOP" ALIGN="LEFT">- </TD> 
+		</TR> 
+		<TR VALIGN="TOP"> 
+		  <TD WIDTH="15%" VALIGN="TOP" ALIGN="LEFT">OverallWidth</TD> 
+		  <TD WIDTH="30%" VALIGN="TOP" ALIGN="LEFT">0.9</TD> 
+		  <TD WIDTH="25%" VALIGN="TOP" ALIGN="LEFT">1.25</TD> 
+		  <TD WIDTH="25%" VALIGN="TOP"
+			ALIGN="LEFT"><I>IfcPositiveLengthMeasure</I></TD> 
+		  <TD WIDTH="30%" VALIGN="TOP" ALIGN="LEFT">m</TD> 
+		</TR> 
+		<TR VALIGN="TOP"> 
+		  <TD WIDTH="15%" VALIGN="TOP" ALIGN="LEFT"><FONT
+			 COLOR="#0000FF">MaxHeight</FONT></TD> 
+		  <TD WIDTH="30%" VALIGN="TOP" ALIGN="LEFT"><FONT
+			 COLOR="#0000FF">20.0</FONT></TD> 
+		  <TD WIDTH="25%" VALIGN="TOP" ALIGN="LEFT"><FONT
+			 COLOR="#0000FF">&lt;nil&gt;</FONT></TD> 
+		  <TD WIDTH="25%" VALIGN="TOP" ALIGN="LEFT"><FONT
+			 COLOR="#0000FF"><I>IfcPositiveLengthMeasure</I></FONT></TD> 
+		  <TD WIDTH="30%" VALIGN="TOP" ALIGN="LEFT"><FONT
+			 COLOR="#0000FF">-</FONT></TD> 
+		</TR> 
+		<TR VALIGN="TOP"> 
+		  <TD WIDTH="15%" VALIGN="TOP" ALIGN="LEFT"><FONT
+			 COLOR="#0000FF">MinWeight</FONT></TD> 
+		  <TD WIDTH="30%" VALIGN="TOP" ALIGN="LEFT"><FONT
+			 COLOR="#0000FF">&lt;nil&gt;</FONT></TD> 
+		  <TD WIDTH="25%" VALIGN="TOP" ALIGN="LEFT"><FONT
+			 COLOR="#0000FF">20</FONT></TD> 
+		  <TD WIDTH="25%" VALIGN="TOP" ALIGN="LEFT"><FONT
+			 COLOR="#0000FF"><I>IfcMassMeasure</I></FONT></TD> 
+		  <TD WIDTH="30%" VALIGN="TOP" ALIGN="LEFT"><FONT
+			 COLOR="#0000FF">kg</FONT></TD> 
+		</TR> 
+	 </TABLE> 
+	 <BLOCKQUOTE> 
+		<P><FONT COLOR="#0000FF" SIZE="-1">HISTORY: New entity in IFC Release 2x.
+		  </FONT></P> </BLOCKQUOTE> 
+	 <BLOCKQUOTE><FONT COLOR="#FF0000" SIZE="-1">IFC2x PLATFORM CHANGE: The
+		attribute type of the attribute <I>UpperBoundValue</I> and
+		<I>LowerBoundValue</I> has been changed from mandatory to optional with upward
+		compatibility for file based exchange.</FONT></BLOCKQUOTE> 
+	 <P>Informal proposition:</P> 
+	 <OL> 
+		<LI>If the measure type for the upper and lover bound value is a numeric
+		  measure, then the following shall be true: <I>UpperBoundValue</I> &gt;
+		  <I>LowerBoundValue</I>.</LI> 
+	 </OL>
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">ENTITY</a></SPAN> IfcPropertyBoundedValue
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">SUBTYPE</SPAN>&nbsp;<SPAN CLASS="all-express-keywords">OF</SPAN>&nbsp;(
+                        </td>
+                        <td><a href="ifcsimpleproperty.htm">IfcSimpleProperty</a>);
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>UpperBoundValue
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcvalue.htm">IfcValue</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>LowerBoundValue
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcvalue.htm">IfcValue</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Unit
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcunit.htm">IfcUnit</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td><SPAN CLASS="all-express-keywords">WHERE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="10%">WR21
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td>NOT(EXISTS(UpperBoundValue)) OR NOT(EXISTS(LowerBoundValue)) OR
+(TYPEOF(UpperBoundValue) = TYPEOF(LowerBoundValue));
+                              </td>
+                            </tr>
+                            <tr valign="top">
+                              <td width="10%">WR22
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td>EXISTS(UpperBoundValue) OR EXISTS(LowerBoundValue);
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="object-express-specification"><a name="attribute_description">Attribute definitions:</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">UpperBoundValue
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Upper bound value for the interval defining the property value. If the value is not given, it indicates
+              an open bound (all values to be greater than or equal to LowerBoundValue).
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">LowerBoundValue
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Lower bound value for the interval defining the property value. If the value is not given, it indicates
+              an open bound (all values to be lower than or equal to UpperBoundValue).
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">Unit
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Unit for the upper and lower bound values, if not given, the default value for the measure type (given
+              by the TYPE of the upper and lower bound values) is used as defined by the global unit assignment at
+              IfcProject.
+            </td>
+          </tr>
+        </table><p CLASS="object-express-specification"><a name="constraint_description">Formal Propositions:</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td CLASS="constraint-description-name" width="20%">WR21
+            </td>
+            <td CLASS="constraint-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="constraint-description">              The measure type of the upper bound value shall be the same as the measure type of the lower bound value,
+              if both (upper and lower bound) are given.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="constraint-description-name" width="20%">WR22
+            </td>
+            <td CLASS="constraint-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="constraint-description">              Either the upper bound, or the lower bound, or both bounds shall be given.
+            </td>
+          </tr>
+        </table><p CLASS="inheritance-heading"><a name="inheritance">Inheritance graph</a></p>
+        <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">ENTITY</SPAN> IfcPropertyBoundedValue;
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcproperty.htm">IfcProperty</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Name
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcmeasureresource/lexical/ifcidentifier.htm">IfcIdentifier</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Description
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifctext.htm">IfcText</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">INVERSE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>PropertyForDependance
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="ifcpropertydependencyrelationship.htm">IfcPropertyDependencyRelationship</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> DependingProperty;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>PropertyDependsOn
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="ifcpropertydependencyrelationship.htm">IfcPropertyDependencyRelationship</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> DependantProperty;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>PartOfComplex
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> [0:1] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="ifccomplexproperty.htm">IfcComplexProperty</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> HasProperties;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcsimpleproperty.htm">IfcSimpleProperty</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcpropertyboundedvalue.htm">IfcPropertyBoundedValue</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>UpperBoundValue
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcvalue.htm">IfcValue</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>LowerBoundValue
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcvalue.htm">IfcValue</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Unit
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcunit.htm">IfcUnit</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

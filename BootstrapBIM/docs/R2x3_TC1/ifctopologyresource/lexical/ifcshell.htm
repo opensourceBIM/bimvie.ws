@@ -1,0 +1,83 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcShell</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/type_navbar.gif" alt="Navigation" height="24" width="466" border="0" usemap="#type-navbar"/><br/>
+<map name="type-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifctopologyresource.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0002.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,367,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="368,0,464,23" alt="Navigate"href="ifcshell.htm#references">
+</map><p CLASS="object-heading">IfcShell</p>         
+	 <P><U>Definition from ISO/CD 10303-42:1992</U> This type collects together,
+		for reference when constructing more complex models, the subtypes which have
+		the characteristics of a shell. A shell is a connected object of fixed
+		dimensionality d = 0; 1; or 2, typically used to bound a region. The domain of
+		a shell, if present, includes its bounds and 0 <FONT
+		FACE="Symbol">&pound;</FONT> <FONT FACE="Symbol">X</FONT> <FONT
+		FACE="Symbol">&lt;</FONT> <FONT FACE="Symbol">&yen;</FONT> . </P> 
+	 <UL> 
+		<LI>A shell of dimensionality 0 is represented by a graph consisting of a
+		  single vertex. The vertex shall not have any associated edges.</LI> 
+		<LI>A shell of dimensionality 1 is represented by a connected graph of
+		  dimensionality 1.</LI> 
+		<LI>A shell of dimensionality 2 is a topological entity constructed by
+		  joining faces along edges. Its domain, if present, is a connected, orientable
+		  2-manifold with boundary, that is, a connected, oriented, finite,
+		  non-self-intersecting surface, which may be closed or open.</LI> 
+	 </UL> 
+	 <P><U>Definition from IAI</U>: Shells of dimensionality 0 and 1 are not
+		part of the current IFC release.</P> 
+	 <BLOCKQUOTE><FONT COLOR="#0000FF" SIZE="-1">NOTE: Corresponding STEP type:
+		shell. Please refer to ISO/IS 10303-42:1994, p. 127 for the final definition of
+		the formal standard. Only the select items closed_shell (<I>IfcClosedShell</I>)
+		and open_shell (<I>IfcOpenShell</I>) have been incorporated in the current IFC
+		release.</FONT></BLOCKQUOTE> 
+	 <BLOCKQUOTE><FONT SIZE="-1" COLOR="#0000FF">HISTORY: New type in IFC
+		Release 2x </FONT></BLOCKQUOTE>
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">TYPE</a></SPAN> IfcShell = <SPAN CLASS="all-express-keywords">SELECT</SPAN>
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="ifcclosedshell.htm">IfcClosedShell</a>,<br/><a href="ifcopenshell.htm">IfcOpenShell</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_TYPE</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

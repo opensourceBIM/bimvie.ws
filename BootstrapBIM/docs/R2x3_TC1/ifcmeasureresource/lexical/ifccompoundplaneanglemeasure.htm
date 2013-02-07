@@ -1,0 +1,147 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcCompoundPlaneAngleMeasure</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/type_navbar.gif" alt="Navigation" height="24" width="466" border="0" usemap="#type-navbar"/><br/>
+<map name="type-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcmeasureresource.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0003.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,367,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="368,0,464,23" alt="Navigate"href="ifccompoundplaneanglemeasure.htm#references">
+</map><p CLASS="object-heading">IfcCompoundPlaneAngleMeasure</p>        
+
+<P><U>Definition from IAI</U>: A compound measure of plane angle in degrees, minutes, seconds, and optionally millionth-seconds of arc.
+
+<BLOCKQUOTE><FONT SIZE="-1">NOTE: IfcCompoundPlaneAngleMeasure is used where angles need to be 
+described to an accuracy as fine as one millionth of a degree and expressed as parts of an arc. It may be 
+used for angular measurement by surveyors or for other angular measurements where precision is 
+required. Another usage is exact or approximate global positioning against a geographic coordinate systems using longitude and latitude.
+</FONT></BLOCKQUOTE>
+
+<P>Type: LIST [3:4] OF INTEGER </P><p><li>The first integer measure is the number of degrees in the range {360; -360}</li><li>The second integer measure is the number of minutes in the range {60; -60}</li><li>The third integer measure is the number of seconds in the range {60; -60}</li><li>The optional fourth integer measure is the number of millionth-seconds in the range {1 000 000; -1 000 000}</li></p>
+
+<BLOCKQUOTE><FONT SIZE="-1" COLOR="#0000FF">
+  HISTORY New type in IFC Release 1.5.1.
+</FONT>
+</BLOCKQUOTE>
+
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">TYPE</a></SPAN> IfcCompoundPlaneAngleMeasure = <SPAN CLASS="all-express-keywords">LIST</SPAN> [3:4] <SPAN CLASS="all-express-keywords">OF</SPAN> INTEGER;
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td><SPAN CLASS="all-express-keywords">WHERE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="10%">WR1
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td>{ -360 &lt;= SELF[1] &lt; 360 };
+                              </td>
+                            </tr>
+                            <tr valign="top">
+                              <td width="10%">WR2
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td>{ -60 &lt;= SELF[2] &lt; 60 };
+                              </td>
+                            </tr>
+                            <tr valign="top">
+                              <td width="10%">WR3
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td>{ -60 &lt;= SELF[3] &lt; 60 };
+                              </td>
+                            </tr>
+                            <tr valign="top">
+                              <td width="10%">WR4
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td>((SELF[1] &gt;= 0) AND (SELF[2] &gt;= 0) AND (SELF[3] &gt;= 0)) OR ((SELF[1] &lt;= 0) AND (SELF[2] &lt;= 0) AND (SELF[3] &lt;= 0));
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_TYPE</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="object-express-specification"><a name="constraint_description">Formal Propositions:</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td CLASS="constraint-description-name" width="20%">WR1
+            </td>
+            <td CLASS="constraint-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="constraint-description">              The first measure (degrees) shall be between -360 and 360 degree.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="constraint-description-name" width="20%">WR2
+            </td>
+            <td CLASS="constraint-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="constraint-description">              The second measure (minutes) shall be between -60 and 60.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="constraint-description-name" width="20%">WR3
+            </td>
+            <td CLASS="constraint-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="constraint-description">              The third measure (seconds) shall be between -60 and 60.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="constraint-description-name" width="20%">WR4
+            </td>
+            <td CLASS="constraint-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="constraint-description">              The measure components shall have the same sign (positive or negative).
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

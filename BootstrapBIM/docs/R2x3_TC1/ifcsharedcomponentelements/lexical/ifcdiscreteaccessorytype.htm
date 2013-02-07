@@ -1,0 +1,656 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcDiscreteAccessoryType</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/entity_navbar.gif" alt="Navigation" height="24" width="625" border="0" usemap="#entity-navbar"/><br/>
+<map name="entity-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcsharedcomponentelements.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0001.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,398,23" alt="Navigate"href="#attribute_description">
+  <area shape="rect" coords="399,0,442,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="443,0,526,23" alt="Navigate"href="#inheritance">
+  <area shape="rect" coords="527,0,623,23" alt="Navigate"href="ifcdiscreteaccessorytype.htm#references">
+</map><p CLASS="object-heading">IfcDiscreteAccessoryType</p>        
+	 <P><U>Definition from IAI</U>: The element type
+		(<I>IfcDiscreteAccessoryType</I>) defines a list of commonly shared property
+		set definitions of a discrete accessory and an optional set of product
+		representations. It is used to define a supporting element mainly within
+		structural and building services domains (i.e. the specific type information
+		common to all occurrences of that type).</P> 
+	 <P>The occurrences of the <I>IfcDiscreteAccessoryType</I> are represented
+		by instances of <I>IfcDiscreteAccessory</I>.</P> 
+	 <P>The <I>IfcDiscreteAccessoryType</I> is a specialization of the general
+		building element component type to represent different type of structural and
+		building service related auxiliary elements.</P> 
+	 <BLOCKQUOTE><FONT COLOR="#0000FF" SIZE="-1">HISTORY New entity in IFC
+		Release 2x2 </FONT></BLOCKQUOTE> 
+	 <P><B>General usage</B></P> 
+	 <P> The exact type information of the <I>IfcDiscreteAccessoryType</I> is
+		given in the <I>ElementType</I> attribute inherited from <I>IfcElementType</I>.
+		Standard type designations are provided for guideline below. The list is not
+		exhaustive and the list of definitions may be extended based on local national
+		extensions. </P> 
+	 <TABLE BORDER="1"> 
+		<TR> 
+		  <TD><I><B>Accessory type</B></I></TD> 
+		  <TD><I><B>Standard type designation</B></I></TD> 
+		  <TD><I><B>Description</B></I></TD> 
+		</TR> 
+		<TR> 
+		  <TD>Shading devices:</TD> 
+		  <TD>'Shading device'</TD> 
+		  <TD>Elements specifically designed to provide shading, often fixed
+			 externally and sometimes moving (e.g. by rotation)</TD> 
+		</TR> 
+		<TR> 
+		  <TD>Corbels as separate components:</TD> 
+		  <TD>'Hidden steel corbel'</TD> 
+		  <TD>Corbel system made from steel components embedded into the master
+			 element</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Visible steel corbel'</TD> 
+		  <TD>Corbel system made from steel components protruding from the master
+			 element</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Visible concrete corbel'</TD> 
+		  <TD>Corbel system made as a separate precast concrete component added
+			 to the master element</TD> 
+		</TR> 
+		<TR> 
+		  <TD>Anchor bolts:</TD> 
+		  <TD>'Foundation bolt'</TD> 
+		  <TD>Fixture with bolt embedded into concrete structures for securing
+			 columns or for machine foundations</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Ribbed bar bolt'</TD> 
+		  <TD>Fixture with bolt and one or several anchoring ribbed
+			 (reinforcement) bars embedded into concrete structures for securing columns or
+			 for machine foundations. </TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Extension bolt'</TD> 
+		  <TD>Fixture with bolt for extension joints between usually precast
+			 elements.</TD> 
+		</TR> 
+		<TR> 
+		  <TD>Connecting accessories, for example for sandwich wall panels:</TD> 
+		  <TD>'Diagonal truss connector'</TD> 
+		  <TD>A fixing device in truss form with diagonal cross bars holding two
+			 precast conrete panels together in a sandwich wall panel.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Ladder truss connector'</TD> 
+		  <TD>A fixing device in truss form with straight cross bars in ladder
+			 form holding two precast conrete panels together in a sandwich wall panel.</TD>
+		  
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Panel suspender'</TD> 
+		  <TD>A straight fixing device holding two precast conrete panels
+			 together in a sandwich wall panel.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Bracket'</TD> 
+		  <TD>A bracket for supporting various precast concrete components.</TD> 
+		</TR> 
+		<TR> 
+		  <TD>Electrical accessories for precast concrete elements:</TD> 
+		  <TD>'Conduit'</TD> 
+		  <TD>Conduit for cabling embedded in element.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Electrical box'</TD> 
+		  <TD>Electrical box embedded in element.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Double electrical box'</TD> 
+		  <TD>A double electrical box embedded in element.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Roof box'</TD> 
+		  <TD>Roof box embedded in element.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Junction box'</TD> 
+		  <TD>Junction box embedded in element.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Splice'</TD> 
+		  <TD>Splice embedded in element.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Protective plug'</TD> 
+		  <TD>Protective plug used in element for protecting electrical
+			 accessories during manufacturing, transportation and assembly.</TD> 
+		</TR> 
+		<TR> 
+		  <TD>Fixing parts:</TD> 
+		  <TD>'Standard fixing plate'</TD> 
+		  <TD>Standard fixing plate.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Edge fixing plate'</TD> 
+		  <TD>Fixing plate attached to the edge of an element.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Corner fixing plate'</TD> 
+		  <TD>Fixing plate attached to the corner of an element.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Slab fixing plate'</TD> 
+		  <TD>Fixing plate for slabs.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Balcony hinge'</TD> 
+		  <TD>Accessory supporting and fixing balconies.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Frame shoe'</TD> 
+		  <TD>Fixing shoe for frames.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Thermo frame'</TD> 
+		  <TD>Thermo frame.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Column shoe'</TD> 
+		  <TD>Fixing shoe for columns.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Wall shoe'</TD> 
+		  <TD>Fixing shoe for walls.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Fixing socket'</TD> 
+		  <TD>Fixing socket.</TD> 
+		</TR> 
+		<TR> 
+		  <TD>Joint accessories:</TD> 
+		  <TD>'Neoprene bearing plate'</TD> 
+		  <TD>Rubber plate used as a bearing in, for example, joints between
+			 column corbels and beams.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Working joint reinforcement'</TD> 
+		  <TD>Reinforcement accessory used in working joints.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Expansion joint reinforcement'</TD> 
+		  <TD>Reinforcement accessory used in expansion joints.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Ribbed steel bar extension'</TD> 
+		  <TD>Extension accessory made of a ribbed (reinforcement) bar used in
+			 joints.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Steel pin bolt'</TD> 
+		  <TD>Pin bolt used to join together, for example, columns and
+			 beams.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Concrete dowel'</TD> 
+		  <TD>Dowel pin used in joints.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Concrete groove'</TD> 
+		  <TD>A groove made in a joint.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Steel plate'</TD> 
+		  <TD>A steel plate used as an accessory in a joint.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Wire loop'</TD> 
+		  <TD>A joint connector accessory made from a wire loop.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Steel loop'</TD> 
+		  <TD>A joint connector accessory made from a steel bar loop.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Sealing strip'</TD> 
+		  <TD>A strip sealing the joint.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Sealing compound'</TD> 
+		  <TD>Sealing compound protecting and sealing the joint.</TD> 
+		</TR> 
+		<TR> 
+		  <TD>Lifting accessories:</TD> 
+		  <TD>'Wire lifting hook'</TD> 
+		  <TD>A lifting aid in the form of a wire loop.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Steel lifting hook'</TD> 
+		  <TD>A lifting aid in the form of a steel bar loop.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Lifting socket'</TD> 
+		  <TD>A lifting aid in the form of a socket.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Steel lifting anchor'</TD> 
+		  <TD>A lifting aid in the form of a steel lifting anchor.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Lifting hole'</TD> 
+		  <TD>A lifting aid in the form of a hole.</TD> 
+		</TR> 
+		<TR> 
+		  <TD>Accessories mainly used in the building services domain:</TD> 
+		  <TD>'Antivibration'</TD> 
+		  <TD>An isolating device to prevent other elements to be effected by
+			 vibrations.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Bracket'</TD> 
+		  <TD>A bracket wich is used to support pipes or cables.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Drop rod'</TD> 
+		  <TD>A length of material providing a hanging support to a bracket. Note
+			 that a drop rod is considered to include nuts and washers required for
+			 securing.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Duct foot'</TD> 
+		  <TD>A base support used to receive a vertical pipe (BS6100 330 3309 -
+			 duct foot).</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Framing'</TD> 
+		  <TD>A frame placed around a penetration to prevent scraping against the
+			 building surface or structure.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Grommet'</TD> 
+		  <TD>An element placed within a penetration that seals the penetration
+			 for a particular reason.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Rack'</TD> 
+		  <TD>A set of shelving for the purposes of storage that may be
+			 freestanding or bolted to a structure.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Safety part'</TD> 
+		  <TD>A part, typically installed in vertical shafts at each level, to
+			 ensure safety from falling when entering the shaft.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Sleeve'</TD> 
+		  <TD>A thin barrier placed between a penetration and a penetrating
+			 element.</TD> 
+		</TR> 
+		<TR> 
+		  <TD></TD> 
+		  <TD>'Support section'</TD> 
+		  <TD>A section of material that is used as an intermediate support upon
+			 which multiple brackets can be mounted.</TD> 
+		</TR> 
+	 </TABLE>
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">ENTITY</a></SPAN> IfcDiscreteAccessoryType
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">SUBTYPE</SPAN>&nbsp;<SPAN CLASS="all-express-keywords">OF</SPAN>&nbsp;(
+                        </td>
+                        <td><a href="ifcelementcomponenttype.htm">IfcElementComponentType</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="inheritance-heading"><a name="inheritance">Inheritance graph</a></p>
+        <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">ENTITY</SPAN> IfcDiscreteAccessoryType;
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="../../ifckernel/lexical/ifcroot.htm">IfcRoot</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>GlobalId
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcutilityresource/lexical/ifcgloballyuniqueid.htm">IfcGloballyUniqueId</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>OwnerHistory
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcutilityresource/lexical/ifcownerhistory.htm">IfcOwnerHistory</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Name
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifclabel.htm">IfcLabel</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Description
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifctext.htm">IfcText</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="../../ifckernel/lexical/ifcobjectdefinition.htm">IfcObjectDefinition</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">INVERSE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>HasAssignments
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifckernel/lexical/ifcrelassigns.htm">IfcRelAssigns</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> RelatedObjects;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>IsDecomposedBy
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifckernel/lexical/ifcreldecomposes.htm">IfcRelDecomposes</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> RelatingObject;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Decomposes
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> [0:1] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifckernel/lexical/ifcreldecomposes.htm">IfcRelDecomposes</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> RelatedObjects;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>HasAssociations
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifckernel/lexical/ifcrelassociates.htm">IfcRelAssociates</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> RelatedObjects;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="../../ifckernel/lexical/ifctypeobject.htm">IfcTypeObject</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ApplicableOccurrence
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifclabel.htm">IfcLabel</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>HasPropertySets
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <SPAN CLASS="all-express-keywords">SET</SPAN> [1:?] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifckernel/lexical/ifcpropertysetdefinition.htm">IfcPropertySetDefinition</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">INVERSE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ObjectTypeOf
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> [0:1] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifckernel/lexical/ifcreldefinesbytype.htm">IfcRelDefinesByType</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> RelatingType;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="../../ifckernel/lexical/ifctypeproduct.htm">IfcTypeProduct</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>RepresentationMaps
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <SPAN CLASS="all-express-keywords">LIST</SPAN> [1:?] <SPAN CLASS="all-express-keywords">OF</SPAN> <SPAN CLASS="all-express-keywords">UNIQUE</SPAN> <a href="../../ifcgeometryresource/lexical/ifcrepresentationmap.htm">IfcRepresentationMap</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Tag
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifclabel.htm">IfcLabel</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="../../ifcproductextension/lexical/ifcelementtype.htm">IfcElementType</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ElementType
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifclabel.htm">IfcLabel</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcelementcomponenttype.htm">IfcElementComponentType</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcdiscreteaccessorytype.htm">IfcDiscreteAccessoryType</a>;
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

@@ -1,0 +1,183 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IFCSTRUCTURALLOADRESOURCE</title>
+<link rel="stylesheet" href="../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="img/schema_navbar_e2.gif" alt="Navigation" height="46" width="629" border="0" usemap="#schema-navbar"/><br/>
+<map name="schema-navbar">
+  <area shape="rect" coords="0,0,63,22" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="64,0,197,22" alt="Navigate"href="#interfaced_schemas">
+  <area shape="rect" coords="198,0,287,22" alt="Navigate"href="#constants">
+  <area shape="rect" coords="288,0,356,22" alt="Navigate"href="#entities">
+  <area shape="rect" coords="357,0,475,22" alt="Navigate"href="#defined_types">
+  <area shape="rect" coords="0,23,70,44" alt="Navigate"href="#select_types">
+  <area shape="rect" coords="71,23,171,44" alt="Navigate"href="#enumerations">
+  <area shape="rect" coords="172,23,231,44" alt="Navigate"href="#global_rules">
+  <area shape="rect" coords="232,23,315,44" alt="Navigate"href="#functions">
+  <area shape="rect" coords="316,23,475,44" alt="Navigate"href="#procedures">
+  <area shape="rect" coords="476,0,628,22" alt="Navigate"href="#subtype_constraints">
+</map><p CLASS="schema-heading">IFCSTRUCTURALLOADRESOURCE</p><p CLASS="list-content">The data model consists of the following:</p>
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td align="right" width="10">
+            </td>
+            <td align="right">17&nbsp;
+            </td>
+            <td><a href="#entities">Entities</a>
+            </td>
+          </tr>
+
+        </table>        
+	 <P>The <I>IfcStructuralLoadResource</I> holds the definitions of
+		structural loads, boundary conditions, and connection conditions. These
+		definitions specify the force, moment, stiffness, displacement and other
+		factor, independently of the location, where such loads take effect.</P>
+	 <P>The load resource definitions are used in other parts of the IFC model,
+		including by the definition of structural actions and reactions that places the
+		load definitions into 2D or 3D space.</P>
+	 <BLOCKQUOTE><FONT SIZE="-1">NOTE: The current version of IFC does not
+		define dynamic loads, it is restricted to static loads.</FONT></BLOCKQUOTE> 
+	 <BLOCKQUOTE><FONT SIZE="-1" COLOR="#0000FF">HISTORY: New schema in Release
+		IFC2x Edition 2.</FONT></BLOCKQUOTE> 
+<p CLASS="list-heading"><a name="interfaced_schemas">Interfaced schemas (1):</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcmeasureresource/ifcmeasureresource.htm">IFCMEASURERESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifcmeasureresource/lexical/ifclabel.htm">IfcLabel</a>,<br/><a href="../ifcmeasureresource/lexical/ifclinearstiffnessmeasure.htm">IfcLinearStiffnessMeasure</a>,<br/><a href="../ifcmeasureresource/lexical/ifcrotationalstiffnessmeasure.htm">IfcRotationalStiffnessMeasure</a>,<br/><a href="../ifcmeasureresource/lexical/ifcforcemeasure.htm">IfcForceMeasure</a>,<br/><a href="../ifcmeasureresource/lexical/ifctorquemeasure.htm">IfcTorqueMeasure</a>,<br/><a href="../ifcmeasureresource/lexical/ifclinearforcemeasure.htm">IfcLinearForceMeasure</a>,<br/><a href="../ifcmeasureresource/lexical/ifclinearmomentmeasure.htm">IfcLinearMomentMeasure</a>,<br/><a href="../ifcmeasureresource/lexical/ifcplanarforcemeasure.htm">IfcPlanarForceMeasure</a>,<br/><a href="../ifcmeasureresource/lexical/ifclengthmeasure.htm">IfcLengthMeasure</a>,<br/><a href="../ifcmeasureresource/lexical/ifcplaneanglemeasure.htm">IfcPlaneAngleMeasure</a>,<br/><a href="../ifcmeasureresource/lexical/ifcthermodynamictemperaturemeasure.htm">IfcThermodynamicTemperatureMeasure</a>,<br/><a href="../ifcmeasureresource/lexical/ifcmodulusofsubgradereactionmeasure.htm">IfcModulusOfSubgradeReactionMeasure</a>,<br/><a href="../ifcmeasureresource/lexical/ifcwarpingmomentmeasure.htm">IfcWarpingMomentMeasure</a>,<br/><a href="../ifcmeasureresource/lexical/ifcmodulusoflinearsubgradereactionmeasure.htm">IfcModulusOfLinearSubgradeReactionMeasure</a>,<br/><a href="../ifcmeasureresource/lexical/ifcmodulusofrotationalsubgradereactionmeasure.htm">IfcModulusOfRotationalSubgradeReactionMeasure</a>,<br/><a href="../ifcmeasureresource/lexical/ifccurvaturemeasure.htm">IfcCurvatureMeasure</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="list-heading"><a name="entities">Entities (17):</a></p>
+
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcboundarycondition.htm" target="SOURCE">IfcBoundaryCondition</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcboundaryedgecondition.htm" target="SOURCE">IfcBoundaryEdgeCondition</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0004.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 4"/></a>
+            </td>
+            <td><a href="lexical/ifcboundaryfacecondition.htm" target="SOURCE">IfcBoundaryFaceCondition</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcboundarynodecondition.htm" target="SOURCE">IfcBoundaryNodeCondition</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcboundarynodeconditionwarping.htm" target="SOURCE">IfcBoundaryNodeConditionWarping</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0004.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 4"/></a>
+            </td>
+            <td><a href="lexical/ifcfailureconnectioncondition.htm" target="SOURCE">IfcFailureConnectionCondition</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0004.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 4"/></a>
+            </td>
+            <td><a href="lexical/ifcslippageconnectioncondition.htm" target="SOURCE">IfcSlippageConnectionCondition</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0004.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 4"/></a>
+            </td>
+            <td><a href="lexical/ifcstructuralconnectioncondition.htm" target="SOURCE">IfcStructuralConnectionCondition</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcstructuralload.htm" target="SOURCE">IfcStructuralLoad</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcstructuralloadlinearforce.htm" target="SOURCE">IfcStructuralLoadLinearForce</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcstructuralloadplanarforce.htm" target="SOURCE">IfcStructuralLoadPlanarForce</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcstructuralloadsingledisplacement.htm" target="SOURCE">IfcStructuralLoadSingleDisplacement</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcstructuralloadsingledisplacementdistortion.htm" target="SOURCE">IfcStructuralLoadSingleDisplacementDistortion</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcstructuralloadsingleforce.htm" target="SOURCE">IfcStructuralLoadSingleForce</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcstructuralloadsingleforcewarping.htm" target="SOURCE">IfcStructuralLoadSingleForceWarping</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcstructuralloadstatic.htm" target="SOURCE">IfcStructuralLoadStatic</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcstructuralloadtemperature.htm" target="SOURCE">IfcStructuralLoadTemperature</a>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

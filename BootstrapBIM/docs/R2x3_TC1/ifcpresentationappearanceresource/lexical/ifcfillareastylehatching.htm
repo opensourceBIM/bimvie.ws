@@ -1,0 +1,528 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcFillAreaStyleHatching</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/entity_navbar.gif" alt="Navigation" height="24" width="625" border="0" usemap="#entity-navbar"/><br/>
+<map name="entity-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcpresentationappearanceresource.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0004.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,398,23" alt="Navigate"href="#attribute_description">
+  <area shape="rect" coords="399,0,442,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="443,0,526,23" alt="Navigate"href="#inheritance">
+  <area shape="rect" coords="527,0,623,23" alt="Navigate"href="ifcfillareastylehatching.htm#references">
+</map><p CLASS="object-heading">IfcFillAreaStyleHatching</p>        
+<p><u>Definition
+from ISO/CD 10303-46:1992</u>: The
+fill area style hatching defines a styled pattern of curves for
+hatching an annotation fill area or a surface.</p>
+<p><u>Definition
+from IAI</u>: The <i>IfcFillAreaStyleHatching</i>
+is used to define
+simple, vector-based hatching patterns, based on styled straight lines.
+The curve font, color and thickness is given by the <i>HatchLineAppearance</i>,
+the angle by the <i>HatchLineAngle</i>
+and the distance to the
+next hatch line by <i>StartOfNextHatchLine</i>,
+being either an offset
+distance or a vector.</p>
+<blockquote> <p><small>NOTE&nbsp;
+If the hatch pattern involves two (potentially
+crossing) rows of hatch lines, then two instances of <i>IfcFillAreaStyleHatching</i>
+should be assigned to the <i>IfcFillAreaStyle</i>.
+Both share the same
+(virtual) point of origin of the hatching that is used by the reference
+hatch line (or the <i>PointOfReferenceHatchLine</i>
+if there is an
+offset).</small></p>
+</blockquote><p>For better control of the
+hatching appearance, when using hatch
+lines with other fonts then continuous, the <i>PatternStart</i>
+allows
+to offset the start of the curve font pattern along the reference hatch
+line (if not given, the <i>PatternStart</i>
+is at zero distance from
+the virtual point of origin). If the reference hatch line does not go
+through the origin (of the virtual hatching coordinate system), it can
+be offset by using the&nbsp;<i>PatternStart&nbsp;</i><strike><i>PointOfReferenceHatchLine</i>.</strike></p>
+<blockquote> <p><small>NOTE&nbsp;
+The coordinates of the <i>PatternStart </i><strike>and
+the </strike><i><strike>PointOfReferenceHatchLine</strike>
+</i>are
+given relative to the assumed
+0., 0. virtual point of origin at which the hatch pattern is later
+positioned by the <i>FillStyleTarget</i>
+point at <i>IfcAnnotationFillAreaOccurrence</i>.&nbsp;
+The measure values are given in global drawing length units and apply
+to the target plot scale for the scale depended representation
+subcontext.</small></p><p><font color="#ff0000"><small>NOTE
+&nbsp;The use of </small><small><i>PointOfReferenceHatchLine</i>
+is deprecated.</small></font></p>
+</blockquote><p><u>Illustration</u></p>
+<table border="1" cellpadding="2" cellspacing="2"
+ width="100%"> <tbody> <tr> <td align="left"
+ valign="top" width="300"><img alt="hatch example 1"
+ src="figures/IfcFillAreaStyleHatching_Fig1.gif" height="300"
+ width="300"></td> <td align="left"
+ valign="top"><small>Fig.1<br>
+simple hatching given by using a curve font "continuous" at <i>HatchLineAppearance</i>.<br>
+<br>
+The distance of hatch lines is given by a positive length measure. The
+angle (here 45' if measures in degree) is provided by <i>HatchLineAngle</i>.<br>
+<br>
+The <i>PatternStart</i> is
+set to NIL ($) in this example.</small></td> <td
+ align="left" valign="top" width="300"><img
+ alt="hatch example 2"
+ src="figures/IfcFillAreaStyleHatching_Fig2.gif" height="300"
+ width="300"></td> <td align="left"
+ valign="top"><small>Fig.
+2<br>
+hatching from figure 1 with using a different curve font at <i>HatchLineAppearance</i>.<br>
+<br> </small><small>The
+distance of hatch lines is given by a positive
+length measure, therefore the font pattern start is at a point at the
+next hatch line given by a vector being perpendicular to the point of
+origin at the reference hatch line.<br> <br> </small><small>The
+<i>PatternStart</i> is set to NIL ($) in this example.</small></td>
+</tr> <tr> <td width="300"><img
+ alt="hatch example 3"
+ src="figures/IfcFillAreaStyleHatching_Fig3.gif" height="300"
+ width="300"></td> <td align="left"
+ valign="top"><small>Fig.
+3<br>
+hatching from figure 2 with using a vector to determine the pattern
+start of the next hatch lines.<br> <br>
+The pattern start is the beginning of the first visual curve font
+pattern segment at <i>IfcCurveFont.
+CurveFont</i>.<br> <br> </small><small>The
+<i>PatternStart</i> is set to NIL ($) in this example.</small><br>
+</td> <td width="300"><img alt="hatch example 4"
+ src="figures/IfcFillAreaStyleHatching_Fig4.gif" height="300"
+ width="300"></td> <td align="left"
+ valign="top"><small>Fig.
+4<br>
+hatching from figure 3 where the pattern start is offset from the </small><small>point
+of origin at the reference hatch line. I.e. the first visible curve
+font pattern segment now does not start at the </small><small>point
+of
+origin at the reference hatch line.</small><small> </small><small></small><br>
+<small><br> </small></td> </tr> <tr>
+<td><img alt="hatch example 5"
+ src="figures/IfcFillAreaStyleHatching_Fig5.gif" height="300"
+ width="300"></td> <td align="left"
+ valign="top"><small>Fig.
+5<br>
+hatching from figure 4 where the hatch pattern is shifted against the
+underlying coordinate system</small><small>.<br> <br>
+The point that is mapped to the insertion point of the <i>IfcAnnotationFillAreaOccurrence</i>
+now has an x and y offset from the start of the reference hatch line.
+I.e. the reference hatch line now does not go through the insertion
+point of the hatching.<br> <br> <br> <br> </small></td>
+<td valign="top"><img alt="fig 6"
+ src="figures/IfcFillAreaStyleHatching_Fig6.gif" height="300"
+ width="300"></td> <td valign="top"><small>Fig.
+6<br>
+use of <i>IfcFillAreaStyleHatching</i> attributes for two </small><small><i>IfcFillAreaStyleHatching</i>'s
+within one <i>IfcFillAreaStyle</i>.<br> <br> </small><small>NOTE:
+The <i>PatternStart</i> now displaces both the reference
+hatch line from the point of origin and the start of the curve pattern.
+This can be used e.g. when more then one <i>IfcFillAreaStyleHatching</i>
+is used in an <i>IfcFillAreaStyle</i> in order to place
+rows of hatch lines with an offset from each other.</small></td>
+</tr> </tbody>
+</table><p><br>
+</p><blockquote> <font color="#0000ff"><small>
+NOTE&nbsp; Corresponding
+STEP name: fill_area_style_hatching. Please refer to ISO/IS
+10303-46:1994, p. 108 for the final definition of the formal standard.</small>
+</font></blockquote>
+<blockquote> <font #0000ff=""><small>HISTORY&nbsp;
+New entity in
+Release
+IFC2x&nbsp;Edition 2.</small><br> </font><font
+ color="#ff0000"><small>IFC2x
+Edition 3 CHANGE&nbsp; The <i>IfcFillAreaStyleHatching</i>
+has
+been changed
+by making the attributes PatternStart and PointOfReferenceHatchLine
+OPTIONAL. The attribute <i>StartOfNextHatchLine</i>
+has changed to a
+SELECT with the additional choice of <i>IfcPositiveLengthMeasure</i>.
+Upward compatibility for file based exchange is guaranteed. </small></font>
+</blockquote>
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">ENTITY</a></SPAN> IfcFillAreaStyleHatching
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">SUBTYPE</SPAN>&nbsp;<SPAN CLASS="all-express-keywords">OF</SPAN>&nbsp;(
+                        </td>
+                        <td><a href="../../ifcgeometryresource/lexical/ifcgeometricrepresentationitem.htm">IfcGeometricRepresentationItem</a>);
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>HatchLineAppearance
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="ifccurvestyle.htm">IfcCurveStyle</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>StartOfNextHatchLine
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="ifchatchlinedistanceselect.htm">IfcHatchLineDistanceSelect</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>PointOfReferenceHatchLine
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcgeometryresource/lexical/ifccartesianpoint.htm">IfcCartesianPoint</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>PatternStart
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcgeometryresource/lexical/ifccartesianpoint.htm">IfcCartesianPoint</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>HatchLineAngle
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcmeasureresource/lexical/ifcplaneanglemeasure.htm">IfcPlaneAngleMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td><SPAN CLASS="all-express-keywords">WHERE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="10%">WR21
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td>NOT(
+ 'IFCPRESENTATIONAPPEARANCERESOURCE.IFCTWODIRECTIONREPEATFACTOR' 
+ IN TYPEOF(StartOfNextHatchLine)
+);
+                              </td>
+                            </tr>
+                            <tr valign="top">
+                              <td width="10%">WR22
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td>NOT(EXISTS(PatternStart)) 
+OR (PatternStart.Dim = 2)
+;
+                              </td>
+                            </tr>
+                            <tr valign="top">
+                              <td width="10%">WR23
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td>NOT(EXISTS(PointOfReferenceHatchLine)) 
+OR (PointOfReferenceHatchLine.Dim = 2);
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="object-express-specification"><a name="attribute_description">Attribute definitions:</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">HatchLineAppearance
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              The curve style of the hatching lines. Any curve style pattern shall start at the origin of each hatch
+              line. 
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">StartOfNextHatchLine
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              A repetition factor that determines the distance between adjacent hatch lines.
+  <blockquote><small><color="#ff0000">
+IFC2x Edition 3 CHANGE&nbsp; The attribute type of <i>StartOfNextHatchLine</i> has changed to a SELECT of <i>IfcPositiveLengthMeasure</i> (new) and <i>IfcOneDirectionRepeatFactor</i>.</font></small></blockquote>
+<br/>
+              
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">PointOfReferenceHatchLine
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              
+A Cartesian point which defines the offset of the reference hatch line from the origin of the (virtual) hatching coordinate system. The origin is used for mapping the fill area style hatching onto an annotation fill area or surface. The reference hatch line would then appear with this offset from the fill style target point.<br>
+If not given the reference hatch lines goes through the origin of the (virtual) hatching coordinate system.
+  <blockquote><small><font color="#ff0000">
+IFC2x Edition 3 CHANGE&nbsp; The usage of the attribute <i>PointOfReferenceHatchLine</i> has changed to not provide the Cartesian point which is the origin for mapping, but to provide an offset to the origin for the mapping. The attribute has been made OPTIONAL.
+  </font></small></blockquote>
+
+              
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">PatternStart
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              
+A distance along the reference hatch line which is the start point for the curve style font pattern of the reference hatch line.<br>
+If not given, the start point of the curve style font pattern is at the (virtual) hatching coordinate system.
+  <blockquote><small><font color="#ff0000">
+IFC2x Edition 2 Addendum 2 CHANGE The attribute <i>PatternStart</i> has been made OPTIONAL.</font></small></blockquote>
+
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">HatchLineAngle
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              A plane angle measure determining the direction of the parallel hatching lines.
+            </td>
+          </tr>
+        </table><p CLASS="object-express-specification"><a name="constraint_description">Formal Propositions:</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td CLASS="constraint-description-name" width="20%">WR21
+            </td>
+            <td CLASS="constraint-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="constraint-description">              The subtype <i>IfcTwoDirectionRepeatFactor</i> should not be used to define the start of the next hatch line.
+
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="constraint-description-name" width="20%">WR22
+            </td>
+            <td CLASS="constraint-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="constraint-description">              The <i>IfcCartesianPoint</i>, if given as value to <i>PatternStart</i> shall have the dimensionality of 2.
+
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="constraint-description-name" width="20%">WR23
+            </td>
+            <td CLASS="constraint-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="constraint-description">              The <i>IfcCartesianPoint</i>, if given as value to <i>PointOfReferenceHatchLine</i> shall have the dimensionality of 2.
+
+            </td>
+          </tr>
+        </table><p CLASS="inheritance-heading"><a name="inheritance">Inheritance graph</a></p>
+        <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">ENTITY</SPAN> IfcFillAreaStyleHatching;
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="../../ifcgeometryresource/lexical/ifcrepresentationitem.htm">IfcRepresentationItem</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">INVERSE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>LayerAssignments
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifcpresentationorganizationresource/lexical/ifcpresentationlayerassignment.htm">IfcPresentationLayerAssignment</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> AssignedItems;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>StyledByItem
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> [0:1] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifcpresentationappearanceresource/lexical/ifcstyleditem.htm">IfcStyledItem</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> Item;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="../../ifcgeometryresource/lexical/ifcgeometricrepresentationitem.htm">IfcGeometricRepresentationItem</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcfillareastylehatching.htm">IfcFillAreaStyleHatching</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>HatchLineAppearance
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="ifccurvestyle.htm">IfcCurveStyle</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>StartOfNextHatchLine
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="ifchatchlinedistanceselect.htm">IfcHatchLineDistanceSelect</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>PointOfReferenceHatchLine
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcgeometryresource/lexical/ifccartesianpoint.htm">IfcCartesianPoint</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>PatternStart
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcgeometryresource/lexical/ifccartesianpoint.htm">IfcCartesianPoint</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>HatchLineAngle
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcmeasureresource/lexical/ifcplaneanglemeasure.htm">IfcPlaneAngleMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

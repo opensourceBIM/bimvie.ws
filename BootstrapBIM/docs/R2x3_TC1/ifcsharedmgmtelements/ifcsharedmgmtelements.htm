@@ -1,0 +1,332 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IFCSHAREDMGMTELEMENTS</title>
+<link rel="stylesheet" href="../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="img/schema_navbar_e2.gif" alt="Navigation" height="46" width="629" border="0" usemap="#schema-navbar"/><br/>
+<map name="schema-navbar">
+  <area shape="rect" coords="0,0,63,22" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="64,0,197,22" alt="Navigate"href="#interfaced_schemas">
+  <area shape="rect" coords="198,0,287,22" alt="Navigate"href="#constants">
+  <area shape="rect" coords="288,0,356,22" alt="Navigate"href="#entities">
+  <area shape="rect" coords="357,0,475,22" alt="Navigate"href="#defined_types">
+  <area shape="rect" coords="0,23,70,44" alt="Navigate"href="#select_types">
+  <area shape="rect" coords="71,23,171,44" alt="Navigate"href="#enumerations">
+  <area shape="rect" coords="172,23,231,44" alt="Navigate"href="#global_rules">
+  <area shape="rect" coords="232,23,315,44" alt="Navigate"href="#functions">
+  <area shape="rect" coords="316,23,475,44" alt="Navigate"href="#procedures">
+  <area shape="rect" coords="476,0,628,22" alt="Navigate"href="#subtype_constraints">
+</map><p CLASS="schema-heading">IFCSHAREDMGMTELEMENTS</p><p CLASS="list-content">The data model consists of the following:</p>
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td align="right" width="10">
+            </td>
+            <td align="right">7&nbsp;
+            </td>
+            <td><a href="#entities">Entities</a>
+            </td>
+          </tr>
+
+          <tr valign="top">
+            <td align="right" width="10">
+            </td>
+            <td align="right">3&nbsp;
+            </td>
+            <td><a href="#enumerations">Enumerations</a>
+            </td>
+          </tr>
+
+        </table>         
+	 <P>The <I>IfcSharedMgmtElements</I> schema defines basic concepts that are
+		common to management throughout the various stages of the building lifecycle.
+		The primary classes in the schema are all subtypes of <I>IfcControl</I> and act
+		to manage or regulate the conduct of the project in some way. This schema,
+		along with <I>IfcProcessExtension</I> and <I>IfcConstructionMgmtDomain</I>,
+		provide a set of models that can be used by applications needing to share
+		information concerning management related issues.</P> 
+	 <H2>Scope</H2> 
+	 <P>The objective of the IfcSharedMgmtElements schema is to capture
+		information that supports the ordering of work and components, the development
+		of cost schedules and the association of environmental impact information. The
+		aim is to provide support for exchange and sharing of minimal information
+		concerning the subjects in scope; the extent of the model will not support the
+		more detailed ideas found in more specialized management applications.</P> 
+	 <P>The following are within the scope of this part of the
+		specifications:</P> 
+	 <UL> 
+		<LI>Principal types of order that may be used in the project and whose
+		  details need to be captured for the project including purchase orders, change
+		  orders and work orders.</LI> 
+		<LI>Schedules of costs.</LI> 
+		<LI>Association of cost and environmental impact of information to
+		  specific objects as required.</LI> 
+	 </UL> 
+	 <P>The following are outside of the scope of this part of the
+		specifications:</P> 
+	 <UL> 
+		<LI>Transaction details that may be supported by or support electronic
+		  commerce.</LI> 
+	 </UL> 
+	 <H2>Process Usage</H2> 
+	 <H3>Project Orders</H3> 
+	 <P>All types of order contain a basic set of attributes that enable the
+		identification of the order, who it is issued by, who it is issued to and when
+		it is issued. These are the fundamental requirements of an order.</P> 
+	 <P>Three types of project order are defined:</P> 
+	 <UL> 
+		<LI>Change Order</LI> 
+		<LI>Purchase Order</LI> 
+		<LI>Work Order</LI> 
+	 </UL> 
+	 <H4>Change Order</H4> 
+	 <P>The change order provides details of when an instruction is given to
+		make a change in the project. It includes a description of the change and the
+		reasons for it occurring. It may relate various documents to the change
+		requirement. A change order will also have date/time constraints related;
+		typically including such constraints as requested start and finish time, actual
+		start and finish time (times at which the change is started and finished).
+		Change orders may also have associated cost representations of various types,
+		each representation being related through a single relationship. A work plan
+		can also be associated in which the various tasks and resources required can be
+		exposed.</P> 
+	 <H4>Purchase Order</H4> 
+	 <P>The purchase order can handle information concerning any type of
+		purchase including both component and services purchases. Individual items
+		within the purchase order are referenced from a cost representation that can
+		identify individual costs. The purchase order also captures some information
+		about logistics including shipping method (where a component is required).</P> 
+	 <H4>Work Order</H4> 
+	 <P>The work order provides a general approach to capturing information
+		concerning an instruction given to do work. Various individual types of work
+		order may be further defined in domain schema (e.g. maintenance work
+		order).</P> 
+	 <H3>Cost Schedule</H3> 
+	 <P>A cost schedule provides the means to bring together instances of
+		<I>IfcCostScheduleItem</I> as a budget, cost plan, estimate, tender, bill of
+		quantities etc.</P> 
+	 <H3>Cost Schedule Item</H3> 
+	 <P>A cost schedule item provides the means to define the individual items
+		that form the complete cost schedule.</P> 
+<p CLASS="list-heading"><a name="interfaced_schemas">Interfaced schemas (5):</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcactorresource/ifcactorresource.htm">IFCACTORRESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifcactorresource/lexical/ifcactorselect.htm">IfcActorSelect</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifccostresource/ifccostresource.htm">IFCCOSTRESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifccostresource/lexical/ifcappliedvalue.htm">IfcAppliedValue</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcdatetimeresource/ifcdatetimeresource.htm">IFCDATETIMERESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifcdatetimeresource/lexical/ifcdatetimeselect.htm">IfcDateTimeSelect</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifckernel/ifckernel.htm">IFCKERNEL</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifckernel/lexical/ifccontrol.htm">IfcControl</a>,<br/><a href="../ifckernel/lexical/ifcrelassociates.htm">IfcRelAssociates</a>,<br/><a href="../ifckernel/lexical/ifcrelassignstocontrol.htm">IfcRelAssignsToControl</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcmeasureresource/ifcmeasureresource.htm">IFCMEASURERESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifcmeasureresource/lexical/ifcidentifier.htm">IfcIdentifier</a>,<br/><a href="../ifcmeasureresource/lexical/ifclabel.htm">IfcLabel</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="list-heading"><a name="entities">Entities (7):</a></p>
+
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifccostitem.htm" target="SOURCE">IfcCostItem</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifccostschedule.htm" target="SOURCE">IfcCostSchedule</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcprojectorder.htm" target="SOURCE">IfcProjectOrder</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcprojectorderrecord.htm" target="SOURCE">IfcProjectOrderRecord</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcrelassignstoprojectorder.htm" target="SOURCE">IfcRelAssignsToProjectOrder</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcrelassociatesappliedvalue.htm" target="SOURCE">IfcRelAssociatesAppliedValue</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcrelschedulescostitems.htm" target="SOURCE">IfcRelSchedulesCostItems</a>
+            </td>
+          </tr>
+        </table><p CLASS="list-heading"><a name="enumerations">Enumerations (3):</a></p>
+
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifccostscheduletypeenum.htm" target="SOURCE">IfcCostScheduleTypeEnum</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcprojectorderrecordtypeenum.htm" target="SOURCE">IfcProjectOrderRecordTypeEnum</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcprojectordertypeenum.htm" target="SOURCE">IfcProjectOrderTypeEnum</a>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

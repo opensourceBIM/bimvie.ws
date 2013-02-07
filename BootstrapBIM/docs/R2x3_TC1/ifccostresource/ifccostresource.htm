@@ -1,0 +1,231 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IFCCOSTRESOURCE</title>
+<link rel="stylesheet" href="../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="img/schema_navbar_e2.gif" alt="Navigation" height="46" width="629" border="0" usemap="#schema-navbar"/><br/>
+<map name="schema-navbar">
+  <area shape="rect" coords="0,0,63,22" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="64,0,197,22" alt="Navigate"href="#interfaced_schemas">
+  <area shape="rect" coords="198,0,287,22" alt="Navigate"href="#constants">
+  <area shape="rect" coords="288,0,356,22" alt="Navigate"href="#entities">
+  <area shape="rect" coords="357,0,475,22" alt="Navigate"href="#defined_types">
+  <area shape="rect" coords="0,23,70,44" alt="Navigate"href="#select_types">
+  <area shape="rect" coords="71,23,171,44" alt="Navigate"href="#enumerations">
+  <area shape="rect" coords="172,23,231,44" alt="Navigate"href="#global_rules">
+  <area shape="rect" coords="232,23,315,44" alt="Navigate"href="#functions">
+  <area shape="rect" coords="316,23,475,44" alt="Navigate"href="#procedures">
+  <area shape="rect" coords="476,0,628,22" alt="Navigate"href="#subtype_constraints">
+</map><p CLASS="schema-heading">IFCCOSTRESOURCE</p><p CLASS="list-content">The data model consists of the following:</p>
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td align="right" width="10">
+            </td>
+            <td align="right">6&nbsp;
+            </td>
+            <td><a href="#entities">Entities</a>
+            </td>
+          </tr>
+
+          <tr valign="top">
+            <td align="right" width="10">
+            </td>
+            <td align="right">1&nbsp;
+            </td>
+            <td><a href="#select_types">Select types</a>
+            </td>
+          </tr>
+
+          <tr valign="top">
+            <td align="right" width="10">
+            </td>
+            <td align="right">2&nbsp;
+            </td>
+            <td><a href="#enumerations">Enumerations</a>
+            </td>
+          </tr>
+
+        </table>         
+	 <P>The <I>IfcCostResource</I> schema provides the means to identify cost
+		and environmental impact values that may be assigned to an object.</P> 
+	 <H3>Applied Value </H3> 
+	 <P>An applied value is either a cost or an environmental impact value that
+		specifies an amount or a value that has an effect on the amount that is applied
+		to an object in the units of measure applicable to the value type. An applied
+		value may have an applicable date. In the case of a cost, that can be used to
+		provide a basis on which fluctuations in price can be established or that
+		otherwise identifies when the cost value was applied. </P> 
+	 <P> Each applied value may have a unit basis which determines how a total
+		value should be determined for objects. This is relevant where values are
+		identified per unit quantity of an item. </P> 
+	 <H3>Applied Value Relationship </H3> 
+	 <P>An individual applied value may be defined according to the values of a
+		set of component values and may also be identified as a component of other
+		values. This is achieved through the assertion of an applied value relationship
+		which acts as a container for applied value components. </P> 
+	 <H3>Referencing Value Documents</H3> 
+	 <P>The origin of an applied value may be a documentary source. The
+		<I>IfcCostResource</I> schema allows identification of such a source through a
+		document reference. <I>IfcReferencesValueDocument</I> is a relationship class
+		that allows many instances of <I>IfcAppliedValue</I> to be referenced from a
+		single such document. </P> 
+<p CLASS="list-heading"><a name="interfaced_schemas">Interfaced schemas (3):</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcdatetimeresource/ifcdatetimeresource.htm">IFCDATETIMERESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifcdatetimeresource/lexical/ifcdateandtime.htm">IfcDateAndTime</a>,<br/><a href="../ifcdatetimeresource/lexical/ifcdatetimeselect.htm">IfcDateTimeSelect</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcexternalreferenceresource/ifcexternalreferenceresource.htm">IFCEXTERNALREFERENCERESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifcexternalreferenceresource/lexical/ifcdocumentselect.htm">IfcDocumentSelect</a>,<br/><a href="../ifcexternalreferenceresource/lexical/ifclibraryinformation.htm">IfcLibraryInformation</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcmeasureresource/ifcmeasureresource.htm">IFCMEASURERESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifcmeasureresource/lexical/ifcmonetaryunit.htm">IfcMonetaryUnit</a>,<br/><a href="../ifcmeasureresource/lexical/ifcmeasurewithunit.htm">IfcMeasureWithUnit</a>,<br/><a href="../ifcmeasureresource/lexical/ifcpositiveratiomeasure.htm">IfcPositiveRatioMeasure</a>,<br/><a href="../ifcmeasureresource/lexical/ifcratiomeasure.htm">IfcRatioMeasure</a>,<br/><a href="../ifcmeasureresource/lexical/ifclabel.htm">IfcLabel</a>,<br/><a href="../ifcmeasureresource/lexical/ifctext.htm">IfcText</a>,<br/><a href="../ifcmeasureresource/lexical/ifcmonetarymeasure.htm">IfcMonetaryMeasure</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="list-heading"><a name="entities">Entities (6):</a></p>
+
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcappliedvalue.htm" target="SOURCE">IfcAppliedValue</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcappliedvaluerelationship.htm" target="SOURCE">IfcAppliedValueRelationship</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifccostvalue.htm" target="SOURCE">IfcCostValue</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifccurrencyrelationship.htm" target="SOURCE">IfcCurrencyRelationship</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcenvironmentalimpactvalue.htm" target="SOURCE">IfcEnvironmentalImpactValue</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcreferencesvaluedocument.htm" target="SOURCE">IfcReferencesValueDocument</a>
+            </td>
+          </tr>
+        </table><p CLASS="list-heading"><a name="select_types">Select types (1):</a></p>
+
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcappliedvalueselect.htm" target="SOURCE">IfcAppliedValueSelect</a>
+            </td>
+          </tr>
+        </table><p CLASS="list-heading"><a name="enumerations">Enumerations (2):</a></p>
+
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcarithmeticoperatorenum.htm" target="SOURCE">IfcArithmeticOperatorEnum</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcenvironmentalimpactcategoryenum.htm" target="SOURCE">IfcEnvironmentalImpactCategoryEnum</a>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

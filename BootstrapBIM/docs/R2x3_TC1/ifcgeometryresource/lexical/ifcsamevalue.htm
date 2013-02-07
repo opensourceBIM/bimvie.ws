@@ -1,0 +1,69 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcSameValue</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/expression_navbar.gif" alt="Navigation" height="24" width="319" border="0" usemap="#expression-navbar"/><br/>
+<map name="expression-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcgeometryresource.htm">
+  <area shape="rect" coords="142,0,221,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="222,0,318,23" alt="Navigate"href="ifcsamevalue.htm#references">
+</map><p CLASS="object-heading">IfcSameValue</p>        
+  <P><U>Definition from IAI</U>: The function compares two numerical values
+    and ensures that they are the same (with an epsilon precision factor).<br>
+In the function the following questionable ad-hoc value is used:<br>
+0.000001  for the default precision (1E-6)</P>
+<BLOCKQUOTE> 
+  <P><FONT COLOR="#0000FF" SIZE="-1">HISTORY: New function in Release IFC2x Edition 2</FONT></P>
+</BLOCKQUOTE> 
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">FUNCTION</a></SPAN> IfcSameValue
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td>
+                          	(Value1,&nbsp;Value2&nbsp;:&nbsp;REAL;&nbsp;Epsilon&nbsp;:&nbsp;REAL)<br/>
+                          	:&nbsp;LOGICAL;<br/>
+                          &nbsp;&nbsp;LOCAL<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;ValidEps&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;REAL;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;DefaultEps&nbsp;&nbsp;:&nbsp;REAL&nbsp;:=&nbsp;0.000001;<br/>
+                          &nbsp;&nbsp;END_LOCAL;<br/>
+                          &nbsp;&nbsp;<br/>
+                          &nbsp;&nbsp;ValidEps&nbsp;:=&nbsp;NVL(Epsilon,&nbsp;DefaultEps);<br/>
+                          &nbsp;&nbsp;RETURN&nbsp;((Value1&nbsp;+&nbsp;ValidEps&nbsp;&#62;&nbsp;Value2)&nbsp;AND&nbsp;(Value1&nbsp;&#60;&nbsp;Value2&nbsp;+&nbsp;ValidEps));
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_FUNCTION</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

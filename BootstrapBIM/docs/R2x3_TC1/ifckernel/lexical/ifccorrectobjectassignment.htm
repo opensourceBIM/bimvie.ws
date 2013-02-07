@@ -1,0 +1,104 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcCorrectObjectAssignment</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/expression_navbar.gif" alt="Navigation" height="24" width="319" border="0" usemap="#expression-navbar"/><br/>
+<map name="expression-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifckernel.htm">
+  <area shape="rect" coords="142,0,221,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="222,0,318,23" alt="Navigate"href="ifccorrectobjectassignment.htm#references">
+</map><p CLASS="object-heading">IfcCorrectObjectAssignment</p>        This function checks, whether the correct object types are used within the IfcRelAssigns relationship
+        (or one of its subtypes).<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">FUNCTION</a></SPAN> IfcCorrectObjectAssignment
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td>
+                          &nbsp;&nbsp;(Constraint:&nbsp;IfcObjectTypeEnum;&nbsp;Objects&nbsp;:&nbsp;SET[1:?]&nbsp;OF&nbsp;IfcObjectDefinition)<br/>
+                          &nbsp;&nbsp;:&nbsp;LOGICAL&nbsp;;<br/>
+                          &nbsp;&nbsp;<br/>
+                          LOCAL<br/>
+                          &nbsp;&nbsp;Count&nbsp;:&nbsp;INTEGER&nbsp;:=&nbsp;0;<br/>
+                          END_LOCAL;<br/>
+                          <br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;NOT(EXISTS(Constraint))&nbsp;THEN&nbsp;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RETURN(TRUE);<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;END_IF;<br/>
+                          &nbsp;&nbsp;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;Constraint&nbsp;OF<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IfcObjectTypeEnum.NOTDEFINED&nbsp;:&nbsp;RETURN(TRUE);<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IfcObjectTypeEnum.PRODUCT&nbsp;:<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BEGIN<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Count&nbsp;:=&nbsp;SIZEOF(QUERY(temp&nbsp;&#60;*&nbsp;Objects&nbsp;|&nbsp;NOT('IFCKERNEL.IFCPRODUCT'&nbsp;IN&nbsp;TYPEOF(temp))));<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RETURN(Count&nbsp;=&nbsp;0);<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IfcObjectTypeEnum.PROCESS&nbsp;:<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BEGIN<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Count&nbsp;:=&nbsp;SIZEOF(QUERY(temp&nbsp;&#60;*&nbsp;Objects&nbsp;|&nbsp;NOT('IFCKERNEL.IFCPROCESS'&nbsp;IN&nbsp;TYPEOF(temp))));<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RETURN(Count&nbsp;=&nbsp;0);<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IfcObjectTypeEnum.CONTROL&nbsp;:<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BEGIN<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Count&nbsp;:=&nbsp;SIZEOF(QUERY(temp&nbsp;&#60;*&nbsp;Objects&nbsp;|&nbsp;NOT('IFCKERNEL.IFCCONTROL'&nbsp;IN&nbsp;TYPEOF(temp))));<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RETURN(Count&nbsp;=&nbsp;0);<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IfcObjectTypeEnum.RESOURCE&nbsp;:<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BEGIN<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Count&nbsp;:=&nbsp;SIZEOF(QUERY(temp&nbsp;&#60;*&nbsp;Objects&nbsp;|&nbsp;NOT('IFCKERNEL.IFCRESOURCE'&nbsp;IN&nbsp;TYPEOF(temp))));<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RETURN(Count&nbsp;=&nbsp;0);<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IfcObjectTypeEnum.ACTOR&nbsp;:<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BEGIN<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Count&nbsp;:=&nbsp;SIZEOF(QUERY(temp&nbsp;&#60;*&nbsp;Objects&nbsp;|&nbsp;NOT('IFCKERNEL.IFCACTOR'&nbsp;IN&nbsp;TYPEOF(temp))));<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RETURN(Count&nbsp;=&nbsp;0);<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IfcObjectTypeEnum.GROUP&nbsp;:<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BEGIN<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Count&nbsp;:=&nbsp;SIZEOF(QUERY(temp&nbsp;&#60;*&nbsp;Objects&nbsp;|&nbsp;NOT('IFCKERNEL.IFCGROUP'&nbsp;IN&nbsp;TYPEOF(temp))));<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RETURN(Count&nbsp;=&nbsp;0);<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IfcObjectTypeEnum.PROJECT&nbsp;:<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BEGIN<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Count&nbsp;:=&nbsp;SIZEOF(QUERY(temp&nbsp;&#60;*&nbsp;Objects&nbsp;|&nbsp;NOT('IFCKERNEL.IFCPROJECT'&nbsp;IN&nbsp;TYPEOF(temp))));<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RETURN(Count&nbsp;=&nbsp;0);<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OTHERWISE&nbsp;:&nbsp;RETURN(?);<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;END_CASE;<br/>
+                          
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_FUNCTION</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

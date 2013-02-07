@@ -1,0 +1,491 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcTrimmedCurve</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/entity_navbar.gif" alt="Navigation" height="24" width="625" border="0" usemap="#entity-navbar"/><br/>
+<map name="entity-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcgeometryresource.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0006.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,398,23" alt="Navigate"href="#attribute_description">
+  <area shape="rect" coords="399,0,442,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="443,0,526,23" alt="Navigate"href="#inheritance">
+  <area shape="rect" coords="527,0,623,23" alt="Navigate"href="ifctrimmedcurve.htm#references">
+</map><p CLASS="object-heading">IfcTrimmedCurve</p>         <p><u>Definition from ISO/CD 10303-42:1992</u>:
+A trimmed curve is a bounded curve which is created by taking a selected
+portion, between two identified points, of the associated basis curve.
+The basis curve itself is unaltered and more than one trimmed curve may
+reference the same basis curve. Trimming points for the curve may be
+identified by:</p>
+<ul> <li> parametric value </li> <li>geometric
+position </li> <li>both of the above </li>
+</ul><p>At least one of these shall be specified at each
+end of the
+curve. The <i>SenseAgreement</i> makes it possible to
+unambiguously define any segment of a closed curve such as a circle.
+The combinations of sense and ordered end points make it possible to
+define four distinct directed segments connecting two different points
+on a circle or other closed curve. For this purpose cyclic properties
+of the parameter range are assumed; for example, 370 degrees is
+equivalent to 10 degrees. </p>
+<p>The <i>IfcTrimmedCurve</i> has a parameterization
+which is inherited from the particular basis curve reference. More
+precisely the parameter s of the trimmed curve is derived from the
+parameter of the basis curve as follows: </p>
+<ul> <li>if <i>SenseAgreement</i> is TRUE: <i>s
+= t - t<sub>1</sub></i></li> <li> if <i>SenseAgreement</i>
+is FALSE: <i>s
+= t<sub>2</sub> - t</i> </li>
+</ul><p>In the above equations t<sub>1</sub> is
+the value
+given by <i>Trim1</i> or the parameter value corresponding
+to point 1 and t<sub>2</sub> is the value given by <i>Trim2</i>
+or the parameter value corresponding to point 2. The resultant <i>IfcTrimmedCurve</i>
+has a parameter ranging from 0 at the first trimming point to |t<sub>2</sub>
+- t<sub>1</sub>| at the second trimming point. </p>
+<blockquote> <p><font size="-1">NOTE In case
+of a closed curve,
+it may be necessary to increment t1 or t2 by the parametric length for
+consistency with the sense flag.</font></p>
+</blockquote><blockquote> <p><font color="#0000ff"
+ size="-1">NOTE
+Corresponding STEP entity: trimmed_curve; As a further IFC restriction,
+an <i>IfcTrimmedCurve</i> should only trim a <i>IfcLine</i>
+or <i>IfcConic</i>. Please refer to ISO/IS 10303-42:1994,
+p. 54 for the final definition of the formal standard. </font></p>
+<p><font color="#0000ff" size="-1">HISTORY
+New class in IFC Release 1.0 </font></p>
+</blockquote><p> <u>Informal Propositions</u>:</p>
+<ol> <li>Where both the parameter value and the Cartesian
+point
+exist for <i>Trim1</i> and <i>Trim2</i> they
+shall be consistent. (i.e., the <i>BasisCurve</i>
+evaluated at the parameter value shall coincide with the specified
+point).</li> <li>When a Cartesian point is specified by <i>Trim1</i>
+or by <i>Trim2</i> it shall lie on the <i>BasisCurve</i>.</li>
+<li>Except the case of a closed <i>BasisCurve</i>
+where both parameter 1 and parameter 2 exist, they shall be consistent
+with the sense flag, i.e., (sense = parameter 1 &lt; parameter 2). <font
+ color="#0000ff">Or, for every open curve where both
+parameter 1 and parameter 2 exist, they shall be consistent with the <i>SenseAgreement</i>,
+i.e., <i>SenseAgreement</i> = (parameter 1 &lt;
+parameter 2).</font></li> <li>If both parameter 1
+and parameter 2 exist, then parameter 1
+&lt;&gt; parameter 2. <font color="#0000ff">For a
+closed base curve, e.g. <i>IfcCircle</i> or <i>IfcEllipse</i>,
+this also applies to the cyclic properties, as 360' is equal to 0',
+parameter 1 = 360' and parameter 2 = 0' are treated as being equal and
+therefore violating this proposition.</font></li> <li>When
+a parameter value is specified by <i>Trim1</i>
+or <i>Trim2</i> it shall lie within the parametric range
+of the <i>BasisCurve</i>.</li>
+</ol><p><u>Additional illustration from IAI:</u></p>
+<table> <tbody> <tr> <td><img
+ src="figures/IfcTrimmedCurve_Parameterization.png"
+ alt="curve parameterization" border="0" height="500"
+ width="700"></td> </tr> <tr> <td>The
+figure above shows the four arcs (dashed blue and
+green lines with arrow showing different orientations) that can be
+defined by the same <i>BasisCurve</i> (of type <i>IfcCircle</i>)
+and the same trimming points (given by Cartesian points and parameter
+values) by using different assignments to <i>Trim1</i> and
+<i>Trim2</i> and <i>SenseAgreement</i>. <font
+ color="#0000ff"><br> <br>
+Note: Since the <i>BasisCurve</i> is closed (type <i>IfcCircle</i>),
+the exception of the informal proposition IP3 applies, i.e. the sense
+flag is not
+required to be consistent with the parameter values of <i>Trim1</i>
+and <i>Trim1</i>, so the rule (sense = parameter 1
+&lt; parameter 2) may not be fulfilled.</font></td> </tr>
+</tbody>
+</table>
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">ENTITY</a></SPAN> IfcTrimmedCurve
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">SUBTYPE</SPAN>&nbsp;<SPAN CLASS="all-express-keywords">OF</SPAN>&nbsp;(
+                        </td>
+                        <td><a href="ifcboundedcurve.htm">IfcBoundedCurve</a>);
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>BasisCurve
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="ifccurve.htm">IfcCurve</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Trim1
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> [1:2] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="ifctrimmingselect.htm">IfcTrimmingSelect</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Trim2
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> [1:2] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="ifctrimmingselect.htm">IfcTrimmingSelect</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>SenseAgreement
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td> <SPAN CLASS="all-express-keywords">BOOLEAN</SPAN>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>MasterRepresentation
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="ifctrimmingpreference.htm">IfcTrimmingPreference</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td><SPAN CLASS="all-express-keywords">WHERE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="10%">WR41
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td>(HIINDEX(Trim1) = 1) OR (TYPEOF(Trim1[1]) &lt;&gt; TYPEOF(Trim1[2]));
+                              </td>
+                            </tr>
+                            <tr valign="top">
+                              <td width="10%">WR42
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td>(HIINDEX(Trim2) = 1) OR (TYPEOF(Trim2[1]) &lt;&gt; TYPEOF(Trim2[2]));
+                              </td>
+                            </tr>
+                            <tr valign="top">
+                              <td width="10%">WR43
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td>NOT('IFCGEOMETRYRESOURCE.IFCBOUNDEDCURVE' IN TYPEOF(BasisCurve));
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="object-express-specification"><a name="attribute_description">Attribute definitions:</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">BasisCurve
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              The curve to be trimmed. For curves with multiple representations any parameter values given as Trim1
+              or Trim2 refer to the master representation of the BasisCurve only.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">Trim1
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              The first trimming point which may be specified as a Cartesian point, as a real parameter or both.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">Trim2
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              The second trimming point which may be specified as a Cartesian point, as a real parameter or both.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">SenseAgreement
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Flag to indicate whether the direction of the trimmed curve agrees with or is opposed to the direction
+              of the basis curve.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">MasterRepresentation
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Where both parameter and point are present at either end of the curve this indicates the preferred form.
+            </td>
+          </tr>
+        </table><p CLASS="object-express-specification"><a name="constraint_description">Formal Propositions:</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td CLASS="constraint-description-name" width="20%">WR41
+            </td>
+            <td CLASS="constraint-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="constraint-description">              Either a single value is specified for Trim1, or the two trimming values are of different type (point
+              and parameter)
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="constraint-description-name" width="20%">WR42
+            </td>
+            <td CLASS="constraint-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="constraint-description">              Either a single value is specified for Trim2, or the two trimming values are of different type (point
+              and parameter)
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="constraint-description-name" width="20%">WR43
+            </td>
+            <td CLASS="constraint-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="constraint-description">              Only line and conic curves should be trimmed, not other bounded curves. NOTE: This is an additional constraint
+              of IFC.
+            </td>
+          </tr>
+        </table><p CLASS="inheritance-heading"><a name="inheritance">Inheritance graph</a></p>
+        <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">ENTITY</SPAN> IfcTrimmedCurve;
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcrepresentationitem.htm">IfcRepresentationItem</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">INVERSE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>LayerAssignments
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifcpresentationorganizationresource/lexical/ifcpresentationlayerassignment.htm">IfcPresentationLayerAssignment</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> AssignedItems;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>StyledByItem
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> [0:1] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifcpresentationappearanceresource/lexical/ifcstyleditem.htm">IfcStyledItem</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> Item;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcgeometricrepresentationitem.htm">IfcGeometricRepresentationItem</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifccurve.htm">IfcCurve</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">DERIVE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Dim
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="ifcdimensioncount.htm">IfcDimensionCount</a>&nbsp;:=&nbsp;                                IfcCurveDim(SELF);
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcboundedcurve.htm">IfcBoundedCurve</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifctrimmedcurve.htm">IfcTrimmedCurve</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>BasisCurve
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="ifccurve.htm">IfcCurve</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Trim1
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> [1:2] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="ifctrimmingselect.htm">IfcTrimmingSelect</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Trim2
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> [1:2] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="ifctrimmingselect.htm">IfcTrimmingSelect</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>SenseAgreement
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td> <SPAN CLASS="all-express-keywords">BOOLEAN</SPAN>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>MasterRepresentation
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="ifctrimmingpreference.htm">IfcTrimmingPreference</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

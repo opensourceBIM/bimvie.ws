@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad Software//DTD HoTMetaL PRO 6.0::19990601::extensions to HTML 4.0//EN" "hmpro6.dtd">
+<HTML> 
+  <HEAD> 
+	 <TITLE></TITLE> 
+  </HEAD> 
+  <BODY> 
+	 <H3>Classification Usage</H3> 
+	 <H4>Classification Notation</H4> 
+	 <P>The principal applied is that any type of object can be classified. No
+		distinction is made between a product, a process, a control or a resource. The
+		means by which an object may be classified is the IfcClassificationNotation
+		class.</P> 
+	 <H4>Relating Classifications to Objects</H4> 
+	 <P>The <I>IfcRelAssociatesClassification</I> class forms part of the
+		<I>IfcKernel</I> schema. It is used to apply an
+		<I>IfcClassificationNotation</I> to an object through its relation to
+		<I>IfcObject</I> or <I>IfcPropertyDefinition</I> (from which all objects that
+		can be classified are subtyped). Each instance of
+		<I>IfcRelAssociatesClassification</I> enables the association of one
+		classification notation with one or many objects.</P> 
+	 <P ALIGN="LEFT"><IMG
+		SRC="../figures/IfcExternalReferenceResource-Fig01.gif" ALT="RelClassifies"
+		WIDTH="551" HEIGHT="211" BORDER="0"></P> 
+	 <P>It is possible for an object to have multiple classifications. This is
+		achieved through the use of multiple instances of
+		<I>IfcRelAssociatesClassification</I>, each instance pointing to a particular
+		classification notation and to the objects that are classified by this
+		notation.</P> 
+	 <P ALIGN="LEFT"><IMG
+		SRC="../figures/IfcExternalReferenceResource-Fig02.gif"
+		ALT="RelClassifiesExample" WIDTH="607" HEIGHT="267" BORDER="0"></P> 
+	 <P>Using the <I>IfcRelAssociatesClassification</I> relationship class means
+		that any object that is not classified does not have to carry empty attributes
+		for classification (as was the case with previous versions of the IFC
+		model).</P> 
+	 <H4>Facets of a Classification Notation</H4> 
+	 <TABLE WIDTH="100%"> 
+		<TR> 
+		  <TD WIDTH="275"><IMG
+			 SRC="../figures/IfcExternalReferenceResource-Fig03.gif" ALT="NotationFacet"
+			 WIDTH="255" HEIGHT="277" BORDER="0"></TD> 
+		  <TD> 
+			 <P>Many modern classification systems (such as Uniclass, BSAB etc.)
+				allow for multi-faceted classification. This is reflected in the IFC
+				Classification Model through provision of the
+				<I>IfcClassificationNotationFacet</I> class where each instance represents one
+				facet of a classification notation. The classification notation itself is then
+				made up of a list of notation facets. </P> 
+			 <P>The list is declared to be a unique list to ensure both that there
+				is order in the specification of the notation facets and to ensure that a facet
+				can only be included once in each list.</P> 
+			 <P>For instance, considering a fan in an HVAC ductline. As a
+				construction product, it has the Uniclass notation facet L7533. However, if we
+				consider a work section view with the fan as part of the low velocity air
+				conditioning system, the notation facet is JU30. Therefore, there are two
+				facets in the classification notation which becomes ('JU30', 'L7533')</P></TD> 
+		</TR> 
+	 </TABLE> 
+	 <H3>The Classification Hierarchy</H3> 
+	 <TABLE WIDTH="100%"> 
+		<TR> 
+		  <TD WIDTH="275" VALIGN="TOP" ALIGN="LEFT"><IMG
+			 SRC="../figures/IfcExternalReferenceResource-Fig04.gif"
+			 ALT="classification relationship" WIDTH="270" HEIGHT="230" BORDER="0"></TD> 
+		  <TD> 
+			 <P>Classification systems are generally declared in a hierarchical
+				structure in which a facet at an upper level in the hierarchy (parent level) is
+				a generalization of the facets at the next lower level in the hierarchy (child
+				level). The hierarchy of the classification system is defined in tables (ref.
+				CI/SfB) or sections (ref. CAWS) or some other named, coherent approach.
+				Typically, the position in the hierarchy is identified by a nomenclature or
+				label e.g. X12, and the identity at the child level is derived by adding
+				(concatenating) characters e.g. X121, X122, X123 etc.</P> 
+			 <P>Within the IFC Classification Model, the ability to identify
+				location in a classification hierarchy is termed the
+				<I>IfcClassificationItem</I> (so as not to be identified as table, section etc.
+				but as a generalisation of these terms).</P></TD> 
+		</TR> 
+	 </TABLE> 
+	 <P ALIGN="LEFT"><IMG
+		SRC="../figures/IfcExternalReferenceResource-Fig05.gif"
+		ALT="Classification Structure Example" WIDTH="683" HEIGHT="324" BORDER="0"></P>
+	 
+	 <P ALIGN="LEFT">The whole of the classification hierarchy can now be
+		exposed through the IFC Classification Model. This is achieved by providing a
+		recursive relationship on the <I>IfcClassificationItem</I> class. Therefore, an
+		instance of <I>IfcClassificationItem</I> can contain a unique list (to ensure
+		order and uniqueness of list members) of other instances of
+		<I>IfcClassificationItem</I>. The requirement of this relationship is that a
+		list cannot contain the same instance of <I>IfcClassificationItem</I> as is
+		acting as the container or any instance of <I>IfcClassificationItem</I> that
+		has already been declared as a member of any other list in the hierarchy i.e.
+		an <I>IfcClassificationItem</I> can appear only once in a hierarchy.</P> 
+	 <H4>The Classification System</H4> 
+	 <P>Each classification item belongs to an <I>IfcClassification</I>. This
+		provides the means to identify the classification system being used.
+		<I>IfcClassification</I> has attributes which define its source, edition and
+		name. </P> 
+	 <UL> 
+		<LI>Name identifies what would usually be considered to be the name of
+		  the classification system such as CI/SfB, BSAB, CAWS, Masterformat, Uniformat
+		  etc.</LI> 
+		<LI>Edition provides a version identification.</LI> 
+		<LI>Edition Date identifies the date at which the edition became
+		  operational.</LI> 
+		<LI>Source identifies the publishing reference of the classification
+		  system (e.g. for Uniclass, the source would be RIBA)</LI> 
+	 </UL> 
+	 <H4>Referencing External Classifications</H4> 
+	 <P>Recognizing that it may not be appropriate to maintain the whole detail
+		of classification within the object model, and taking the view that information
+		may well be referenced from external sources by its address to enable access
+		through mechanisms such as the World Wide Web, the IFC Classification Model
+		includes a means to reference a classification through the
+		<I>IfcClassificationReference</I> class. This is a type of IfcExternalReference
+		that has a label (which can be the reference address) and identifier.
+		Additional information may be available concerning the classification system
+		source that is being referenced.</P> 
+	 <H4>Relation Between Classification Notations</H4> 
+	 <P>Whilst several different classification notations may be applied to an
+		object, <B>there is no equivalence between the classification notations</B>.
+		<B>Therefore, the IFC Classification Model cannot be used to translate from one
+		classification notation to another</B>. The reason for this is that, generally,
+		it is possible to select from any of several different notations within a
+		classification system for an object. The actual selection is the responsibility
+		of the user according to circumstances. Therefore, there is a many to many
+		relationship between classification systems for which there is no resolution at
+		this stage of development.</P> </BODY>
+</HTML>

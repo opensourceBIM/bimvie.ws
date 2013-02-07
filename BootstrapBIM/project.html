@@ -440,7 +440,7 @@ var Project = function(main, project) {
 			roid: roid
 		};
 		div.load("download.html", function(){
-			new Download(params);
+			new Download($(this), params);
 		}).modal({keyboard:true});
 	};
 	
@@ -520,7 +520,7 @@ var Project = function(main, project) {
 		$(".project .content > div").hide();
 		$(".project .browser").show();
 		$(".project .browser").load("browser.html", function(){
-			new Browser(othis.lastRevision);
+			new Browser($(this), othis.lastRevision);
 		});
 	};
 

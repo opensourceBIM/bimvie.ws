@@ -1,0 +1,121 @@
+
+body {
+  font-family: Verdana, Arial;
+  font-size: normal;
+  margin-left: 2pt;
+  margin-top: 2pt;
+}
+
+h1 {
+  font-family: Verdana, Arial;
+  font-size: x-large;
+  text-align: left;
+  color: blue;
+}
+
+h2 {
+  font-family: Verdana, Arial;
+  font-size: large;
+  text-align: left;
+  color: blue;
+}
+
+h3 {
+  font-family: Verdana, Arial;
+  font-size: medium;
+  text-align: left;
+  font-style: italic;
+  color: blue;
+}
+
+h4 {
+  font-family: Verdana, Arial;
+  font-size: small;
+  text-align: left;
+  font-style: italic;
+  color: blue;
+}
+
+h5 {
+  font-family: Verdana, Arial;
+  font-size: small;
+  text-align: left;
+  color: blue;
+}
+
+ul {
+  font-family: Verdana, Arial;
+  font-style: normal;
+}
+
+li {
+  font-family: Verdana, Arial;
+  font-style: normal;
+  font-size: small;
+
+}
+
+li.index {
+  font-family: Verdana, Arial;
+  font-style: normal;
+  font-size: small;
+
+}
+
+ol {
+  font-family: Verdana, Arial;
+  font-style: normal;
+}
+
+dl {
+  font-family: Verdana, Arial;
+  font-style: italic;
+  font-size: small;
+  color: blue;
+}
+
+dt {
+  font-family: Verdana, Arial;
+  font-style: italic;
+  font-size: small;
+  font-style: italic;
+  color: blue;
+}
+
+dd {
+  font-size: normal;
+}
+
+a {
+  font-family: Verdana, Arial;
+  font-style: normal;
+  font-size: small;
+}
+
+td {
+  font-family: Verdana, Arial Narrow;
+}
+
+td.head {
+  font-size: small;
+  font-style: normal;
+  font-weight: bold;
+  text-decoration: none;
+  color: 0;
+}
+
+td.highlight {
+  font-size: small;
+  font-weight: bold;
+  font-style: normal;
+  text-decoration: none;
+  color: 0;
+}
+
+td.normal {
+  font-size: small;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: none;
+  color: 0;
+}

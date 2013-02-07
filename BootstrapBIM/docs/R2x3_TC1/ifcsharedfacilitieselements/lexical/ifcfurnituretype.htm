@@ -1,0 +1,824 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcFurnitureType</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/entity_navbar.gif" alt="Navigation" height="24" width="625" border="0" usemap="#entity-navbar"/><br/>
+<map name="entity-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcsharedfacilitieselements.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0001.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,398,23" alt="Navigate"href="#attribute_description">
+  <area shape="rect" coords="399,0,442,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="443,0,526,23" alt="Navigate"href="#inheritance">
+  <area shape="rect" coords="527,0,623,23" alt="Navigate"href="ifcfurnituretype.htm#references">
+</map><p CLASS="object-heading">IfcFurnitureType</p>         
+<p><u>Definition from IAI</u>: An <i>IfcFurnitureType</i>
+defines a particular type of item of furniture such as a table, desk,
+chair, filing cabinet etc.</p>
+<blockquote> <font color="#0000ff" size="-1">HISTORY
+New entity in IFC 2x2. </font></blockquote>
+<p><u>Use Definitions</u></p>
+<p>An <i>IfcFurnitureType</i> provides for all forms
+of unit furniture. Refer to description for <i>IfcSystemFurnitureElementType</i>
+for descriptions of system elements that may be provided as part of a
+kit or 'flatpack' for local assembly.</p>
+<p>Occurrences of a type of furniture are specified through <i>IfcFurnishingElement</i>.
+</p>
+<p><u><b>Property Set Use Definition</b></u>:</p>
+<p>The property sets relating to an <i>IfcFurnitureType </i>are
+defined by the <i>IfcPropertySet</i> and attached by the <i>IfcRelDefinesByType</i>
+relationship. It is accessible by the inverse <i>IsDefinedBy</i>
+relationship. The following property set definitions specific to an <i>IfcFurnitureType</i>
+are part of this IFC release:</p>
+<ul>
+  <li><a
+ href="../../psd/IfcSharedFacilitiesElements/Pset_FurnitureTypeCommon.xml">Pset_FurnitureTypeCommon</a>:
+property set for the properties common to all types of furniture, if
+available </li>
+  <li><a
+ href="../../psd/IfcSharedFacilitiesElements/Pset_FurnitureTypeChair.xml">Pset_FurnitureTypeChair</a>:
+specific property set for the properties of a chair, if available </li>
+  <li><a
+ href="../../psd/IfcSharedFacilitiesElements/Pset_FurnitureTypeDesk.xml">Pset_FurnitureTypeDesk</a>:
+specific property set for the properties of a desk, if available </li>
+  <li><a
+ href="../../psd/IfcSharedFacilitiesElements/Pset_FurnitureTypeFileCabinet.xml">Pset_FurnitureTypeFileCabinet</a>:
+specific property set for the properties of a filing cabinet, if
+available </li>
+  <li><a
+ href="../../psd/IfcSharedFacilitiesElements/Pset_FurnitureTypeTable.xml">Pset_FurnitureTypeTable</a>:
+specific property set for the properties of a table, if available </li>
+</ul>
+<p><u><b>Geometry Use Definitions</b></u></p>
+<p>Representations of the type are defined as representation maps
+(at the level of the supertype <i>IfcTypeProduct</i>).
+These are assigned at the occurrence through the <i>IfcShapeRepresentation.Item</i>
+being an <i>IfcMappedItem</i>.</p>
+<p><u><b>Name Use Definitions</b></u></p>
+<p>The name of the type of furniture is defined through the <i>IfcFurnitureType.Name</i>
+attribute (through inheritance from <i>IfcRoot</i>). The
+following items are examples of names that may be given to instances of
+<i>IfcFurnitureType</i>. It is concerned only with internal
+furniture. The list is drawn from the Uniclass classification system
+published by RIBA Enterprises Ltd and is reproduced by permission.</p>
+<table>
+  <tbody>
+    <tr>
+      <td>
+      <table>
+        <tbody>
+          <tr>
+            <td valign="top" width="210">Wardrobe</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Chests of
+drawers</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Locker</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Coat rack</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Hatstand</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Shoe tree</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Cloakroom
+unit</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Umbrella
+stand</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Clothes
+drying cabinet</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Table</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Coffee
+table</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Dining
+table</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Chair</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Easy chair</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Settee</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Stool</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Bench</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Chaise
+longue</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Chair bed</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Futon</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Sofa bed</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Bed</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Foldaway
+bed</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Bunk bed</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Divan</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Waterbed</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Headboard</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Cradle</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Cot</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Bedside
+unit</td>
+          </tr>
+          <tr>
+            <td valign="top" width="210">Dressing
+table</td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+      <td valign="top">
+      <table>
+        <tbody>
+          <tr valign="top">
+            <td valign="top" width="253">Bathroom
+cabinet</td>
+          </tr>
+          <tr>
+            <td valign="top" width="253">Towel
+dispenser</td>
+          </tr>
+          <tr>
+            <td valign="top" width="253">Sanitary
+product dispenser</td>
+          </tr>
+          <tr>
+            <td valign="top" width="253">Towel rail</td>
+          </tr>
+          <tr>
+            <td valign="top" width="253">Soap
+dispenser</td>
+          </tr>
+          <tr>
+            <td valign="top" width="253">Soap holder</td>
+          </tr>
+          <tr>
+            <td valign="top" width="253">Cupboard</td>
+          </tr>
+          <tr>
+            <td valign="top" width="253">Chest</td>
+          </tr>
+          <tr>
+            <td valign="top" width="253">Sideboard</td>
+          </tr>
+          <tr>
+            <td valign="top" width="253">Dresser</td>
+          </tr>
+          <tr>
+            <td valign="top" width="253">Filing
+cabinet</td>
+          </tr>
+          <tr>
+            <td valign="top" width="253">Map chest</td>
+          </tr>
+          <tr>
+            <td valign="top" width="253">Plan chest</td>
+          </tr>
+          <tr>
+            <td valign="top" width="253">Desk tidy</td>
+          </tr>
+          <tr>
+            <td valign="top" width="253">Carousels</td>
+          </tr>
+          <tr>
+            <td valign="top" width="253">Vertical
+carousels</td>
+          </tr>
+          <tr>
+            <td valign="top" width="253">Horizontal
+carousels</td>
+          </tr>
+          <tr>
+            <td valign="top" width="253">Trolleys</td>
+          </tr>
+          <tr>
+            <td valign="top" width="253">Waste
+paper bin</td>
+          </tr>
+          <tr>
+            <td valign="top" width="253">Ashtray</td>
+          </tr>
+          <tr>
+            <td valign="top" width="253">Refuse bag
+holder</td>
+          </tr>
+          <tr>
+            <td valign="top" width="253">Fender</td>
+          </tr>
+          <tr>
+            <td valign="top" width="253">Fire hood</td>
+          </tr>
+          <tr>
+            <td valign="top" width="253">Kitchen
+cupboard</td>
+          </tr>
+          <tr>
+            <td valign="top" width="253">Worktop</td>
+          </tr>
+          <tr>
+            <td valign="top" width="253">Bottle rack</td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+      <td valign="top">
+      <table>
+        <tbody>
+          <tr>
+            <td valign="top" width="255">Lectern</td>
+          </tr>
+          <tr>
+            <td valign="top" width="255">Pulpit</td>
+          </tr>
+          <tr>
+            <td valign="top" width="255">Choir
+screen</td>
+          </tr>
+          <tr>
+            <td valign="top" width="255">Organ</td>
+          </tr>
+          <tr>
+            <td valign="top" width="255">Font</td>
+          </tr>
+          <tr>
+            <td valign="top" width="255">Showcase</td>
+          </tr>
+          <tr>
+            <td valign="top" width="255">Notice
+board</td>
+          </tr>
+          <tr>
+            <td valign="top" width="255">Pin board</td>
+          </tr>
+          <tr>
+            <td valign="top" width="255">Writing
+board</td>
+          </tr>
+          <tr>
+            <td valign="top" width="255">Blackboard</td>
+          </tr>
+          <tr>
+            <td valign="top" width="255">Dry marker
+board</td>
+          </tr>
+          <tr>
+            <td valign="top" width="255">Poster
+display unit</td>
+          </tr>
+          <tr>
+            <td valign="top" width="255">Indoor
+poster display unit</td>
+          </tr>
+          <tr>
+            <td valign="top" width="255">Outdoor
+poster display units</td>
+          </tr>
+          <tr>
+            <td valign="top" width="255">Information
+sign</td>
+          </tr>
+          <tr>
+            <td valign="top" width="255">Nameplate</td>
+          </tr>
+          <tr>
+            <td valign="top" width="255">Plaque</td>
+          </tr>
+          <tr>
+            <td valign="top" width="255">Scoreboard</td>
+          </tr>
+          <tr>
+            <td valign="top" width="255">Consulting
+couch</td>
+          </tr>
+          <tr>
+            <td valign="top" width="255">Hospital
+bed</td>
+          </tr>
+          <tr>
+            <td valign="top" width="255">Hospital
+bedhead</td>
+          </tr>
+          <tr>
+            <td valign="top" width="255">Dissection
+table</td>
+          </tr>
+          <tr>
+            <td valign="top" width="255">Post-mortem
+table</td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+      <td valign="top">
+      <table>
+        <tbody>
+          <tr>
+            <td valign="top" width="212">Reception
+desk</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Footrest</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Armrest</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Copyholder</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Anti-bandit
+screen</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Safe</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Point of
+sale unit</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Key
+security cabinet</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Post box</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Postroom
+rack</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Acoustic
+hood</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Curtain
+pelmets</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Beanbag</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Cushion</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Planter</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Vase</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Plant</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Artificial
+plant</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Ornament</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Mirror</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Ornamental
+screen</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Mural</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Painting</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Print</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Sculpture</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Clock</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Wallhanging</td>
+          </tr>
+          <tr>
+            <td valign="top" width="212">Tapestry</td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>A similar list could also be defined for external furniture.</p>
+<p>Note that the list does not contain any items that have an
+electrical or other services connection. Generally, these are dealt
+with under a relevant building services entity e.g. <i>IfcElectricalApplianceType</i>.</p>
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">ENTITY</a></SPAN> IfcFurnitureType
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">SUBTYPE</SPAN>&nbsp;<SPAN CLASS="all-express-keywords">OF</SPAN>&nbsp;(
+                        </td>
+                        <td><a href="../../ifcproductextension/lexical/ifcfurnishingelementtype.htm">IfcFurnishingElementType</a>);
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>AssemblyPlace
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcproductextension/lexical/ifcassemblyplaceenum.htm">IfcAssemblyPlaceEnum</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="object-express-specification"><a name="attribute_description">Attribute definitions:</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">AssemblyPlace
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              A designation of where the assembly is intended to take place defined by an Enum.
+            </td>
+          </tr>
+        </table><p CLASS="inheritance-heading"><a name="inheritance">Inheritance graph</a></p>
+        <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">ENTITY</SPAN> IfcFurnitureType;
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="../../ifckernel/lexical/ifcroot.htm">IfcRoot</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>GlobalId
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcutilityresource/lexical/ifcgloballyuniqueid.htm">IfcGloballyUniqueId</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>OwnerHistory
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcutilityresource/lexical/ifcownerhistory.htm">IfcOwnerHistory</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Name
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifclabel.htm">IfcLabel</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Description
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifctext.htm">IfcText</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="../../ifckernel/lexical/ifcobjectdefinition.htm">IfcObjectDefinition</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">INVERSE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>HasAssignments
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifckernel/lexical/ifcrelassigns.htm">IfcRelAssigns</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> RelatedObjects;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>IsDecomposedBy
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifckernel/lexical/ifcreldecomposes.htm">IfcRelDecomposes</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> RelatingObject;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Decomposes
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> [0:1] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifckernel/lexical/ifcreldecomposes.htm">IfcRelDecomposes</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> RelatedObjects;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>HasAssociations
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifckernel/lexical/ifcrelassociates.htm">IfcRelAssociates</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> RelatedObjects;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="../../ifckernel/lexical/ifctypeobject.htm">IfcTypeObject</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ApplicableOccurrence
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifclabel.htm">IfcLabel</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>HasPropertySets
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <SPAN CLASS="all-express-keywords">SET</SPAN> [1:?] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifckernel/lexical/ifcpropertysetdefinition.htm">IfcPropertySetDefinition</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">INVERSE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ObjectTypeOf
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> [0:1] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifckernel/lexical/ifcreldefinesbytype.htm">IfcRelDefinesByType</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> RelatingType;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="../../ifckernel/lexical/ifctypeproduct.htm">IfcTypeProduct</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>RepresentationMaps
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <SPAN CLASS="all-express-keywords">LIST</SPAN> [1:?] <SPAN CLASS="all-express-keywords">OF</SPAN> <SPAN CLASS="all-express-keywords">UNIQUE</SPAN> <a href="../../ifcgeometryresource/lexical/ifcrepresentationmap.htm">IfcRepresentationMap</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Tag
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifclabel.htm">IfcLabel</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="../../ifcproductextension/lexical/ifcelementtype.htm">IfcElementType</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ElementType
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifclabel.htm">IfcLabel</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="../../ifcproductextension/lexical/ifcfurnishingelementtype.htm">IfcFurnishingElementType</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcfurnituretype.htm">IfcFurnitureType</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>AssemblyPlace
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcproductextension/lexical/ifcassemblyplaceenum.htm">IfcAssemblyPlaceEnum</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

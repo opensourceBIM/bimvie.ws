@@ -1,0 +1,66 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcBooleanChoose</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/expression_navbar.gif" alt="Navigation" height="24" width="319" border="0" usemap="#expression-navbar"/><br/>
+<map name="expression-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifctopologyresource.htm">
+  <area shape="rect" coords="142,0,221,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="222,0,318,23" alt="Navigate"href="ifcbooleanchoose.htm#references">
+</map><p CLASS="object-heading">IfcBooleanChoose</p>        Function Semantic Definition<br/>
+        Definition from ISO/CD 10303-42:1992: This function returns one of two choices depending on the value
+        of a Boolean input argument. The two choices are also input arguments.<br/>
+        <br/>
+        NOTE Corresponding STEP function boolean_choose. Please refer to ISO/IS 10303-42:1994, p. 158 for the
+        final definition of the formal standard.<br/>
+        <br/>
+        HISTORY New function in IFC Release 2.0.<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">FUNCTION</a></SPAN> IfcBooleanChoose
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td>
+                          (B&nbsp;:&nbsp;BOOLEAN&nbsp;;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Choice1,&nbsp;Choice2&nbsp;:&nbsp;Generic&nbsp;:&nbsp;Item)&nbsp;:&nbsp;Generic&nbsp;:&nbsp;Item;<br/>
+                          &nbsp;&nbsp;IF&nbsp;B&nbsp;THEN<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RETURN&nbsp;(Choice1);<br/>
+                          &nbsp;&nbsp;ELSE<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RETURN&nbsp;(Choice2);<br/>
+                          &nbsp;&nbsp;END_IF;
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_FUNCTION</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

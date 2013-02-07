@@ -22,8 +22,8 @@
 				</div>
 				<div class="control-group">
 					<div class="controls">
-						<label class="checkbox" for="downloadCheckoutZip">
-							<input id="downloadCheckoutZip" type="checkbox" name="zip"> Zip
+						<label class="checkbox">
+							<input type="checkbox" class="downloadCheckoutZip" name="zip"> Zip
 						</label>
 					</div>
 				</div>
@@ -46,7 +46,7 @@
     </div>
 </div>
 <script>
-function Download(data) {
+function Download(containerDiv, data) {
 	var othis = this;
 	othis.userHasCheckinRights = false;
 	othis.data = data;
@@ -72,28 +72,28 @@ function Download(data) {
 			if (serializer.oid == defaultSerializer.oid) {
 				option.attr("selected", "selected");
 			}
-			$(".downloadpopup .revisionsdownloadcheckoutselect").append(option);
+			containerDiv.find(".revisionsdownloadcheckoutselect").append(option);
 		});
 		othis.checkRevisionsCheckoutButton();
 	});
 	
 	this.checkRevisionsCheckoutButton = function(event) {
 		if (!othis.data.allowCheckouts) {
-			$(".checkoutButton").hide();
+			containerDiv.find(".checkoutButton").hide();
 			return;
 		}
-		var el = $(".downloadpopup .revisionsdownloadcheckoutselect");
+		var el = containerDiv.find(".revisionsdownloadcheckoutselect");
 		var val = el.val();
 		var text = el.find(":selected").text();
 		if ((text != "Ifc2x3" && text != "IfcXML") || !othis.userHasCheckinRights) {
-			$(".downloadpopup .checkoutButton").hide();
+			containerDiv.find(".checkoutButton").hide();
 		} else {
-			$(".downloadpopup .checkoutButton").show();
+			containerDiv.find(".checkoutButton").show();
 		}
 		if (!othis.userHasCheckinRights) {
-			$(".checkoutMessage").html("Checkout unavailable because you have no rights on the project");
+			containerDiv.find(".checkoutMessage").html("Checkout unavailable because you have no rights on the project");
 		} else {
-			$(".checkoutMessage").html("");
+			containerDiv.find(".checkoutMessage").html("");
 		}
 	};
 
@@ -101,39 +101,39 @@ function Download(data) {
 		if (topicId == othis.laid) {
 			var oldStage = othis.stage;
 			othis.stage = state.stage;
-			$(".downloadStatus").html(state.title);
+			containerDiv.find(".downloadStatus").html(state.title);
 			if (oldStage != state.stage) {
-				$(".progressBarHolder .downloadProgressBar").remove();
-				$(".progressBarHolder").append("<div class=\"downloadProgressBar progress\"><div class=\"bar\"></div></div>");
+				containerDiv.find(".progressBarHolder .downloadProgressBar").remove();
+				containerDiv.find(".progressBarHolder").append("<div class=\"downloadProgressBar progress\"><div class=\"bar\"></div></div>");
 			}
 			if (state.progress == -1) {
-				$(".downloadProgressBar").addClass("progress-striped").addClass("active");
-				$(".downloadProgressBar .bar").css("width", "100%");
+				containerDiv.find(".downloadProgressBar").addClass("progress-striped").addClass("active");
+				containerDiv.find(".downloadProgressBar .bar").css("width", "100%");
 			} else {
-				$(".downloadProgressBar").removeClass("progress-striped").removeClass("active");
-				$(".downloadProgressBar .bar").css("width", parseInt(state.progress) + "%");
+				containerDiv.find(".downloadProgressBar").removeClass("progress-striped").removeClass("active");
+				containerDiv.find(".downloadProgressBar .bar").css("width", parseInt(state.progress) + "%");
 			}
 			if (state.errors.length > 0) {
-				$(".downloadpopup .fields, .downloadpopup .checkoutMessage").show();
-				$(".downloadpopup .resultsarea").empty();
-				$(".downloadpopup .downloadProgressBar").hide();
+				containerDiv.find(".fields, .downloadpopup .checkoutMessage").show();
+				containerDiv.find(".resultsarea").empty();
+				containerDiv.find(".downloadProgressBar").hide();
 				state.errors.map(function(error){
-					$(".downloadpopup .resultsarea").append(error + "<br/>");
+					containerDiv.find(".resultsarea").append(error + "<br/>");
 				});
-				$(".downloadpopup .message").html("");
+				containerDiv.find(".message").html("");
 				Global.bimServerApi.unregister(othis.progressHandler);
 			} else if (state.state == "FINISHED") {
 				if (state.warnings.length > 0) {
 					state.warnings.map(function(warning){
-						$(".downloadpopup .resultsarea").append(warning + "<br/>");
+						containerDiv.find(".resultsarea").append(warning + "<br/>");
 					});
 				}
 				
-				$(".progressBarHolder .downloadProgressBar").remove();
+				containerDiv.find(".progressBarHolder .downloadProgressBar").remove();
 				
 				var url = Global.bimServerApi.generateRevisionDownloadUrl({
-					zip: $("#downloadCheckoutZip").attr('checked') != undefined,
-					serializerOid: $(".downloadpopup .revisionsdownloadcheckoutselect").val(),
+					zip: containerDiv.find(".downloadCheckoutZip").attr('checked') != undefined,
+					serializerOid: containerDiv.find(".revisionsdownloadcheckoutselect").val(),
 					laid: othis.laid
 				});
 				if (othis.mimeTypeOverride != null) {
@@ -143,54 +143,54 @@ function Download(data) {
 					window.location = url;
 				}
 				Global.bimServerApi.unregister(othis.progressHandler);
-				$(".downloadpopup .checkoutMessage").html("");
-				$(".downloadpopup .downloadStatus").html("Prepare complete, initiating download, click <a href=\"" + url + "\">here</a> if the download does not start automatically<br/><br/>");
-				$(".downloadpopup .fields, .downloadpopup .checkoutMessage").show();
+				containerDiv.find(".checkoutMessage").html("");
+				containerDiv.find(".downloadStatus").html("Prepare complete, initiating download, click <a href=\"" + url + "\">here</a> if the download does not start automatically<br/><br/>");
+				containerDiv.find(".fields, .downloadpopup .checkoutMessage").show();
 			}
 		}
 	};
 	
 	this.start = function(data) {
-		$(".downloadpopup .downloadStatus").html("Preparing download...");
+		containerDiv.find(".downloadStatus").html("Preparing download...");
 		
-		$(".progressBarHolder .downloadProgressBar").remove();
-		$(".progressBarHolder").append("<div class=\"downloadProgressBar progress\"><div class=\"bar\"></div></div>");
+		containerDiv.find(".progressBarHolder .downloadProgressBar").remove();
+		containerDiv.find(".progressBarHolder").append("<div class=\"downloadProgressBar progress\"><div class=\"bar\"></div></div>");
 		
-		$(".downloadpopup .fields").hide();
-		$(".downloadpopup .checkoutMessage").hide();
+		containerDiv.find(".fields").hide();
+		containerDiv.find(".checkoutMessage").hide();
 		if (data.downloadType == "query") {
 			Global.bimServerApi.call("ServiceInterface", "downloadQuery", data, function(data){
-				$(".downloadpopup .downloadStatus").html("Preparing download...");
+				containerDiv.find(".downloadStatus").html("Preparing download...");
 				othis.laid = parseInt(data);
 				Global.bimServerApi.register("NotificationInterface", "progress", othis.progressHandler);
 			}, function(){
-				$(".downloadpopup .downloadStatus").html("Error: " + textStatus);
-				$(".downloadpopup .checkoutMessage").show();
+				containerDiv.find(".downloadStatus").html("Error: " + textStatus);
+				containerDiv.find(".checkoutMessage").show();
 			});
 		} else if (data.downloadType == "checkout") {
 			Global.bimServerApi.call("ServiceInterface", "checkout", data, function(data){
-				$(".downloadpopup .downloadStatus").html("Preparing checkout...");
+				containerDiv.find(".downloadStatus").html("Preparing checkout...");
 				othis.laid = parseInt(data);
 				Global.bimServerApi.register("NotificationInterface", "progress", othis.progressHandler);
 			}, function(){
-				$(".downloadpopup .downloadStatus").html("Error: " + textStatus);
-				$(".downloadpopup .checkoutMessage").show();
+				containerDiv.find(".downloadStatus").html("Error: " + textStatus);
+				containerDiv.find(".checkoutMessage").show();
 			});
 		} else {
 			Global.bimServerApi.call("ServiceInterface", "download", data, function(data){
-				$(".downloadpopup .downloadStatus").html("Preparing download...");
+				containerDiv.find(".downloadStatus").html("Preparing download...");
 				othis.laid = parseInt(data);
 				Global.bimServerApi.register("NotificationInterface", "progress", othis.progressHandler);
 			}, function(){
-				$(".downloadpopup .downloadStatus").html("Error: " + textStatus);
-				$(".downloadpopup .checkoutMessage").show();
+				containerDiv.find(".downloadStatus").html("Error: " + textStatus);
+				containerDiv.find(".checkoutMessage").show();
 			});
 		}
 	};
 
 	this.initCheckout = function(event) {
 		event.preventDefault();
-		othis.data.serializerOid = $(".downloadpopup .revisionsdownloadcheckoutselect").val();
+		othis.data.serializerOid = containerDiv.find(".revisionsdownloadcheckoutselect").val();
 		othis.data.showOwn = true;
 		othis.data.sync = false;
 		othis.mimeTypeOverride = null;
@@ -200,7 +200,7 @@ function Download(data) {
 
 	this.initDownload = function(event) {
 		event.preventDefault();
-		othis.data.serializerOid = $(".downloadpopup .revisionsdownloadcheckoutselect").val();
+		othis.data.serializerOid = containerDiv.find(".revisionsdownloadcheckoutselect").val();
 		othis.data.showOwn = true;
 		othis.data.sync = false;
 		othis.mimeTypeOverride = null;
@@ -211,24 +211,24 @@ function Download(data) {
 		event.preventDefault();
 		othis.data.showOwn = true;
 		othis.data.sync = false;
-		othis.data.serializerOid = $(".downloadpopup .revisionsdownloadcheckoutselect").val();
+		othis.data.serializerOid = containerDiv.find(".revisionsdownloadcheckoutselect").val();
 		othis.mimeTypeOverride = "text/plain";
 		othis.start(data);
 	};
 
-	$(".downloadpopup .revisionsdownloadcheckoutselect").change(othis.checkRevisionsCheckoutButton);
-	$(".downloadpopup .downloadButton").click(othis.initDownload);
-	$(".downloadpopup .downloadTextButton").click(othis.initTextDownload);
-	$(".downloadpopup .checkoutButton").click(othis.initCheckout);
+	containerDiv.find(".revisionsdownloadcheckoutselect").change(othis.checkRevisionsCheckoutButton);
+	containerDiv.find(".downloadButton").click(othis.initDownload);
+	containerDiv.find(".downloadTextButton").click(othis.initTextDownload);
+	containerDiv.find(".checkoutButton").click(othis.initCheckout);
 
-	$("#downloadCheckoutZip").change(function(){
+	containerDiv.find(".downloadCheckoutZip").change(function(){
 		if ($(this).is(":checked")) {
-			$(".downloadpopup .downloadTextButton").button("disable");
+			containerDiv.find(".downloadTextButton").button("disable");
 		} else {
-			$(".downloadpopup .downloadTextButton").button("enable");
+			containerDiv.find(".downloadTextButton").button("enable");
 		}	
 	});
 	
-	$(".downloadpopup input[type=\"button\"]").button();
+	containerDiv.find("input[type=\"button\"]").button();
 }
 </script>

@@ -1,0 +1,82 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcFootingTypeEnum</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/type_navbar.gif" alt="Navigation" height="24" width="466" border="0" usemap="#type-navbar"/><br/>
+<map name="type-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcstructuralelementsdomain.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0001.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,367,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="368,0,464,23" alt="Navigate"href="ifcfootingtypeenum.htm#references">
+</map><p CLASS="object-heading">IfcFootingTypeEnum</p>        
+	 <P><U>Definition from
+		IAI:</U> Enumeration defining the generic footing type.</P> 
+	 <BLOCKQUOTE><FONT COLOR="#0000FF" SIZE="-1"> HISTORY New type in IFC
+		Release 2x2 </FONT></BLOCKQUOTE> 
+	 <P>ENUMERATION</P> 
+	 <UL> 
+		<LI><B>FOOTING_BEAM</B> Footing elements that are in bending and are
+		  supported clear of the ground. They will normally span between piers, piles or
+		  pile caps. They are distinguished from beams in the building superstructure
+		  since they will normally require a lower grade of finish. They are
+		  distinguished from <I>STRIP_FOOTING</I> since they are clear of the ground
+		  surface and hence require support to the lower face while the concrete is
+		  curing. </LI>
+		<LI><B>PAD_FOOTING</B> An element that transfers the load of a single
+		  column (possibly two) to the ground. </LI>
+		<LI><B>PILE_CAP</B> An element that transfers the load from a column or
+		  group of columns to a pier or pile or group of piers or piles. </LI>
+		<LI><B>STRIP_FOOTING</B> A linear element that transfers loads into the
+		  ground from either a continuous element, such as a wall, or from a series of
+		  elements, such as columns. </LI>
+		<LI><B>USERDEFINED</B> Special types of footings which meet specific
+		  local requirements. </LI>
+		<LI><B>NOTDEFINED</B> The type of footing is not defined. </LI> 
+	 </UL>
+<br/>
+        <p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">TYPE</a></SPAN> IfcFootingTypeEnum = <SPAN CLASS="all-express-keywords">ENUMERATION </SPAN><SPAN CLASS="all-express-keywords">OF</SPAN>
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td>FOOTING_BEAM,<br/>PAD_FOOTING,<br/>PILE_CAP,<br/>STRIP_FOOTING,<br/>USERDEFINED,<br/>NOTDEFINED);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_TYPE</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

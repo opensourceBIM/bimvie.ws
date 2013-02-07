@@ -1,0 +1,114 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcProjectOrderTypeEnum</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/type_navbar.gif" alt="Navigation" height="24" width="466" border="0" usemap="#type-navbar"/><br/>
+<map name="type-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcsharedmgmtelements.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0001.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,367,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="368,0,464,23" alt="Navigate"href="ifcprojectordertypeenum.htm#references">
+</map><p CLASS="object-heading">IfcProjectOrderTypeEnum</p>         
+	 <P><U>Definition from IAI:</U> An <I>IfcProjectOrderTypeEnum</I> is a list
+		of the types of project order that may be identified.</P> 
+	 <BLOCKQUOTE> <FONT COLOR="#0000FF" SIZE="-1">HISTORY: New type in IFC 2x2</FONT> </BLOCKQUOTE> 
+	 <P><U>Enumeration</U></P> 
+	 <TABLE BORDER="1"> 
+		<TR> 
+		  <TD><I>Value</I></TD> 
+		  <TD><I>Definition</I></TD> 
+		  <TD><I>Pset</I></TD> 
+		</TR> 
+		<TR> 
+		  <TD>CHANGEORDER</TD> 
+		  <TD>An instruction to make a change to a product or work being undertaken and a
+			 description of the work that is to be performed.</TD> 
+		  <TD>YES</TD> 
+		</TR> 
+		<TR> 
+		  <TD>MAINTENANCEWORKORDER</TD> 
+		  <TD>An instruction to carry out maintenance work and a description of
+			 the work that is to be performed.</TD> 
+		  <TD>YES</TD> 
+		</TR> 
+		<TR> 
+		  <TD>MOVEORDER</TD> 
+		  <TD>An instruction to move persons and artefacts and a description of
+			 the move locations, objects to be moved, etc.</TD> 
+		  <TD>YES</TD> 
+		</TR> 
+		<TR> 
+		  <TD>PURCHASEORDER</TD> 
+		  <TD>An instruction to purchase goods and/or services and a description
+			 of the goods and/or services to be purchased that is to be performed.</TD> 
+		  <TD>YES</TD> 
+		</TR> 
+		<TR> 
+		  <TD>WORKORDER</TD> 
+		  <TD>A general instruction to carry out work and a description of the
+			 work to be done. Note the difference between a work order generally and a
+			 maintenance work order.</TD> 
+		  <TD>YES</TD> 
+		</TR> 
+		<TR> 
+		  <TD>DONE</TD> 
+		  <TD>An order has been fulfilled.</TD> 
+		  <TD>NO</TD> 
+		</TR> 
+		<TR> 
+		  <TD>USERDEFINED</TD> 
+		  <TD></TD> 
+		  <TD></TD> 
+		</TR> 
+		<TR> 
+		  <TD>NOTDEFINED</TD> 
+		  <TD></TD> 
+		  <TD></TD> 
+		</TR> 
+	 </TABLE> 
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">TYPE</a></SPAN> IfcProjectOrderTypeEnum = <SPAN CLASS="all-express-keywords">ENUMERATION </SPAN><SPAN CLASS="all-express-keywords">OF</SPAN>
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td>CHANGEORDER,<br/>MAINTENANCEWORKORDER,<br/>MOVEORDER,<br/>PURCHASEORDER,<br/>WORKORDER,<br/>USERDEFINED,<br/>NOTDEFINED);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_TYPE</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

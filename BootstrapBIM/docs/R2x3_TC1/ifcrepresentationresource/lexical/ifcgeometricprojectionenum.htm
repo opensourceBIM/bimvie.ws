@@ -1,0 +1,105 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcGeometricProjectionEnum</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/type_navbar.gif" alt="Navigation" height="24" width="466" border="0" usemap="#type-navbar"/><br/>
+<map name="type-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcrepresentationresource.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0001.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,367,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="368,0,464,23" alt="Navigate"href="ifcgeometricprojectionenum.htm#references">
+</map><p CLASS="object-heading">IfcGeometricProjectionEnum</p>        
+<p><u>Definition
+from IAI</u>: The <i>IfcGeometricProjectionEnum</i>
+defines the various representation types that can be semantically
+distinguished. Often different levels of detail of the shape
+representation are controlled by the representation type.<br>
+</p>
+<ul>
+  <li><b>GRAPH_VIEW</b>:
+Geometric display representation that shows an abstract, often 1D
+element representation, e.g. representing a wall by its axis line.</li>
+  <li><b>SKETCH_VIEW</b>:
+Geometric display representation that shows an abstract, often 2D
+element representation, e.g. representing a wall by its two foot print
+edges, surpressing any inner layer representation.</li>
+  <li><b>MODEL_VIEW</b>:
+Geometric display representation that shows a full 3D element
+representation, e.g. representing a wall by its volumetric body.</li>
+  <li><b>PLAN_VIEW</b>:
+Geometric display representation that shows a full 2D element
+representation, the level of detail often depends on the target scale,
+e.g. representing a wall by its two foot print edges and the edges of
+all inner layers. The projection is shown in ground view as seen from
+above.</li>
+  <li><b>REFLECTED_PLAN_VIEW</b>:
+Geometric display representation that shows a full 2D element
+representation, the level of detail often depends on the target scale,
+e.g. representing a wall by its two foot print edges and the edges of
+all inner layers. The projection is shown in ground view as seen from
+below.</li>
+  <li><b>SECTION_VIEW</b>:
+Geometric display representation that shows a full 2D element
+representation, the level of detail often depends on the target scale,
+e.g. representing a wall by its two inner/outer edges and the edges of
+all inner layers, if the element is cut by the section line.</li>
+  <li><b>ELEVATION_VIEW</b>:
+Geometric display representation that shows a full 2D element
+representation, the level of detail often depends on the target scale,
+e.g. representing a wall by its bounding edges if the element is within
+an elevation view.</li>
+  <li><b>USERDEFINED</b>:
+A user defined specification is given by the value of the <i>UserDefinedTargetView</i>
+attribute.</li>
+  <li><b>NOTDEFINED</b>:
+No specification given.</li>
+</ul>
+<blockquote><font
+ color="#0000ff" size="-1">HISTORY: New Type in
+Release IFC 2x Edition 2.</font> </blockquote>
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">TYPE</a></SPAN> IfcGeometricProjectionEnum = <SPAN CLASS="all-express-keywords">ENUMERATION </SPAN><SPAN CLASS="all-express-keywords">OF</SPAN>
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td>GRAPH_VIEW,<br/>SKETCH_VIEW,<br/>MODEL_VIEW,<br/>PLAN_VIEW,<br/>REFLECTED_PLAN_VIEW,<br/>SECTION_VIEW,<br/>ELEVATION_VIEW,<br/>USERDEFINED,<br/>NOTDEFINED);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_TYPE</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

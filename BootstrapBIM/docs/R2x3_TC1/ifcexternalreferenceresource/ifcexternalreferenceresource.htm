@@ -1,0 +1,426 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IFCEXTERNALREFERENCERESOURCE</title>
+<link rel="stylesheet" href="../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="img/schema_navbar_e2.gif" alt="Navigation" height="46" width="629" border="0" usemap="#schema-navbar"/><br/>
+<map name="schema-navbar">
+  <area shape="rect" coords="0,0,63,22" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="64,0,197,22" alt="Navigate"href="#interfaced_schemas">
+  <area shape="rect" coords="198,0,287,22" alt="Navigate"href="#constants">
+  <area shape="rect" coords="288,0,356,22" alt="Navigate"href="#entities">
+  <area shape="rect" coords="357,0,475,22" alt="Navigate"href="#defined_types">
+  <area shape="rect" coords="0,23,70,44" alt="Navigate"href="#select_types">
+  <area shape="rect" coords="71,23,171,44" alt="Navigate"href="#enumerations">
+  <area shape="rect" coords="172,23,231,44" alt="Navigate"href="#global_rules">
+  <area shape="rect" coords="232,23,315,44" alt="Navigate"href="#functions">
+  <area shape="rect" coords="316,23,475,44" alt="Navigate"href="#procedures">
+  <area shape="rect" coords="476,0,628,22" alt="Navigate"href="#subtype_constraints">
+</map><p CLASS="schema-heading">IFCEXTERNALREFERENCERESOURCE</p><p CLASS="list-content">The data model consists of the following:</p>
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td align="right" width="10">
+            </td>
+            <td align="right">13&nbsp;
+            </td>
+            <td><a href="#entities">Entities</a>
+            </td>
+          </tr>
+
+          <tr valign="top">
+            <td align="right" width="10">
+            </td>
+            <td align="right">3&nbsp;
+            </td>
+            <td><a href="#select_types">Select types</a>
+            </td>
+          </tr>
+
+          <tr valign="top">
+            <td align="right" width="10">
+            </td>
+            <td align="right">2&nbsp;
+            </td>
+            <td><a href="#enumerations">Enumerations</a>
+            </td>
+          </tr>
+
+        </table>        
+	 <P>The IfcExternalReferenceResource supports the reference to external
+		sources of information. Currently three sources of external information are
+		handled:</P> 
+	 <UL> 
+		<LI>Classifications</LI> 
+		<LI>Documents</LI> 
+		<LI>Libraries</LI> 
+	 </UL> 
+	 <P>The following overview is given for those concepts separately.</P> 
+	 <H2>Classification</H2> 
+	 <H3>Introduction</H3> 
+	 <P>The Classification model in IFC has developed progressively from its
+		introduction within version 1.0 of the specification. Initially based on work
+		undertaken for the ISO 10303 part 106 (Building Construction Core Model) in
+		conjunction with ISO Technical Committee 59, it has been extensively
+		redeveloped in conjunction with classification experts for use by the IFC 2x
+		specifications.</P> 
+	 <P>The Classification model in IFC recognizes that there are many different
+		classification systems in use throughout the AEC/FM industry and that their use
+		differs according to geographical location, industry discipline and other
+		factors. For a generic model such as IFC, it is necessary to allow for the
+		adoption of any rational classification system whether it be based on elements,
+		work sections or any other classifiable division.</P> 
+	 <P>The Classification model in IFC is able to represent classifications
+		according to the most advanced current concepts from work in ISO, ICIS
+		(International Construction Information Society) and EPIC (European Product
+		Information Coding) as well as more traditional classifications such as those
+		in the various SfB forms used internationally, CAWS, Masterformat etc.</P> 
+	 <H3>Scope</H3> 
+	 <P>The Classification model in IFC forms part of the
+		<I>IfcExternalReferenceResource</I> schema and specifies the use of the
+		independent resources necessary for the scope and information requirements for
+		the exchange and sharing of classification information between application
+		systems. Such information may be used at all stages of the life-cycle of a
+		building</P> 
+	 <P>The following are within the scope of this part of the
+		specifications:</P> 
+	 <UL> 
+		<LI>The provision of one or more classification notations to an
+		  object.</LI> 
+		<LI>The inclusion of one or more facets to a classification
+		  notation.</LI> 
+		<LI>Referencing of facets of a classification notation from a described
+		  source (classification item or classification table)</LI> 
+		<LI>Exposure of the hierarchy of a classification structure.</LI> 
+		<LI>Identification of the source of the classification.</LI> 
+		<LI>The designation of a classification in terms of its source, edition
+		  and name. </LI> 
+		<LI>The provision of a means of semantically identifying the meaning of a
+		  classification notation.</LI> 
+		<LI>Referencing a classification held on an external source.</LI> 
+	 </UL> 
+	 <P>The following are outside of the scope of this part of the
+		specifications:</P> 
+	 <UL> 
+		<LI>The ability to translate from one classification notation to
+		  another.</LI> 
+	 </UL> 
+	 <TABLE CELLPADDING="2" CELLSPACING="2"> 
+		<TR> 
+		  <TD WIDTH="41"><A HREF="lexical/text/ClassificationUsage.htm"
+			 TARGET="SOURCE"><IMG SRC="lexical/text/img/go.gif" ALT="go" WIDTH="38" HEIGHT="20"
+			 BORDER="0"></A></TD> 
+		  <TD BGCOLOR="#C8C8C8">see attached document for more on classification usage</TD> 
+		</TR> 
+	 </TABLE> 
+ <BR><HR SIZE="4" WIDTH="80%" ALIGN="CENTER" COLOR="#0000FF"> 
+	 <H2>Documents</H2> 
+	 <P>The IFC Documents Model enables reference to be made to documents stored
+		externally to a populated IFC model or for information about documents to be
+		stored within the model. </P> 
+	 <H3>Scope</H3> 
+	 <P>The scope of the IFC Documents Model is:</P> 
+	 <UL> 
+		<LI> to manage reference to documents</LI> 
+		<LI>to manage information about documents</LI> 
+		<LI>to be equally applicable to documents that are paper based or stored
+		  electronically</LI> 
+	 </UL> 
+	 <P>The IFC Documents Model is not designed to be a complete document model
+		and does not overlap in intent or content with such models. </P> 
+	 <P>For details about such models, attention is drawn to the Document Object
+		Model (DOM) issued by the World Wide Web Consortium which can be obtained from
+		their web site at http://www.w3c.org.</P> 
+	 <H4>Referencing External Documents</H4> 
+	 <P>The IFC Documents Model considers that information may well be
+		referenced from external sources. Reference a document is by its location
+		(address) to enable access through mechanisms such as the World Wide Web. This
+		is done through the IfcDocumentReference class. This is a type of
+		IfcExternalReference that has a label (which can be the reference address) and
+		identifier. Additionally, a name attribute provides the document with a human
+		readable extension or qualifier to the location. </P> 
+	 <P>Optionally, as well as the document reference itself, information
+		concerning the document can also be stored as an attribute of the document
+		reference. </P> 
+	 <H4>Document Information</H4> 
+	 <P>Information about a document (sometimes referred to as metadata) can be
+		held using the <I>IfcDocumentInformation</I> class. This identifies and names
+		the document, names the document owner and, optionally, can include a
+		description of the document. Additionally, a revision identifier for the
+		document may also be included.</P> 
+	 <P>Document information can also include creation and revision times and
+		the duration of its validity by reference to 'valid from' and 'valid to'
+		attributes.</P> 
+	 <P>For a document that is stored electronically, the
+		<I>IfcElectronicDocumentFormat</I> class enables information about the format
+		to be recorded. This includes the file extension used and information about the
+		content using the MIME standard.</P> 
+	 <H4>Document Information Relationships</H4> 
+	 <P>Documents frequently hold references to information held in other
+		documents e.g. documents referencing standards that are also documents. A
+		significant tree structure of document information referencing could be built
+		up in this way. Such relationships between document information can be captured
+		through the <I>IfcDocumentInformationRelationship</I> class which manages both
+		relating and related document information and inversely captures the document
+		information carrying the pointer and the document information to which pointers
+		refer.</P><HR SIZE="4" WIDTH="80%" ALIGN="CENTER" COLOR="#0000FF"> 
+	 <H2>Library References</H2> 
+	 <P>The ability to reference product information stored in external data
+		libraries was introduced in IFC Release 2.0. In IFC 2x, the model has been
+		further developed based on review and pilot testing of the model. This has
+		resulted in moving the IFC Libraries Model from a being a subtype of
+		IfcProperty to being a resource in its own right within the
+		<I>IfcExternalReferenceResource</I> schema.</P> 
+	 <P>The rationale of the IFC Libraries Model is that much of the information
+		that will be used to populate a model exists in external data sources. While
+		this can be brought into the model through objects and property sets, it may
+		well be best to simply keep a reference to the location from where it can be
+		obtained and leave it there. This has the potential advantage that, when
+		required, the information from the library will be up to date having been
+		maintained by the library provider. This may not be the case if the information
+		is used to populate the model immediately.</P> 
+	 <P>It also has the advantage that the volume of information within the
+		model is kept to a minimum. For file exchange, this can be used effectively to
+		delegate the actual acquisition of information to populate the model to the
+		most appropriate source (providing they have access to the library referenced)
+		rather than the first user having to acquire the information.</P> 
+	 <H4>Scope</H4> 
+	 <P>The scope of the IFC Libraries Model is to be able to reference
+		information stored in external data libraries.</P> 
+	 <P>The following are out of scope of the IFC Libraries Model:</P> 
+	 <UL> 
+		<LI>the format in which data are stored within the external data
+		  source</LI> 
+		<LI>the format in which data may be retrieved and transported from the
+		  external data source to populate an IFC model.</LI> 
+		<LI>the means by which transported information populates an IFC
+		  model.</LI> 
+	 </UL> 
+	 <H4>Assumption</H4> 
+	 <P>It is assumed that, most frequently, information will populate property
+		sets within an IFC model and that many of these property sets will be defined
+		outside of the formal development mechanisms of the IAI.</P> 
+	 <P>Attention is drawn to the IfcPropertyResourceSchema and particularly to
+		the IfcExtensionPropertySet class which has an optional LibraryReference
+		attribute.</P> 
+	 <H4>Library Referencing</H4> 
+	 <P>As well as the IfcLibraryReference which contains a fully qualified
+		location, reference and further qualification identifier (inherited from the
+		IfcExternalReferenceResource class), the IfcLibraryInformation class specifies
+		further detail about the library from which the information may be obtained.
+		This includes the name of the library and optionally, its publisher, version
+		number and version date.</P>
+<br/>
+        <p CLASS="list-heading"><a name="interfaced_schemas">Interfaced schemas (3):</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcactorresource/ifcactorresource.htm">IFCACTORRESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifcactorresource/lexical/ifcorganization.htm">IfcOrganization</a>,<br/><a href="../ifcactorresource/lexical/ifcactorselect.htm">IfcActorSelect</a>,<br/><a href="../ifcactorresource/lexical/ifcpostaladdress.htm">IfcPostalAddress</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcdatetimeresource/ifcdatetimeresource.htm">IFCDATETIMERESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifcdatetimeresource/lexical/ifccalendardate.htm">IfcCalendarDate</a>,<br/><a href="../ifcdatetimeresource/lexical/ifcdateandtime.htm">IfcDateAndTime</a>,<br/><a href="../ifcdatetimeresource/lexical/ifclocaltime.htm">IfcLocalTime</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">REFERENCE</SPAN> <SPAN CLASS="all-express-keywords">FROM</SPAN> <a href="../ifcmeasureresource/ifcmeasureresource.htm">IFCMEASURERESOURCE</a>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="../ifcmeasureresource/lexical/ifclabel.htm">IfcLabel</a>,<br/><a href="../ifcmeasureresource/lexical/ifcidentifier.htm">IfcIdentifier</a>,<br/><a href="../ifcmeasureresource/lexical/ifctext.htm">IfcText</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="list-heading"><a name="entities">Entities (13):</a></p>
+
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcclassification.htm" target="SOURCE">IfcClassification</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcclassificationitem.htm" target="SOURCE">IfcClassificationItem</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcclassificationitemrelationship.htm" target="SOURCE">IfcClassificationItemRelationship</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcclassificationnotation.htm" target="SOURCE">IfcClassificationNotation</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcclassificationnotationfacet.htm" target="SOURCE">IfcClassificationNotationFacet</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcclassificationreference.htm" target="SOURCE">IfcClassificationReference</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcdocumentelectronicformat.htm" target="SOURCE">IfcDocumentElectronicFormat</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcdocumentinformation.htm" target="SOURCE">IfcDocumentInformation</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcdocumentinformationrelationship.htm" target="SOURCE">IfcDocumentInformationRelationship</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcdocumentreference.htm" target="SOURCE">IfcDocumentReference</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcexternalreference.htm" target="SOURCE">IfcExternalReference</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifclibraryinformation.htm" target="SOURCE">IfcLibraryInformation</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifclibraryreference.htm" target="SOURCE">IfcLibraryReference</a>
+            </td>
+          </tr>
+        </table><p CLASS="list-heading"><a name="select_types">Select types (3):</a></p>
+
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0002.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 2"/></a>
+            </td>
+            <td><a href="lexical/ifcclassificationnotationselect.htm" target="SOURCE">IfcClassificationNotationSelect</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcdocumentselect.htm" target="SOURCE">IfcDocumentSelect</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifclibraryselect.htm" target="SOURCE">IfcLibrarySelect</a>
+            </td>
+          </tr>
+        </table><p CLASS="list-heading"><a name="enumerations">Enumerations (2):</a></p>
+
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcdocumentconfidentialityenum.htm" target="SOURCE">IfcDocumentConfidentialityEnum</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0003.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 3"/></a>
+            </td>
+            <td><a href="lexical/ifcdocumentstatusenum.htm" target="SOURCE">IfcDocumentStatusEnum</a>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

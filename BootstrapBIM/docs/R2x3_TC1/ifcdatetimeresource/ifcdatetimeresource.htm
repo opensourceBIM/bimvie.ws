@@ -1,0 +1,204 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IFCDATETIMERESOURCE</title>
+<link rel="stylesheet" href="../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="img/schema_navbar_e2.gif" alt="Navigation" height="46" width="629" border="0" usemap="#schema-navbar"/><br/>
+<map name="schema-navbar">
+  <area shape="rect" coords="0,0,63,22" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="64,0,197,22" alt="Navigate"href="#interfaced_schemas">
+  <area shape="rect" coords="198,0,287,22" alt="Navigate"href="#constants">
+  <area shape="rect" coords="288,0,356,22" alt="Navigate"href="#entities">
+  <area shape="rect" coords="357,0,475,22" alt="Navigate"href="#defined_types">
+  <area shape="rect" coords="0,23,70,44" alt="Navigate"href="#select_types">
+  <area shape="rect" coords="71,23,171,44" alt="Navigate"href="#enumerations">
+  <area shape="rect" coords="172,23,231,44" alt="Navigate"href="#global_rules">
+  <area shape="rect" coords="232,23,315,44" alt="Navigate"href="#functions">
+  <area shape="rect" coords="316,23,475,44" alt="Navigate"href="#procedures">
+  <area shape="rect" coords="476,0,628,22" alt="Navigate"href="#subtype_constraints">
+</map><p CLASS="schema-heading">IFCDATETIMERESOURCE</p><p CLASS="list-content">The data model consists of the following:</p>
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td align="right" width="10">
+            </td>
+            <td align="right">4&nbsp;
+            </td>
+            <td><a href="#entities">Entities</a>
+            </td>
+          </tr>
+
+          <tr valign="top">
+            <td align="right" width="10">
+            </td>
+            <td align="right">7&nbsp;
+            </td>
+            <td><a href="#defined_types">Defined types</a>
+            </td>
+          </tr>
+
+          <tr valign="top">
+            <td align="right" width="10">
+            </td>
+            <td align="right">1&nbsp;
+            </td>
+            <td><a href="#select_types">Select types</a>
+            </td>
+          </tr>
+
+          <tr valign="top">
+            <td align="right" width="10">
+            </td>
+            <td align="right">1&nbsp;
+            </td>
+            <td><a href="#enumerations">Enumerations</a>
+            </td>
+          </tr>
+
+          <tr valign="top">
+            <td align="right" width="10">
+            </td>
+            <td align="right">3&nbsp;
+            </td>
+            <td><a href="#functions">Functions</a>
+            </td>
+          </tr>
+
+        </table>        
+
+	 <P>The <I>IfcDateTimeResource</I>
+		schema defines dates and times that may be applied. The date and times include
+		specifying a calendar date, a local time with possible daylight saving offset
+		compared to solar time, the local time offset to coordinated universal time,
+		and complete specification of combined date and time. <BR><BR><I>IfcDateTimeResource</I>
+		schema is defined following an adaptation of date_time schema contained in the
+		ISO/CD 10303-41:1992, Industrial Automation Systems and Integration: Product
+		Data Representation and Exchange Part 41: Integrated generic resources:
+		Fundamentals of product description and support. For more information on the
+		definitions as defined in the formal ISO standard please refer to: ISO/IS
+		10303-41:1994. The formal standard can be obtained through the local publishers
+		of standards in each individual country. The definitions are also based on ISO
+		8601:1988/2000 Data elements and interchange formats - Information interchange
+		- Representation of dates and times, which among other things define Gregorian
+		calendar. <BR><BR> Amendments and extensions to the schema have been defined to
+		meet the requirements of IAI defined business processes in AEC/FM design,
+		construction and facilities management operations. <BR> </P>
+
+<BLOCKQUOTE> <FONT SIZE="-1" COLOR="#0000FF">HISTORY This schema was introduced in IFC R2.0. Its entities were formerly
+part of <I>IfcPropertyResource</I>.
+</BLOCKQUOTE>
+<br/>
+        <br/>
+        <br/>
+        <br/>
+        <p CLASS="list-heading"><a name="entities">Entities (4):</a></p>
+
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifccalendardate.htm" target="SOURCE">IfcCalendarDate</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifccoordinateduniversaltimeoffset.htm" target="SOURCE">IfcCoordinatedUniversalTimeOffset</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcdateandtime.htm" target="SOURCE">IfcDateAndTime</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifclocaltime.htm" target="SOURCE">IfcLocalTime</a>
+            </td>
+          </tr>
+        </table><p CLASS="list-heading"><a name="defined_types">Defined types (7):</a></p>
+
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcdayinmonthnumber.htm" target="SOURCE">IfcDayInMonthNumber</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcdaylightsavinghour.htm" target="SOURCE">IfcDaylightSavingHour</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifchourinday.htm" target="SOURCE">IfcHourInDay</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcminuteinhour.htm" target="SOURCE">IfcMinuteInHour</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcmonthinyearnumber.htm" target="SOURCE">IfcMonthInYearNumber</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcsecondinminute.htm" target="SOURCE">IfcSecondInMinute</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcyearnumber.htm" target="SOURCE">IfcYearNumber</a>
+            </td>
+          </tr>
+        </table><p CLASS="list-heading"><a name="select_types">Select types (1):</a></p>
+
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcdatetimeselect.htm" target="SOURCE">IfcDateTimeSelect</a>
+            </td>
+          </tr>
+        </table><p CLASS="list-heading"><a name="enumerations">Enumerations (1):</a></p>
+
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="middle">
+            <td width="24"><a href="diagrams/diagram_0001.htm"><img src="../img/layout_icon.gif" border="0" alt="Go to Diagram 1"/></a>
+            </td>
+            <td><a href="lexical/ifcaheadorbehind.htm" target="SOURCE">IfcAheadOrBehind</a>
+            </td>
+          </tr>
+        </table><p CLASS="list-heading"><a name="functions">Functions (3):</a></p>
+
+        <table CLASS="list-content" cellspacing="0" cellpadding="0">
+          <tr valign="middle">
+            <td><a href="lexical/ifcleapyear.htm" target="SOURCE">IfcLeapYear</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td><a href="lexical/ifcvalidcalendardate.htm" target="SOURCE">IfcValidCalendarDate</a>
+            </td>
+          </tr>
+          <tr valign="middle">
+            <td><a href="lexical/ifcvalidtime.htm" target="SOURCE">IfcValidTime</a>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

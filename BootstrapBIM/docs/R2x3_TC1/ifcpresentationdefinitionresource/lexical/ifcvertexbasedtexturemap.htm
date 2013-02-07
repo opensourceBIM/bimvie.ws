@@ -1,0 +1,215 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcVertexBasedTextureMap</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/entity_navbar.gif" alt="Navigation" height="24" width="625" border="0" usemap="#entity-navbar"/><br/>
+<map name="entity-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcpresentationdefinitionresource.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0004.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,398,23" alt="Navigate"href="#attribute_description">
+  <area shape="rect" coords="399,0,442,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="443,0,526,23" alt="Navigate"href="#inheritance">
+  <area shape="rect" coords="527,0,623,23" alt="Navigate"href="ifcvertexbasedtexturemap.htm#references">
+</map><p CLASS="object-heading">IfcVertexBasedTextureMap</p>        
+<p><u>Definition
+from IAI: </u> An <i>IfcVertexBasedTextureMap</i>
+provides the mapping of the 2-dimensional texture coordinates (S, T) to
+the vertices of a single surface onto which it is mapped.
+For each vertex coordinates, provided by <i>IfcCartesianPoin</i>,
+a set of 2 (S, T) texture coordinates are given.</p>
+<p>The <i>IfcVertexBasedTextureMap</i>
+provides two corresponding lists:</p>
+<ol>
+  <li>a list of&nbsp;<i>TexturePoints</i>, given
+by min. of 3 <i>IfcCartesianPoint</i>'s.</li>
+  <li>a list of&nbsp;<i>TextureVertices</i>,
+given by min. of 3 <i>IfcTextureVertex</i>'s.</li>
+</ol>
+These corresponding
+lists are:<br>
+<blockquote><tt>TextureVertices</tt><tt> --
+LIST
+[3:?] --o <b>IfcTextureVertex</b>
+&nbsp;-- LIST [2:2] --o <b>IfcParameterValue<br>
+  </b></tt><tt>TexturePoints
+&nbsp; -- LIST [3:?] --o <b>IfcCartesianPoint</b>
+-- LIST [3:3] --o <b>IfcLengthMeasure</b><br>
+  </tt><tt><b></b></tt></blockquote>
+Each texture vertex (given as S, T coordinates of 2
+dimension) corresponds to the geometric coordinates (given as X, Y, and
+Z coordinates of 3 dimensions) of the Cartesian point, All Cartesian
+points within the list of shall lie within a plane.
+<blockquote><small>NOTE The application needs to
+ensure that
+the number of vertex points are
+identical with the number of texture vertex coordinates and that both
+lists correlate.</small></blockquote>
+<blockquote> <small><font color="#0000ff">HISTORY&nbsp;
+New class
+in IFC
+Release 2x Edition 2. </font><br>
+  <font color="#ff0000">IFC2x
+Edition 3 CHANGE&nbsp; The <i>IfcVertexBasedTextureMap</i>
+has changed by deleting the attribute <i>VertexBasedGeometries</i>.
+The attribute <i>TexturePoints</i> has been added.</font></small><br>
+</blockquote>
+<p><u>Informal
+propositions</u>:</p>
+<ol>
+  <li>The list of <i>TextureVertices</i>
+shall correspond to the list of <i>TexturePoints</i>.</li>
+  <li>All Cartesian points of the list of <i>TexturePoints
+    </i>shall lie in one plane</li>
+  <li>The references points
+shall be part of the vertex based
+geometry to which the annotation surface&nbsp;with textures is
+assigned.</li>
+</ol>
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">ENTITY</a></SPAN> IfcVertexBasedTextureMap;
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>TextureVertices
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">LIST</SPAN> [3:?] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="ifctexturevertex.htm">IfcTextureVertex</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>TexturePoints
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">LIST</SPAN> [3:?] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifcgeometryresource/lexical/ifccartesianpoint.htm">IfcCartesianPoint</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="object-express-specification"><a name="attribute_description">Attribute definitions:</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">TextureVertices
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              List of texture vertex coordinates, each texture vertex refers to the Cartesian point within the polyloop
+              (corresponding lists). The first coordinate[1] is the S, the second coordinate[2] is the T parameter
+              value.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">TexturePoints
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Reference to a list of polyloop's defining a face bound of a face within a vertex based geometry.
+            </td>
+          </tr>
+        </table><p CLASS="inheritance-heading"><a name="inheritance">Inheritance graph</a></p>
+        <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">ENTITY</SPAN> IfcVertexBasedTextureMap;
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcvertexbasedtexturemap.htm">IfcVertexBasedTextureMap</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>TextureVertices
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">LIST</SPAN> [3:?] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="ifctexturevertex.htm">IfcTextureVertex</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>TexturePoints
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">LIST</SPAN> [3:?] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifcgeometryresource/lexical/ifccartesianpoint.htm">IfcCartesianPoint</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

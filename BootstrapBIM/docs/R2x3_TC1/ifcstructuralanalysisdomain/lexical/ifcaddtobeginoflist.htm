@@ -1,0 +1,76 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcAddToBeginOfList</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/expression_navbar.gif" alt="Navigation" height="24" width="319" border="0" usemap="#expression-navbar"/><br/>
+<map name="expression-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcstructuralanalysisdomain.htm">
+  <area shape="rect" coords="142,0,221,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="222,0,318,23" alt="Navigate"href="ifcaddtobeginoflist.htm#references">
+</map><p CLASS="object-heading">IfcAddToBeginOfList</p>        
+<p><u>Definition from IAI</u>: Generic function that adds a scalar value at the beginning of a LIST of values.
+</p>
+<blockquote><font color="#0000FF"><small>HISTORY&nbsp; New function in Release IFC2x Edition 2.<small></font></p>
+</blockquote> 
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">FUNCTION</a></SPAN> IfcAddToBeginOfList
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td>
+                          &nbsp;&nbsp;&nbsp;&nbsp;(AScalar&nbsp;:&nbsp;GENERIC;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AList&nbsp;&nbsp;&nbsp;:&nbsp;LIST&nbsp;OF&nbsp;GENERIC:AL)<br/>
+                          	:&nbsp;LIST[1:?]&nbsp;OF&nbsp;GENERIC:AL;<br/>
+                          &nbsp;&nbsp;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;LOCAL<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Result&nbsp;:&nbsp;LIST&nbsp;OF&nbsp;GENERIC:AL&nbsp;:=&nbsp;[];<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;END_LOCAL;<br/>
+                          <br/>
+                          &nbsp;&nbsp;IF&nbsp;NOT(EXISTS(AScalar))&nbsp;THEN<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;Result&nbsp;:=&nbsp;AList;<br/>
+                          &nbsp;&nbsp;ELSE<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;Result&nbsp;:=&nbsp;Result&nbsp;+&nbsp;AScalar;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;(HIINDEX(AList)&nbsp;&#62;=&nbsp;1)&nbsp;THEN<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;REPEAT&nbsp;i:=1&nbsp;TO&nbsp;HIINDEX(AList);<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Result[i+1]&nbsp;:=&nbsp;AList[i];<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END_REPEAT;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;END_IF;<br/>
+                          &nbsp;&nbsp;END_IF;<br/>
+                          &nbsp;&nbsp;RETURN(Result);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_FUNCTION</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

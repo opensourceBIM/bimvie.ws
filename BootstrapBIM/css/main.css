@@ -98,3 +98,7 @@ table .btn {
 .running {
 	color: blue;
 }
+
+label.checkbox {
+	cursor: pointer;
+}

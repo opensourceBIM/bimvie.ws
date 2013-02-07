@@ -69,7 +69,7 @@ function Query(containerDiv, main, poid, roid) {
 			code: query
 		};
 		div.load("download.html", function(){
-			new Download(params);
+			new Download($(this), params);
 		}).modal({keyboard:true});
 	};
 

@@ -1,0 +1,415 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcDerivedProfileDef</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/entity_navbar.gif" alt="Navigation" height="24" width="625" border="0" usemap="#entity-navbar"/><br/>
+<map name="entity-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcprofileresource.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0006.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,398,23" alt="Navigate"href="#attribute_description">
+  <area shape="rect" coords="399,0,442,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="443,0,526,23" alt="Navigate"href="#inheritance">
+  <area shape="rect" coords="527,0,623,23" alt="Navigate"href="ifcderivedprofiledef.htm#references">
+</map><p CLASS="object-heading">IfcDerivedProfileDef</p>         
+<p><u>Definition
+from IAI</u>: The <i>IfcDerivedProfileDef</i>
+defines the profile by transformation from the parent profile. The
+transformation is given by a two dimensional transformation operator.
+Transformation includes translation, rotation, mirror and scaling. The
+latter
+can be uniform or non uniform. The derived profiles may be used to
+define swept surfaces, swept area solids or sectioned spines.</p>
+<p>The transformation effects the
+position, rotation, mirroring or scale of the profile at the underlying
+coordinate system, i.e. the coordinate system defined by the swept
+surface or swept area solid
+that uses the profile definition. It is the xy plane of either: </p>
+<ul>
+  <li><i>IfcSweptSurface.Position</i></li>
+  <li><i>IfcSweptAreaSolid.Position</i></li>
+</ul>
+or in case of sectioned spines the xy plane of each list member of <i>IfcSectionedSpine.CrossSectionPositions</i>.
+The position and potential rotation of the <i>ParentProfile</i>
+within
+the underlying coordinate system is taken into consideration before
+applying the Cartesian transformation operator.
+<blockquote><font
+ color="#0000ff" size="-1">HISTORY: New entity
+in IFC Release 2x.</font>
+</blockquote>
+<p><u>Illustration</u>:
+</p>
+<table border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td align="left" valign="top"
+ width="405"><a
+ href="drawings/IfcDerivedProfileDef-Layout1.dwf"><img
+ src="figures/IfcDerivedProfileDef-Layout1.gif" alt="uniform"
+ border="0" height="300" width="400"></a></td>
+      <td align="left" valign="top">
+      <p><u>Parameter</u>
+      <br>
+The <i>IfcDerivedProfileDef</i>
+is defined using the <i>IfcCartesianTransformationOperator2D</i>
+(CTO), which is applied to the parent profile definition. <br>
+      </p>
+      <p><u>Example</u><br>
+The example shows an uniform scaling and a transformation
+of an <i>IfcRectangleProfileDef</i>
+to match the lower-left cardinal point. The attributes of the CTO are:<br>
+      </p>
+      <blockquote><tt>Axis1
+= NIL (defaults
+to 1.,0.)<br>
+Axis2
+= NIL (defaults to 0.,1.)<br>
+LocalOrigin =
+IfcCartesianPoint(&lt;1/2 XDim&gt;,&lt;1/2 YDim&gt;)<br>
+Scale = 2.<br>
+        </tt></blockquote>
+      <font size="-1">Note:
+The <i>ParentProfile</i>
+has a <i>Position</i>
+= <i>IfcCartesianPoint</i>(&lt;1/2
+XDim&gt;,&lt;1/2 YDim&gt;) already.</font><br>
+      <blockquote><tt></tt></blockquote>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top"
+ width="405"><a
+ href="drawings/IfcDerivedProfileDef-Layout2.dwf"><img
+ src="figures/IfcDerivedProfileDef-Layout2.gif" alt="non uniform"
+ border="0" height="300" width="400"></a></td>
+      <td align="left" valign="top">
+      <p><u>Parameter</u>
+      <br>
+The <i>IfcDerivedProfileDef</i>
+is defined using
+non uniform transformationsby applying the <i>IfcCartesianTransformationOperator2DnonUniform</i>
+as a subtype of the 2D CTO.</p>
+      <p><u>Example</u><br>
+The example shows a non-uniform scaling and a translation of an <i>IfcRectangleProfileDef</i>
+to match the lower-left cardinal point. The attributes of the CTO are:</p>
+      <blockquote> <tt>Axis1
+= NIL (defaults to 1.,0.)<br>
+Axis2 = NIL (defaults to 0.,1.)<br>
+LocalOrigin = IfcCartesianPoint(0.,&lt;1/2 YDim)<br>
+Scale&nbsp; = 1.<br>
+Scale2 = 2.<br>
+        </tt></blockquote>
+      <font size="-1">Note:
+The <i>ParentProfile</i>
+has a <i>Position</i>
+= <i>IfcCartesianPoint</i>(&lt;1/2
+XDim&gt;,&lt;1/2 YDim&gt;) already.</font>
+      </td>
+    </tr>
+    <tr>
+      <td><a
+ href="drawings/IfcDerivedProfileDef-Layout3.dwf"><img
+ alt="mirroring" src="figures/IfcDerivedProfileDef-Layout3.gif"
+ border="0" height="300" width="400"></a></td>
+      <td align="left" valign="top">
+      <p><u>Parameter</u>
+      <br>
+The <i>IfcDerivedProfileDef</i>
+is defined using mirroring by applying the <i>IfcCartesianTransformationOperator2D</i>
+(CTO) to the parent profile.</p>
+      <p><u>Example</u><br>
+The example shows a mirroring of an <i>IfcLShapeProfileDef</i>
+to match the centre cardinal point. The attributes of the CTO are:</p>
+      <blockquote><tt>Axis1
+= </tt><tt>(0.,-1.)</tt><tt></tt><br>
+        <tt>Axis2 = </tt><tt>NIL
+(defaults to 1.,0.)</tt><br>
+        <tt>LocalOrigin =
+IfcCartesianPoint(0.,0.)</tt><br>
+        <tt>Scale = NIL (defaults
+to 1.)<br>
+        </tt></blockquote>
+      <font size="-1">Note:
+The <i>ParentProfile</i>
+has a <i>Position</i>
+= <i>IfcCartesianPoint</i>(0.,0.).</font></td>
+    </tr>
+    <tr>
+      <td colspan="2" rowspan="1"
+ align="left" valign="top" width="405"><font
+ size="-1">Note:
+The following color map applies:<br>
+      </font>
+      <ul>
+        <li><font
+ size="-1">black coordinate axes show the
+underlying coordinate system of the swept surface, swept area solid, or
+sectioned spine</font></li>
+        <li><font
+ size="-1"><font
+ color="#ff0000">red coordinate axes</font>
+show the position coordinate system of the parent profile</font></li>
+        <li><font
+ size="-1"><font
+ color="#993300">brown coordinate axes</font>
+show the position coordinate system of the derived profi<br>
+          </font></li>
+      </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>Table: Derivation of derived profile definition </p>
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">ENTITY</a></SPAN> IfcDerivedProfileDef
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">SUBTYPE</SPAN>&nbsp;<SPAN CLASS="all-express-keywords">OF</SPAN>&nbsp;(
+                        </td>
+                        <td><a href="ifcprofiledef.htm">IfcProfileDef</a>);
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ParentProfile
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="ifcprofiledef.htm">IfcProfileDef</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Operator
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcgeometryresource/lexical/ifccartesiantransformationoperator2d.htm">IfcCartesianTransformationOperator2D</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Label
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifclabel.htm">IfcLabel</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td><SPAN CLASS="all-express-keywords">WHERE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="10%">WR1
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td>SELF\IfcProfileDef.ProfileType = ParentProfile.ProfileType;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="object-express-specification"><a name="attribute_description">Attribute definitions:</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">ParentProfile
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              The parent profile provides the origin of the transformation.
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">Operator
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Transformation operator applied to the parent profile. 
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">Label
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              The name by which the transformation may be referred to. The actual meaning of the name has to be defined
+              in the context of applications.
+            </td>
+          </tr>
+        </table><p CLASS="object-express-specification"><a name="constraint_description">Formal Propositions:</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td CLASS="constraint-description-name" width="20%">WR1
+            </td>
+            <td CLASS="constraint-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="constraint-description">              The profile type of the derived profile shall be the same as the type of the parent profile, i.e. both
+              shall be either AREA or CURVE.
+            </td>
+          </tr>
+        </table><p CLASS="inheritance-heading"><a name="inheritance">Inheritance graph</a></p>
+        <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">ENTITY</SPAN> IfcDerivedProfileDef;
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcprofiledef.htm">IfcProfileDef</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ProfileType
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="ifcprofiletypeenum.htm">IfcProfileTypeEnum</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ProfileName
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifclabel.htm">IfcLabel</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcderivedprofiledef.htm">IfcDerivedProfileDef</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ParentProfile
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="ifcprofiledef.htm">IfcProfileDef</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Operator
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcgeometryresource/lexical/ifccartesiantransformationoperator2d.htm">IfcCartesianTransformationOperator2D</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Label
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifclabel.htm">IfcLabel</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

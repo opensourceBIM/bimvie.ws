@@ -1,0 +1,74 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcSpecularHighlightSelect</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/type_navbar.gif" alt="Navigation" height="24" width="466" border="0" usemap="#type-navbar"/><br/>
+<map name="type-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcpresentationappearanceresource.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0006.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,367,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="368,0,464,23" alt="Navigate"href="ifcspecularhighlightselect.htm#references">
+</map><p CLASS="object-heading">IfcSpecularHighlightSelect</p>         
+	 <P><U>Definition from IAI</U>: The <I>IfcSpecularHighlightSelect</I>
+		defines the selectable types of value for specular highlight sharpness.</P> 
+	 <BLOCKQUOTE> 
+		<P><FONT SIZE="-1">NOTE: The two select types relate to the different
+		  ways to specifiy the sharpness (or shininess) of the specular part of the
+		  reflectance equation. It relates to the attributes: </FONT></P> 
+		<UL> 
+		  <LI><FONT SIZE="-1">in ISO10303-46 the attribute specular_exponent is
+			 given</FONT></LI> 
+		  <LI><FONT SIZE="-1">in VRML97 the attribute shininess is
+			 given</FONT></LI> 
+		</UL> 
+		<P><FONT SIZE="-1">For each surface side style only one of the two
+		  methods is needed for calculating the specular part of the
+		  equation</FONT></P></BLOCKQUOTE> 
+	 <BLOCKQUOTE> <FONT COLOR="#0000FF" SIZE="-1"> HISTORY: New type in Release
+		IFC2x 2nd Edition.</FONT></BLOCKQUOTE>
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">TYPE</a></SPAN> IfcSpecularHighlightSelect = <SPAN CLASS="all-express-keywords">SELECT</SPAN>
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%">(
+                        </td>
+                        <td><a href="ifcspecularexponent.htm">IfcSpecularExponent</a>,<br/><a href="ifcspecularroughness.htm">IfcSpecularRoughness</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_TYPE</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

@@ -1,0 +1,79 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcCorrectLocalPlacement</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/expression_navbar.gif" alt="Navigation" height="24" width="319" border="0" usemap="#expression-navbar"/><br/>
+<map name="expression-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcgeometricconstraintresource.htm">
+  <area shape="rect" coords="142,0,221,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="222,0,318,23" alt="Navigate"href="ifccorrectlocalplacement.htm#references">
+</map><p CLASS="object-heading">IfcCorrectLocalPlacement</p>        The function checks that a relative placement (i.e. relative to another local placement, and not grid
+        placement) of a 3D local placement has to be relative to a 3D parent placement (and not to a 2D parent
+        placement).<br/>
+        <br/>
+        HISTORY: New function in Release IFC2x Edition 2.<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">FUNCTION</a></SPAN> IfcCorrectLocalPlacement
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td>
+                          &nbsp;&nbsp;(AxisPlacement:IfcAxis2Placement;&nbsp;<br/>
+                          &nbsp;&nbsp;&nbsp;RelPlacement&nbsp;:&nbsp;IfcObjectPlacement):LOGICAL;<br/>
+                          <br/>
+                          &nbsp;&nbsp;IF&nbsp;(EXISTS(RelPlacement))&nbsp;THEN<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;('IFCGEOMETRICCONSTRAINTRESOURCE.IFCGRIDPLACEMENT'&nbsp;IN&nbsp;TYPEOF(RelPlacement))&nbsp;THEN<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RETURN(?);<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;END_IF;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;('IFCGEOMETRICCONSTRAINTRESOURCE.IFCLOCALPLACEMENT'&nbsp;IN&nbsp;TYPEOF(RelPlacement))&nbsp;THEN<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;('IFCGEOMETRYRESOURCE.IFCAXIS2PLACEMENT2D'&nbsp;IN&nbsp;TYPEOF(AxisPlacement))&nbsp;THEN<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RETURN(TRUE);<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END_IF;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;('IFCGEOMETRYRESOURCE.IFCAXIS2PLACEMENT3D'&nbsp;IN&nbsp;TYPEOF(AxisPlacement))&nbsp;THEN<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;(RelPlacement.RelativePlacement.Dim&nbsp;=&nbsp;3)&nbsp;THEN<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RETURN(TRUE);<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ELSE<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RETURN(FALSE);<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END_IF;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END_IF;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;END_IF;<br/>
+                          &nbsp;&nbsp;ELSE<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;RETURN(TRUE);&nbsp;&nbsp;<br/>
+                          &nbsp;&nbsp;END_IF;<br/>
+                          &nbsp;&nbsp;RETURN(?);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_FUNCTION</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

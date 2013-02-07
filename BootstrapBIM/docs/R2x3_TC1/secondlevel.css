@@ -1,0 +1,215 @@
+h1, h2, h3 {
+  font-family: "Verdana";
+  font-size: medium;
+  font-style: normal;
+  font-weight: bold;
+  text-decoration: none;
+  color: 0;
+}
+
+p {
+  font-family: "Verdana";
+  font-size: small;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: none;
+  color: 0;
+}
+
+table {
+  font-family: "Verdana";
+  font-size: small;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: none;
+  color: 0;
+}
+
+table.object-express-source {
+  font-family: "Courier New";
+  font-size: small;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: none;
+  color: rgb(102, 0, 0);
+}
+
+blockquote {
+  font-family: "Verdana";
+  font-size: small;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: none;
+  color: 0;
+}
+
+li, dd {
+  font-family: "Verdana";
+  font-size: small;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: none;
+  color: 0;
+}
+
+.body-background {
+  background-color: transparent;
+  background-image: none;
+}
+
+
+.schemas-list-heading {
+  font: bold large "Verdana";
+}
+
+
+.schemas-list-content {
+  font: normal small "Verdana";
+}
+
+
+.list-heading {
+  font-family: "Verdana";
+  font-size: medium;
+  font-style: normal;
+  font-weight: bold;
+  text-decoration: none;
+  color: 0;
+}
+
+.list-content {
+}
+
+.schema-heading {
+  font-family: "Verdana";
+  font-size: large;
+  font-style: normal;
+  font-weight: bold;
+  text-decoration: none;
+  color: 0;
+}
+
+.object-heading {
+  font-family: "Verdana";
+  font-size: large;
+  font-style: normal;
+  font-weight: bold;
+  text-decoration: none;
+  color: 0;
+}
+
+.object-description {
+  font-family: "Verdana";
+  font-size: small;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: none;
+  color: 0;
+}
+
+.object-express-specification {
+  font-family: "Verdana";
+  font-size: small;
+  font-style: normal;
+  font-weight: bold;
+  text-decoration: underline;
+  color: rgb(0, 0, 0);
+}
+
+.object-express-source {
+  font-family: "Courier New";
+  font-size: small;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: none;
+  color: rgb(102, 0, 0);
+}
+
+.reference-heading {
+  font-family: "Verdana";
+  font-size: medium;
+  font-style: normal;
+  font-weight: bold;
+  text-decoration: none;
+  color: rgb(128, 128, 128);
+}
+
+.reference-table-heading {
+  font-family: "Verdana";
+  font-size: small;
+  font-style: normal;
+  font-weight: bold;
+  text-decoration: none;
+  color: rgb(128, 128, 128);
+}
+
+.reference-table-content {
+  font-family: "Verdana";
+  font-size: small;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: none;
+  color: rgb(128, 128, 128);
+}
+
+.inheritance-heading {
+  font-family: "Verdana";
+  font-size: small;
+  font-style: normal;
+  font-weight: bold;
+  text-decoration: underline;
+  color: rgb(0, 0, 0);
+}
+
+.diagram-heading {
+  font-family: "Verdana";
+  font-size: medium;
+  font-style: normal;
+  font-weight: bold;
+  text-decoration: none;
+  color: 0;
+}
+
+.attribute-description {
+  font-family: "Verdana";
+  font-size: small;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: none;
+  color: 0;
+}
+
+.constraint-description {
+  font-family: "Verdana";
+  font-size: small;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: none;
+  color: 0;
+}
+
+.attribute-description-name {
+  font-family: "Verdana";
+  font-size: small;
+  font-style: normal;
+  font-weight: bold;
+  text-decoration: none;
+  color: 0;
+}
+
+.constraint-description-name {
+  font-family: "Verdana";
+  font-size: small;
+  font-style: normal;
+  font-weight: bold;
+  text-decoration: none;
+  color: 0;
+}
+
+.all-express-keywords {
+  font-style: normal;
+  font-weight: bold;
+  text-decoration: none;
+  color: rgb(102, 0, 0);
+}
+

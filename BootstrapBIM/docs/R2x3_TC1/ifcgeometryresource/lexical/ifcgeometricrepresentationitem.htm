@@ -1,0 +1,187 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcGeometricRepresentationItem</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/entity_navbar.gif" alt="Navigation" height="24" width="625" border="0" usemap="#entity-navbar"/><br/>
+<map name="entity-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcgeometryresource.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0002.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,398,23" alt="Navigate"href="#attribute_description">
+  <area shape="rect" coords="399,0,442,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="443,0,526,23" alt="Navigate"href="#inheritance">
+  <area shape="rect" coords="527,0,623,23" alt="Navigate"href="ifcgeometricrepresentationitem.htm#references">
+</map><p CLASS="object-heading">IfcGeometricRepresentationItem</p>         
+	 <P><U>Definition from ISO/CD 10303-43:1992</U>: An geometric representation
+		item is a representation item that has the additional meaning of having
+		geometric position or orientation or both. This meaning is present by virtue
+		of: </P> 
+	 <UL> 
+		<LI>being a Cartesian point or a direction </LI> 
+		<LI> referencing directly a Cartesian point or direction </LI> 
+		<LI>referencing indirectly a Cartesian point or direction </LI> 
+	 </UL> 
+	 <P>An indirect reference to a Cartesian point or direction means that a
+		given geometric item references the Cartesian point or direction through one or
+		more intervening geometry or topology items. </P> 
+	 <BLOCKQUOTE> 
+		<P><FONT SIZE="-1">EXAMPLE: Consider a circle. It gains its geometric
+		  position and orientation by virtue of a reference to axis2_placement
+		  (IfcAxis2Placement) that is turn references a cartesian_point
+		  (IfcCartesianPoint) and several directions (IfcDirection). <BR>EXAMPLE:
+		  Consider a manifold brep. A manifold_solid_brep (<I>IfcManifoldSolidBrep</I>)
+		  is a geometric_representation_item (<I>IfcGeometricRepresentationItem</I>) that
+		  through several layers of topological_representation_item's
+		  (<I>IfcTopologicalRepresentationItem</I>) references poly loops
+		  (<I>IfcPolyLoop</I>). Through additional intervening entities poly loops
+		  reference cartesian_point's (<I>IfcCartesianPoint</I>).
+		  </FONT></P></BLOCKQUOTE> 
+	 <P><U>Definition from IAI</U>: The derivation of the dimensionality of the
+		<I>IfcGeometricRepresentationItem</I> is different to STEP, there is a specific
+		derived attribute at each class that defines the dimensionality, whereas STEP
+		does it for the representation_context and requires all
+		geometric_representation_item's to have the same dimensionality therein. </P> 
+	 <P>The definition of swept area solids as geometric representation items is
+		different to STEP, it is based on a set of predefined profiles (or cross
+		sections), i.e. a set of parameterized geometric primitives widely supported in
+		the industry. Those profiles are used to create volumes through extrusion,
+		revolution and cross section based sweep operations. This method was called
+		attribute driven geometric representation and it was formerly known as implicit
+		geometry in IFC. </P> 
+	 <BLOCKQUOTE> 
+		<P><FONT COLOR="#0000FF" SIZE="-1">NOTE: Corresponding STEP entity:
+		  geometric_representation_item. Please refer to ISO/IS 10303-42:1994, p. 22 for
+		  the final definition of the formal standard. The following changes have been
+		  made: It does not inherit from ISO/IS 10303-43:1994 entity representation_item.
+		  The derived attribute Dim is demoted to the appropriate subtypes. The WR1 has
+		  not been incorporated. Not all subtypes that are in ISO/IS 10303-42:1994 have
+		  been added to the current IFC Release . </FONT></P> 
+		<P><FONT COLOR="#0000FF" SIZE="-1">HISTORY: New entity in IFC Release
+		  1.5</FONT></P></BLOCKQUOTE>
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">ENTITY</a></SPAN> IfcGeometricRepresentationItem
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">ABSTRACT</SPAN>&nbsp;<SPAN CLASS="all-express-keywords">SUPERTYPE</SPAN>&nbsp;<SPAN CLASS="all-express-keywords">OF</SPAN>
+                        </td>
+                        <td height="1%">(<SPAN CLASS="all-express-keywords">ONEOF</SPAN>(<a href="ifccompositecurvesegment.htm">IfcCompositeCurveSegment</a>, <a href="ifccurve.htm">IfcCurve</a>, <a href="ifcdirection.htm">IfcDirection</a>, <a href="ifcplacement.htm">IfcPlacement</a>, <a href="ifcpoint.htm">IfcPoint</a>, <a href="ifcsurface.htm">IfcSurface</a>, <a href="ifcvector.htm">IfcVector</a>, <a href="../../ifcgeometricmodelresource/lexical/ifcbooleanresult.htm">IfcBooleanResult</a>, <a href="../../ifcgeometricmodelresource/lexical/ifcsolidmodel.htm">IfcSolidModel</a>, <a href="../../ifcgeometricmodelresource/lexical/ifchalfspacesolid.htm">IfcHalfSpaceSolid</a>, <a href="../../ifcgeometricmodelresource/lexical/ifcboundingbox.htm">IfcBoundingBox</a>, <a href="ifccartesiantransformationoperator.htm">IfcCartesianTransformationOperator</a>, <a href="../../ifcgeometricmodelresource/lexical/ifcsectionedspine.htm">IfcSectionedSpine</a>, <a href="../../ifcgeometricmodelresource/lexical/ifcgeometricset.htm">IfcGeometricSet</a>, <a href="../../ifcgeometricmodelresource/lexical/ifcfacebasedsurfacemodel.htm">IfcFaceBasedSurfaceModel</a>, <a href="../../ifcgeometricmodelresource/lexical/ifcshellbasedsurfacemodel.htm">IfcShellBasedSurfaceModel</a>))
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">SUBTYPE</SPAN>&nbsp;<SPAN CLASS="all-express-keywords">OF</SPAN>&nbsp;(
+                        </td>
+                        <td><a href="ifcrepresentationitem.htm">IfcRepresentationItem</a>);
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="inheritance-heading"><a name="inheritance">Inheritance graph</a></p>
+        <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">ENTITY</SPAN> IfcGeometricRepresentationItem;
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcrepresentationitem.htm">IfcRepresentationItem</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">INVERSE</SPAN>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>LayerAssignments
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifcpresentationorganizationresource/lexical/ifcpresentationlayerassignment.htm">IfcPresentationLayerAssignment</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> AssignedItems;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>StyledByItem
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">SET</SPAN> [0:1] <SPAN CLASS="all-express-keywords">OF</SPAN> <a href="../../ifcpresentationappearanceresource/lexical/ifcstyleditem.htm">IfcStyledItem</a> <SPAN CLASS="all-express-keywords">FOR</SPAN> Item;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcgeometricrepresentationitem.htm">IfcGeometricRepresentationItem</a>;
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

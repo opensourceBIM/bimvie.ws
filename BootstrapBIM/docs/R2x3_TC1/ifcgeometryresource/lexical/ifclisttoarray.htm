@@ -1,0 +1,84 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcListToArray</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/expression_navbar.gif" alt="Navigation" height="24" width="319" border="0" usemap="#expression-navbar"/><br/>
+<map name="expression-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcgeometryresource.htm">
+  <area shape="rect" coords="142,0,221,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="222,0,318,23" alt="Navigate"href="ifclisttoarray.htm#references">
+</map><p CLASS="object-heading">IfcListToArray</p>        
+<p><u>Definition from ISO/CD 10303-42:1992</u>: The
+function converts a generic list to an array with pre-determined array
+bounds. If the array bounds are incompatible with the number of
+elements in the original list a null result is returned. This function
+is used to construct the array of control points and weights used in
+the b-spline entities.</p>
+<blockquote> <small><font color="#0000ff">NOTE
+&nbsp;Corresponding STEP function: list_to_array. Please refer
+to ISO/IS
+10303-42:1994, p.119 for the final definition of the formal
+standard.&nbsp; <br>
+  <br>
+HISTORY&nbsp; New function in IFC Release 2x Edition 2 </font></small>
+</blockquote>
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">FUNCTION</a></SPAN> IfcListToArray
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td>
+                          (Lis&nbsp;:&nbsp;LIST&nbsp;[0:?]&nbsp;OF&nbsp;GENERIC&nbsp;:&nbsp;T;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Low,U&nbsp;:&nbsp;INTEGER)&nbsp;:&nbsp;ARRAY&nbsp;OF&nbsp;GENERIC&nbsp;:&nbsp;T;<br/>
+                          &nbsp;&nbsp;&nbsp;LOCAL<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;N&nbsp;&nbsp;&nbsp;:&nbsp;INTEGER;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Res&nbsp;:&nbsp;ARRAY&nbsp;[Low:U]&nbsp;OF&nbsp;GENERIC&nbsp;:&nbsp;T;<br/>
+                          &nbsp;&nbsp;&nbsp;END_LOCAL;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+                          &nbsp;&nbsp;&nbsp;N&nbsp;:=&nbsp;SIZEOF(Lis);<br/>
+                          &nbsp;&nbsp;&nbsp;IF&nbsp;(N&nbsp;&#60;&#62;&nbsp;(U-Low&nbsp;+1))&nbsp;THEN<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RETURN(?);<br/>
+                          &nbsp;&nbsp;&nbsp;ELSE<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Res&nbsp;:=&nbsp;[Lis[1]&nbsp;:&nbsp;N];<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;REPEAT&nbsp;i&nbsp;:=&nbsp;2&nbsp;TO&nbsp;N;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Res[Low+i-1]&nbsp;:=&nbsp;Lis[i];<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END_REPEAT;<br/>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RETURN(Res);<br/>
+                          &nbsp;&nbsp;&nbsp;END_IF;
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_FUNCTION</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>

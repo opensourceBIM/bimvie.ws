@@ -1,0 +1,164 @@
+.body-background {
+  background-color: transparent;
+}
+
+.schemas-list-heading {
+  font: bold large "Verdana";
+}
+
+
+.schemas-list-content {
+  font: normal small "Verdana";
+}
+
+
+.list-heading {
+  font-family: "Verdana";
+  font-size: medium;
+  font-style: normal;
+  font-weight: bold;
+  text-decoration: none;
+  color: 0;
+}
+
+.list-content {
+  font-family: "Verdana";
+  font-size: small;
+}
+
+.schema-heading {
+  font-family: "Verdana";
+  font-size: large;
+  font-style: normal;
+  font-weight: bold;
+  text-decoration: none;
+  color: 0;
+}
+
+.object-heading {
+  font-family: "Verdana";
+  font-size: large;
+  font-style: normal;
+  font-weight: bold;
+  text-decoration: none;
+  color: 0;
+}
+
+.object-description {
+  font-family: "Verdana";
+  font-size: small;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: none;
+  color: 0;
+}
+
+.object-express-specification {
+  font-family: "Verdana";
+  font-size: small;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: underline;
+  color: 0;
+}
+
+.object-express-source {
+  font-family: "Courier New";
+  font-size: small;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: none;
+  color: 0;
+}
+
+.reference-heading {
+  font-family: "Verdana";
+  font-size: medium;
+  font-style: normal;
+  font-weight: bold;
+  text-decoration: none;
+  color: 0;
+}
+
+.reference-table-heading {
+  font-family: "Verdana";
+  font-size: small;
+  font-style: normal;
+  font-weight: bold;
+  text-decoration: none;
+  color: 0;
+}
+
+.reference-table-content {
+  font-family: "Verdana";
+  font-size: small;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: none;
+  color: 0;
+}
+
+.inheritance-heading {
+  font-family: "Verdana";
+  font-size: medium;
+  font-style: normal;
+  font-weight: bold;
+  text-decoration: none;
+  color: 0;
+}
+
+.diagram-heading {
+  font-family: "Verdana";
+  font-size: medium;
+  font-style: normal;
+  font-weight: bold;
+  text-decoration: none;
+  color: 0;
+}
+
+
+.attribute-description {
+  font-family: "Verdana";
+  font-size: small;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: none;
+  color: 0;
+}
+
+.constraint-description {
+  font-family: "Verdana";
+  font-size: small;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: none;
+  color: 0;
+}
+
+
+.attribute-description-name {
+  font-family: "Verdana";
+  font-size: small;
+  font-style: normal;
+  font-weight: bold;
+  text-decoration: none;
+  color: 0;
+}
+
+.constraint-description-name {
+  font-family: "Verdana";
+  font-size: small;
+  font-style: normal;
+  font-weight: bold;
+  text-decoration: none;
+  color: 0;
+}
+
+
+.all-express-keywords {
+  font-style: normal;
+  font-weight: bold;
+  text-decoration: none;
+  color: 0;
+}
+

@@ -1,0 +1,486 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content ="text/html; charset=ISO-8859-1">
+<title>IfcSurfaceStyleRendering</title>
+<link rel="stylesheet" href="../../secondlevel.css" type="text/css">
+</head>
+<body CLASS="body-background">
+<img src="../img/entity_navbar.gif" alt="Navigation" height="24" width="625" border="0" usemap="#entity-navbar"/><br/>
+<map name="entity-navbar">
+  <area shape="rect" coords="0,0,62,23" alt="Navigate"href="http://www.iai-tech.org">
+  <area shape="rect" coords="63,0,141,23" alt="Navigate"href="../ifcpresentationappearanceresource.htm">
+  <area shape="rect" coords="142,0,244,23" alt="Navigate"href="../diagrams/diagram_0006.htm">
+  <area shape="rect" coords="245,0,323,23" alt="Navigate"href="#definition">
+  <area shape="rect" coords="324,0,398,23" alt="Navigate"href="#attribute_description">
+  <area shape="rect" coords="399,0,442,23" alt="Navigate"href="#constraint_description">
+  <area shape="rect" coords="443,0,526,23" alt="Navigate"href="#inheritance">
+  <area shape="rect" coords="527,0,623,23" alt="Navigate"href="ifcsurfacestylerendering.htm#references">
+</map><p CLASS="object-heading">IfcSurfaceStyleRendering</p>        
+	 <P><U>Definition from IAI</U>: <I>IfcSurfaceStyleRendering</I> holds the
+		properties for visualization related to a particular surface side style. </P> 
+	 <P>It allows rendering properties to be defined by:</P> 
+	 <UL> 
+		<LI>a transparency component (<I>Transparency</I> attribute)</LI> 
+		<LI>a colour component (<I>SurfaceColour</I> attribute inherited from
+		  <I>IfcSurfaceStyleShading</I>)</LI> 
+		<LI>a reflectance component, given either by 
+		  <UL> 
+			 <LI>applying reflectance factors to the surface colour: 
+				<UL> 
+				  <LI>diffuse component (<I>SurfaceColour * DiffuseFactor</I>)</LI>
+				  
+				  <LI>transmission component (<I>SurfaceColour *
+					 TransmissionFactor</I> )</LI> 
+				  <LI>diffuse transmission component (<I>SurfaceColour *
+					 DiffuseTransmissionFactor</I>)</LI> 
+				  <LI>reflection component (<I>SurfaceColour *
+					 ReflectionFactor</I>)</LI> 
+				  <LI>specular component (<I>SurfaceColour * SpecularFactor</I>
+					 attribute together with <I>SpecularHighlight</I>)</LI> 
+				</UL> </LI> 
+			 <LI>explicitly defining such factors as colours
+				(<I>DiffuseColour</I>, <I>TransmissionColour</I>,
+				<I>DiffuseTransmissionColour</I>, <I>ReflectionColour</I> and
+				<I>SpecularColour</I>)</LI> 
+		  </UL> </LI> 
+		<LI>a displacement component, currently only given by a texture map with
+		  the TextureType = bump</LI> 
+		<LI>a coverage component, currently only given by the alpha component of
+		  the texture map (2 or 4 component colour texture)</LI> 
+	 </UL> 
+	 <BLOCKQUOTE><FONT SIZE="-1">NOTE: The inherited attribute
+		<I>SurfaceColour</I> is treated as the ambient colour and specifies how much
+		ambient light from light sources this surface shall reflect. Ambient light is
+		omnidirectional and depends only on the number of light sources, not their
+		positions with respect to the surface.</FONT></BLOCKQUOTE> 
+	 <BLOCKQUOTE> 
+		<P><FONT SIZE="-1">NOTE: If the reflectance method, as given by the
+		  <I>IfcReflectanceMethodEnum</I> is "GLASS", the transmission factor controls
+		  the level of transparency in the glass, In this case the transparency factor is
+		  interpreted as transmission factor.</FONT></P></BLOCKQUOTE> 
+	 <BLOCKQUOTE><FONT SIZE="-1">NOTE: Both <I>Transparency</I> and
+		<I>TransmissionColour</I> (or factor) are included, the following definitions
+		apply</FONT> 
+		<UL> 
+		  <LI><FONT SIZE="-1">Transparency is the ratio of the transmitted flux
+			 in a solid angle of 2 * PI sr (one hemisphere). It is a simple colour
+			 filtration that does not account for refraction. </FONT></LI> 
+		  <LI><FONT SIZE="-1">Transmission factor of a material is the ratio of
+			 transmitted flux in a given solid angle to the transmitted flux of a completely
+			 diffuse material with 100% transmission in the same solid angle. It is the
+			 portion of light that goes through the material and may be
+			 refracted.</FONT></LI> 
+		</UL></BLOCKQUOTE> 
+	 <BLOCKQUOTE><FONT COLOR="#0000FF"><FONT SIZE="-1">NOTE: IFC 2x Edition 2
+		adds additional capability for presentation of physically accurate illuminance
+		on surfaces. VRML type rendering and rendering based on ISO 10303-46 continues
+		to be supported by a subset of the information. For reflectance equations and
+		further information about the surface style properties and its processing, see:
+		</FONT> </FONT> 
+		<UL> 
+		  <LI><FONT SIZE="-1" COLOR="#0000FF">ISO/IEC 14772-1: 1997: The Virtual
+			 Reality Modeling Language</FONT></LI> 
+		</UL> </BLOCKQUOTE> 
+	 <BLOCKQUOTE><FONT SIZE="-1" COLOR="#0000FF">NOTE: The definition of
+		<I>IfcSurfaceStyleRenderingProperties</I> includes the definitions as found in
+		ISO 10303-46:1994, in particular of: </FONT> 
+		<UL> 
+		  <LI><FONT SIZE="-1"
+			 COLOR="#0000FF">surface_style_rendering_with_properties</FONT></LI> 
+		  <LI><FONT SIZE="-1"
+			 COLOR="#0000FF">surface_style_rendering_ambient</FONT></LI> 
+		  <LI><FONT SIZE="-1"
+			 COLOR="#0000FF">surface_style_rendering_ambient_diffuse</FONT></LI> 
+		  <LI><FONT SIZE="-1"
+			 COLOR="#0000FF">surface_style_rendering_ambient_diffuse_specular</FONT></LI> 
+		  <LI><FONT SIZE="-1"
+			 COLOR="#0000FF">surface_style_transparent</FONT></LI> 
+		</UL></BLOCKQUOTE> 
+	 <BLOCKQUOTE><FONT SIZE="-1" COLOR="#0000FF">In addition to the attributes
+		as defined in ISO 10303-46, i.e. ambient_reflectance, diffuse_reflectance,
+		specular_reflectance, specular_exponent, and specular_colour, the current IFC
+		definition adds other colours, reflectance factors and specular
+		roughness..</FONT></BLOCKQUOTE> 
+	 <BLOCKQUOTE> <FONT COLOR="#0000FF" SIZE="-1">HISTORY: New Entity in IFC
+		2x.</FONT></BLOCKQUOTE>
+<p CLASS="object-express-specification">EXPRESS specification:</p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords"><a name="definition">ENTITY</a></SPAN> IfcSurfaceStyleRendering
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="1%"><SPAN CLASS="all-express-keywords">SUBTYPE</SPAN>&nbsp;<SPAN CLASS="all-express-keywords">OF</SPAN>&nbsp;(
+                        </td>
+                        <td><a href="ifcsurfacestyleshading.htm">IfcSurfaceStyleShading</a>);
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Transparency
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcnormalisedratiomeasure.htm">IfcNormalisedRatioMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>DiffuseColour
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="ifccolourorfactor.htm">IfcColourOrFactor</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>TransmissionColour
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="ifccolourorfactor.htm">IfcColourOrFactor</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>DiffuseTransmissionColour
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="ifccolourorfactor.htm">IfcColourOrFactor</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ReflectionColour
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="ifccolourorfactor.htm">IfcColourOrFactor</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>SpecularColour
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="ifccolourorfactor.htm">IfcColourOrFactor</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>SpecularHighlight
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="ifcspecularhighlightselect.htm">IfcSpecularHighlightSelect</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ReflectanceMethod
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="ifcreflectancemethodenum.htm">IfcReflectanceMethodEnum</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table><p CLASS="object-express-specification"><a name="attribute_description">Attribute definitions:</a></p>
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">Transparency
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Definition from ISO/CD 10303-46: The degree of transparency is indicated by the percentage of light traversing
+              the surface.<br/>
+              Definition from VRML97 - ISO/IEC 14772-1:1997: The transparency field specifies how "clear" an object
+              is, with 1.0 being completely transparent, and 0.0 completely opaque. If not given, the value 0.0 (opaque)
+              is assumed.<br/>
+              
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">DiffuseColour
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              The diffuse part of the reflectance equation can be given as either a colour or a scalar factor.<br/>
+              The diffuse colour field reflects all light sources depending on the angle of the surface with respect
+              to the light source. The more directly the surface faces the light, the more diffuse light reflects.<br/>
+              The diffuse factor field specifies how much diffuse light from light sources this surface shall reflect.
+              Diffuse light depends on the angle of the surface with respect to the light source. The more directly
+              the surface faces the light, the more diffuse light reflects. The diffuse colour is then defined by surface
+              colour * diffuse factor.<br/>
+              
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">TransmissionColour
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              The transmissive part of the reflectance equation can be given as either a colour or a scalar factor.
+              It only applies to materials which Transparency field is greater than zero.<br/>
+              The transmissive colour field specifies the colour that passes through a transparant material (like the
+              colour that shines through a glass).<br/>
+              The transmissive factor defines the transmissive part, the transmissive colour is then defined by surface
+              colour * transmissive factor.<br/>
+              
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">DiffuseTransmissionColour
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              The diffuse transmission part of the reflectance equation can be given as either a colour or a scalar
+              factor. It only applies to materials whose Transparency field is greater than zero.<br/>
+              The diffuse transmission colour specifies how much diffuse light is reflected at the opposite side of
+              the material surface.<br/>
+              The diffuse transmission factor field specifies how much diffuse light from light sources this surface
+              shall reflect on the opposite side of the material surface. The diffuse transmissive colour is then defined
+              by surface colour * diffuse transmissive factor.<br/>
+              
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">ReflectionColour
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              The reflection (or mirror) part of the reflectance equation can be given as either a colour or a scalar
+              factor. Applies to "glass" and "mirror" reflection models.<br/>
+              The reflection colour specifies the contribution made by light from the mirror direction, i.e. light
+              being reflected from the surface.<br/>
+              The reflection factor specifies the amount of contribution made by light from the mirror direction. The
+              reflection colour is then defined by surface colour * reflection factor.<br/>
+              
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">SpecularColour
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              The specular part of the reflectance equation can be given as either a colour or a scalar factor.<br/>
+              The specular colour determine the specular highlights (e.g., the shiny spots on an apple). When the angle
+              from the light to the surface is close to the angle from the surface to the viewer, the specular colour
+              is added to the diffuse and ambient colour calculations.<br/>
+              The specular factor defines the specular part, the specular colour is then defined by surface colour
+              * specular factor.<br/>
+              <br/>
+              
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">SpecularHighlight
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              The exponent or roughness part of the specular reflectance.<br/>
+              
+            </td>
+          </tr>
+          <tr valign="top">
+            <td CLASS="attribute-description-name" width="10%">ReflectanceMethod
+            </td>
+            <td CLASS="attribute-description" width="1%">&nbsp;:&nbsp;
+            </td>
+            <td CLASS="attribute-description">              Identifies the predefined types of reflectance method from which the method required may be set.<br/>
+              
+            </td>
+          </tr>
+        </table><p CLASS="inheritance-heading"><a name="inheritance">Inheritance graph</a></p>
+        <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="2%">
+            </td>
+            <td>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">ENTITY</SPAN> IfcSurfaceStyleRendering;
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td width="2%">
+                  </td>
+                  <td>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcsurfacestyleshading.htm">IfcSurfaceStyleShading</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>SurfaceColour
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="../../ifcpresentationresource/lexical/ifccolourrgb.htm">IfcColourRgb</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="100%"><SPAN CLASS="all-express-keywords">ENTITY</SPAN> <a href="ifcsurfacestylerendering.htm">IfcSurfaceStyleRendering</a>;
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                      <tr valign="top">
+                        <td width="2%">
+                        </td>
+                        <td>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>Transparency
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="../../ifcmeasureresource/lexical/ifcnormalisedratiomeasure.htm">IfcNormalisedRatioMeasure</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>DiffuseColour
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="ifccolourorfactor.htm">IfcColourOrFactor</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>TransmissionColour
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="ifccolourorfactor.htm">IfcColourOrFactor</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>DiffuseTransmissionColour
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="ifccolourorfactor.htm">IfcColourOrFactor</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ReflectionColour
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="ifccolourorfactor.htm">IfcColourOrFactor</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>SpecularColour
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="ifccolourorfactor.htm">IfcColourOrFactor</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>SpecularHighlight
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><SPAN CLASS="all-express-keywords">OPTIONAL</SPAN> <a href="ifcspecularhighlightselect.htm">IfcSpecularHighlightSelect</a>;
+                              </td>
+                            </tr>
+                          </table>
+                          <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                            <tr valign="top">
+                              <td width="20%" nowrap>ReflectanceMethod
+                              </td>
+                              <td width="1%">&nbsp;:&nbsp;
+                              </td>
+                              <td><a href="ifcreflectancemethodenum.htm">IfcReflectanceMethodEnum</a>;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table CLASS="object-express-source" width="100%" cellspacing="0" cellpadding="0">
+                <tr valign="top">
+                  <td><SPAN CLASS="all-express-keywords">END_ENTITY</SPAN>;
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+</body>
+</html>
