@@ -5,8 +5,10 @@ function loadBimServerApi(address, notifier, callback) {
 	$.getScript(address + "/js/bimserverapi.js").done(function(){
 		window.clearTimeout(timeoutId);
 		Global.bimServerApi = new BimServerApi(address, notifier);
-		Global.bimServerApi.call("ServiceInterface", "getServerInfo", {}, function(serverInfo){
-			callback(serverInfo);
+		Global.bimServerApi.init(function(){
+			Global.bimServerApi.call("ServiceInterface", "getServerInfo", {}, function(serverInfo){
+				callback(serverInfo);
+			});
 		});
 	}).fail(function(jqxhr, settings, exception){
 		window.clearTimeout(timeoutId);
