@@ -94,11 +94,11 @@
 		this.showRenderEngines = function(callback, alterState) {
 			othis.changePage($(".renderEnginesLink"), "genericpluginsettingslist.html", function(){
 				othis.current = new GenericPluginSettingsList(main, othis, {
-					getAllMethodName: "getAllIfcEngines",
-					updateMethodName: "updateIfcEngine",
-					setDefaultMethodName: "setDefaultIfcEngine",
-					defaultFieldName: "defaultIfcEngineId",
-					createUpdateObject: function(pluginConfiguration){return {ifcEngine: pluginConfiguration}},
+					getAllMethodName: "getAllRenderEngines",
+					updateMethodName: "updateRenderEngine",
+					setDefaultMethodName: "setDefaultRenderEngine",
+					defaultFieldName: "defaultRenderEngineId",
+					createUpdateObject: function(pluginConfiguration){return {renderEngine: pluginConfiguration}},
 					listTitle: "Render Engines",
 					showDetailsFunction: othis.showRenderEngine
 				});
@@ -214,7 +214,7 @@
 			othis.changePage($(".renderEnginesLink"), "genericpluginsettings.html", function(){
 				othis.current = new GenericPluginSettings(main, othis, renderEngine, {
 					title: "Render Engine",
-					getMethod: "getIfcEngineById"
+					getMethod: "getRenderEngineById"
 				});
 				if (alterState) {
 					pushHistory({page: "UserSettings", subpage: "RenderEngine", oid: renderEngine.oid});
