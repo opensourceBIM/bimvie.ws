@@ -341,5 +341,33 @@ function Testing() {
 			});
 		});
 	});
+	
+	this.addTest("Test 9", "Checkin from URL", function(doneCallback){
+		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 9 - " + Math.random()}, function(project){
+			Global.bimServerApi.call("ServiceInterface", "getSuggestedDeserializerForExtension", {extension: "ifc"}, function(deserializer){
+				Global.bimServerApi.call("ServiceInterface", "checkinFromUrl", {
+					poid: project.oid,
+					comment: "New revision from url",
+					deserializerOid: deserializer.oid,
+					fileName: "AC11-Institute-Var-2-IFC.ifc",
+					url: "http://tools.bimtoolset.org/BIMserver/IFC-example-files/AC11-Institute-Var-2-IFC.ifc",
+					merge: false,
+					sync: true
+				}, function(checkinId){
+					Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: project.oid}, function(project){
+						Global.bimServerApi.getModel(project.oid, project.lastRevisionId, false, function(model){
+							model.size(function(size){
+								if (size == 49664) {
+									doneCallback("SUCCESS");
+								} else {
+									doneCallback("ERROR", "Size is not correct " + size + "/" + 49664);
+								}
+							});
+						});
+					});
+				});
+			});
+		});
+	});
 }
 </script>
