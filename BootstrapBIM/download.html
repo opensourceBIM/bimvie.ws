@@ -121,7 +121,7 @@ function Download(containerDiv, data) {
 					containerDiv.find(".resultsarea").append(error + "<br/>");
 				});
 				containerDiv.find(".message").html("");
-				Global.bimServerApi.unregister(othis.progressHandler);
+				Global.bimServerApi.unregisterProgressHandler(othis.laid, othis.progressHandler);
 			} else if (state.state == "FINISHED") {
 				if (state.warnings.length > 0) {
 					state.warnings.map(function(warning){
@@ -142,7 +142,7 @@ function Download(containerDiv, data) {
 				} else {
 					window.location = url;
 				}
-				Global.bimServerApi.unregister(othis.progressHandler);
+				Global.bimServerApi.unregisterProgressHandler(othis.laid, othis.progressHandler);
 				containerDiv.find(".checkoutMessage").html("");
 				containerDiv.find(".downloadStatus").html("Prepare complete, initiating download, click <a href=\"" + url + "\">here</a> if the download does not start automatically<br/><br/>");
 				containerDiv.find(".fields, .downloadpopup .checkoutMessage").show();
@@ -162,7 +162,7 @@ function Download(containerDiv, data) {
 			Global.bimServerApi.call("ServiceInterface", "downloadQuery", data, function(data){
 				containerDiv.find(".downloadStatus").html("Preparing download...");
 				othis.laid = parseInt(data);
-				Global.bimServerApi.register("NotificationInterface", "progress", othis.progressHandler);
+				Global.bimServerApi.registerProgressHandler(othis.laid, othis.progressHandler);
 			}, function(){
 				containerDiv.find(".downloadStatus").html("Error: " + textStatus);
 				containerDiv.find(".checkoutMessage").show();
@@ -171,7 +171,7 @@ function Download(containerDiv, data) {
 			Global.bimServerApi.call("ServiceInterface", "checkout", data, function(data){
 				containerDiv.find(".downloadStatus").html("Preparing checkout...");
 				othis.laid = parseInt(data);
-				Global.bimServerApi.register("NotificationInterface", "progress", othis.progressHandler);
+				Global.bimServerApi.registerProgressHandler(othis.laid, othis.progressHandler);
 			}, function(){
 				containerDiv.find(".downloadStatus").html("Error: " + textStatus);
 				containerDiv.find(".checkoutMessage").show();
@@ -180,7 +180,7 @@ function Download(containerDiv, data) {
 			Global.bimServerApi.call("ServiceInterface", "download", data, function(data){
 				containerDiv.find(".downloadStatus").html("Preparing download...");
 				othis.laid = parseInt(data);
-				Global.bimServerApi.register("NotificationInterface", "progress", othis.progressHandler);
+				Global.bimServerApi.registerProgressHandler(othis.laid, othis.progressHandler);
 			}, function(){
 				containerDiv.find(".downloadStatus").html("Error: " + textStatus);
 				containerDiv.find(".checkoutMessage").show();

@@ -165,7 +165,7 @@ function Checkin(containerDiv, project, successFunction) {
 				currentCheckinId = data.result.checkinid;
 				containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
 				containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"bar\"></div></div>");
-				Global.bimServerApi.register("NotificationInterface", "progress", othis.progressHandler);
+				Global.bimServerApi.registerProgressHandler(currentCheckinId, othis.progressHandler);
 			} else {
 				containerDiv.find(".uploadStatus").html("<div class=\"alert alert-block alert-error\">" + data.result.exception.message + "</div>");
 				othis.showUpload();
