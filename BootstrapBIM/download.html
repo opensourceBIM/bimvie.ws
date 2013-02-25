@@ -130,22 +130,24 @@ function Download(containerDiv, data) {
 				}
 				
 				containerDiv.find(".progressBarHolder .downloadProgressBar").remove();
-				
-				var url = Global.bimServerApi.generateRevisionDownloadUrl({
-					zip: containerDiv.find(".downloadCheckoutZip").attr('checked') != undefined,
-					serializerOid: containerDiv.find(".revisionsdownloadcheckoutselect").val(),
-					laid: othis.laid
+
+				Global.bimServerApi.unregisterProgressHandler(othis.laid, othis.progressHandler, function(){
+					// Waiting for the callback, because changing the window.location will cancel all running ajax calls
+					var url = Global.bimServerApi.generateRevisionDownloadUrl({
+						zip: containerDiv.find(".downloadCheckoutZip").attr('checked') != undefined,
+						serializerOid: containerDiv.find(".revisionsdownloadcheckoutselect").val(),
+						laid: othis.laid
+					});
+					if (othis.mimeTypeOverride != null) {
+						url += "&mime=" + othis.mimeTypeOverride;
+						window.open(url);
+					} else {
+						window.location = url;
+					}
+					containerDiv.find(".checkoutMessage").html("");
+					containerDiv.find(".downloadStatus").html("Prepare complete, initiating download, click <a href=\"" + url + "\">here</a> if the download does not start automatically<br/><br/>");
+					containerDiv.find(".fields, .downloadpopup .checkoutMessage").show();
 				});
-				if (othis.mimeTypeOverride != null) {
-					url += "&mime=" + othis.mimeTypeOverride;
-					window.open(url);
-				} else {
-					window.location = url;
-				}
-				Global.bimServerApi.unregisterProgressHandler(othis.laid, othis.progressHandler);
-				containerDiv.find(".checkoutMessage").html("");
-				containerDiv.find(".downloadStatus").html("Prepare complete, initiating download, click <a href=\"" + url + "\">here</a> if the download does not start automatically<br/><br/>");
-				containerDiv.find(".fields, .downloadpopup .checkoutMessage").show();
 			}
 		}
 	};

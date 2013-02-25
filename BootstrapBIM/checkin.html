@@ -82,12 +82,12 @@ function Checkin(containerDiv, project, successFunction) {
 				containerDiv.find(".uploadStatus").append("<div class=\"alert alert-block alert-error\">" + error + "</div>");
 			});
 			othis.showUpload();
-			Global.bimServerApi.unregister(othis.progressHandler);
+			Global.bimServerApi.unregisterProgressHandler(topicId, othis.progressHandler);
 		} else {
 			containerDiv.find(".uploadStatus").html(state.title);
 			if (oldStage != state.stage) {
 				containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
-				containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"bar\"></div></div>");
+				containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress initialhide\"><div class=\"bar\"></div></div>");
 			}
 			if (state.progress == -1) {
 				containerDiv.find(".uploadProgressBar").addClass("progress-striped").addClass("active");
@@ -96,12 +96,10 @@ function Checkin(containerDiv, project, successFunction) {
 				containerDiv.find(".uploadProgressBar").removeClass("progress-striped").removeClass("active");
 				containerDiv.find(".uploadProgressBar .bar").css("width", parseInt(state.progress) + "%");
 			}
+			containerDiv.find(".progressBarHolder .uploadProgressBar").show();
 			if (state.state == "FINISHED") {
 				containerDiv.find(".checkin").parent().modal("hide").remove();
-				Global.bimServerApi.unregister(othis.progressHandler);
-				if (successFunction != null) {
-					successFunction();
-				}
+				Global.bimServerApi.unregisterProgressHandler(topicId, othis.progressHandler, successFunction);
 			} else if (state.state == "STARTED" || state.state == "NONE") {
 			}
 		}

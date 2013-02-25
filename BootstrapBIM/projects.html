@@ -28,10 +28,11 @@ function Projects(main) {
 	};
 
 	this.close = function() {
-		Global.bimServerApi.unregister(othis.newLogAction);
+		Global.bimServerApi.unregisterNewProjectHandler(othis.newProjectHandler);
 	};
 
 	this.show = function() {
+		Global.bimServerApi.registerNewProjectHandler(othis.newProjectHandler);
 	};
 	
 	this.deleteProject = function(project){
@@ -86,18 +87,14 @@ function Projects(main) {
 		});
 	};
 	
-	this.newLogAction = function(uuid, logAction, serviceIdentifier, profileIdentifier, token, apiUrl){
-		if (logAction.__type == "SNewProjectAdded") {
-			Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: logAction.projectId}, function(data){
-				othis.addProject(data);
-			});
-		}
+	this.newProjectHandler = function(poid){
+		Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: poid}, function(data){
+			othis.addProject(data);
+		});
 	};
 	
 	$(".addProjectButton").click(main.showAddProject);
 
 	othis.loadProjects();
-	
-	Global.bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
 }
 </script>

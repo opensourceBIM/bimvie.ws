@@ -22,7 +22,7 @@ function Users(main) {
 	};
 	
 	this.close = function() {
-		Global.bimServerApi.unregister(othis.newLogAction);
+		Global.bimServerApi.unregisterNewUserHandler(othis.newUserHandler);
 	};
 
 	this.deleteUser = function(user) {
@@ -89,17 +89,15 @@ function Users(main) {
 		});
 	};
 	
-	this.newLogAction = function(uuid, logAction, serviceIdentifier, profileIdentifier, token, apiUrl){
-		if (logAction.__type == "SNewUserAdded") {
-			Global.bimServerApi.call("ServiceInterface", "getUserByUoid", {uoid: logAction.userId}, function(data){
-				othis.addUser(data);
-			});
-		}
+	this.newUserHandler = function(uoid){
+		Global.bimServerApi.call("ServiceInterface", "getUserByUoid", {uoid: uoid}, function(data){
+			othis.addUser(data);
+		});
 	};
 	
 	othis.loadUsers();
 	
-	Global.bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
+	Global.bimServerApi.registerNewUserHandler(othis.newUserHandler);
 	$(".users .addUserButton").click(main.showAddUser);
 }
 </script>

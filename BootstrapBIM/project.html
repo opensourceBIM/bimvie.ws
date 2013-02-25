@@ -142,7 +142,7 @@ var Project = function(main, project) {
 	othis.lastRevision = null;
 
 	this.close = function () {
-		Global.bimServerApi.unregister(othis.newLogAction);
+		Global.bimServerApi.unregisterNewRevisionOnSpecificProjectHandler(othis.project.oid, othis.newRevisionOnSpecificProjectHandler);
 	};
 
 	this.show = function() {
@@ -152,9 +152,8 @@ var Project = function(main, project) {
 			othis.project = project;
 			othis.updateProject();
 		}
-		Global.bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
 	};
-	
+
 	this.revisionClick = function(event) {
 		if (!$(event.target).is("a, button, span.caret")) {
 			main.showRevision($(this).parents("tr").andSelf().data("revision"), null, true);
@@ -468,6 +467,8 @@ var Project = function(main, project) {
 	};
 	
 	this.updateProject = function() {
+		Global.bimServerApi.registerNewRevisionOnSpecificProjectHandler(othis.project.oid, othis.newRevisionOnSpecificProjectHandler);
+
 		$(".project h1").html(othis.project.name);
 		$(".project .subprojectsLink a").html("Sub Projects" + (othis.project.subProjects.length == 0 ? "" : (" (" + othis.project.subProjects.length + ")")));
 		$(".project .revisionsLink a").html("Revisions" + (othis.project.revisions.length == 0 ? "" : (" (" + othis.project.revisions.length + ")")));
@@ -598,13 +599,11 @@ var Project = function(main, project) {
 	$(".project .addServiceButton").click(othis.addServiceClick);
 	$(".project .addSubProjectButton").click(othis.addSubProjectClick);
 
-	this.newLogAction = function(uuid, logAction, serviceIdentifier, profileIdentifier, token, apiUrl){
-		if (logAction.__type == "SNewRevisionAdded") {
-			Global.bimServerApi.call("ServiceInterface", "getRevision", {roid: logAction.revisionId}, function(data){
-				othis.reloadProject(logAction.projectId);
-				othis.addRevision(data);
-			});
-		}
+	this.newRevisionOnSpecificProjectHandler = function(roid){
+		Global.bimServerApi.call("ServiceInterface", "getRevision", {roid: roid}, function(data){
+			othis.reloadProject(data.projectId);
+			othis.addRevision(data);
+		});
 	};
 }
 </script>
