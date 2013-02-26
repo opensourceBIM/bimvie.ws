@@ -16,6 +16,7 @@
 	  <li class="browserLink"><a>Browse</a></li>
 	  <!--  <li class="surferLink"><a>Surf</a></li>-->
 	  <li class="usersLink"><a>Users</a></li>
+	  <li class="logLink"><a>Log</a></li>
 	</ul>
 	<div class="content">
 		<div class="tab-pane details">
@@ -117,6 +118,8 @@
 			</table>
 		</div>
 	  	<div class="tab-pane surfer initialhide" id="surfer">
+		</div>
+		<div class="tab-pane log initialhide" id="log">
 		</div>
 	</div>
 	<div class="initialhide dropdowntemplaterevision">
@@ -536,6 +539,17 @@ var Project = function(main, project) {
 		});
 	};
 
+	this.loadLog = function() {
+		pushHistoryAppend({tab: "log"});
+		$(".project .nav li").removeClass("active");
+		$(".project .logLink").addClass("active");
+		$(".project .content > div").hide();
+		$(".project .log").show();
+		$(".project .log").load("log.html", function(){
+			new Log($(this), main, othis.project.oid, othis.lastRevision.oid);
+		});
+	};
+
 	this.addSubProjectClick = function(event) {
 		main.showAddProject(event, null, othis.project);
 	};
@@ -590,6 +604,7 @@ var Project = function(main, project) {
 	$(".project .browserLink").click(othis.loadBrowser);
 	$(".project .usersLink").click(othis.loadUsers);
 	$(".project .surferLink").click(othis.loadSurfer);
+	$(".project .logLink").click(othis.loadLog);
 
 	$(".project .addUserToProjectDiv button").click(othis.addUserToProject);
 	
@@ -599,7 +614,7 @@ var Project = function(main, project) {
 	$(".project .addServiceButton").click(othis.addServiceClick);
 	$(".project .addSubProjectButton").click(othis.addSubProjectClick);
 
-	this.newRevisionOnSpecificProjectHandler = function(roid){
+	this.newRevisionOnSpecificProjectHandler = function(poid, roid){
 		Global.bimServerApi.call("ServiceInterface", "getRevision", {roid: roid}, function(data){
 			othis.reloadProject(data.projectId);
 			othis.addRevision(data);
