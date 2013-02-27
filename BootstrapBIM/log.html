@@ -1,8 +1,53 @@
 <div class="log">
-	Log
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Title</th>
+				<th>State</th>
+				<th>Progress</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
 </div>
 <script>
 function Log(containerDiv, main, poid, roid) {
-	Global.bimServerApi.call("ServiceInterface");
+	var othis = this;
+	
+	this.addTopic = function(topic){
+		
+	};
+	
+	this.progressHandler = function(topicId, state){
+		var tr = containerDiv.find("table tr[tid=\"" + topicId + "\"]");
+		if (tr.length == 0) {
+			tr = $("<tr>");
+			tr.attr("tid", topicId);
+			tr.append("<td class=\"topicid\"></td>");
+			tr.append("<td class=\"title\"></td>");
+			tr.append("<td class=\"state\"></td>");
+			tr.append("<td class=\"progress\" width=\"200px\"><div class=\"progress\"><div class=\"bar\"></div></div></td>");
+			containerDiv.find("table tbody").append(tr);
+		}
+		tr.find(".topicid").html(topicId);
+		tr.find(".title").html(state.title);
+		tr.find(".state").html(state.state);
+		if (state.progress == -1) {
+			tr.find(".progress").addClass("progress-striped").addClass("active");
+			tr.find(".progress .bar").css("width", "100%");
+		} else {
+			tr.find(".progress .bar").css("width", state.progress + "%");
+		}
+	};
+	
+	Global.bimServerApi.call("ServiceInterface", "getProgressTopicsOnProject", {poid: poid}, function(topicIds){
+		topicIds.forEach(function(topicId){
+			Global.bimServerApi.call("ServiceInterface", "getProgress", {topicId: topicId}, function(state){
+				othis.progressHandler(topicId, state);
+				Global.bimServerApi.registerProgressHandler(topicId, othis.progressHandler);
+			});
+		});
+	});
 }
 </script>

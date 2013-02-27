@@ -145,7 +145,9 @@ var Project = function(main, project) {
 	othis.lastRevision = null;
 
 	this.close = function () {
-		Global.bimServerApi.unregisterNewRevisionOnSpecificProjectHandler(othis.project.oid, othis.newRevisionOnSpecificProjectHandler);
+		if (othis.project != null) {
+			Global.bimServerApi.unregisterNewRevisionOnSpecificProjectHandler(othis.project.oid, othis.newRevisionOnSpecificProjectHandler);
+		}
 	};
 
 	this.show = function() {
