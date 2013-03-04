@@ -92,7 +92,7 @@
 					loadBimServerApi($.cookie("address"), Global.notifier, function(serverInfo){
 						if (serverInfo.serverState == "NOT_SETUP") {
 							$(".indexcontainer").load("setup.html", function(){
-								new Setup(address);
+								new Setup($.cookie("address"));
 							});
 						} else if (serverInfo.serverState == "UNDEFINED") {
 						} else if (serverInfo.serverState == "MIGRATION_REQUIRED") {
@@ -115,16 +115,19 @@
 								});
 							}
 						}
-					});
-					
-					setInterval(function() {
-						var now = new Date().getTime();
-						$(".timespan").each(function() {
-							$(this).html(formatTimeSpan(now - $(this).attr("datetime"), false));
+					}, function(){
+						$(".indexcontainer").load("login.html", function(){
+							new Login();
 						});
-					}, 60000);
+					});
 				});
 			};
+			setInterval(function() {
+				var now = new Date().getTime();
+				$(".timespan").each(function() {
+					$(this).html(formatTimeSpan(now - $(this).attr("datetime"), false));
+				});
+			}, 60000);
 			
 			var history = History.getState().data;
 			if (history.page == "ResetPassword") {

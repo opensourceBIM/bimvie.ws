@@ -1,6 +1,7 @@
-function loadBimServerApi(address, notifier, callback) {
+function loadBimServerApi(address, notifier, callback, errorCallback) {
 	var timeoutId = window.setTimeout(function() {
 		notifier.error("Could not connect");
+		errorCallback();
 	}, 3000);
 	$.getScript(address + "/js/bimserverapi.js").done(function(){
 		window.clearTimeout(timeoutId);
@@ -13,5 +14,6 @@ function loadBimServerApi(address, notifier, callback) {
 	}).fail(function(jqxhr, settings, exception){
 		window.clearTimeout(timeoutId);
 		notifier.error("Could not connect");
+		errorCallback();
 	});
 }
