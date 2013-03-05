@@ -40,14 +40,23 @@ function Log(containerDiv, main, poid, roid) {
 			tr.find(".progress .bar").css("width", state.progress + "%");
 		}
 	};
+
+	this.newChangeProgressHandler = function(poid, topicId){
+		Global.bimServerApi.call("ServiceInterface", "getProgress", {topicId: topicId}, function(state){
+			othis.progressHandler(topicId, state);
+			Global.bimServerApi.registerProgressHandler(topicId, othis.progressHandler);
+		});
+	};
+	
+	this.closedChangeProgressHandler = function(poid, topicId){
+		Global.bimServerApi.unregisterProgressHandler(topicId, othis.progressHandler);
+	};
 	
 	Global.bimServerApi.call("ServiceInterface", "getProgressTopicsOnProject", {poid: poid}, function(topicIds){
 		topicIds.forEach(function(topicId){
-			Global.bimServerApi.call("ServiceInterface", "getProgress", {topicId: topicId}, function(state){
-				othis.progressHandler(topicId, state);
-				Global.bimServerApi.registerProgressHandler(topicId, othis.progressHandler);
-			});
+			othis.newChangeProgressHandler(poid, topicId);
 		});
+		Global.bimServerApi.registerChangeProgressProjectHandler(poid, othis.newChangeProgressHandler, othis.closedChangeProgressHandler);
 	});
 }
 </script>
