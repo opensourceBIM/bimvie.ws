@@ -8,6 +8,7 @@
 			<li><a class="link webservicesLink" data-toggle="tab" href="#webservices">Web Services</a></li>
 			<li><a class="link transactionsLink" data-toggle="tab" href="#transactions">Transactions</a></li>
 			<li><a class="link longrunningactionsLink" data-toggle="tab" href="#longrunningactions">Long running actions</a></li>
+			<li><a class="link logLink" data-toggle="tab" href="#log">Log</a></li>
 		</ul>
 		<div class="tab-content">
 			<div id="system" class="tab-pane system">
@@ -31,21 +32,29 @@
 			<div id="longrunningactions" class="tab-pane longrunningactions">
 				<table class="table"></table>
 			</div>
+			<div id="log" class="tab-pane log">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Id</th>
+							<th>Title</th>
+							<th>State</th>
+							<th>Progress</th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 </div>
 <script>
-function ServerInfo(main) {
+function ServerInfo(containerDiv, main) {
 	var othis = this;
 	
-	this.close = function(){};
-	
-	var history = History.getState().data;
-	if (history.subpage != null) {
-		$(".serverinfo .link[href=\"#" + history.subpage + "\"]").click();
-	} else {
-		$(".serverinfo .systemLink").click();
-	}
+	this.close = function(){
+		Global.bimServerApi.unregisterChangeProgressServerHandler(othis.newChangeProgressHandler, othis.closedChangeProgressHandler);
+	};
 	
 	this.loadData = function() {
 		Global.bimServerApi.call("ServiceInterface", "getDatabaseInformation", {}, function(data){
@@ -149,6 +158,62 @@ function ServerInfo(main) {
 		pushHistory({page: "ServerInfo", subpage: $(this).attr("href").substring(1)});
 	});
 	
+	this.progressHandler = function(topicId, state){
+		var tr = containerDiv.find("table tr[tid=\"" + topicId + "\"]");
+		if (tr.length == 0) {
+			tr = $("<tr>");
+			tr.attr("tid", topicId);
+			tr.append("<td class=\"topicid\"></td>");
+			tr.append("<td class=\"title\"></td>");
+			tr.append("<td class=\"state\"></td>");
+			tr.append("<td class=\"progresstd\" width=\"200px\"><div class=\"progress\"><div class=\"bar\"></div></div></td>");
+			containerDiv.find("table tbody").append(tr);
+		}
+		tr.find(".topicid").html(topicId);
+		tr.find(".title").html(state.title);
+		tr.find(".state").html(state.state);
+		if (state.progress == -1) {
+			tr.find(".progress").addClass("progress-striped").addClass("active");
+			tr.find(".progress .bar").css("width", "100%");
+		} else if (state.progress == 100){
+			tr.find(".progress").removeClass("progress-striped").removeClass("active");
+			tr.find(".progress .bar").css("width", "100%");
+		} else {
+			tr.find(".progress .bar").css("width", state.progress + "%");
+		}
+	};
+	
+	this.newChangeProgressHandler = function(topicId){
+		Global.bimServerApi.call("ServiceInterface", "getProgress", {topicId: topicId}, function(state){
+			othis.progressHandler(topicId, state);
+			Global.bimServerApi.registerProgressHandler(topicId, othis.progressHandler);
+		});
+	};
+	
+	this.closedChangeProgressHandler = function(topicId){
+		Global.bimServerApi.unregisterProgressHandler(topicId, othis.progressHandler);
+	};
+	
+	this.loadLog = function(){
+		Global.bimServerApi.call("ServiceInterface", "getProgressTopicsOnServer", {}, function(topicIds){
+			topicIds.forEach(function(topicId){
+				othis.newChangeProgressHandler(topicId);
+			});
+			Global.bimServerApi.registerChangeProgressServerHandler(othis.newChangeProgressHandler, othis.closedChangeProgressHandler);
+		});
+	};
+	
+	containerDiv.find(".logLink").click(othis.loadLog);
+	
+	var history = History.getState().data;
+	if (history.subpage != null) {
+		$(".serverinfo .link[href=\"#" + history.subpage + "\"]").click();
+		if (history.subpage == "log") {
+			othis.loadLog();
+		}
+	} else {
+		$(".serverinfo .systemLink").click();
+	}
 	this.loadData();
 }
 </script>

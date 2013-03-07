@@ -15,8 +15,8 @@
 function Log(containerDiv, main, poid, roid) {
 	var othis = this;
 	
-	this.addTopic = function(topic){
-		
+	this.close = function(){
+		Global.bimServerApi.unregisterChangeProgressProjectHandler(othis.newChangeProgressHandler, othis.closedChangeProgressHandler);
 	};
 	
 	this.progressHandler = function(topicId, state){
@@ -27,7 +27,7 @@ function Log(containerDiv, main, poid, roid) {
 			tr.append("<td class=\"topicid\"></td>");
 			tr.append("<td class=\"title\"></td>");
 			tr.append("<td class=\"state\"></td>");
-			tr.append("<td class=\"progress\" width=\"200px\"><div class=\"progress\"><div class=\"bar\"></div></div></td>");
+			tr.append("<td class=\"progresstd\" width=\"200px\"><div class=\"progress\"><div class=\"bar\"></div></div></td>");
 			containerDiv.find("table tbody").append(tr);
 		}
 		tr.find(".topicid").html(topicId);

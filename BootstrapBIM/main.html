@@ -81,7 +81,7 @@ function Main(address, username) {
 			if (status == "error") {
 				console.log(msg, xhr.status, xhr.statusText);
 			} else {
-				constructorFunction();
+				constructorFunction.call(this);
 				if (callback != null) {
 					//callback.call(othis.current);
 				}
@@ -213,7 +213,7 @@ function Main(address, username) {
 
 	this.showServerInfo = function(callback, alterState) {
 		othis.changePage($(".serverinfoLink"), "serverinfo.html", function(){
-			othis.current = new ServerInfo(othis);
+			othis.current = new ServerInfo($(this), othis);
 			if (alterState) {
 				pushHistory({page: "ServerInfo"});
 			}

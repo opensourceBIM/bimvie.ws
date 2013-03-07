@@ -239,6 +239,7 @@ function Testing() {
 				model.commit("1 window + ownerhistory", function(roid){
 					Global.bimServerApi.getModel(project.oid, roid, false, function(model){
 						model.getByName("window", function(window){
+							console.log(window);
 							window.getOwnerHistory(function(ownerHistory){
 								if (ownerHistory == null) {
 									doneCallback("ERROR", "OwnerHistory already not set");

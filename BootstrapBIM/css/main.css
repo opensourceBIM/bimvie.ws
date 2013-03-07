@@ -102,3 +102,7 @@ table .btn {
 label.checkbox {
 	cursor: pointer;
 }
+
+.progresstd .progress {
+	margin-bottom: 2px;
+}
