@@ -163,7 +163,7 @@ function BasicServerSettings(main, serversettings) {
 			serverSettings.sendConfirmationEmailAfterRegistration = $(".basicserversettings .sendConfirmationEmailAfterRegistration").prop("checked");
 			serverSettings.allowOnlyWhitelisted = $(".basicserversettings .allowOnlyWhitelisted").prop("checked");
 			serverSettings.generateGeometryOnCheckin = $(".basicserversettings .generateGeometryCheckin").prop("checked");
-			Global.bimServerApi.callWithFullIndication("ServiceInterface", "setServerSettings", {serverSettings: serverSettings}, function(data){
+			Global.bimServerApi.callWithFullIndication("SettingsInterface", "setServerSettings", {serverSettings: serverSettings}, function(data){
 				othis.change = false;
 			});
 		}
@@ -190,7 +190,7 @@ function BasicServerSettings(main, serversettings) {
 	};
 	
 	this.loadSettings = function() {
-		Global.bimServerApi.call("ServiceInterface", "getServerSettings", {}, function(data){
+		Global.bimServerApi.call("SettingsInterface", "getServerSettings", {}, function(data){
 			$(".basicserversettings .inputRepositoryServer").val(data.serviceRepositoryUrl);
 			$(".basicserversettings .siteAddress").val(data.siteAddress);
 			$(".basicserversettings .smtpServer").val(data.smtpServer);
@@ -235,7 +235,7 @@ function BasicServerSettings(main, serversettings) {
 	
 	this.clearCacheClick = function(event){
 		event.preventDefault();
-		Global.bimServerApi.call("ServiceInterface", "clearOutputFileCache", {}, function(data){
+		Global.bimServerApi.call("AdminInterface", "clearOutputFileCache", {}, function(data){
 			alert(data + " cache files removed");
 		});
 	};

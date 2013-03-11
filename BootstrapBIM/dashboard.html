@@ -87,7 +87,7 @@ function Dashboard(main) {
 		$(".logTable tbody").prepend(tr);
 	}
 
-	Global.bimServerApi.call("ServiceInterface", "getLogs", {}, function(data){
+	Global.bimServerApi.call("AdminInterface", "getLogs", {}, function(data){
 		data.forEach(function(logAction){
 			othis.newLogAction("", logAction);
 		});

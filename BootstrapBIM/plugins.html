@@ -23,7 +23,7 @@ function Plugins(main, serversettings) {
 	};
 	
 	this.loadPlugins = function(){
-		Global.bimServerApi.call("ServiceInterface", "getAllPlugins", {}, function(plugins){
+		Global.bimServerApi.call("AdminInterface", "getAllPlugins", {}, function(plugins){
 			plugins.forEach(function(plugin){
 				othis.addPlugin(plugin);
 			});

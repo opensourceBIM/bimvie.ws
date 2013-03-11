@@ -7,7 +7,7 @@ function loadBimServerApi(address, notifier, callback, errorCallback) {
 		window.clearTimeout(timeoutId);
 		Global.bimServerApi = new BimServerApi(address, notifier);
 		Global.bimServerApi.init(function(){
-			Global.bimServerApi.call("ServiceInterface", "getServerInfo", {}, function(serverInfo){
+			Global.bimServerApi.call("AdminInterface", "getServerInfo", {}, function(serverInfo){
 				callback(serverInfo);
 			});
 		});
