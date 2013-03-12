@@ -1,13 +1,13 @@
 <div class="main container">
 	<div class="pull-left">
 		<ul class="nav nav-pills">
-			<li class="dashboardLink active"><a>Dashboard</a></li>
-			<li class="projectsLink"><a>Projects</a></li>
-			<li class="usersLink"><a>Users</a></li>
-			<li class="usersettingsLink"><a>User Settings</a></li>
-			<li class="serversettingsLink"><a>Server Settings</a></li>
-			<li class="serverinfoLink"><a>Server Info</a></li>
-			<li class="testingLink"><a>Testing</a></li>
+			<li class="dashboardLink active initialhide"><a>Dashboard</a></li>
+			<li class="projectsLink initialhide"><a>Projects</a></li>
+			<li class="usersLink initialhide"><a>Users</a></li>
+			<li class="usersettingsLink initialhide"><a>User Settings</a></li>
+			<li class="serversettingsLink initialhide"><a>Server Settings</a></li>
+			<li class="serverinfoLink initialhide"><a>Server Info</a></li>
+			<li class="testingLink initialhide"><a>Testing</a></li>
 		</ul>
 	</div>
 	<div class="btn-group pull-right">
@@ -26,6 +26,11 @@ function Main(address, username) {
 	var othis = this;
 	var current = null;
 
+	$(".main .nav li").hide();
+	Settings.getMenuItems().forEach(function(menuItem){
+		$("." + menuItem).show();
+	});
+	
 	History.Adapter.bind(window, "statechange", function(){
 		if (!pushing) {
 	        othis.show(false);
