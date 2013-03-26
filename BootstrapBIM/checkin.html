@@ -10,12 +10,12 @@
 				<div class="uploadStatus"></div>
 				<div class="progressBarHolder"></div>
 				<table class="uploadTable">
-				<tr><td><label for="file">File</label></td><td><input class="fileupload" type="file" name="data"/></td></tr>
-				<tr><td><label for="deserializerName">Deserializer</label></td><td><select class="deserializerName" name="deserializerName">
-				<option value="[NONE]">Select a deserializer</option>
-				</select></td></tr>
-				<tr><td><label for="comment">Comment</label></td><td><textarea class="comment" name="comment" cols="57" rows="4"></textarea></td></tr>
-				<tr><td><label for="merge">Merge</label></td><td><input class="merge" name="merge" type="checkbox"/></td></tr>
+					<tr><td><label for="file">File</label></td><td><input class="fileupload" type="file" name="data"/></td></tr>
+					<tr><td><label for="deserializerName">Deserializer</label></td><td><select class="deserializerName" name="deserializerName">
+					<option value="[NONE]">Select a deserializer</option>
+					</select></td></tr>
+					<tr><td><label for="comment">Comment</label></td><td><textarea class="comment" name="comment" cols="57" rows="4"></textarea></td></tr>
+					<tr><td><label for="merge">Merge</label></td><td><input class="merge" name="merge" type="checkbox"/></td></tr>
 				</table>
 			</div>
 			<div class="uploadbranch">
@@ -28,8 +28,15 @@
 				</form>
 				<br/>
 			</div>
+			<div class="checkinurl initialhide">
+				<label>URL
+					<input type="text" class="urlinput input-block-level"/>
+				</label>
+				<label for="deserializerName">Deserializer</label><select class="deserializerName" name="deserializerName"></select>
+			</div>
 			<a class="showuploadlink initialhide">OR Checkin new revision</a>
 			<a class="uploadbranchlink">OR Checkin existing revision</a>
+			<a class="checkinurllink">OR Checkin from URL</a>
 		</div>
 	</div>
   	<div class="modal-footer">
@@ -176,35 +183,60 @@ function Checkin(containerDiv, project, successFunction) {
     });
 
 	containerDiv.find(".uploadButton").click(function(event){
-		shouldsend = true;
-		submitdata.formData = {
-			token: Global.bimServerApi.token,
-			deserializerOid: containerDiv.find(".deserializerName").val(),
-			comment: containerDiv.find(".comment").val(),
-			merge: containerDiv.find(".merge").is(':checked'),
-			poid: othis.project.oid
-		};
-		othis.hideUpload();
-		containerDiv.find(".uploadStatus").html("Uploading file...");
-		containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
-		containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"bar\"></div></div>");
-		containerDiv.find(".fileupload").fileupload('send', submitdata);
-		shouldsend = false;
-		event.preventDefault();
+		if (containerDiv.find(".checkinurl").is(":visible")) {
+			Global.bimServerApi.callWithFullIndication("ServiceInterface", "checkinFromUrl", {
+				deserializerOid: containerDiv.find(".checkinurl .deserializerName").val(),
+				comment: containerDiv.find(".comment").val(),
+				merge: containerDiv.find(".merge").is(':checked'),
+				poid: othis.project.oid,
+				url: containerDiv.find(".urlinput").val(),
+				sync: true,
+				fileName: null
+			}, function(data){
+				
+			});			
+		} else {
+			shouldsend = true;
+			submitdata.formData = {
+				token: Global.bimServerApi.token,
+				deserializerOid: containerDiv.find(".deserializerName").val(),
+				comment: containerDiv.find(".comment").val(),
+				merge: containerDiv.find(".merge").is(':checked'),
+				poid: othis.project.oid
+			};
+			othis.hideUpload();
+			containerDiv.find(".uploadStatus").html("Uploading file...");
+			containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
+			containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"bar\"></div></div>");
+			containerDiv.find(".fileupload").fileupload('send', submitdata);
+			shouldsend = false;
+			event.preventDefault();
+		}
 	});
 
 	containerDiv.find(".uploadbranch").hide();
-	containerDiv.find(".uploadbranchlink").click(function(event){
-		event.preventDefault();
+	containerDiv.find(".uploadbranchlink").click(function(){
 		containerDiv.find(".upload").hide();
 		containerDiv.find(".showuploadlink").show();
 		containerDiv.find(".uploadbranch").show();
 		containerDiv.find(".uploadbranchlink").hide();
 		containerDiv.find(".uploadButton").html("Checkin existing revision");
 	});
+	
+	containerDiv.find(".urlinput").bind("paste", function(){
+		containerDiv.find(".uploadButton").show();
+	});
+	
+	containerDiv.find(".checkinurllink").click(function(){
+		containerDiv.find(".upload, .uploadbranch").hide();
+		containerDiv.find(".showuploadlink").show();
+		containerDiv.find(".checkinurl").show();
+		containerDiv.find(".checkinurllink").hide();
+		containerDiv.find(".urlinput").focus();
+	});
+	
 	containerDiv.find(".showuploadlink").hide();
-	containerDiv.find(".showuploadlink").click(function(event){
-		event.preventDefault();
+	containerDiv.find(".showuploadlink").click(function(){
 		containerDiv.find(".upload").show();
 		containerDiv.find(".showuploadlink").hide();
 		containerDiv.find(".uploadbranch").hide();

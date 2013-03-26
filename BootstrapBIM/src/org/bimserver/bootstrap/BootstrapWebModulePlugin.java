@@ -53,7 +53,11 @@ public class BootstrapWebModulePlugin implements WebModulePlugin {
 	@Override
 	public void service(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			InputStream resourceAsInputStream = pluginContext.getResourceAsInputStream(request.getPathInfo());
+			String path = request.getPathInfo();
+			if (path == null || path.equals("") || path.equals("/")) {
+				path = "index.html";
+			}
+			InputStream resourceAsInputStream = pluginContext.getResourceAsInputStream(path);
 			if (resourceAsInputStream != null) {
 				IOUtils.copy(resourceAsInputStream, response.getOutputStream());
 			}
@@ -66,6 +70,6 @@ public class BootstrapWebModulePlugin implements WebModulePlugin {
 
 	@Override
 	public String getContextPath() {
-		return "/bootstrap/*";
+		return "/bootstrap";
 	}
 }

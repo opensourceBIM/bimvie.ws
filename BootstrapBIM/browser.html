@@ -45,7 +45,7 @@ function Browser(containerDiv, revision) {
 	this.loadObject = function(oid) {
 		othis.oid = oid;
 		pushHistoryAppend({oid: oid, type: false});
-		Global.bimServerApi.call("ServiceInterface", "getDataObjectByOid", {roid: othis.revision.oid, oid: oid}, function(data){
+		Global.bimServerApi.call("LowLevelInterface", "getDataObjectByOid", {roid: othis.revision.oid, oid: oid}, function(data){
 			containerDiv.find(".breadcrumb *").remove();
 			containerDiv.find(".breadcrumb").append("<li><a class=\"breadcrumbModel\">Model</a> <span class=\"divider\">/</span></li>");
 			containerDiv.find(".breadcrumb").append("<li><a class=\"breadcrumbClass\">" + data.type + "</a> <span class=\"divider\">/</span></li>");
@@ -126,7 +126,7 @@ function Browser(containerDiv, revision) {
 	
 	this.loadType = function(className) {
 		pushHistoryAppend({type: className, oid: false});
-		Global.bimServerApi.call("ServiceInterface", "getDataObjectsByType", {roid: othis.revision.oid, className: className}, function(data){
+		Global.bimServerApi.call("LowLevelInterface", "getDataObjectsByType", {roid: othis.revision.oid, className: className}, function(data){
 			containerDiv.find(".breadcrumb *").remove();
 			containerDiv.find(".breadcrumb").append("<li><a class=\"breadcrumbModel\">Model</a> <span class=\"divider\">/</span></li>");
 			containerDiv.find(".breadcrumb").append("<li class=\"active\">" + className + "</li>");
@@ -172,7 +172,6 @@ function Browser(containerDiv, revision) {
 		containerDiv.find(".breadcrumb").append("<li class=\"active\">Model</li>");
 		othis.augmentBreadcrumbs();
 		Global.bimServerApi.call("ServiceInterface", "getRevisionSummary", {roid: othis.revision.oid}, function(data){
-
 			containerDiv.find(".typesTable tbody tr").remove();
 			containerDiv.find("table").hide();
 			containerDiv.find(".load3dButton, .browser .3dviewport").hide();
