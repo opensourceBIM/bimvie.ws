@@ -34,15 +34,19 @@ function Log(containerDiv, main, poid, roid) {
 		tr.find(".title").html(state.title);
 		tr.find(".state").html(state.state);
 		if (state.progress == -1) {
-			tr.find(".progress").addClass("progress-striped").addClass("active");
-			tr.find(".progress .bar").css("width", "100%");
+			if (state.state != "FINISHED") {
+				tr.find(".progress").addClass("progress-striped").addClass("active");
+				tr.find(".progress .bar").css("width", "100%");
+			} else {
+				tr.find(".progress .bar").css("width", "100%");
+			}
 		} else {
 			tr.find(".progress .bar").css("width", state.progress + "%");
 		}
 	};
 
 	this.newChangeProgressHandler = function(poid, topicId){
-		Global.bimServerApi.call("ServiceInterface", "getProgress", {topicId: topicId}, function(state){
+		Global.bimServerApi.call("RegistryInterface", "getProgress", {topicId: topicId}, function(state){
 			othis.progressHandler(topicId, state);
 			Global.bimServerApi.registerProgressHandler(topicId, othis.progressHandler);
 		});
@@ -52,7 +56,7 @@ function Log(containerDiv, main, poid, roid) {
 		Global.bimServerApi.unregisterProgressHandler(topicId, othis.progressHandler);
 	};
 	
-	Global.bimServerApi.call("ServiceInterface", "getProgressTopicsOnProject", {poid: poid}, function(topicIds){
+	Global.bimServerApi.call("RegistryInterface", "getProgressTopicsOnProject", {poid: poid}, function(topicIds){
 		topicIds.forEach(function(topicId){
 			othis.newChangeProgressHandler(poid, topicId);
 		});
