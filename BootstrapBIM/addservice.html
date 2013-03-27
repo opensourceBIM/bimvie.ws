@@ -78,7 +78,7 @@ function AddService(main, project) {
 		});
 	};
 
-	Global.bimServerApi.call("ServiceInterface", "getServiceRepositoryUrl", {}, function(data){
+	Global.bimServerApi.call("SettingsInterface", "getServiceRepositoryUrl", {}, function(data){
 		$(".addservice .loadedFrom").html(" (loaded from: <a href=\"" + data + "\">" + data + "</a>)");
 	});
 	

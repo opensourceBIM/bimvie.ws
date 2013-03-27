@@ -63,7 +63,11 @@ function Main(address, username) {
 		} else if (history.page == "Testing") {
 			othis.showTesting(null, alterState);
 		} else {
-			othis.showDashboard(null, alterState);
+			if ($(".dashboardLink").is(":visible")) {
+				othis.showDashboard(null, alterState);
+			} else {
+				othis.showServerSettings(null, alterState);
+			}
 		}
 	};
 

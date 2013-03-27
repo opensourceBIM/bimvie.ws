@@ -55,10 +55,10 @@ function Download(containerDiv, data) {
 	othis.zip = false;
 
 	Global.bimServerApi.multiCall([[
-		"ServiceInterface", "getDefaultSerializer", {}
+		"PluginInterface", "getDefaultSerializer", {}
 	],
 	[
-		"ServiceInterface", "getAllSerializers", {onlyEnabled: true}
+		"PluginInterface", "getAllSerializers", {onlyEnabled: true}
 	],
 	[
 	 	"ServiceInterface", "userHasCheckinRights", {uoid: Global.bimServerApi.user.oid, poid: data.poid}

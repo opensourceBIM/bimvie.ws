@@ -68,7 +68,7 @@ function Checkin(containerDiv, project, successFunction) {
 	
 	containerDiv.find(".uploadajaxloader").hide();
 
-	Global.bimServerApi.call("ServiceInterface", "getAllDeserializers", {onlyEnabled: true}, function(data){
+	Global.bimServerApi.call("PluginInterface", "getAllDeserializers", {onlyEnabled: true}, function(data){
 		data.forEach(function(deserializer){
 			var option = $("<option value=\"" + deserializer.oid + "\">" + deserializer.name + "</option>");
 			containerDiv.find(".deserializerName").append(option);

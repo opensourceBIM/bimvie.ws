@@ -70,6 +70,6 @@ public class BootstrapWebModulePlugin implements WebModulePlugin {
 
 	@Override
 	public String getContextPath() {
-		return "/bootstrap";
+		return "/bootstrap/*";
 	}
 }

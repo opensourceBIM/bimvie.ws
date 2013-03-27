@@ -36,7 +36,7 @@ function GenericPluginSettings(main, usersettings, pluginsettings, configuration
 	};
 	
 	this.loadPluginSettings = function() {
-		Global.bimServerApi.call("ServiceInterface", "getPluginSettings", {poid: othis.pluginsettings.oid}, function(objectDefinition){
+		Global.bimServerApi.call("PluginInterface", "getPluginSettings", {poid: othis.pluginsettings.oid}, function(objectDefinition){
 			if (objectDefinition != null) {
 				if (objectDefinition.parameters != null) {
 					objectDefinition.parameters.forEach(function(parameter){
@@ -54,7 +54,7 @@ function GenericPluginSettings(main, usersettings, pluginsettings, configuration
 	};
 	
 	this.loadPluginObjectDefinition = function() {
-		Global.bimServerApi.call("ServiceInterface", "getPluginObjectDefinition", {className: othis.pluginsettings.className}, function(objectDefinition){
+		Global.bimServerApi.call("PluginInterface", "getPluginObjectDefinition", {className: othis.pluginsettings.className}, function(objectDefinition){
 			if (objectDefinition != null && objectDefinition.parameters != null) {
 				objectDefinition.parameters.forEach(function(parameter){
 					$(".genericpluginsettings .nosettings").hide();
@@ -129,7 +129,7 @@ function GenericPluginSettings(main, usersettings, pluginsettings, configuration
 			};
 			settings.parameters.push(parameter);
 		});
-		Global.bimServerApi.callWithFullIndication("ServiceInterface", "setPluginSettings", {poid: othis.pluginsettings.oid, settings: settings}, function(data){
+		Global.bimServerApi.callWithFullIndication("PluginInterface", "setPluginSettings", {poid: othis.pluginsettings.oid, settings: settings}, function(data){
 			
 		});
 	};
@@ -149,7 +149,7 @@ function GenericPluginSettings(main, usersettings, pluginsettings, configuration
 	};
 
 	if (typeof pluginsettings == "number") {
-		Global.bimServerApi.call("ServiceInterface", configuration.getMethod, {oid: pluginsettings}, function(data){
+		Global.bimServerApi.call("PluginInterface", configuration.getMethod, {oid: pluginsettings}, function(data){
 			othis.pluginsettings = data;
 			othis.loadGenericPluginSettings();
 		});

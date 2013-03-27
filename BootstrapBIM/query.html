@@ -16,8 +16,8 @@ function Query(containerDiv, main, poid, roid) {
 	var othis = this;
 	
 	this.loadEngines = function(){
-		Global.bimServerApi.call("ServiceInterface", "getDefaultQueryEngine", {}, function(defaultQueryEngine){
-			Global.bimServerApi.call("ServiceInterface", "getAllQueryEngines", {onlyEnabled: true}, function(data){
+		Global.bimServerApi.call("PluginInterface", "getDefaultQueryEngine", {}, function(defaultQueryEngine){
+			Global.bimServerApi.call("PluginInterface", "getAllQueryEngines", {onlyEnabled: true}, function(data){
 				containerDiv.find(".queryEngineSelect option").remove();
 				data.forEach(function(queryEngine){
 					var option = $("<option value=\"" + queryEngine.oid + "\">" + queryEngine.name + "</option>");
