@@ -1,4 +1,4 @@
-<script src="js/jquery-1.8.1.min.js"></script>
+<script src="js/jquery-1.8.2.min.js"></script>
 <script src="js/String.js"></script>
 <style>
 	html{height: 100%}
@@ -6,9 +6,10 @@
 	.error {color: red}
 	.success {color: black}
 	.methodlist {width: 20%; float: left}
-	.main {clear: both; height: 100%; width: 100%; position: absolute;}
+	.main {clear: both; height: 100%; width: 100%; position: absolute; margin-top: 35px}
 	.inner {padding-top: 35px; height: 90%}
 	* {font: 13px/1.5 'Helvetica Neue', Arial, 'Liberation Sans', FreeSans, sans-serif; color: #333}
+	a {cursor: pointer}
 	li {list-style: none; }
 	ul {padding-left: 5px}
 	.methodlist {max-height: 100%; overflow: auto}
@@ -58,15 +59,17 @@ $(function(){
 
 	function sendLoginRequest() {
 		var request = {
-			"interface": "ServiceInterface",
+			"interface": "AuthInterface",
 			"method": "login",
-			"username": $(".username").val(),
-			"password": $(".password").val()
+			"parameters": {
+				"username": $(".username").val(),
+				"password": $(".password").val()
+			}
 		};
 		$(".output").val("");
 		$(".console").val("");
 		call(request, function(data){
-			token = data.response;
+			token = data.result;
 			$(".console").val("Login successful");
 		});
 	}
@@ -107,26 +110,28 @@ $(function(){
 			event.preventDefault();
 		}
 		var request = {
-			interface: "ServiceInterface",
+			interface: "MetaInterface",
 			method: "getServiceInterfaces"
 		};
 		call(request, function(data){
 			$(".methodlist").empty();
-			data.forEach(function(serviceInterface){
-				$(".methodlist").append("<h1>" + serviceInterface.name + "</h1>");
+			data.result.forEach(function(serviceInterface){
+				$(".methodlist").append("<a href=\"#" + serviceInterface.simpleName + "\"><h1>" + serviceInterface.simpleName + "</h1></a>");
 				var ul = $("<ul>");
 				$(".methodlist").append(ul);
-				
 				var request = {
-					interface: "ServiceInterface",
+					interface: "MetaInterface",
 					method: "getServiceMethods",
-					serviceInterfaceName: serviceInterface.name
+					parameters: {
+						serviceInterfaceName: serviceInterface.name
+					}
 				};
 				call(request, function(data){
-					data.forEach(function(serviceMethod){
+					data.result.forEach(function(serviceMethod){
 						var li = $("<li></li>");
 						var a = $("<a>" + serviceMethod.name + "</a>");
 						a.data("serviceInterfaceName", serviceInterface.name);
+						a.data("serviceInterfaceSimpleName", serviceInterface.simpleName);
 						a.data("serviceMethodName", serviceMethod.name);
 						a.data("doc", serviceMethod.doc);
 						a.click(getExample);
@@ -166,22 +171,31 @@ $(function(){
 	function getExample(event) {
 		event.preventDefault();
 		var request = {
-			interface: "ServiceInterface",
+			interface: "MetaInterface",
 			method: "getServiceMethodParameters",
-			serviceInterfaceName: $(this).data("serviceInterfaceName"),
-			serviceMethodName: $(this).data("serviceMethodName")
+			parameters: {
+				serviceInterfaceName: $(this).data("serviceInterfaceName"),
+				serviceMethodName: $(this).data("serviceMethodName")				
+			}
 		};
 		$(".methoddoc div").html($(this).data("doc"));
-		$(".methoddoc h1").html($(this).data("serviceInterfaceName") + "." + $(this).data("serviceMethodName"));
+		$(".methoddoc h1").html($(this).data("serviceInterfaceSimpleName") + "." + $(this).data("serviceMethodName"));
 		var example = "{\n";
-		example += "  \"interface\": \"" + $(this).data("serviceInterfaceName") + "\", \n";
-		example += "  \"method\": \"" + $(this).data("serviceMethodName") + "\"";
+		example += "  \"interface\": \"" + $(this).data("serviceInterfaceSimpleName") + "\", \n";
+		example += "  \"method\": \"" + $(this).data("serviceMethodName") + "\", \n";
+		example += "  \"parameters\": {\n";
 		call(request, function(data){
-			data.forEach(function(parameter, index){
-				example += ",\n  \"" + parameter.name + "\": ";
+			data.result.forEach(function(parameter, index){
+				example += "    \"" + parameter.name + "\": ";
 				example += makeExampleFromType(parameter.type, parameter.genericType, parameter.doc);
+				if (index != data.result.length - 1) {
+					example += ",\n";
+				} else {
+					example += "\n";
+				}
 			});
-			example += "\n}";
+			example += "  }\n";
+			example += "}";
 			$(".input").val(example);
 		});
 	}
