@@ -52,7 +52,7 @@ function Checkin(containerDiv, project, successFunction) {
 	othis.project = project;
 	
 	this.hideUpload = function() {
-		containerDiv.find(".uploadbranchlink").hide();			
+		containerDiv.find(".uploadbranchlink, .checkinurllink").hide();			
 		containerDiv.find(".uploadTable").hide();
 		containerDiv.find(".uploadProgressBar").show();
 		containerDiv.find(".uploadButton").hide();
@@ -213,37 +213,38 @@ function Checkin(containerDiv, project, successFunction) {
 			event.preventDefault();
 		}
 	});
-
+	containerDiv.find(".showuploadlink").hide();
 	containerDiv.find(".uploadbranch").hide();
+
 	containerDiv.find(".uploadbranchlink").click(function(){
 		containerDiv.find(".upload").hide();
-		containerDiv.find(".showuploadlink").show();
+		containerDiv.find(".showuploadlink, .checkinurllink").show();
+		containerDiv.find(".checkinurl").hide();
 		containerDiv.find(".uploadbranch").show();
 		containerDiv.find(".uploadbranchlink").hide();
 		containerDiv.find(".uploadButton").html("Checkin existing revision");
 	});
 	
-	containerDiv.find(".urlinput").bind("paste", function(){
-		containerDiv.find(".uploadButton").show();
-	});
-	
 	containerDiv.find(".checkinurllink").click(function(){
 		containerDiv.find(".upload, .uploadbranch").hide();
-		containerDiv.find(".showuploadlink").show();
+		containerDiv.find(".showuploadlink, .uploadbranchlink").show();
 		containerDiv.find(".checkinurl").show();
 		containerDiv.find(".checkinurllink").hide();
 		containerDiv.find(".urlinput").focus();
 	});
 	
-	containerDiv.find(".showuploadlink").hide();
 	containerDiv.find(".showuploadlink").click(function(){
 		containerDiv.find(".upload").show();
 		containerDiv.find(".showuploadlink").hide();
-		containerDiv.find(".uploadbranch").hide();
-		containerDiv.find(".uploadbranchlink").show();
+		containerDiv.find(".uploadbranch, .checkinurl").hide();
+		containerDiv.find(".uploadbranchlink, .checkinurllink").show();
 		containerDiv.find(".uploadButton").html("Checkin new revision");
 	});
-	
+
+	containerDiv.find(".urlinput").bind("paste", function(){
+		containerDiv.find(".uploadButton").show();
+	});
+
 	containerDiv.find(".uploadButton").hide();
 	if (othis.project.subProjects.length != 0) {
 		containerDiv.find(".uploadlink").show();
