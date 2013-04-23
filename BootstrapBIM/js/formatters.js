@@ -1,4 +1,7 @@
 function formatDate(date) {
+	if (date == null) {
+		return "No date";
+	}
 	return date.getDate().toString().lpad("0", 2) + "-" + (date.getMonth() + 1).toString().lpad("0", 2) + "-" + date.getFullYear();
 }
 
