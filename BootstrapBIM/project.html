@@ -549,8 +549,18 @@ var Project = function(main, project) {
 		$(".project .logLink").addClass("active");
 		$(".project .content > div").hide();
 		$(".project .log").show();
+		var settings = {
+			getTopicsMethod: "getProgressTopicsOnProject",
+			getTopicsArguments: {poid: othis.project.oid},
+			registerFunction: function(newChangeProgressHandler, closedChangeProgressHandler){
+				Global.bimServerApi.registerChangeProgressProjectHandler(othis.project.oid, newChangeProgressHandler, closedChangeProgressHandler)
+			},
+			unregisterFunction: function(newChangeProgressHandler, closedChangeProgressHandler){
+				Global.bimServerApi.unregisterChangeProgressProjectHandler(othis.project.oid, newChangeProgressHandler, closedChangeProgressHandler)
+			}
+		};
 		$(".project .log").load("log.html", function(){
-			new Log($(this), main, othis.project.oid, othis.lastRevision.oid);
+			new Log($(this), settings, main, othis.project.oid, othis.lastRevision.oid);
 		});
 	};
 

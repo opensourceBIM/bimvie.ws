@@ -33,17 +33,6 @@
 				<table class="table"></table>
 			</div>
 			<div id="log" class="tab-pane log">
-				<table class="table">
-					<thead>
-						<tr>
-							<th>Id</th>
-							<th>Title</th>
-							<th>State</th>
-							<th>Progress</th>
-						</tr>
-					</thead>
-					<tbody></tbody>
-				</table>
 			</div>
 		</div>
 	</div>
@@ -210,12 +199,26 @@ function ServerInfo(containerDiv, main) {
 	};
 	
 	this.loadLog = function(){
-		Global.bimServerApi.call("RegistryInterface", "getProgressTopicsOnServer", {}, function(topicIds){
-			topicIds.forEach(function(topicId){
-				othis.newChangeProgressHandler(topicId);
-			});
-			Global.bimServerApi.registerChangeProgressServerHandler(othis.newChangeProgressHandler, othis.closedChangeProgressHandler);
+		$("#log").load("log.html", function(){
+			var settings = {
+				getTopicsMethod: "getProgressTopicsOnServer",
+				getTopicsArguments: {},
+				registerFunction: function(newChangeProgressHandler, closedChangeProgressHandler){
+					Global.bimServerApi.registerChangeProgressServerHandler(newChangeProgressHandler, closedChangeProgressHandler);
+				},
+				unregisterFunction: function(newChangeProgressHandler, closedChangeProgressHandler){
+					Global.bimServerApi.unregisterChangeProgressServerHandler(newChangeProgressHandler, closedChangeProgressHandler)
+				}
+			};
+			new Log($(this), settings, main);
 		});
+
+//		Global.bimServerApi.call("RegistryInterface", "getProgressTopicsOnServer", {}, function(topicIds){
+//			topicIds.forEach(function(topicId){
+//				othis.newChangeProgressHandler(topicId);
+//			});
+//			Global.bimServerApi.registerChangeProgressServerHandler(othis.newChangeProgressHandler, othis.closedChangeProgressHandler);
+//		});
 	};
 
 	containerDiv.find(".logLink").click(othis.loadLog);
