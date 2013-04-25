@@ -106,3 +106,7 @@ label.checkbox {
 .progresstd .progress {
 	margin-bottom: 2px;
 }
+
+table.table tr td span {
+	margin-left: 0;
+}

@@ -32,7 +32,7 @@ function Service(main, service) {
 	othis.service = service;
 
 	this.loadProjects = function(targetElement) {
-		bimServerApi.call("ServiceInterface", "getAllProjects", {onlyTopLevel: false}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getAllProjects", {onlyTopLevel: false}, function(data){
 			targetElement.empty();
 			targetElement.append("<option value=\"[SELECT_A_PROJECT]\">[Select a project]</option>");
 			data.forEach(function(project){
@@ -76,7 +76,7 @@ function Service(main, service) {
 		var td1 = $("<td></td>");
 		tr1.append(td1);
 		$(".service .rightsTable tbody").append(tr1);	
-		bimServerApi.call("ServiceInterface", "getExtendedDataSchemaById", {naoidmespace: service.readExtendedDataId}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaById", {naoidmespace: service.readExtendedDataId}, function(data){
 			td.append(main.createExtendedDataSchemaLink(data));
 			othis.readExtendedDataOid = data.oid;
 		}, function(){
@@ -89,13 +89,13 @@ function Service(main, service) {
 		var td2 = $("<td></td>");
 		tr2.append(td2);
 		$(".service .rightsTable tbody").append(tr2);	
-		bimServerApi.call("ServiceInterface", "getExtendedDataSchemaById", {oid: service.writeExtendedDataId}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaById", {oid: service.writeExtendedDataId}, function(data){
 			td2.append(main.createExtendedDataSchemaLink(data));
 			othis.writeExtendedDataOid = data.oid;
 		}, function(){
 			tr2.addClass("error");
 			td2.append("<br/>Missing extended data schema");
-			bimServerApi.call("ServiceInterface", "getExtendedDataSchemaFromRepository", {namespace: service.writeExtendedData}, function(data){
+			Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaFromRepository", {namespace: service.writeExtendedData}, function(data){
 				var exs = data;
 				main.showServerSettings(null, function(){
 					main.current.showAddNewExtendedDataSchema(exs);
@@ -146,7 +146,7 @@ function Service(main, service) {
 				writeRevisionId: othis.serviceDescriptor.writeRevision ? $(".addservice2 .projectSelect").val() : -1,
 				writeExtendedDataId: othis.writeExtendedDataOid
 			};
-			bimServerApi.call("ServiceInterface", "addServiceToProject", {poid: othis.project.oid, sService: service}, function(data){
+			Global.bimServerApi.call("ServiceInterface", "addServiceToProject", {poid: othis.project.oid, sService: service}, function(data){
 				main.showProject(othis.project, null, function(){
 					this.reloadProject();
 				});

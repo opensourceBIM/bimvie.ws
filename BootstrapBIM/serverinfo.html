@@ -212,13 +212,6 @@ function ServerInfo(containerDiv, main) {
 			};
 			new Log($(this), settings, main);
 		});
-
-//		Global.bimServerApi.call("RegistryInterface", "getProgressTopicsOnServer", {}, function(topicIds){
-//			topicIds.forEach(function(topicId){
-//				othis.newChangeProgressHandler(topicId);
-//			});
-//			Global.bimServerApi.registerChangeProgressServerHandler(othis.newChangeProgressHandler, othis.closedChangeProgressHandler);
-//		});
 	};
 
 	containerDiv.find(".logLink").click(othis.loadLog);

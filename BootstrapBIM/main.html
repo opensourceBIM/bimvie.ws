@@ -24,7 +24,7 @@
 <script>
 function Main(address, username) {
 	var othis = this;
-	var current = null;
+	othis.pageChanger = new PageChanger($(".main .nav"), $(".main .maincontainer"));
 
 	$(".main .nav li").hide();
 	Settings.getMenuItems().forEach(function(menuItem){
@@ -80,26 +80,8 @@ function Main(address, username) {
 		});
 	};
 
-	this.changePage = function(linkElement, page, constructorFunction, callback) {
-		if (othis.current != null) {
-			othis.current.close();
-		}
-		$(".main .nav li").removeClass("active");
-		linkElement.addClass("active");
-		$(".maincontainer").load(page, function(response, status, xhr) {
-			if (status == "error") {
-				console.log(msg, xhr.status, xhr.statusText);
-			} else {
-				constructorFunction.call(this);
-				if (callback != null) {
-					//callback.call(othis.current);
-				}
-			} 
-		});
-	};
-
 	this.showDashboard = function(callback, alterState) {
-		othis.changePage($(".dashboardLink"), "dashboard.html", function(){
+		othis.pageChanger.changePage($(".dashboardLink"), "dashboard.html", function(){
 			othis.current = new Dashboard(othis);
 			if (alterState) {
 				pushHistory({page: "Dashboard"});
@@ -108,8 +90,8 @@ function Main(address, username) {
 	};
 
 	this.showProjects = function(callback, alterState) {
-		othis.changePage($(".projectsLink"), "projects.html", function(){
-			othis.current = new Projects(othis);
+		othis.pageChanger.changePage($(".projectsLink"), "projects.html", function(){
+			othis.current = new Projects($(this), othis);
 			othis.current.show(alterState);
 			if (alterState) {
 				pushHistory({page: "Projects"});
@@ -118,7 +100,7 @@ function Main(address, username) {
 	};
 
 	this.showAddProject = function(callback, parentProject, alterState) {
-		othis.changePage($(".projectsLink"), "addproject.html", function(){
+		othis.pageChanger.changePage($(".projectsLink"), "addproject.html", function(){
 			othis.current = new AddProject(othis, parentProject);
 			if (alterState) {
 				pushHistory({page: "AddProject"});
@@ -127,7 +109,7 @@ function Main(address, username) {
 	};
 
 	this.showAddUser = function(callback, alterState) {
-		othis.changePage($(".usersLink"), "adduser.html", function(){
+		othis.pageChanger.changePage($(".usersLink"), "adduser.html", function(){
 			othis.current = new AddUser(othis);
 			if (alterState) {
 				pushHistory({page: "AddUser"});
@@ -136,7 +118,7 @@ function Main(address, username) {
 	};
 
 	this.showUser = function(user, callback, alterState) {
-		othis.changePage($(".usersLink"), "user.html", function(){
+		othis.pageChanger.changePage($(".usersLink"), "user.html", function(){
 			othis.current = new User(othis, user);
 			othis.current.show();
 			if (alterState) {
@@ -146,7 +128,7 @@ function Main(address, username) {
 	};
 
 	this.showAddService = function(project, callback, alterState) {
-		othis.changePage($(".projectsLink"), "addservice.html", function(){
+		othis.pageChanger.changePage($(".projectsLink"), "addservice.html", function(){
 			othis.current = new AddService(othis, project);
 			if (alterState) {
 				pushHistory({page: "AddService"});
@@ -155,7 +137,7 @@ function Main(address, username) {
 	};
 	
 	this.showAddService2 = function(project, serviceDescriptor, isLocal, callback, alterState) {
-		othis.changePage($(".projectsLink"), "addservice2.html", function(){
+		othis.pageChanger.changePage($(".projectsLink"), "addservice2.html", function(){
 			othis.current = new AddService2(othis, project, serviceDescriptor, isLocal);
 			if (alterState) {
 				pushHistory({page: "AddService2"});
@@ -164,8 +146,8 @@ function Main(address, username) {
 	};
 	
 	this.showProject = function(project, callback, alterState) {
-		othis.changePage($(".projectsLink"), "project.html", function(){
-			othis.current = new Project(othis, project);
+		othis.pageChanger.changePage($(".projectsLink"), "project.html", function(){
+			othis.current = new Project($(this), othis, project);
 			othis.current.show();
 			if (alterState) {
 				pushHistory({page: "Project", "poid": typeof project == "object" ? project.oid : project});
@@ -174,7 +156,7 @@ function Main(address, username) {
 	};
 
 	this.showRevision = function(revision, callback, alterState) {
-		othis.changePage($(".projectsLink"), "revision.html", function(){
+		othis.pageChanger.changePage($(".projectsLink"), "revision.html", function(){
 			othis.current = new Revision(othis, revision);
 			othis.current.show();
 			if (alterState) {
@@ -184,7 +166,7 @@ function Main(address, username) {
 	};
 	
 	this.showUsers = function(callback, alterState) {
-		othis.changePage($(".usersLink"), "users.html", function(){
+		othis.pageChanger.changePage($(".usersLink"), "users.html", function(){
 			othis.current = new Users(othis);
 			if (alterState) {
 				pushHistory({page: "Users"});
@@ -193,7 +175,7 @@ function Main(address, username) {
 	};
 	
 	this.showUserSettings = function(callback, alterState) {
-		othis.changePage($(".usersettingsLink"), "usersettings.html", function(){
+		othis.pageChanger.changePage($(".usersettingsLink"), "usersettings.html", function(){
 			othis.current = new UserSettings(othis);
 			if (alterState) {
 				pushHistory({page: "UserSettings"});
@@ -206,12 +188,18 @@ function Main(address, username) {
 			othis.current.showExtendedDataSchema(extendedDataSchema);
 		});
 	};
+
+	this.showService = function(project, service, callback, alterState) {
+		this.showProject(project, function(){
+			othis.current.showService(service);
+		}, alterState);
+	};
 	
 	this.showServerSettings = function(callback, alterState) {
 		if (othis.current != null && othis.current.getName != null && othis.current.getName() == "ServerSettings") {
 			callback();
 		} else {
-			othis.changePage($(".serversettingsLink"), "serversettings.html", function(){
+			othis.pageChanger.changePage($(".serversettingsLink"), "serversettings.html", function(){
 				othis.current = new ServerSettings(othis);
 				if (alterState) {
 					pushHistory({page: "ServerSettings"});
@@ -221,7 +209,7 @@ function Main(address, username) {
 	};
 
 	this.showServerInfo = function(callback, alterState) {
-		othis.changePage($(".serverinfoLink"), "serverinfo.html", function(){
+		othis.pageChanger.changePage($(".serverinfoLink"), "serverinfo.html", function(){
 			othis.current = new ServerInfo($(this), othis);
 			if (alterState) {
 				pushHistory({page: "ServerInfo"});
@@ -230,7 +218,7 @@ function Main(address, username) {
 	};
 
 	this.showTesting = function(callback, alterState) {
-		othis.changePage($(".testingLink"), "testing.html", function(){
+		othis.pageChanger.changePage($(".testingLink"), "testing.html", function(){
 			othis.current = new Testing(othis);
 			if (alterState) {
 				pushHistory({page: "Testing"});

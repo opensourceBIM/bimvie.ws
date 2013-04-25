@@ -23,6 +23,10 @@ function Log(containerDiv, settings, main) {
 		settings.unregisterFunction(othis.newChangeProgressHandler, othis.closedChangeProgressHandler);
 	};
 	
+	this.getName = function(){
+		return "Log";
+	};
+	
 	this.progressHandler = function(topicId, state){
 		containerDiv.find("table").show();
 		containerDiv.find(".nologs").hide();
@@ -53,7 +57,10 @@ function Log(containerDiv, settings, main) {
 			}
 		}
 		tr.find(".start").html(formatDateTimeShortest(new Date(state.start)));
-		tr.find(".duration").html(formatDuration((state.end != null ? new Date(state.end) : new Date()).getTime() - new Date(state.start).getTime(), true));
+		var diff = (state.end != null ? new Date(state.end) : new Date()).getTime() - new Date(state.start).getTime();
+		tr.find(".duration").attr("start", state.start);
+		tr.find(".duration").attr("end", state.end);
+		tr.find(".duration").html(formatDuration(diff, true));
 		if (state.end == null) {
 			tr.find(".duration").css("color", "red");	
 		} else {

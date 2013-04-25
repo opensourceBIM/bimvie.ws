@@ -14,7 +14,10 @@
 		<div class="revisions initialhide">
 			<div class="well well-small norevisions">No revisions</div>
 			<table class="revisionsTable initialhide table table-striped table-hover">
-				<tr><th>Id</th><th>Date</th><th>Project</th><th>Comment</th><th>Size</th><th>Actions</th></tr>
+				<thead>
+					<tr><th>Id</th><th>Date</th><th>Project</th><th>Comment</th><th>Size</th><th>Actions</th></tr>
+				</thead>
+				<tbody></tbody>
 			</table>
 		</div>
 		<div class="tab-pane checkouts initialhide">
@@ -35,7 +38,11 @@
 		<div class="projects initialhide">
 			<div class="well well-small noprojects">No projects</div>
 			<table class="projectsTable initialhide table table-striped table-hover">
-				<tr><th>Name</th><th>Sub Projects</th><th>Revisions</th><th>Actions</th></tr>
+				<thead>
+					<tr><th>Name</th><th>Sub Projects</th><th>Revisions</th><th>Actions</th></tr>
+				</thead>
+				<tbody>
+				</tbody>
 			</table>
 		</div>
 	</div>
@@ -77,13 +84,18 @@ function User(main, user) {
 			othis.updateUser();
 		});
 	};
-	
+
 	this.updateUser = function() {
 		$(".user h1").html(othis.user.name);
 		$(".user .revisionsLink a").html("Revisions" + (othis.user.revisions.length == 0 ? "" : (" (" + othis.user.revisions.length + ")")));
 		$(".user .checkoutsLink a").html("Checkouts" + (othis.user.checkouts == null || othis.user.checkouts.length == 0 ? "" : (" (" + othis.user.checkouts.length + ")")));
 		$(".user .projectsLink a").html("Projects" + (othis.user.hasRightsOn.length == 0 ? "" : (" (" + othis.user.hasRightsOn.length + ")")));
 		$(".user .tokenSpan").html(othis.user.token);
+
+		Global.bimServerApi.call("ServiceInterface", "getAllCheckoutsByUser", {uoid: othis.user.oid}, function(checkouts){
+			$(".user .checkoutsLink a").html("Checkouts" + (checkouts == null || checkouts.length == 0 ? "" : (" (" + checkouts.length + ")")));
+		});
+		
 		var history = History.getState().data;
 		if (history.tab == "details") {
 			othis.showDetails();
@@ -153,7 +165,7 @@ function User(main, user) {
 		dd.show();
 		actions.append(dd);
 		revisionRow.append(actions);
-		revisionRow.insertAfter($(".revisionsTable tr:first-child"));
+		$(".revisionsTable tbody").append(revisionRow);
 	};
 	
 	this.downloadCheckoutClick = function(event) {
@@ -243,7 +255,7 @@ function User(main, user) {
 		projectRow.append("<td>" + project.subProjects.length + "</td>");
 		projectRow.append("<td>" + project.revisions.length + "</td>");
 		projectRow.append("<td></td>");
-		$(".projectsTable").append(projectRow);
+		$(".projectsTable tbody").append(projectRow);
 	};
 	
 	this.showProjects = function() {
