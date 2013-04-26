@@ -143,7 +143,7 @@ function ServerInfo(containerDiv, main) {
 		});
 
 		Global.bimServerApi.call("MetaInterface", "getServiceInterfaces", {}, function(data){
-			$(".webservices table").append("<tr><td colspan=\"2\" class=\"header\">Web Services</td></tr>");
+			$(".webservices table").append("<tr><th class=\"header\">Web Services</th><th>Files</th></tr>");
 			data.forEach(function(service){
 				var tr = $("<tr>");
 				tr.append("<td>" + service.simpleName + "</td>");

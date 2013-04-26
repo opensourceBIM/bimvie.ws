@@ -42,7 +42,7 @@ function Users(main) {
 	};
 	
 	this.sendPasswordReset = function(user){
-		Global.bimServerApi.callWithFullIndication("ServiceInterface", "requestPasswordChange", {username: user.username, resetUrl: getBaseURL() + "?page=ResetPassword"}, function(){
+		Global.bimServerApi.callWithFullIndication("AuthInterface", "requestPasswordChange", {username: user.username, resetUrl: getBaseURL() + "?page=ResetPassword"}, function(){
 			
 		});
 	};
