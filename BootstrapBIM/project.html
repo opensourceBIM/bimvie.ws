@@ -4,6 +4,7 @@
 		<button class="btn checkinButton">Checkin</button>
 		<button class="btn addServiceButton">Add service</button>
 		<button class="btn addSubProjectButton">Add sub project</button>
+		<button class="btn show3DButton">Show in 3D</button>
 	</div>
 	<ul class="nav nav-tabs">
 	  <li class="detailsLink active"><a>Details</a></li>
@@ -288,6 +289,7 @@ var Project = function(containerDiv, main, project) {
 		revisionRow.append("<td>" + revision.size + "</td>");
 
 		var actions = newSplitDropDownTd("Download", othis.downloadCheckoutClick);
+		
 		actions.find("button.dropdown-toggle").click(function(){
 			Global.bimServerApi.call("ServiceInterface", "getAllServicesOfProject", {poid: othis.project.oid}, function(data){
 				actions.find("ul li").remove();
@@ -312,8 +314,17 @@ var Project = function(containerDiv, main, project) {
 					othis.share(revision.oid);
 				});
 				actions.find("ul").append(shareLi);
+				
+				if (Settings.get3DViewerUrl != null) {
+					var viewLi = $("<li><a>View in 3D</a></li>");
+					viewLi.find("a").click(function(){
+						window.open(Settings.get3DViewerUrl(Global.bimServerApi, revision.oid));
+					});
+					actions.find("ul").append(viewLi);
+				}
 			});
 		});
+		
 		revisionRow.append(actions);
 		containerDiv.find(".revisionsTable tbody").prepend(revisionRow);
 	};
@@ -545,6 +556,15 @@ var Project = function(containerDiv, main, project) {
 				$(".sidespan .p" + smallProject.parentId).append(li);
 			});
 		});
+		
+		if (Settings.get3DViewerUrl != null && othis.project.lastRevisionId != -1) {
+			containerDiv.find(".show3DButton").click(function(){
+				var url = Settings.get3DViewerUrl(Global.bimServerApi, othis.project.lastRevisionId);
+				window.open(url);
+			});
+		} else {
+			containerDiv.find(".show3DButton").hide();
+		}
 	};
 
 	this.loadHistory = function(){
