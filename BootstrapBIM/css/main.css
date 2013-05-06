@@ -2,6 +2,19 @@ a {
 	cursor: pointer;
 }
 
+.container-fluid {
+	margin: 10px;
+}
+
+.sidespan ul li {
+	list-style: none;
+}
+
+.sidespan {
+	margin-top: 100px;
+	overflow: hidden;
+}
+
 .container {
 	padding: 10px;
 }

@@ -131,7 +131,7 @@
 	</div>
 	<div class="initialhide dropdowntemplateproject">
 		<div class="btn-group">
-			<button class="btn">Download</button>
+			<button class="btn">Delete</button>
 			<button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 			<ul class="dropdown-menu">
 			</ul>
@@ -148,6 +148,7 @@ var Project = function(containerDiv, main, project) {
 		if (othis.project != null) {
 			Global.bimServerApi.unregisterNewRevisionOnSpecificProjectHandler(othis.project.oid, othis.newRevisionOnSpecificProjectHandler);
 		}
+		$(".sidespan").empty();
 	};
 
 	this.show = function() {
@@ -528,6 +529,22 @@ var Project = function(containerDiv, main, project) {
 			containerDiv.find(".extendedDataLink").hide();
 			othis.loadHistory();
 		}
+		
+		$(".sidespan").html("<ul class=\"p-1\"></ul>");
+		Global.bimServerApi.call("ServiceInterface", "getAllRelatedProjects", {poid: othis.project.oid}, function(list){
+			var lastParent = -1;
+			list.forEach(function(smallProject){
+				var li = $("<li><a>" + smallProject.name + "</a><ul class=\"p" + smallProject.oid + "\"></ul></li>");
+				li.find("a").data("poid", smallProject.oid);
+				if (smallProject.oid == othis.project.oid) {
+					li.find("a").css("font-weight", "bold");
+				}
+				li.find("a").click(function(event){
+					main.showProject($(this).data("poid"), null, true);
+				});
+				$(".sidespan .p" + smallProject.parentId).append(li);
+			});
+		});
 	};
 
 	this.loadHistory = function(){

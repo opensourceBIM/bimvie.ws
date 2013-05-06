@@ -19,6 +19,8 @@ function Dashboard(main) {
 		Global.bimServerApi.unregister(othis.newLogAction);
 	};
 	
+	this.show = function(){};
+	
 	this.createProjectLink = function(poid) {
 		var link = $("<a>Loading...</a>");
 		link.attr("poid", poid);

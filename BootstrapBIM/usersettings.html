@@ -19,6 +19,9 @@
 	function UserSettings(main) {
 		var othis = this;
 
+		this.show = function(){
+		};
+		
 		this.changePage = function(linkElement, page, constructorFunction, callback) {
 			if (othis.current != null) {
 				othis.current.close();

@@ -14,6 +14,9 @@
 function Users(main) {
 	var othis = this;
 
+	this.show = function(){
+	};
+	
 	this.userClick = function(event) {
 		if (!$(event.target).is("a, button, span.caret")) {
 			main.showUser($(this).parents("tr").andSelf().data("user"), null, true);

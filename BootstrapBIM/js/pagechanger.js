@@ -14,9 +14,10 @@ function PageChanger(navElement, mainContainer) {
 			if (status == "error") {
 				console.log(msg, xhr.status, xhr.statusText);
 			} else {
-				constructorFunction.call(this);
+				othis.current = constructorFunction.call(this);
+				othis.current.show();
 				if (callback != null) {
-					//callback.call(othis.current);
+					callback.call(othis.current);
 				}
 			}
 		});

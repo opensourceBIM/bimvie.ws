@@ -40,6 +40,9 @@
 <script>
 function ServerInfo(containerDiv, main) {
 	var othis = this;
+
+	this.show = function(){
+	};
 	
 	this.close = function(){
 		Global.bimServerApi.unregisterChangeProgressServerHandler(othis.newChangeProgressHandler, othis.closedChangeProgressHandler);
