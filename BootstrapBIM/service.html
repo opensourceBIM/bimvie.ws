@@ -31,12 +31,16 @@ function Service(main, service) {
 	var othis = this;
 	othis.service = service;
 
-	this.loadProjects = function(targetElement) {
+	this.loadProjects = function(targetElement, selectedOid) {
 		Global.bimServerApi.call("ServiceInterface", "getAllProjects", {onlyTopLevel: false}, function(data){
 			targetElement.empty();
 			targetElement.append("<option value=\"[SELECT_A_PROJECT]\">[Select a project]</option>");
 			data.forEach(function(project){
-				targetElement.append("<option value=\"" + project.oid + "\">" + project.name + "</option>");
+				var option = $("<option value=\"" + project.oid + "\">" + project.name + "</option>");
+				if (project.oid == selectedOid) {
+					option.attr("selected", "selected");
+				}
+				targetElement.append(option);
 			});
 		});
 	};
@@ -61,7 +65,7 @@ function Service(main, service) {
 		var form = $("<form class=\"form-inline\">");
 		var select = $("<select class=\"projectSelect\"></select>");
 		select.change(othis.canAdd);
-		othis.loadProjects(select);
+		othis.loadProjects(select, service.writeRevisionId);
 		var tr = $("<tr><td>Write Revision</td></tr>");
 		var label = $("<label>To project </label>");
 		var td = $("<td></td>");
@@ -110,6 +114,7 @@ function Service(main, service) {
 
 	$(".service .technicalDetailsTable tbody").append("<tr><td>URL</td><td>" + service.url + "</td></tr>");
 	$(".service .technicalDetailsTable tbody").append("<tr><td>Service Identifier</td><td>" + service.serviceIdentifier + "</td></tr>");
+	$(".service .technicalDetailsTable tbody").append("<tr><td>Profile Identifier</td><td>" + service.profileIdentifier + "</td></tr>");
 	
 	this.addProfileDescriptor = function(profileDescriptor) {
 		var tr = $("<tr class=\"" + (profileDescriptor.publicProfile ? "public" : "private") + "profiledescriptor\"></tr>");
