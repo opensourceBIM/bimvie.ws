@@ -1,6 +1,7 @@
 <div class="testing">
 	<button class="btn testAllSequentiallyButton">Test all sequentially</button>
 	<button class="btn testAllConcurrentlyButton">Test all concurrently</button>
+	<button class="btn lazyProjectStructure">Create lazy project structure</button>
 	<table class="table table-striped">
 		<thead>
 			<tr>
@@ -367,6 +368,31 @@ function Testing() {
 							});
 						});
 					});
+				});
+			});
+		});
+	});
+	
+	$(".lazyProjectStructure").click(function(){
+		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Gebouw"}, function(building){
+			Global.bimServerApi.call("ServiceInterface", "addProjectAsSubProject", {projectName: "Architekt", parentPoid: building.oid}, function(architekt){
+				Global.bimServerApi.call("ServiceInterface", "addProjectAsSubProject", {projectName: "Dakkap", parentPoid: architekt.oid}, function(dakkap){
+				});
+				Global.bimServerApi.call("ServiceInterface", "addProjectAsSubProject", {projectName: "Dakkappellen", parentPoid: architekt.oid}, function(dakkappellen){
+				});
+				Global.bimServerApi.call("ServiceInterface", "addProjectAsSubProject", {projectName: "Deurbellen", parentPoid: architekt.oid}, function(deurbellen){
+				});
+				Global.bimServerApi.call("ServiceInterface", "addProjectAsSubProject", {projectName: "Kalkzandsteen", parentPoid: architekt.oid}, function(kalkzandsteen){
+				});
+				Global.bimServerApi.call("ServiceInterface", "addProjectAsSubProject", {projectName: "Plafonds", parentPoid: architekt.oid}, function(plafonds){
+				});
+				Global.bimServerApi.call("ServiceInterface", "addProjectAsSubProject", {projectName: "Reclame", parentPoid: architekt.oid}, function(reclame){
+				});
+				Global.bimServerApi.call("ServiceInterface", "addProjectAsSubProject", {projectName: "Tegelwerk", parentPoid: architekt.oid}, function(tegelwerk){
+				});
+				Global.bimServerApi.call("ServiceInterface", "addProjectAsSubProject", {projectName: "Trapleuningen", parentPoid: architekt.oid}, function(trapleuningen){
+				});
+				Global.bimServerApi.call("ServiceInterface", "addProjectAsSubProject", {projectName: "Trappen", parentPoid: architekt.oid}, function(trappen){
 				});
 			});
 		});

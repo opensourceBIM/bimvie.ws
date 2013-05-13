@@ -541,9 +541,11 @@ var Project = function(containerDiv, main, project) {
 			othis.loadHistory();
 		}
 		
-		$(".sidespan").html("<ul class=\"p-1\"></ul>");
 		Global.bimServerApi.call("ServiceInterface", "getAllRelatedProjects", {poid: othis.project.oid}, function(list){
 			var lastParent = -1;
+			var div = $("<div>");
+			var ul = $("<ul class=\"p-1\"></ul>");
+			div.append(ul);
 			list.forEach(function(smallProject){
 				var li = $("<li><a>" + smallProject.name + "</a><ul class=\"p" + smallProject.oid + "\"></ul></li>");
 				li.find("a").data("poid", smallProject.oid);
@@ -553,8 +555,9 @@ var Project = function(containerDiv, main, project) {
 				li.find("a").click(function(event){
 					main.showProject($(this).data("poid"), null, true);
 				});
-				$(".sidespan .p" + smallProject.parentId).append(li);
+				div.find(".p" + smallProject.parentId).append(li);
 			});
+			$(".sidespan").append(div);
 		});
 		
 		if (Settings.get3DViewerUrl != null && othis.project.lastRevisionId != -1) {
