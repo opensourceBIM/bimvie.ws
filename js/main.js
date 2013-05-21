@@ -5,6 +5,18 @@ $.ajaxSetup({
 	cache: false
 })
 
+function stripLastSlash(str) {
+	if(str.substr(-1) == '/') {
+        return str.substr(0, str.length - 1);
+    }
+    return str;
+}
+
+function getBaseURL () {
+   return location.protocol + "//" + location.hostname + 
+      (location.port && ":" + location.port) + "/";
+}
+
 function loadGeneric(targetElement, oidField, displayField, methodName, objectField, paramFunction) {
 	var oid = targetElement.attr(oidField);
 	if (Global.objectcache[oid] != null) {

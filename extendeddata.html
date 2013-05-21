@@ -1,8 +1,33 @@
 <div class="extendeddata">
-Unimplemented
+	<table class="table">
+		<thead></thead>
+		<tbody></tbody>
+	</table>
+	<div class="bcf">
+		<img/>
+	</div>
 </div>
 <script>
 function ExtendedData(main, extendedData) {
 	var othis = this;
+	
+	$(".extendeddata table tbody").append("<tr><td>Title</td><td>" + extendedData.title + "</td></tr>");
+	$(".extendeddata table tbody").append("<tr><td>User</td><td>" + extendedData.userId + "</td></tr>");
+	$(".extendeddata table tbody").append("<tr><td>Schema</td><td>" + extendedData.schemaId + "</td></tr>");
+	$(".extendeddata table tbody").append("<tr><td>Size</td><td class=\"size\"></td></tr>");
+	$(".extendeddata table tbody").append("<tr><td>Added</td><td>" + formatDateTime(new Date(extendedData.added)) + "</td></tr>");
+	
+	this.showBcf = function(schema, extendedData, file){
+		$(".bcf img").attr("src", "data:image/png;base64," + file.data);
+	};
+	
+	Global.bimServerApi.call("ServiceInterface", "getFile", {fileId: extendedData.fileId}, function(file){
+		$(".size").html(file.filename);
+		Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaById", {oid: extendedData.schemaId}, function(schema){
+			if (schema.namespace == "http://www.buildingsmart-tech.org/specifications/bcf-releases") {
+				othis.showBcf(schema, extendedData, file);
+			}
+		});
+	});
 }
 </script>

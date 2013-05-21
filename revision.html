@@ -2,6 +2,7 @@
 	<h1></h1>
 	<div class="btn-group well well-small">
 		<button class="btn branchButton">Branch</button>
+		<button class="btn addExtendedDataButton">Add extended data</button>
 	</div>
 	<ul class="nav nav-tabs">
 	  <li class="detailsLink"><a>Details</a></li>
@@ -59,16 +60,16 @@ function Revision(main, revision) {
 		}
 		var settings = {
 			getTopicsMethod: "getProgressTopicsOnRevision",
-			getTopicsArguments: {roid: othis.revision.oid},
+			getTopicsArguments: {poid: othis.revision.projectId, roid: othis.revision.oid},
 			registerFunction: function(newChangeProgressHandler, closedChangeProgressHandler){
-				Global.bimServerApi.registerChangeProgressRevisionHandler(othis.revision.oid, function(roid, topicId){
+				Global.bimServerApi.registerChangeProgressRevisionHandler(othis.revision.projectId, othis.revision.oid, function(roid, topicId){
 					newChangeProgressHandler(topicId);
 				}, function(roid, topicId){
 					closedChangeProgressHandler(topicId);
 				})
 			},
 			unregisterFunction: function(newChangeProgressHandler, closedChangeProgressHandler){
-				Global.bimServerApi.unregisterChangeProgressRevisionHandler(othis.revision.oid, newChangeProgressHandler, closedChangeProgressHandler)
+				Global.bimServerApi.unregisterChangeProgressRevisionHandler(othis.revision.projectId, othis.revision.oid, newChangeProgressHandler, closedChangeProgressHandler)
 			}
 		};
 		$(".revision .log").load("log.html", function(){
@@ -153,10 +154,20 @@ function Revision(main, revision) {
 		}).modal({keyboard:true});
 	};
 	
+	this.addExtendedDataButtonClick = function(){
+		var div = $("<div class=\"modal fade\">");
+		$(document.body).append(div);
+		div.load("addextendeddata.html", function(){
+			new AddExtendedData($(this), othis.revision, function(){
+			});
+		}).modal({keyboard:true});
+	};
+	
 	$(".revision .detailsLink").click(othis.showDetails);
 	$(".revision .queryLink").click(othis.showQuery);
 	$(".revision .extendedDataLink").click(othis.showExtendedData);
 	$(".revision .browserLink").click(othis.showBrowser);
 	$(".revision .branchButton").click(othis.showBranch);
+	$(".revision .addExtendedDataButton").click(othis.addExtendedDataButtonClick);
 };
 </script>

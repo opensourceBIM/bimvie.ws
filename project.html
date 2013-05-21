@@ -557,7 +557,7 @@ var Project = function(containerDiv, main, project) {
 				});
 				div.find(".p" + smallProject.parentId).append(li);
 			});
-			$(".sidespan").append(div);
+			$(".sidespan").html(div);
 		});
 		
 		if (Settings.get3DViewerUrl != null && othis.project.lastRevisionId != -1) {
