@@ -1,0 +1,125 @@
+<div class="addextendeddata">
+	<div class="modal-header">
+    	<a class="close" data-dismiss="modal">&times;</a>
+    	<h3>Add extended data</h3>
+  	</div>
+	<div class="modal-body">
+		<div class="uploads">
+			<div class="upload">
+				<div class="uploadStatus"></div>
+				<div class="progressBarHolder"></div>
+				<table class="uploadTable">
+					<tr><td><label for="file">File</label></td><td><input id="file" class="fileupload" type="file" name="data"/></td></tr>
+					<tr><td><label for="schemaSelect">Schema</label></td><td><select id="schemaSelect" class="schemaSelect"></select></td></tr>
+					<tr><td><label for="title">Title</label></td><td><input type="text" id="title" class="title"/></td></tr>
+				</table>
+			</div>
+		</div>
+	</div>
+  	<div class="modal-footer">
+    	<a class="btn" data-dismiss="modal">Close</a>
+    	<a class="btn uploadButton btn-primary">Add extended data</a>
+  	</div>
+</div>
+<script>
+var lastVal = "";
+
+function AddExtendedData(containerDiv, revision, successFunction) {
+	var othis = this;
+
+	var submitdata = null;
+	var shouldsend = false;
+	var currentCheckinId = null;
+	var fileselected = false;
+
+	containerDiv.find(".fileupload").fileupload({
+		dataType: "json",
+        url: Global.bimServerApi.baseUrl + '/upload',
+		replaceFileInput: false,
+		submit: function(e, data){
+			if (!shouldsend) {
+				shouldsend = false;
+		        submitdata = data;
+		        othis.updateSubmitButton();
+		        return false;
+			}
+        },
+        change: function(e, data) {
+        	fileselected = true;
+        },
+		progress: function(e, data) {
+			containerDiv.find(".uploadProgressBar .bar").css("width", parseInt(data.loaded / data.total * 100, 10) + "%");
+		},
+		done: function(e, data) {
+			if (data.result.exception == null) {
+				currentCheckinId = data.result.checkinid;
+				containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
+				Global.bimServerApi.call("ServiceInterface", "addExtendedDataToRevision", {
+					roid: revision.oid,
+					extendedData: {
+						__type: "SExtendedData",
+						title: $(".title").val(),
+						schemaId: $(".schemaSelect").val(),
+						fileId: data.result.fileId
+					}
+				}, function(){
+					containerDiv.find(".addextendeddata").parent().modal("hide").remove();
+				});
+			} else {
+				containerDiv.find(".uploadStatus").html("<div class=\"alert alert-block alert-error\">" + data.result.exception.message + "</div>");
+				othis.showUpload();
+			}
+		},
+		fail: function(e, data) {
+			containerDiv.find(".uploadStatus").html("Error: " + data.textStatus);
+			othis.showUpload();
+		}
+    });
+
+	containerDiv.find(".uploadButton").click(function(event){
+		shouldsend = true;
+		submitdata.formData = {
+			action: "file",
+			token: Global.bimServerApi.token
+		};
+		othis.hideUpload();
+		containerDiv.find(".uploadStatus").html("Uploading file...");
+		containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
+		containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"bar\"></div></div>");
+		containerDiv.find(".fileupload").fileupload('send', submitdata);
+		shouldsend = false;
+		event.preventDefault();
+	});
+
+	this.updateSubmitButton = function() {
+        if (fileselected) {
+        	containerDiv.find(".uploadButton").show();
+        } else {
+        	containerDiv.find(".uploadButton").hide();
+        }
+	};
+	
+	this.hideUpload = function() {
+		containerDiv.find(".uploadTable").hide();
+		containerDiv.find(".uploadProgressBar").show();
+		containerDiv.find(".uploadButton").hide();
+		containerDiv.find(".uploadStatus").show();
+	};
+
+	this.showUpload = function() {
+		containerDiv.find(".uploadTable").show();
+		containerDiv.find(".uploadProgressBar").hide();
+		containerDiv.find(".uploadButton").show();
+	};
+	
+	containerDiv.find(".uploadButton").hide();
+	
+	Global.bimServerApi.call("ServiceInterface", "getAllExtendedDataSchemas", {}, function(schemas){
+		schemas.forEach(function(schema){
+			var option = $("<option>" + schema.name + "</option>");
+			option.val(schema.oid);
+			$(".schemaSelect").append(option);
+		});
+	});
+}
+</script>
