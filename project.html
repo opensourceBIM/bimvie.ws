@@ -255,7 +255,7 @@ var Project = function(containerDiv, main, project) {
 	this.share = function(roid) {
 		var div = $("<div class=\"modal fade\">");
 		$(document.body).append(div);
-		div.load("share.html", function(){
+		div.load(Global.baseDir + "share.html", function(){
 			new Share(roid);
 		}).modal({keyboard:true});
 	};
@@ -318,7 +318,7 @@ var Project = function(containerDiv, main, project) {
 				if (Settings.get3DViewerUrl != null) {
 					var viewLi = $("<li><a>View in 3D</a></li>");
 					viewLi.find("a").click(function(){
-						window.open(Settings.get3DViewerUrl(Global.bimServerApi, revision.oid));
+						window.open(Settings.get3DViewerUrl(Global.bimServerApi, revision.oid), '_blank');
 					});
 					actions.find("ul").append(viewLi);
 				}
@@ -356,7 +356,7 @@ var Project = function(containerDiv, main, project) {
 		if (!$(event.target).is("a, button, span.caret")) {
 			var service = $(this).parents("tr").andSelf().data("service");
 			event.preventDefault();
-			containerDiv.find(".services").load("service.html", function(){
+			containerDiv.find(".services").load(Global.baseDir + "service.html", function(){
 				new Service(main, service);
 			});
 		}
@@ -486,7 +486,7 @@ var Project = function(containerDiv, main, project) {
 			poid: othis.project.oid,
 			roid: roid
 		};
-		div.load("download.html", function(){
+		div.load(Global.baseDir + "download.html", function(){
 			new Download($(this), params);
 		}).modal({keyboard:true});
 	};
@@ -494,7 +494,7 @@ var Project = function(containerDiv, main, project) {
 	this.showCheckinPopup = function() {
 		var div = $("<div class=\"modal fade\">");
 		$(document.body).append(div);
-		div.load("checkin.html", function(){
+		div.load(Global.baseDir + "checkin.html", function(){
 			new Checkin($(this), othis.project, function(){
 			});
 		}).modal({keyboard:true});

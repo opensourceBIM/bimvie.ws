@@ -28,7 +28,7 @@
 			}
 			$(".usersettings .nav li").removeClass("active");
 			linkElement.parent().addClass("active");
-			$(".usersettings .tab-content").load(page, function(){
+			$(".usersettings .tab-content").load(Global.baseDir + page, function(){
 				constructorFunction();
 				if (callback != null) {
 					callback.call(othis.current);

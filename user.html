@@ -182,7 +182,7 @@ function User(main, user) {
 			poid: revision.projectId,
 			roid: revision.oid
 		};
-		div.load("download.html", function(){
+		div.load(Global.baseDir + "download.html", function(){
 			new Download($(this), params);
 		}).modal({keyboard:true});
 	};

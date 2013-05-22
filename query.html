@@ -68,7 +68,7 @@ function Query(containerDiv, main, poid, roid) {
 			qeid: qeid,
 			code: query
 		};
-		div.load("download.html", function(){
+		div.load(Global.baseDir + "download.html", function(){
 			new Download($(this), params);
 		}).modal({keyboard:true});
 	};

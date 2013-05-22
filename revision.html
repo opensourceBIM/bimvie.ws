@@ -72,7 +72,7 @@ function Revision(main, revision) {
 				Global.bimServerApi.unregisterChangeProgressRevisionHandler(othis.revision.projectId, othis.revision.oid, newChangeProgressHandler, closedChangeProgressHandler)
 			}
 		};
-		$(".revision .log").load("log.html", function(){
+		$(".revision .log").load(Global.baseDir + "log.html", function(){
 			new Log($(this), settings, main);
 		});
 	};
@@ -105,7 +105,7 @@ function Revision(main, revision) {
 		$(".revision .queryLink").addClass("active");
 		$(".revision .content > div").hide();
 		$(".revision .query").show();
-		$(".revision .query").load("query.html", function(){
+		$(".revision .query").load(Global.baseDir + "query.html", function(){
 			new Query($(this), main, revision.projectId, revision.oid);
 		});
 	};
@@ -127,7 +127,7 @@ function Revision(main, revision) {
 		if (othis.current != null) {
 			othis.current.close();
 		}
-		$(".revision .extendeddata").load("extendeddatalist.html", function(){
+		$(".revision .extendeddata").load(Global.baseDir + "extendeddatalist.html", function(){
 			othis.current = new ExtendedDataList(main, othis.revision);
 		});
 	};
@@ -141,7 +141,7 @@ function Revision(main, revision) {
 		if (othis.current != null) {
 			othis.current.close();
 		}
-		$(".revision .browser").load("browser.html", function(){
+		$(".revision .browser").load(Global.baseDir + "browser.html", function(){
 			othis.current = new Browser($(this), othis.revision);
 		});
 	};
@@ -149,7 +149,7 @@ function Revision(main, revision) {
 	this.showBranch = function(){
 		var div = $("<div class=\"modal fade\">");
 		$(document.body).append(div);
-		div.load("branch.html", function(){
+		div.load(Global.baseDir + "branch.html", function(){
 			new Branch($(this), main, othis.revision.oid);
 		}).modal({keyboard:true});
 	};
@@ -157,7 +157,7 @@ function Revision(main, revision) {
 	this.addExtendedDataButtonClick = function(){
 		var div = $("<div class=\"modal fade\">");
 		$(document.body).append(div);
-		div.load("addextendeddata.html", function(){
+		div.load(Global.baseDir + "addextendeddata.html", function(){
 			new AddExtendedData($(this), othis.revision, function(){
 			});
 		}).modal({keyboard:true});
