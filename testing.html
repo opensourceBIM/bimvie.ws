@@ -347,7 +347,7 @@ function Testing() {
 	
 	this.addTest("Test 9", "Checkin from URL", function(doneCallback){
 		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 9 - " + Math.random()}, function(project){
-			Global.bimServerApi.call("ServiceInterface", "getSuggestedDeserializerForExtension", {extension: "ifc"}, function(deserializer){
+			Global.bimServerApi.call("Bimsie1ServiceInterface", "getSuggestedDeserializerForExtension", {extension: "ifc"}, function(deserializer){
 				Global.bimServerApi.call("ServiceInterface", "checkinFromUrl", {
 					poid: project.oid,
 					comment: "New revision from url",

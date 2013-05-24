@@ -156,7 +156,7 @@ function Checkin(containerDiv, project, successFunction) {
 		    var lastIndex = path.lastIndexOf(".");
 		    if (lastIndex != -1) {
 			    var extension = path.substring(path.lastIndexOf(".") + 1);
-			    Global.bimServerApi.call("ServiceInterface", "getSuggestedDeserializerForExtension", {extension: extension}, function(data){
+			    Global.bimServerApi.call("Bimsie1ServiceInterface", "getSuggestedDeserializerForExtension", {extension: extension}, function(data){
 			    	containerDiv.find(".deserializerName").val(data.oid);
 					othis.updateSubmitButton();
 				});
