@@ -54,6 +54,8 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 	othis.writeExtendedDataOid = -1;
 	othis.token = null;
 
+	this.show = function(){};
+	
 	this.loadProjects = function(targetElement) {
 		Global.bimServerApi.call("ServiceInterface", "getAllProjects", {onlyTopLevel: false}, function(data){
 			targetElement.empty();

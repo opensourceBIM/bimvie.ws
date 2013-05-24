@@ -79,7 +79,6 @@ function Download(containerDiv, data) {
 		});
 	});
 	
-	
 	this.checkRevisionsCheckoutButton = function(event) {
 		if (!othis.data.allowCheckouts) {
 			containerDiv.find(".checkoutButton").hide();
@@ -164,7 +163,7 @@ function Download(containerDiv, data) {
 		containerDiv.find(".fields").hide();
 		containerDiv.find(".checkoutMessage").hide();
 		if (data.downloadType == "query") {
-			Global.bimServerApi.call("ServiceInterface", "downloadQuery", data, function(data){
+			Global.bimServerApi.call("Bimsie1ServiceInterface", "downloadQuery", data, function(data){
 				containerDiv.find(".downloadStatus").html("Preparing download...");
 				othis.laid = parseInt(data);
 				Global.bimServerApi.registerProgressHandler(othis.laid, othis.progressHandler);
@@ -173,7 +172,7 @@ function Download(containerDiv, data) {
 				containerDiv.find(".checkoutMessage").show();
 			});
 		} else if (data.downloadType == "checkout") {
-			Global.bimServerApi.call("ServiceInterface", "checkout", data, function(data){
+			Global.bimServerApi.call("Bimsie1ServiceInterface", "checkout", data, function(data){
 				containerDiv.find(".downloadStatus").html("Preparing checkout...");
 				othis.laid = parseInt(data);
 				Global.bimServerApi.registerProgressHandler(othis.laid, othis.progressHandler);
@@ -182,7 +181,7 @@ function Download(containerDiv, data) {
 				containerDiv.find(".checkoutMessage").show();
 			});
 		} else {
-			Global.bimServerApi.call("ServiceInterface", "download", data, function(data){
+			Global.bimServerApi.call("Bimsie1ServiceInterface", "download", data, function(data){
 				containerDiv.find(".downloadStatus").html("Preparing download...");
 				othis.laid = parseInt(data);
 				Global.bimServerApi.registerProgressHandler(othis.laid, othis.progressHandler);
