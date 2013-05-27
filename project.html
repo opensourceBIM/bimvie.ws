@@ -84,13 +84,12 @@
 			Not implemented
 		</div>
 		<div class="tab-pane extendeddata initialhide">
-			<div class="">
-				
-			</div>
-			<div class="list"></div>
+			<div class="well well-small message"></div>
+			<div class="extendeddatacontainer"></div>
 		</div>
 		<div class="tab-pane browser initialhide" id="browser">
-			Not implemented
+			<div class="well well-small message"></div>
+			<div class="browsercontainer"></div>
 		</div>
 		<div class="tab-pane users initialhide" id="users">
 			<div class="linkspacer">
@@ -148,6 +147,9 @@ var Project = function(containerDiv, main, project) {
 	this.close = function () {
 		if (othis.project != null) {
 			Global.bimServerApi.unregisterNewRevisionOnSpecificProjectHandler(othis.project.oid, othis.newRevisionOnSpecificProjectHandler);
+			if (othis.project.lastRevisionId != -1) {
+				Global.bimServerApi.unregisterNewExtendedDataOnRevisionHandler(othis.project.lastRevisionId, othis.newExtendedDataOnRevisionHandler);
+			}
 		}
 		$(".sidespan").empty();
 	};
@@ -404,10 +406,12 @@ var Project = function(containerDiv, main, project) {
 	};
 	
 	this.loadExtendedData = function(callback, alterState) {
-		othis.tabChanger.changeTab($(".extendedDataLink"), "extendeddatalist.html", $(".extendeddata"), function(){
+		$(".extendeddata .message").html("Showing extended data for revision " + othis.lastRevision.id);
+		othis.tabChanger.changeTab($(".extendedDataLink"), "extendeddatalist.html", $(".extendeddatacontainer"), function(){
 			if (alterState) {
 				pushHistoryAppend({tab: "extendeddata"});
 			}
+			$(".extendeddata").show();
 			return new ExtendedDataList(main, othis.lastRevision);
 		}, callback);
 	};
@@ -516,6 +520,9 @@ var Project = function(containerDiv, main, project) {
 	
 	this.updateProject = function() {
 		Global.bimServerApi.registerNewRevisionOnSpecificProjectHandler(othis.project.oid, othis.newRevisionOnSpecificProjectHandler);
+		if (othis.project.lastRevisionId != -1) {
+			Global.bimServerApi.registerNewExtendedDataOnRevisionHandler(othis.project.lastRevisionId, othis.newExtendedDataOnRevisionHandler);
+		}
 
 		containerDiv.find("h1").html(othis.project.name);
 		containerDiv.find(".subprojectsLink a").html("Sub Projects" + (othis.project.subProjects.length == 0 ? "" : (" (" + othis.project.subProjects.length + ")")));
@@ -528,6 +535,7 @@ var Project = function(containerDiv, main, project) {
 				containerDiv.find(".surferLink").show();
 				containerDiv.find(".queryLink").show();
 				containerDiv.find(".extendedDataLink").show();
+				containerDiv.find(" .extendedDataLink a").html("Extended Data" + (data.extendedData.length == 0 ? "" : (" (" + data.extendedData.length + ")")));
 				othis.loadHistory();
 			});
 			Global.bimServerApi.call("ServiceInterface", "getAllCheckoutsOfProject", {poid: othis.project.oid}, function(checkouts){
@@ -596,10 +604,12 @@ var Project = function(containerDiv, main, project) {
 	};
 	
 	this.loadBrowser = function(callback, alterState) {
-		othis.tabChanger.changeTab($(".browserLink"), "browser.html", $(".browser"), function(){
+		$(".browser .message").html("Showing data for revision " + othis.lastRevision.id);
+		othis.tabChanger.changeTab($(".browserLink"), "browser.html", $(".browsercontainer"), function(){
 			if (alterState) {
 				pushHistoryAppend({tab: "browser"});
 			}
+			$(".browser").show();
 			return new Browser($(this), othis.lastRevision);
 		}, callback);
 	};
@@ -702,6 +712,11 @@ var Project = function(containerDiv, main, project) {
 		Global.bimServerApi.call("ServiceInterface", "getRevision", {roid: roid}, function(data){
 			othis.reloadProject(data.projectId);
 			othis.addRevision(data);
+		});
+	};
+	this.newExtendedDataOnRevisionHandler = function(roid, edid){
+		Global.bimServerApi.call("ServiceInterface", "getExtendedData", {oid: edid}, function(data){
+			othis.reloadProject(data.projectId);
 		});
 	};
 }

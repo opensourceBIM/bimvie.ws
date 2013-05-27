@@ -45,11 +45,15 @@ function ExtendedDataList(main, revision) {
 	};
 	
 	this.makeSchemaLink = function(soid){
-		var link = $("<a>Loading...</a>");
-		link.attr("soid", soid);
-		link.click(othis.schemaLinkClick);
-		loadExtendedDataSchema(link);
-		return link;
+		if (soid == -1) {
+			return "No schema";			
+		} else {
+			var link = $("<a>Loading...</a>");
+			link.attr("soid", soid);
+			link.click(othis.schemaLinkClick);
+			loadExtendedDataSchema(link);
+			return link;
+		}
 	};
 	
 	this.newLogAction = function(uuid, logAction, serviceIdentifier, profileIdentifier, token, apiUrl){
