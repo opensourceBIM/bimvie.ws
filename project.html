@@ -412,7 +412,7 @@ var Project = function(containerDiv, main, project) {
 				pushHistoryAppend({tab: "extendeddata"});
 			}
 			$(".extendeddata").show();
-			return new ExtendedDataList(main, othis.lastRevision);
+			return new ExtendedDataList(main, othis.lastRevision, othis);
 		}, callback);
 	};
 	

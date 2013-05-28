@@ -1,31 +1,96 @@
 <div class="extendeddata">
-	<table class="table">
+	<table class="table detailsTable">
 		<thead></thead>
 		<tbody></tbody>
 	</table>
 	<div class="bcf">
 		<img/>
 	</div>
+	<div class="validationreport">
+		<h2></h2>
+		<table class="table">
+			<thead>
+				<tr>
+					<th></th>
+					<th>Identifier</th>
+					<th>Value</th>
+					<th>Should be</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
 </div>
 <script>
-function ExtendedData(main, extendedData) {
+function ExtendedData(main, extendedData, parent) {
 	var othis = this;
+
+	var tr = $("<tr><td>User</td></tr>");
 	
-	$(".extendeddata table tbody").append("<tr><td>Title</td><td>" + extendedData.title + "</td></tr>");
-	$(".extendeddata table tbody").append("<tr><td>User</td><td>" + extendedData.userId + "</td></tr>");
-	$(".extendeddata table tbody").append("<tr><td>Schema</td><td>" + extendedData.schemaId + "</td></tr>");
-	$(".extendeddata table tbody").append("<tr><td>Size</td><td class=\"size\"></td></tr>");
-	$(".extendeddata table tbody").append("<tr><td>Added</td><td>" + formatDateTime(new Date(extendedData.added)) + "</td></tr>");
+	var userTd = $("<td></td>");
+	var userA = $("<a>loading...</a>");
+	userA.attr("uoid", extendedData.userId);
+	userA.click(main.userClick);
+	userTd.append(userA);
+	loadUser(userA);
+	tr.append(userTd);
 	
+	$(".extendeddata table.detailsTable tbody").append("<tr><td>Title</td><td>" + extendedData.title + "</td></tr>");
+	$(".extendeddata table.detailsTable tbody").append(tr);
+
+	var schemaTd = $("<td>");
+	schemaTd.append(main.makeSchemaLink(extendedData.schemaId));
+
+	var tr = $("<tr><td>Schema</td></tr>");
+	tr.append(schemaTd);
+	$(".extendeddata table.detailsTable tbody").append(tr);
+	$(".extendeddata table.detailsTable tbody").append("<tr><td>Size</td><td class=\"size\"></td></tr>");
+	$(".extendeddata table.detailsTable tbody").append("<tr><td>Added</td><td>" + formatDateTime(new Date(extendedData.added)) + "</td></tr>");
+
 	this.showBcf = function(schema, extendedData, file){
 		$(".bcf img").attr("src", "data:image/png;base64," + file.data);
 	};
+
+	this.objectClick = function(){
+		var oid = $(this).data("oid");
+		parent.loadBrowser(function(){
+			this.loadObject(oid);
+		}, true);
+	};
+
+	this.showValidationReport = function(schema, extendedData, data){
+		$(".validationreport h2").html(extendedData.title);
+		var json = JSON.parse(data);
+		json.items.forEach(function(item){
+			if (item.type == "header") {
+				var tr = $("<tr><td></td><td colspan=\"3\" class=\"header\">" + item.text + "</td></tr>");
+				$(".validationreport table tbody").append(tr);
+			} else if (item.type == "line") {
+				var tr = $("<tr></tr>");
+				tr.append("<td><img/></td>");
+				if (item.oid != null && item.oid != -1) {
+					tr.append("<td><a>" + item.identification + "</a></td>");
+					tr.find("a").data("oid", item.oid);
+					tr.find("a").click(othis.objectClick);
+				} else {
+					tr.append("<td>" + item.identification + "</td>");
+				}
+				tr.append("<td>" + item.value + "</td>");
+				tr.append("<td>" + item.shouldBe + "</td>");
+				tr.find("img").attr("src", item.status == "ERROR" ? "img/exclamation.png" : "img/accept.png");
+				$(".validationreport table tbody").append(tr);
+			}
+		});
+	};
 	
 	Global.bimServerApi.call("ServiceInterface", "getFile", {fileId: extendedData.fileId}, function(file){
-		$(".size").html(file.filename);
+		var data = atob(file.data);
+		$(".size").html(GetHumanSize(data.length));
 		Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaById", {oid: extendedData.schemaId}, function(schema){
 			if (schema.namespace == "http://www.buildingsmart-tech.org/specifications/bcf-releases") {
-				othis.showBcf(schema, extendedData, file);
+				othis.showBcf(schema, extendedData, data);
+			} else if (schema.namespace == "http://extend.bimserver.org/validationreport") {
+				othis.showValidationReport(schema, extendedData, data);
 			}
 		});
 	});

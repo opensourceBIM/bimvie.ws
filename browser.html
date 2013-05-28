@@ -222,13 +222,15 @@ function Browser(containerDiv, revision) {
 		});
 	};
 
-	var history = History.getState().data;
-	if (history.type != null) {
-		othis.loadType(history.type);
-	} else if (history.oid != null) {
-		othis.loadObject(history.oid);
-	} else {
-		othis.loadRevision();
-	}
+	this.loadFromHistory = function(){
+		var history = History.getState().data;
+		if (history.type != null) {
+			othis.loadType(history.type);
+		} else if (history.oid != null) {
+			othis.loadObject(history.oid);
+		} else {
+			othis.loadRevision();
+		}
+	};
 }
 </script>

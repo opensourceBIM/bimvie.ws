@@ -18,7 +18,7 @@
 	</table>
 </div>
 <script>
-function ExtendedDataList(main, revision) {
+function ExtendedDataList(main, revision, parent) {
 	var othis = this;
 	othis.revision = revision;
 
@@ -36,23 +36,8 @@ function ExtendedDataList(main, revision) {
 			event.preventDefault();
 			var extendedData = $(this).parents("tr").andSelf().data("extendeddata");
 			$(".extendeddatalist").load(Global.baseDir + "extendeddata.html", function(){
-				new ExtendedData(main, extendedData);
+				new ExtendedData(main, extendedData, parent);
 			});
-		}
-	};
-	
-	this.schemaLinkClick = function(event) {
-	};
-	
-	this.makeSchemaLink = function(soid){
-		if (soid == -1) {
-			return "No schema";			
-		} else {
-			var link = $("<a>Loading...</a>");
-			link.attr("soid", soid);
-			link.click(othis.schemaLinkClick);
-			loadExtendedDataSchema(link);
-			return link;
 		}
 	};
 	
@@ -84,7 +69,7 @@ function ExtendedDataList(main, revision) {
 		tr.append(userTd);
 		
 		var schemaTd = $("<td>");
-		schemaTd.append(othis.makeSchemaLink(extendedData.schemaId));
+		schemaTd.append(main.makeSchemaLink(extendedData.schemaId));
 		tr.append(schemaTd);
 		tr.append("<td>" + getHumanSize(extendedData.size) + "</td>");
 		
