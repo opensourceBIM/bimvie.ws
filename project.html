@@ -585,7 +585,9 @@ var Project = function(containerDiv, main, project) {
 		} else if (history.tab == "query") {
 			othis.loadQuery();
 		} else if (history.tab == "browser") {
-			othis.loadBrowser();
+			othis.loadBrowser(function(){
+				this.loadFromHistory();
+			});
 		} else if (history.tab == "checkouts") {
 			othis.loadCheckouts();
 		} else if (history.tab == "extendeddata") {
@@ -695,7 +697,9 @@ var Project = function(containerDiv, main, project) {
 	containerDiv.find(".servicesLink").click(function(){othis.loadServices(null, true);});
 	containerDiv.find(".queryLink").click(function(){othis.loadQuery(null, true);});
 	containerDiv.find(".extendedDataLink").click(function(){othis.loadExtendedData(null, true);});
-	containerDiv.find(".browserLink").click(function(){othis.loadBrowser(null, true);});
+	containerDiv.find(".browserLink").click(function(){othis.loadBrowser(function(){
+		this.loadFromHistory();
+	}, true);});
 	containerDiv.find(".usersLink").click(function(){othis.loadUsers(null, true);});
 	containerDiv.find(".surferLink").click(function(){othis.loadSurfer(null, true);});
 	containerDiv.find(".logLink").click(function(){othis.loadLog(null, true);});
