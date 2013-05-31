@@ -80,7 +80,7 @@ function Projects(containerDiv, main) {
 	
 	this.loadProjects = function(){
 		$(".projectsTable tbody tr").remove();
-		Global.bimServerApi.call("ServiceInterface", "getAllProjects", {onlyTopLevel: true}, function(data){
+		Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllProjects", {onlyTopLevel: true}, function(data){
 			data.forEach(function(project){
 				othis.addProject(project);
 			});
@@ -88,7 +88,7 @@ function Projects(containerDiv, main) {
 	};
 	
 	this.newProjectHandler = function(poid){
-		Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: poid}, function(data){
+		Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: poid}, function(data){
 			othis.addProject(data);
 		});
 	};

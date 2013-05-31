@@ -508,7 +508,7 @@ var Project = function(containerDiv, main, project) {
 		if (poid == null) {
 			poid = othis.project.oid;
 		}
-		Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: poid}, function(project){
+		Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: poid}, function(project){
 			othis.project = project;
 			othis.updateProject();
 		});

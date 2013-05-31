@@ -20,7 +20,7 @@ function getBaseURL () {
 	return loc;
 }
 
-function loadGeneric(targetElement, oidField, displayField, methodName, objectField, paramFunction) {
+function loadGeneric(targetElement, oidField, displayField, interfaceName, methodName, objectField, paramFunction) {
 	var oid = targetElement.attr(oidField);
 	if (Global.objectcache[oid] != null) {
 		if (Global.objectcache[oid] instanceof Array) {
@@ -31,7 +31,7 @@ function loadGeneric(targetElement, oidField, displayField, methodName, objectFi
 		}
 	} else {
 		Global.objectcache[oid] = [targetElement];
-		Global.bimServerApi.call("ServiceInterface", methodName, paramFunction(oid), function(data){
+		Global.bimServerApi.call(interfaceName, methodName, paramFunction(oid), function(data){
 			if (Global.objectcache[oid] instanceof Array) {
 				for(var i in Global.objectcache[oid]) {
 					var target = Global.objectcache[oid][i];
@@ -114,19 +114,19 @@ function pushInitialState() {
 }
 
 function loadService(targetElement) {
-	loadGeneric(targetElement, "soid", "name", "getService", "service", function(oid){return{soid: oid};});
+	loadGeneric(targetElement, "soid", "name", "ServiceInterface", "getService", "service", function(oid){return{soid: oid};});
 }
 
 function loadUser(targetElement) {
-	loadGeneric(targetElement, "uoid", "name", "getUserByUoid", "user", function(oid){return{uoid: oid};});
+	loadGeneric(targetElement, "uoid", "name", "ServiceInterface", "getUserByUoid", "user", function(oid){return{uoid: oid};});
 }
 
 function loadExtendedDataSchema(targetElement) {
-	loadGeneric(targetElement, "soid", "name", "getExtendedDataSchemaById", "extendeddataschema", function(oid){return{oid: oid};});
+	loadGeneric(targetElement, "soid", "name", "Bimsie1ServiceInterface", "getExtendedDataSchemaById", "extendeddataschema", function(oid){return{oid: oid};});
 }
 
 function loadProject(targetElement) {
-	loadGeneric(targetElement, "poid", "name", "getProjectByPoid", "project", function(oid){return{poid: oid};});
+	loadGeneric(targetElement, "poid", "name", "Bimsie1ServiceInterface", "getProjectByPoid", "project", function(oid){return{poid: oid};});
 }
 
 function newDropdown(title) {

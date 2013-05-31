@@ -357,7 +357,7 @@ function Testing() {
 					merge: false,
 					sync: true
 				}, function(checkinId){
-					Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: project.oid}, function(project){
+					Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: project.oid}, function(project){
 						Global.bimServerApi.getModel(project.oid, project.lastRevisionId, false, function(model){
 							model.size(function(size){
 								if (size == 49664) {
