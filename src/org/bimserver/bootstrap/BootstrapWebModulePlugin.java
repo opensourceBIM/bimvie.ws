@@ -1,6 +1,5 @@
 package org.bimserver.bootstrap;
 
-import org.bimserver.models.store.ObjectDefinition;
 import org.bimserver.plugins.PluginException;
 import org.bimserver.plugins.PluginManager;
 import org.bimserver.plugins.web.AbstractWebModulePlugin;
@@ -31,17 +30,12 @@ public class BootstrapWebModulePlugin extends AbstractWebModulePlugin {
 	}
 
 	@Override
-	public ObjectDefinition getSettingsDefinition() {
-		return null;
-	}
-
-	@Override
 	public boolean isInitialized() {
 		return initialized;
 	}
 
 	@Override
-	public String getContextPath() {
+	public String getDefaultContextPath() {
 		return "/bootstrap";
 	}
 }
