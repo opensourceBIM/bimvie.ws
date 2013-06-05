@@ -18,6 +18,11 @@ var Settings = {
 	        "testingLink"
 		];
 	},
+	getStaticServerAddress: function(callback){
+		$.getJSON("getbimserveraddress", function(data){
+			callback(data.address);
+		});
+	},
 	allowBimServerAddress: function() {
 		return false;
 	}

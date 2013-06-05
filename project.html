@@ -418,7 +418,7 @@ var Project = function(containerDiv, main, project) {
 	
 	this.loadRevisions = function(callback, alterState) {
 		othis.tabChanger.changeTab($(".revisionsLink"), null, $(".revisions"), function(){
-			Global.bimServerApi.call("ServiceInterface", "getAllRevisionsOfProject", {poid: othis.project.oid}, function(data){
+			Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllRevisionsOfProject", {poid: othis.project.oid}, function(data){
 				containerDiv.find(".revisionsTable tbody tr").remove();
 				data.forEach(function(revision){
 					othis.addRevision(revision);
@@ -529,7 +529,7 @@ var Project = function(containerDiv, main, project) {
 		containerDiv.find(" .revisionsLink a").html("Revisions" + (othis.project.revisions.length == 0 ? "" : (" (" + othis.project.revisions.length + ")")));
 		containerDiv.find(".servicesLink a").html("Services" + (othis.project.services.length == 0 ? "" : (" (" + othis.project.services.length + ")")));
 		if (othis.project.lastRevisionId != -1) {
-			Global.bimServerApi.call("ServiceInterface", "getRevision", {roid: othis.project.lastRevisionId}, function(data){
+			Global.bimServerApi.call("Bimsie1ServiceInterface", "getRevision", {roid: othis.project.lastRevisionId}, function(data){
 				othis.lastRevision = data;
 				containerDiv.find(".browserLink").show();
 				containerDiv.find(".surferLink").show();
@@ -713,7 +713,7 @@ var Project = function(containerDiv, main, project) {
 	containerDiv.find(".addSubProjectButton").click(othis.addSubProjectClick);
 
 	this.newRevisionOnSpecificProjectHandler = function(poid, roid){
-		Global.bimServerApi.call("ServiceInterface", "getRevision", {roid: roid}, function(data){
+		Global.bimServerApi.call("Bimsie1ServiceInterface", "getRevision", {roid: roid}, function(data){
 			othis.reloadProject(data.projectId);
 			othis.addRevision(data);
 		});

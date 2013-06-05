@@ -106,7 +106,7 @@ function ExtendedDataList(main, revision, parent) {
 	};
 	
 	this.loadExtendedData = function() {
-		Global.bimServerApi.call("ServiceInterface", "getAllExtendedDataOfRevision", {roid: revision.oid}, function(data){
+		Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllExtendedDataOfRevision", {roid: revision.oid}, function(data){
 			data.forEach(function(extendedData){
 				othis.addExtendedData(extendedData);
 			});

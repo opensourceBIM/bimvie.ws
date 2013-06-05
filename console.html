@@ -260,9 +260,14 @@ LazyLoad.js([
 
 		othis.lastCall = {};
 
+		ConsoleSettings.getStaticServerAddress(function(address){
+			Global.address = address;
+			othis.loadMethods();
+		});
+
 		this.call = function(requestObject, callback) {
 			$.ajax({
-				url: Global.baseDir + "json",
+				url: Global.address + "/json",
 				data: JSON.stringify(requestObject),
 				contentType: "application/json",
 				type: "POST",
@@ -727,8 +732,6 @@ LazyLoad.js([
 			$(".scenariosLink").parent().addClass("active");
 			$(".scenarios").show();
 		});
-		
-		othis.loadMethods();
 	}
 	new Console();
 });
