@@ -80,7 +80,7 @@ function Projects(containerDiv, main) {
 	
 	this.loadProjects = function(){
 		$(".projectsTable tbody tr").remove();
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllProjects", {onlyTopLevel: true}, function(data){
+		Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllProjects", {onlyTopLevel: true, onlyActive: true}, function(data){
 			data.forEach(function(project){
 				othis.addProject(project);
 			});

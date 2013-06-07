@@ -161,24 +161,24 @@
 										}, function(){
 											$.removeCookie("autologin");
 											$(".indexcontainer").load(Global.baseDir + "login.html", function(){
-												new Login(Global.bimServerApi.baseUrl);
+												new Login(address);
 											});
 										});
 									} else {
 										$(".indexcontainer").load(Global.baseDir + "login.html", function(){
-											new Login(Global.baseDir);
+											new Login(address);
 										});
 									}
 								}
 							}, function(){
 								$(".indexcontainer").load(Global.baseDir + "login.html", function(){
-									new Login(Global.baseDir);
+									new Login(address);
 								});
 							});
 						});
 					} else {
 						$(".indexcontainer").load(Global.baseDir + "login.html", function(){
-							new Login(Global.baseDir);
+							new Login();
 						});
 					}
 				});
