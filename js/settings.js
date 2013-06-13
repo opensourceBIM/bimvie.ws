@@ -21,6 +21,8 @@ var Settings = {
 	getStaticServerAddress: function(callback){
 		$.getJSON("getbimserveraddress", function(data){
 			callback(data.address);
+		}).fail(function(){
+			callback(null);
 		});
 	},
 	allowBimServerAddress: function() {

@@ -86,7 +86,7 @@ function ExtendedData(main, extendedData, parent) {
 	Global.bimServerApi.call("ServiceInterface", "getFile", {fileId: extendedData.fileId}, function(file){
 		var data = atob(file.data);
 		$(".size").html(GetHumanSize(data.length));
-		Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaById", {oid: extendedData.schemaId}, function(schema){
+		Global.bimServerApi.call("Bimsie1ServiceInterface", "getExtendedDataSchemaById", {oid: extendedData.schemaId}, function(schema){
 			if (schema.namespace == "http://www.buildingsmart-tech.org/specifications/bcf-releases") {
 				othis.showBcf(schema, extendedData, data);
 			} else if (schema.namespace == "http://extend.bimserver.org/validationreport") {

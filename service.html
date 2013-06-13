@@ -80,7 +80,7 @@ function Service(main, service) {
 		var td1 = $("<td></td>");
 		tr1.append(td1);
 		$(".service .rightsTable tbody").append(tr1);	
-		Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaById", {naoidmespace: service.readExtendedDataId}, function(data){
+		Global.bimServerApi.call("Bimsie1ServiceInterface", "getExtendedDataSchemaById", {naoidmespace: service.readExtendedDataId}, function(data){
 			td.append(main.createExtendedDataSchemaLink(data));
 			othis.readExtendedDataOid = data.oid;
 		}, function(){
@@ -93,13 +93,13 @@ function Service(main, service) {
 		var td2 = $("<td></td>");
 		tr2.append(td2);
 		$(".service .rightsTable tbody").append(tr2);	
-		Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaById", {oid: service.writeExtendedDataId}, function(data){
+		Global.bimServerApi.call("Bimsie1ServiceInterface", "getExtendedDataSchemaById", {oid: service.writeExtendedDataId}, function(data){
 			td2.append(main.createExtendedDataSchemaLink(data));
 			othis.writeExtendedDataOid = data.oid;
 		}, function(){
 			tr2.addClass("error");
 			td2.append("<br/>Missing extended data schema");
-			Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaFromRepository", {namespace: service.writeExtendedData}, function(data){
+			Global.bimServerApi.call("Bimsie1ServiceInterface", "getExtendedDataSchemaFromRepository", {namespace: service.writeExtendedData}, function(data){
 				var exs = data;
 				main.showServerSettings(null, function(){
 					main.current.showAddNewExtendedDataSchema(exs);

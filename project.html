@@ -719,7 +719,7 @@ var Project = function(containerDiv, main, project) {
 		});
 	};
 	this.newExtendedDataOnRevisionHandler = function(roid, edid){
-		Global.bimServerApi.call("ServiceInterface", "getExtendedData", {oid: edid}, function(data){
+		Global.bimServerApi.call("Bimsie1ServiceInterface", "getExtendedData", {oid: edid}, function(data){
 			othis.reloadProject(data.projectId);
 		});
 	};
