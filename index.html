@@ -128,9 +128,9 @@
 			function loadError() {
 				window.clearTimeout(Global.timeoutId);
 				Global.notifier.error("Could not connect");
-				$.removeCookie("username");
-				$.removeCookie("autologin");
-				$.removeCookie("address");
+				$.removeCookie("username", {path: "/"});
+				$.removeCookie("autologin", {path: "/"});
+				$.removeCookie("address", {path: "/"});
 				$(".indexcontainer").load(Global.baseDir + "login.html", function(){
 					new Login();
 				});
@@ -146,7 +146,7 @@
 				loadBimServerApi(address, Global.notifier, function(serverInfo){
 					if (serverInfo.serverState == "NOT_SETUP") {
 						$(".indexcontainer").load(Global.baseDir + "setup.html", function(){
-							new Setup($.cookie("address") == null ? stripHttp(stripLastSlash(Global.baseDir)) : $.cookie("address"));
+							new Setup(address);
 						});
 					} else if (serverInfo.serverState == "UNDEFINED") {
 					} else if (serverInfo.serverState == "MIGRATION_REQUIRED") {
