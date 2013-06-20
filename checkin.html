@@ -131,7 +131,7 @@ function Checkin(containerDiv, project, successFunction) {
 				shouldsend = false;
 		        submitdata = data;
 		        othis.updateSubmitButton();
-				if (containerDiv.find(".comment").attr("value") == "" || containerDiv.find("#comment").attr("value") == lastVal) {
+				if (containerDiv.find(".comment").val() == "" || containerDiv.find("#comment").val() == lastVal) {
 					var path = null;
 					$.each(data.files, function (index, file) {
 						path = file.name;
@@ -141,7 +141,7 @@ function Checkin(containerDiv, project, successFunction) {
 					} else if (path.indexOf("\\") != -1) {
 						path = path.substr(path.lastIndexOf("\\") + 1);
 					}
-					containerDiv.find(".comment").attr("value", path);
+					containerDiv.find(".comment").val(path);
 					lastVal = path;
 				}
 		        return false;
