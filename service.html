@@ -32,7 +32,7 @@ function Service(main, service) {
 	othis.service = service;
 
 	this.loadProjects = function(targetElement, selectedOid) {
-		Global.bimServerApi.call("ServiceInterface", "getAllProjects", {onlyTopLevel: false}, function(data){
+		Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllProjects", {onlyTopLevel: false, onlyActive: true}, function(data){
 			targetElement.empty();
 			targetElement.append("<option value=\"[SELECT_A_PROJECT]\">[Select a project]</option>");
 			data.forEach(function(project){
@@ -99,7 +99,7 @@ function Service(main, service) {
 		}, function(){
 			tr2.addClass("error");
 			td2.append("<br/>Missing extended data schema");
-			Global.bimServerApi.call("Bimsie1ServiceInterface", "getExtendedDataSchemaFromRepository", {namespace: service.writeExtendedData}, function(data){
+			Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaFromRepository", {namespace: service.writeExtendedData}, function(data){
 				var exs = data;
 				main.showServerSettings(null, function(){
 					main.current.showAddNewExtendedDataSchema(exs);

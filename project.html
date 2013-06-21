@@ -207,7 +207,7 @@ var Project = function(containerDiv, main, project) {
 	
 	this.loadSubProjects = function(callback, alterState) {
 		othis.tabChanger.changeTab($(".subprojectsLink"), null, $(".subprojects"), function(){
-			Global.bimServerApi.call("ServiceInterface", "getSubProjects", {poid: othis.project.oid}, function(data){
+			Global.bimServerApi.call("Bimsie1ServiceInterface", "getSubProjects", {poid: othis.project.oid}, function(data){
 				containerDiv.find(".subprojectsTable tr.project").remove();
 				data.forEach(function(subProject){
 					othis.addSubProject(subProject);

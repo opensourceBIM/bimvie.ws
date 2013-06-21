@@ -57,7 +57,7 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 	this.show = function(){};
 	
 	this.loadProjects = function(targetElement) {
-		Global.bimServerApi.call("ServiceInterface", "getAllProjects", {onlyTopLevel: false}, function(data){
+		Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllProjects", {onlyTopLevel: false, onlyActive: true}, function(data){
 			targetElement.empty();
 			targetElement.append("<option value=\"[SELECT_A_PROJECT]\">[Select a project]</option>");
 			data.forEach(function(project){
@@ -130,7 +130,7 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 			var addEds2 = $("<a>Add extended data schema</a>");
 			td2.append(addEds2);
 			addEds2.click(function(){
-				Global.bimServerApi.call("Bimsie1ServiceInterface", "getExtendedDataSchemaFromRepository", {namespace: serviceDescriptor.writeExtendedData}, function(data){
+				Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaFromRepository", {namespace: serviceDescriptor.writeExtendedData}, function(data){
 					var exs = data;
 					main.showServerSettings(null, function(){
 						main.current.showAddNewExtendedDataSchema(exs);
