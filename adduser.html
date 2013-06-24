@@ -42,12 +42,16 @@ function AddUser(main) {
 	this.close = function(){
 	};
 	
+	this.show = function(){
+	};
+	
 	this.addUser = function() {
 		Global.bimServerApi.call("ServiceInterface", "addUser", {
 			username: $(".adduser .inputUsername").val(),
 			name: $(".adduser .inputName").val(),
 			type: $(".adduser .selectType").val(),
-			selfRegistration: false
+			selfRegistration: false,
+			resetUrl: Global.baseDir + "?page=ResetPassword"
 		}, function(data){
 			main.showUser(data);
 		});

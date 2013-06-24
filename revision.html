@@ -92,7 +92,7 @@ function Revision(main, revision) {
 	};
 
 	this.showDetails = function(){
-		pushHistoryAppend({tab: "details"});
+		pushHistoryAppend({tab: "details"}, "Revision");
 		$(".revision .nav li").removeClass("active");
 		$(".revision .detailsLink").addClass("active");
 		$(".revision .content > div").hide();
@@ -100,7 +100,7 @@ function Revision(main, revision) {
 	};
 	
 	this.showQuery = function(){
-		pushHistoryAppend({tab: "query"});
+		pushHistoryAppend({tab: "query"}, "Revision");
 		$(".revision .nav li").removeClass("active");
 		$(".revision .queryLink").addClass("active");
 		$(".revision .content > div").hide();
@@ -119,7 +119,7 @@ function Revision(main, revision) {
 	};
 	
 	this.showExtendedData = function(){
-		pushHistoryAppend({tab: "extendeddata"});
+		pushHistoryAppend({tab: "extendeddata"}, "Revision");
 		$(".revision .nav li").removeClass("active");
 		$(".revision .extendedDataLink").addClass("active");
 		$(".revision .content > div").hide();
@@ -133,7 +133,7 @@ function Revision(main, revision) {
 	};
 
 	this.showBrowser = function(){
-		pushHistoryAppend({tab: "browser"});
+		pushHistoryAppend({tab: "browser"}, "Revision");
 		$(".revision .nav li").removeClass("active");
 		$(".revision .browserLink").addClass("active");
 		$(".revision .content > div").hide();

@@ -217,13 +217,13 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 			};
 			if (isLocal) {
 				Global.bimServerApi.call("ServiceInterface", "addLocalServiceToProject", {poid: othis.project.oid, sService: service, internalServiceOid: profileDescriptor.identifier}, function(data){
-					main.showProject(othis.project, null, function(){
+					main.showProject(othis.project, function(){
 						this.reloadProject();
 					});
 				});
 			} else {
 				Global.bimServerApi.call("ServiceInterface", "addServiceToProject", {poid: othis.project.oid, sService: service}, function(data){
-					main.showProject(othis.project, null, function(){
+					main.showProject(othis.project, function(){
 						this.reloadProject();
 					});
 				});

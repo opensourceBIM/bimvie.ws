@@ -111,7 +111,7 @@ function User(main, user) {
 	};
 	
 	this.showDetails = function() {
-		pushHistoryAppend({tab: "details"});
+		pushHistoryAppend({tab: "details"}, "User " + othis.user.name);
 		$(".user .nav li").removeClass("active");
 		$(".user .detailsLink").addClass("active");
 		$(".user .content > div").hide();
@@ -188,7 +188,7 @@ function User(main, user) {
 	};
 	
 	this.showRevisions = function() {
-		pushHistoryAppend({tab: "revisions"});
+		pushHistoryAppend({tab: "revisions"}, "User " + othis.user.name);
 		$(".user .nav li").removeClass("active");
 		$(".user .revisionsLink").addClass("active");
 		$(".user .content > div").hide();
@@ -225,7 +225,7 @@ function User(main, user) {
 	};
 	
 	this.showCheckouts = function() {
-		pushHistoryAppend({tab: "checkouts"});
+		pushHistoryAppend({tab: "checkouts"}, "User " + othis.user.name);
 		$(".user .nav li").removeClass("active");
 		$(".user .checkoutsLink").addClass("active");
 		$(".user .content > div").hide();
@@ -259,7 +259,7 @@ function User(main, user) {
 	};
 	
 	this.showProjects = function() {
-		pushHistoryAppend({tab: "projects"});
+		pushHistoryAppend({tab: "projects"}, "User " + othis.user.name);
 		$(".user .nav li").removeClass("active");
 		$(".user .projectsLink").addClass("active");
 		$(".user .content > div").hide();

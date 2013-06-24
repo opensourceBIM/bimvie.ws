@@ -45,7 +45,7 @@ function Users(main) {
 	};
 	
 	this.sendPasswordReset = function(user){
-		Global.bimServerApi.callWithFullIndication("AuthInterface", "requestPasswordChange", {username: user.username, resetUrl: getBaseURL() + "?page=ResetPassword"}, function(){
+		Global.bimServerApi.callWithFullIndication("AuthInterface", "requestPasswordChange", {username: user.username, resetUrl: Global.baseDir + "?page=ResetPassword"}, function(){
 			
 		});
 	};
@@ -70,9 +70,9 @@ function Users(main) {
 				li.find("a").click(function(){othis.undeleteUser(user)});
 				actions.find("ul").append(li);
 			}
-			var loginAs = $("<li><a>Login as</a></li>");
-			loginAs.find("a").click(function(){othis.loginAs(user)});
-			actions.find("ul").append(loginAs);
+//			var loginAs = $("<li><a>Login as</a></li>");
+//			loginAs.find("a").click(function(){othis.loginAs(user)});
+//			actions.find("ul").append(loginAs);
 
 			var loginAs = $("<li><a>Send password reset</a></li>");
 			loginAs.find("a").click(function(){othis.sendPasswordReset(user)});

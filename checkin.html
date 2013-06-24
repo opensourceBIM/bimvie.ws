@@ -15,7 +15,7 @@
 					<option value="[NONE]">Select a deserializer</option>
 					</select></td></tr>
 					<tr><td><label for="comment">Comment</label></td><td><textarea class="comment" name="comment" cols="57" rows="4"></textarea></td></tr>
-					<tr><td><label for="merge">Merge</label></td><td><input class="merge" name="merge" type="checkbox"/></td></tr>
+					<tr class="checkinMergeTr initialhide"><td><label for="merge">Merge</label></td><td><input class="merge" name="merge" type="checkbox"/></td></tr>
 				</table>
 			</div>
 			<div class="uploadbranch">
@@ -73,6 +73,12 @@ function Checkin(containerDiv, project, successFunction) {
 			var option = $("<option value=\"" + deserializer.oid + "\">" + deserializer.name + "</option>");
 			containerDiv.find(".deserializerName").append(option);
 		});
+	});
+	
+	Global.bimServerApi.call("SettingsInterface", "isCheckinMergingEnabled", {}, function(enabled){
+		if (enabled) {
+			$(".checkinMergeTr").show();
+		}
 	});
 
 	var submitdata = null;

@@ -1,6 +1,6 @@
 <div class="projects">
-	<div class="well well-small">
-		<button class="addProjectButton btn">Add project</button>
+	<div class="buttonBar well well-small initialhide">
+		<button class="addProjectButton btn initialhide">Add project</button>
 	</div>
 	<div class="well well-small noprojects">There are no projects yet</div>
 	<table class="projectsTable initialhide table table-striped table-hover">
@@ -79,6 +79,13 @@ function Projects(containerDiv, main) {
 	};
 	
 	this.loadProjects = function(){
+		Global.bimServerApi.call("SettingsInterface", "isAllowUsersToCreateTopLevelProjects", {}, function(enabled){
+			if (main.user.userType == "ADMIN" || enabled) {
+				$(".buttonBar").show();
+				$(".addProjectButton").show();
+			}
+		});
+		
 		$(".projectsTable tbody tr").remove();
 		Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllProjects", {onlyTopLevel: true, onlyActive: true}, function(data){
 			data.forEach(function(project){
