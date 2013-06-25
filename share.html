@@ -21,7 +21,7 @@
 function Share(roid) {
 	var othis = this;
 	
-	bimServerApi.call("ServiceInterface", "shareRevision", {roid: roid}, function(token){
+	Global.bimServerApi.call("ServiceInterface", "shareRevision", {roid: roid}, function(token){
 		$(".linkInput").val(token).select();
 		$(".bimsurferInput").val("http://localhost/bimsurfer/?token=" + token + "&server=" + Global.bimServerApi.baseUrl + "&roid=" + roid);
 	});

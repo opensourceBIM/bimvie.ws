@@ -11,7 +11,7 @@
 	</table>
 </div>
 <script>
-function Users(main) {
+function Users(containerDiv, main) {
 	var othis = this;
 
 	this.show = function(){
@@ -101,6 +101,6 @@ function Users(main) {
 	othis.loadUsers();
 	
 	Global.bimServerApi.registerNewUserHandler(othis.newUserHandler);
-	$(".users .addUserButton").click(main.showAddUser);
+	$(".users .addUserButton").click(function(){main.showAddUser()});
 }
 </script>

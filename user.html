@@ -8,8 +8,10 @@
 	</ul>
 	<div class="content">	
 		<div class="details">
-			Not implemented
-			<label>Token </label><span class="tokenSpan"></span>
+			<table class="table detailsTable">
+				<thead></thead>
+				<tbody></tbody>
+			</table>
 		</div>
 		<div class="revisions initialhide">
 			<div class="well well-small norevisions">No revisions</div>
@@ -59,7 +61,7 @@
 	</div>
 </div>
 <script>
-function User(main, user) {
+function User(containerDiv, main, user) {
 	var othis = this;
 	othis.user = user;
 	
@@ -73,8 +75,8 @@ function User(main, user) {
 			othis.user = user;
 			othis.updateUser();
 		}
-	};	
-	
+	};
+
 	this.reloadUser = function(uoid) {
 		if (uoid == null) {
 			uoid = othis.user.oid;
@@ -90,12 +92,18 @@ function User(main, user) {
 		$(".user .revisionsLink a").html("Revisions" + (othis.user.revisions.length == 0 ? "" : (" (" + othis.user.revisions.length + ")")));
 		$(".user .checkoutsLink a").html("Checkouts" + (othis.user.checkouts == null || othis.user.checkouts.length == 0 ? "" : (" (" + othis.user.checkouts.length + ")")));
 		$(".user .projectsLink a").html("Projects" + (othis.user.hasRightsOn.length == 0 ? "" : (" (" + othis.user.hasRightsOn.length + ")")));
-		$(".user .tokenSpan").html(othis.user.token);
+		
+		containerDiv.find(".detailsTable").append("<tr><td>Username</td><td>" + othis.user.username + "</td></tr>");
+		containerDiv.find(".detailsTable").append("<tr><td>Name</td><td>" + othis.user.name + "</td></tr>");
+		containerDiv.find(".detailsTable").append("<tr><td>Created on</td><td>" + formatDateTime(new Date(othis.user.createdOn)) + " (by <span class=\"createdBy\"></span>)</td></tr>");
+		containerDiv.find(".createdBy").append(createUserLink(main, othis.user.createdById));
+		containerDiv.find(".detailsTable").append("<tr><td>State</td><td>" + othis.user.state + "</td></tr>");
+		containerDiv.find(".detailsTable").append("<tr><td>Token</td><td>" + othis.user.token + "</td></tr>");
 
 		Global.bimServerApi.call("ServiceInterface", "getAllCheckoutsByUser", {uoid: othis.user.oid}, function(checkouts){
 			$(".user .checkoutsLink a").html("Checkouts" + (checkouts == null || checkouts.length == 0 ? "" : (" (" + checkouts.length + ")")));
 		});
-		
+
 		var history = History.getState().data;
 		if (history.tab == "details") {
 			othis.showDetails();
@@ -109,9 +117,9 @@ function User(main, user) {
 			othis.showDetails();
 		}
 	};
-	
+
 	this.showDetails = function() {
-		pushHistoryAppend({tab: "details"}, "User " + othis.user.name);
+		pushHistory({page: "User", uoid: othis.user.oid, tab: "details"}, "User " + othis.user.name);
 		$(".user .nav li").removeClass("active");
 		$(".user .detailsLink").addClass("active");
 		$(".user .content > div").hide();
@@ -128,13 +136,6 @@ function User(main, user) {
 			main.showRevision($(this).parents("tr").andSelf().data("revision"), null, true);
 			othis.close();
 		}
-	};
-
-	this.loadUserName = function(uoid, targetElement) {
-		Global.bimServerApi.call("ServiceInterface", "getUserByUoid", {uoid: uoid}, function(data){
-			targetElement.html(data.username);
-			targetElement.data("user", data);
-		});
 	};
 
 	this.addRevision = function(revision) {

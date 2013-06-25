@@ -21,7 +21,10 @@
 	</ul>
 	<div class="content">
 		<div class="tab-pane details">
-			Not implemented
+			<table class="detailsTable table">
+				<thead></thead>
+				<tbody></tbody>
+			</table>
 		</div>
 		<div class="tab-pane subprojects initialhide">
 			<div class="well well-small nosubprojects">No sub projects</div>
@@ -172,7 +175,7 @@ var Project = function(containerDiv, main, project) {
 
 	this.loadDetails = function(callback) {
 		othis.tabChanger.changeTab($(".detailsLink"), null, $(".details"), function(){
-			pushHistoryAppend({tab: "details"}, "Project");
+			pushHistory({page: "Project", poid: othis.project.oid, tab: "details"}, "Project");
 			return $(".details");
 		}, callback);
 	};
@@ -211,7 +214,7 @@ var Project = function(containerDiv, main, project) {
 					othis.addSubProject(subProject);
 				});
 			});
-			pushHistoryAppend({tab: "subprojects"}, "Project");
+			pushHistory({page: "Project", poid: othis.project.oid, tab: "subprojects"}, "Project");
 			return $(".subprojects");
 		}, callback);
 	};
@@ -307,11 +310,11 @@ var Project = function(containerDiv, main, project) {
 					var li = $("<li><a>No services configured</a></li>");
 					actions.find("ul").append(li);
 				}
-				var shareLi = $("<li><a>Share...</a></li>");
-				shareLi.find("a").click(function(){
-					othis.share(revision.oid);
-				});
-				actions.find("ul").append(shareLi);
+//				var shareLi = $("<li><a>Share...</a></li>");
+//				shareLi.find("a").click(function(){
+//					othis.share(revision.oid);
+//				});
+//				actions.find("ul").append(shareLi);
 				
 				if (Settings.get3DViewerUrl != null) {
 					var viewLi = $("<li><a>View in 3D</a></li>");
@@ -366,7 +369,7 @@ var Project = function(containerDiv, main, project) {
 	
 	this.showService = function(callback) {
 		othis.tabChanger.changeTab($(".servicesLink"), $(".services"), function(){
-			pushHistoryAppend({tab: "services"}, "Project");
+			pushHistory({page: "Project", poid: othis.project.oid, tab: "services"}, "Project");
 			return new Service(main, service);
 		}, callback);
 	};
@@ -402,7 +405,7 @@ var Project = function(containerDiv, main, project) {
 	this.loadExtendedData = function(callback) {
 		$(".extendeddata .message").html("Showing extended data for revision " + othis.lastRevision.id);
 		othis.tabChanger.changeTab($(".extendedDataLink"), "extendeddatalist.html", $(".extendeddatacontainer"), function(){
-			pushHistoryAppend({tab: "extendeddata"}, "Project");
+			pushHistory({page: "Project", poid: othis.project.oid, tab: "extendeddata"}, "Project");
 			$(".extendeddata").show();
 			return new ExtendedDataList(main, othis.lastRevision, othis);
 		}, callback);
@@ -416,7 +419,7 @@ var Project = function(containerDiv, main, project) {
 					othis.addRevision(revision);
 				});
 			});
-			pushHistoryAppend({tab: "revisions"}, "Project");
+			pushHistory({page: "Project", poid: othis.project.oid, tab: "revisions"}, "Project");
 			return $(".revisions");
 		}, callback);
 	};
@@ -429,7 +432,7 @@ var Project = function(containerDiv, main, project) {
 					othis.addCheckout(checkout);
 				});
 			});
-			pushHistoryAppend({tab: "checkouts"}, "Project");
+			pushHistory({page: "Project", poid: othis.project.oid, tab: "checkouts"}, "Project");
 			return $(".checkouts");
 		}, callback);
 	};
@@ -442,7 +445,7 @@ var Project = function(containerDiv, main, project) {
 					othis.addUser(user);
 				});
 			});
-			pushHistoryAppend({tab: "users"}, "Project");
+			pushHistory({page: "Project", poid: othis.project.oid, tab: "users"}, "Project");
 			return $(".users");
 		}, callback);
 	};
@@ -455,7 +458,7 @@ var Project = function(containerDiv, main, project) {
 					othis.addService(service);
 				});
 			});
-			pushHistoryAppend({tab: "services"}, "Project");
+			pushHistory({page: "Project", poid: othis.project.oid, tab: "services"}, "Project");
 			return $(".services");
 		}, callback);
 	};
@@ -493,7 +496,6 @@ var Project = function(containerDiv, main, project) {
 		if (poid == null) {
 			poid = othis.project.oid;
 		}
-		console.log("Reload project");
 		Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: poid}, function(project){
 			othis.project = project;
 			othis.updateProject();
@@ -509,6 +511,13 @@ var Project = function(containerDiv, main, project) {
 		if (othis.project.lastRevisionId != -1) {
 			Global.bimServerApi.registerNewExtendedDataOnRevisionHandler(othis.project.lastRevisionId, othis.newExtendedDataOnRevisionHandler);
 		}
+
+		containerDiv.find(".detailsTable").append("<tr><td>Name</td><td>" + othis.project.name + "</td></tr>");
+		containerDiv.find(".detailsTable").append("<tr><td>Description</td><td>" + othis.project.description.replaceAll("\n", "<br/>") + "</td></tr>");
+		containerDiv.find(".detailsTable").append("<tr><td>Created on</td><td>" + formatDateTime(new Date(othis.project.createdDate)) + " (by <span class=\"createdBy\"></span>)</td></tr>");
+		containerDiv.find(".createdBy").append(createUserLink(main, othis.project.createdById));
+		containerDiv.find(".detailsTable").append("<tr><td>State</td><td>" + othis.project.state + "</td></tr>");
+		containerDiv.find(".detailsTable").append("<tr><td>Length measure to use combined downloads</td><td>" + othis.project.exportLengthMeasurePrefix + "</td></tr>");
 
 		containerDiv.find("h1").html(othis.project.name);
 		containerDiv.find(".subprojectsLink a").html("Sub Projects" + (othis.project.subProjects.length == 0 ? "" : (" (" + othis.project.subProjects.length + ")")));
@@ -589,13 +598,15 @@ var Project = function(containerDiv, main, project) {
 			othis.loadSubProjects();
 		} else if (history.tab == "log") {
 			othis.loadLog();
+		} else {
+			othis.loadDetails();
 		}
 	};
 	
 	this.loadBrowser = function(callback) {
 		$(".browser .message").html("Showing data for revision " + othis.lastRevision.id);
 		othis.tabChanger.changeTab($(".browserLink"), "browser.html", $(".browsercontainer"), function(){
-			pushHistoryAppend({tab: "browser"}, "Project");
+			pushHistory({page: "Project", poid: othis.project.oid, tab: "browser"}, "Project");
 			$(".browser").show();
 			return new Browser($(this), othis.lastRevision);
 		}, callback);
@@ -603,7 +614,7 @@ var Project = function(containerDiv, main, project) {
 
 	this.loadQuery = function(callback) {
 		othis.tabChanger.changeTab($(".queryLink"), "query.html", $(".query"), function(){
-			pushHistoryAppend({tab: "query"}, "Project");
+			pushHistory({page: "Project", poid: othis.project.oid, tab: "query"}, "Project");
 			return new Query($(this), main, othis.project.oid, othis.lastRevision.oid);
 		}, callback);
 	};
@@ -624,7 +635,7 @@ var Project = function(containerDiv, main, project) {
 					Global.bimServerApi.unregisterChangeProgressProjectHandler(othis.project.oid, newChangeProgressHandler, closedChangeProgressHandler)
 				}
 			};
-			pushHistoryAppend({tab: "log"}, "Project");
+			pushHistory({page: "Project", poid: othis.project.oid, tab: "log"}, "Project");
 			return new Log($(this), settings, main);
 		}, callback);
 	};
@@ -635,7 +646,7 @@ var Project = function(containerDiv, main, project) {
 
 	this.loadSurfer = function(callback) {
 		othis.tabChanger.changeTab($(".surferLink"), "surfer.html", $(".surfer"), function(){
-			pushHistoryAppend({tab: "surfer"}, "Project");
+			pushHistory({page: "Project", poid: othis.project.oid, tab: "surfer"}, "Project");
 			return new Surfer(othis.lastRevision);
 		}, callback);
 	};

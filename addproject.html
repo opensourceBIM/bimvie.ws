@@ -3,7 +3,37 @@
 		<div class="control-group">
 			<label class="control-label" for="inputName">Name</label>
 			<div class="controls">
-				<input type="text" class="inputName" placeholder="Name">
+				<input type="text" id="inputName" class="inputName" placeholder="Name">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="descriptionInput">Description</label>
+			<div class="controls">
+				<textarea class="descriptionInput span6" id="descriptionInput" placeholder="Description" cols="60" rows="7"></textarea>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="lengthMeasureInput">Uniform length measure for combined download</label>
+			<div class="controls">
+				<select class="lengthMeasureInput span6" id="lengthMeasureInput">
+					<option>meter</option>
+					<option>attometer</option>
+					<option>femtometer</option>
+					<option>picometer</option>
+					<option>nanometer</option>
+					<option>micrometer</option>
+					<option>millimeter</option>
+					<option>centimeter</option>
+					<option>decimeter</option>
+					<option>decameter</option>
+					<option>hectometer</option>
+					<option>kilometer</option>
+					<option>megameter</option>
+					<option>gigameter</option>
+					<option>terameter</option>
+					<option>petameter</option>
+					<option>exameter</option>
+				</select>
 			</div>
 		</div>
 		<div class="control-group">
@@ -23,14 +53,22 @@ function AddProject(main, parentProject) {
 	this.close = function(){
 	};
 	
+	this.updateProject = function(project) {
+		project.description = $(".descriptionInput").val();
+		project.exportLengthMeasurePrefix = $(".lengthMeasureInput").val();
+		Global.bimServerApi.call("ServiceInterface", "updateProject", {sProject: project}, function(){
+			main.showProject(project, null, true);
+		});
+	};
+	
 	this.addProject = function() {
 		if (parentProject != null) {
 			Global.bimServerApi.call("Bimsie1ServiceInterface", "addProjectAsSubProject", {parentPoid: parentProject.oid, projectName: $(".addproject .inputName").val()}, function(data){
-				main.showProject(data, null, true);
+				othis.updateProject(data);
 			});
 		} else {
 			Global.bimServerApi.call("Bimsie1ServiceInterface", "addProject", {projectName: $(".addproject .inputName").val()}, function(data){
-				main.showProject(data, null, true);
+				othis.updateProject(data);
 			});
 		}
 	};

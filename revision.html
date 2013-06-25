@@ -46,6 +46,9 @@ function Revision(main, revision) {
 	this.updateRevision = function() {
 		$(".revision h1").html("Revision " + othis.revision.id);
 		$(".revision .extendedDataLink a").html("Extended Data" + (othis.revision.extendedData.length == 0 ? "" : (" (" + othis.revision.extendedData.length + ")")));
+		if (History.getState().data.page != "Revision") {
+			pushHistory({page: "Revision", "roid": typeof revision == "object" ? revision.oid : revision}, "Revision");
+		}
 		var history = History.getState().data;
 		if (history.tab == "details") {
 			othis.showDetails();
@@ -106,7 +109,7 @@ function Revision(main, revision) {
 		$(".revision .content > div").hide();
 		$(".revision .query").show();
 		$(".revision .query").load(Global.baseDir + "query.html", function(){
-			new Query($(this), main, revision.projectId, revision.oid);
+			new Query($(this), main, othis.revision.projectId, othis.revision.oid);
 		});
 	};
 	
@@ -132,7 +135,7 @@ function Revision(main, revision) {
 		});
 	};
 
-	this.showBrowser = function(){
+	this.showBrowser = function(callback){
 		pushHistoryAppend({tab: "browser"}, "Revision");
 		$(".revision .nav li").removeClass("active");
 		$(".revision .browserLink").addClass("active");
@@ -143,6 +146,7 @@ function Revision(main, revision) {
 		}
 		$(".revision .browser").load(Global.baseDir + "browser.html", function(){
 			othis.current = new Browser($(this), othis.revision);
+			othis.current.loadFromHistory();
 		});
 	};
 	

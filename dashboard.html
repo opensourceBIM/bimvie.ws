@@ -30,20 +30,6 @@ function Dashboard(main) {
 		loadProject(link);
 		return link;
 	};
-	
-	this.createUserLink = function(uoid) {
-		if (uoid == -1) {
-			return "";			
-		} else {
-			var link = $("<a>Loading...</a>");
-			link.attr("uoid", uoid);
-			link.click(function(){
-				main.showUser(uoid, null, true);
-			});
-			loadUser(link);
-			return link;
-		}
-	};
 
 	this.newLogAction = function(uuid, logAction, serviceIdentifier, profileIdentifier, token, apiUrl) {
 		var tr = $("<tr></tr>");
@@ -51,14 +37,14 @@ function Dashboard(main) {
 		tr.append("<td>" + logAction.__type.substring(1) + "</td>");
 		
 		var userTd = $("<td></td>");
-		userTd.append(othis.createUserLink(logAction.executorId));
+		userTd.append(createUserLink(main, logAction.executorId));
 		tr.append(userTd);
 		
 		tr.append("<td>" + formatAccessMethod(logAction.accessMethod) + "</td>");
 		var descriptionTd = $("<td></td>");
 		tr.append(descriptionTd);
 		if (logAction.__type == "SNewUserAdded") {
-			descriptionTd.append(othis.createUserLink(logAction.userId));
+			descriptionTd.append(createUserLink(main, logAction.userId));
 		} else if (logAction.__type == "SNewProjectAdded") {
 			descriptionTd.append(othis.createProjectLink(logAction.projectId));
 		} else if (logAction.__type == "SRevisionBranched") {
