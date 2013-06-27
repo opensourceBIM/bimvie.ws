@@ -64,6 +64,7 @@
 						<th>Id</th>
 						<th>Date</th>
 						<th>User</th>
+						<th>Active</th>
 						<th>Actions</th>
 					</tr>
 				</thead>
@@ -195,13 +196,8 @@ var Project = function(containerDiv, main, project) {
 		subProjectRow.data("project", subProject);
 		
 		subProjectRow.append("<td>" + subProject.name + "</td>");
-
-		var actions = $("<td></td>");
-		var dd = $(".dropdowntemplateproject").clone();
-		dd.removeClass("dropdowntemplateproject");
-		dd.show();
-		actions.append(dd);
-		subProjectRow.append(actions);
+		
+		subProjectRow.append(newDropdownTd("Action"));
 
 		containerDiv.find(".subprojectsTable").append(subProjectRow);
 	};
@@ -347,6 +343,7 @@ var Project = function(containerDiv, main, project) {
 		userTd.append(userA);
 		loadUser(userA);
 		checkoutRow.append(userTd);
+		checkoutRow.append("<td>" + checkout.active + "</td>");
 
 		var actions = newSplitDropDownTd("Download", othis.downloadCheckoutClick);
 		checkoutRow.append(actions);
@@ -426,7 +423,7 @@ var Project = function(containerDiv, main, project) {
 
 	this.loadCheckouts = function(callback) {
 		othis.tabChanger.changeTab($(".checkoutsLink"), null, $(".checkouts"), function(){
-			Global.bimServerApi.call("ServiceInterface", "getAllCheckoutsOfProject", {poid: othis.project.oid}, function(data){
+			Global.bimServerApi.call("ServiceInterface", "getAllCheckoutsOfProjectAndSubProjects", {poid: othis.project.oid}, function(data){
 				containerDiv.find(".checkoutsTable tbody tr").remove();
 				data.forEach(function(checkout){
 					othis.addCheckout(checkout);
@@ -512,12 +509,13 @@ var Project = function(containerDiv, main, project) {
 			Global.bimServerApi.registerNewExtendedDataOnRevisionHandler(othis.project.lastRevisionId, othis.newExtendedDataOnRevisionHandler);
 		}
 
-		containerDiv.find(".detailsTable").append("<tr><td>Name</td><td>" + othis.project.name + "</td></tr>");
-		containerDiv.find(".detailsTable").append("<tr><td>Description</td><td>" + othis.project.description.replaceAll("\n", "<br/>") + "</td></tr>");
-		containerDiv.find(".detailsTable").append("<tr><td>Created on</td><td>" + formatDateTime(new Date(othis.project.createdDate)) + " (by <span class=\"createdBy\"></span>)</td></tr>");
+		containerDiv.find(".detailsTable tbody").empty();
+		containerDiv.find(".detailsTable tbody").append("<tr><td>Name</td><td>" + othis.project.name + "</td></tr>");
+		containerDiv.find(".detailsTable tbody").append("<tr><td>Description</td><td>" + othis.project.description.replaceAll("\n", "<br/>") + "</td></tr>");
+		containerDiv.find(".detailsTable tbody").append("<tr><td>Created on</td><td>" + formatDateTime(new Date(othis.project.createdDate)) + " (by <span class=\"createdBy\"></span>)</td></tr>");
 		containerDiv.find(".createdBy").append(createUserLink(main, othis.project.createdById));
-		containerDiv.find(".detailsTable").append("<tr><td>State</td><td>" + othis.project.state + "</td></tr>");
-		containerDiv.find(".detailsTable").append("<tr><td>Length measure to use combined downloads</td><td>" + othis.project.exportLengthMeasurePrefix + "</td></tr>");
+		containerDiv.find(".detailsTable tbody").append("<tr><td>State</td><td>" + othis.project.state + "</td></tr>");
+		containerDiv.find(".detailsTable tbody").append("<tr><td>Length measure to use combined downloads</td><td>" + othis.project.exportLengthMeasurePrefix + "</td></tr>");
 
 		containerDiv.find("h1").html(othis.project.name);
 		containerDiv.find(".subprojectsLink a").html("Sub Projects" + (othis.project.subProjects.length == 0 ? "" : (" (" + othis.project.subProjects.length + ")")));
@@ -533,7 +531,7 @@ var Project = function(containerDiv, main, project) {
 				containerDiv.find(" .extendedDataLink a").html("Extended Data" + (data.extendedData.length == 0 ? "" : (" (" + data.extendedData.length + ")")));
 				othis.loadHistory();
 			});
-			Global.bimServerApi.call("ServiceInterface", "getAllCheckoutsOfProject", {poid: othis.project.oid}, function(checkouts){
+			Global.bimServerApi.call("ServiceInterface", "getAllCheckoutsOfProjectAndSubProjects", {poid: othis.project.oid}, function(checkouts){
 				containerDiv.find(".checkoutsLink a").html("Checkouts" + (checkouts == null || checkouts.length == 0 ? "" : (" (" + checkouts.length + ")")));
 			});
 		} else {

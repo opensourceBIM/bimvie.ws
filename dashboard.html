@@ -1,16 +1,18 @@
-<table class="logTable table table-striped table-hover">
-	<thead>
-		<tr>
-			<th>When</th>
-			<th>Type</th>
-			<th>User</th>
-			<th>Access Method</th>
-			<th>Summary</th>
-		</tr>
-	</thead>
-	<tbody>
-	</tbody>
-</table>
+<div class="dashboard">
+	<table class="logTable table table-striped table-hover initialhide">
+		<thead>
+			<tr>
+				<th>When</th>
+				<th>Type</th>
+				<th>User</th>
+				<th>Access Method</th>
+				<th>Summary</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</div>
 <script>
 function Dashboard(main) {
 	var othis = this;
@@ -18,8 +20,10 @@ function Dashboard(main) {
 	this.close = function() {
 		Global.bimServerApi.unregister(othis.newLogAction);
 	};
-	
-	this.show = function(){};
+
+	this.show = function(){
+		
+	};
 	
 	this.createProjectLink = function(poid) {
 		var link = $("<a>Loading...</a>");
@@ -75,12 +79,15 @@ function Dashboard(main) {
 		$(".logTable tbody").prepend(tr);
 	}
 
-	Global.bimServerApi.call("AdminInterface", "getLogs", {}, function(data){
-		data.forEach(function(logAction){
-			othis.newLogAction("", logAction);
+	if (main.user.userType == "ADMIN") {
+		Global.bimServerApi.call("AdminInterface", "getLogs", {}, function(data){
+			data.forEach(function(logAction){
+				othis.newLogAction("", logAction);
+			});
 		});
-	});
-	
-	Global.bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
+		$(".logTable").show();
+		
+		Global.bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
+	}
 }
 </script>

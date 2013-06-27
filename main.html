@@ -41,7 +41,7 @@ function Main(address, username) {
 			$(".main .nav li").hide();
 			othis.user = user;
 			Settings.getMenuItems().forEach(function(menuItem){
-				if (menuItem == "serversettingsLink" || menuItem == "serverinfoLink" || menuItem == "testingLink" || menuItem == "dashboardLink" || menuItem == "usersLink") {
+				if (menuItem == "serversettingsLink" || menuItem == "serverinfoLink" || menuItem == "testingLink" || menuItem == "usersLink") {
 					if (user.userType == "ADMIN") {
 						$("." + menuItem).show();
 					}
@@ -83,6 +83,7 @@ function Main(address, username) {
 	};
 
 	this.logout = function() {
+		$(".sidespan").empty();
 		Global.bimServerApi.logout(function(){
 			$(".indexcontainer").load(Global.baseDir + "login.html", function(){
 				new Login(Global.bimServerApi.baseUrl);
@@ -169,9 +170,9 @@ function Main(address, username) {
 		}, callback);
 	};
 
-	this.showExtendedDataSchema = function(extendedDataSchema, callback) {
+	this.showExtendedDataSchema = function(oid, callback) {
 		this.showServerSettings(function(){
-			othis.current.showExtendedDataSchema(extendedDataSchema);
+			this.showExtendedDataSchema(oid);
 		});
 	};
 
@@ -188,6 +189,7 @@ function Main(address, username) {
 	};
 	
 	this.schemaLinkClick = function(event) {
+		othis.showExtendedDataSchema($(this).attr("soid"));
 	};
 	
 	this.showService = function(project, service, callback) {
@@ -198,7 +200,7 @@ function Main(address, username) {
 	
 	this.showServerSettings = function(callback) {
 		if (othis.current != null && othis.current.getName != null && othis.current.getName() == "ServerSettings") {
-			callback();
+			callback.call(othis.current);
 		} else {
 			othis.pageChanger.changePage($(".serversettingsLink"), "serversettings.html", function(){
 				return new ServerSettings(othis);
@@ -221,7 +223,7 @@ function Main(address, username) {
 
 	this.extendedDataSchemaClick = function(event){
 		event.preventDefault();
-		othis.showExtendedDataSchema($(this).data("extendeddataschema"));
+		othis.showExtendedDataSchema($(this).data("extendeddataschema").oid);
 	};
 	
 	this.createExtendedDataSchemaLink = function(extendedDataSchema) {

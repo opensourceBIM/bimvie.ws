@@ -27,13 +27,7 @@ function ExtendedData(main, extendedData, parent) {
 
 	var tr = $("<tr><td>User</td></tr>");
 	
-	var userTd = $("<td></td>");
-	var userA = $("<a>loading...</a>");
-	userA.attr("uoid", extendedData.userId);
-	userA.click(main.userClick);
-	userTd.append(userA);
-	loadUser(userA);
-	tr.append(userTd);
+	tr.append($("<td>").append(createUserLink(main, extendedData.userId)));
 	
 	$(".extendeddata table.detailsTable tbody").append("<tr><td>Title</td><td>" + extendedData.title + "</td></tr>");
 	$(".extendeddata table.detailsTable tbody").append(tr);

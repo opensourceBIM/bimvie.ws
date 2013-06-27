@@ -4,7 +4,12 @@
 	</div>
 	<table class="usersTable table table-striped table-hover">
 		<thead>
-			<tr><th>Name</th><th>Type</th><th>Actions</th></tr>
+			<tr>
+				<th>Name</th>
+				<th>Username</th>
+				<th>Type</th>
+				<th>Actions</th>
+			</tr>
 		</thead>
 		<tbody>
 		</tbody>
@@ -55,6 +60,7 @@ function Users(containerDiv, main) {
 		userRow.click(othis.userClick);
 		userRow.data("user", user);
 		userRow.append("<td>" + user.name + "</td>");
+		userRow.append("<td>" + user.username + "</td>");
 		userRow.append("<td>" + formatUserType(user.userType) + "</td>");
 		var actions = newDropdownTd("Actions");
 		

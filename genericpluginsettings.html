@@ -26,17 +26,17 @@ function GenericPluginSettings(main, usersettings, pluginsettings, configuration
 	this.loadGenericPluginSettings = function() {
 		$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Name</td><td>" + othis.pluginsettings.name + "</td></tr>");
 		$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Description</td><td>" + othis.pluginsettings.description + "</td></tr>");
-		$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Class</td><td>" + othis.pluginsettings.className + "</td></tr>");
 		$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Status</td><td>" + (othis.pluginsettings.enabled ? "Enabled" : "Disabled") + "</td></tr>");
-		if (configuration.title == "Internal Service") {
-			$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Remote Accessible</td><td><input class=\"remoteAccessible\" type=\"checkbox\"" + (othis.pluginsettings.remoteAccessible ? " checked=\"checked\"" : "") + "/></td></tr>");
-		}
+		Global.bimServerApi.call("PluginInterface", "getPluginDescriptor", {oid: othis.pluginsettings.pluginDescriptorId}, function(pluginDescriptor){
+			$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Class</td><td>" + pluginDescriptor.pluginClassName + "</td></tr>");
+			$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Plugin State</td><td>" + (pluginDescriptor.enabled ? "Enabled" : "Disabled") + "</td></tr>");
+		});
 		$(".genericpluginsettings h3.title").html(configuration.title);
 		othis.loadPluginObjectDefinition();
 	};
 	
 	this.loadPluginSettings = function() {
-		Global.bimServerApi.call("PluginInterface", "getPluginSettings", {poid: othis.pluginsettings.oid}, function(objectDefinition){
+		Global.bimServerApi.call("PluginInterface", "getPluginSettings", {poid: pluginsettings.oid}, function(objectDefinition){
 			if (objectDefinition != null) {
 				if (objectDefinition.parameters != null) {
 					objectDefinition.parameters.forEach(function(parameter){
@@ -54,7 +54,7 @@ function GenericPluginSettings(main, usersettings, pluginsettings, configuration
 	};
 	
 	this.loadPluginObjectDefinition = function() {
-		Global.bimServerApi.call("PluginInterface", "getPluginObjectDefinition", {className: othis.pluginsettings.className}, function(objectDefinition){
+		Global.bimServerApi.call("PluginInterface", "getPluginObjectDefinition", {oid: pluginsettings.pluginDescriptorId}, function(objectDefinition){
 			if (objectDefinition != null && objectDefinition.parameters != null) {
 				objectDefinition.parameters.forEach(function(parameter){
 					$(".genericpluginsettings .nosettings").hide();
@@ -136,7 +136,6 @@ function GenericPluginSettings(main, usersettings, pluginsettings, configuration
 	
 	this.savePlugin = function() {
 		if (configuration.title == "Internal Service") {
-			othis.pluginsettings.remoteAccessible = $(".genericpluginsettings .remoteAccessible").is(":checked");
 			Global.bimServerApi.call("ServiceInterface", "updateInternalService", {internalService: othis.pluginsettings}, function(data){
 			});
 		}
@@ -149,7 +148,7 @@ function GenericPluginSettings(main, usersettings, pluginsettings, configuration
 	};
 
 	if (typeof pluginsettings == "number") {
-		Global.bimServerApi.call("PluginInterface", configuration.getMethod, {oid: pluginsettings}, function(data){
+		Global.bimServerApi.call(configuration.getInterface, configuration.getMethod, {oid: pluginsettings}, function(data){
 			othis.pluginsettings = data;
 			othis.loadGenericPluginSettings();
 		});

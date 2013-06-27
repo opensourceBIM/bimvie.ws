@@ -57,7 +57,7 @@ function Revision(main, revision) {
 		} else if (history.tab == "extendeddata") {
 			othis.showExtendedData();
 		} else if (history.tab == "browser") {
-			othis.showBrowser();
+			othis.loadBrowser();
 		} else {
 			othis.showDetails();
 		}
@@ -131,11 +131,11 @@ function Revision(main, revision) {
 			othis.current.close();
 		}
 		$(".revision .extendeddata").load(Global.baseDir + "extendeddatalist.html", function(){
-			othis.current = new ExtendedDataList(main, othis.revision);
+			othis.current = new ExtendedDataList(main, othis.revision, othis);
 		});
 	};
 
-	this.showBrowser = function(callback){
+	this.loadBrowser = function(callback){
 		pushHistoryAppend({tab: "browser"}, "Revision");
 		$(".revision .nav li").removeClass("active");
 		$(".revision .browserLink").addClass("active");
@@ -146,7 +146,11 @@ function Revision(main, revision) {
 		}
 		$(".revision .browser").load(Global.baseDir + "browser.html", function(){
 			othis.current = new Browser($(this), othis.revision);
-			othis.current.loadFromHistory();
+			if (callback != null) {
+				callback.call(othis.current);
+			} else {
+				othis.current.loadFromHistory();
+			}
 		});
 	};
 	
@@ -170,7 +174,7 @@ function Revision(main, revision) {
 	$(".revision .detailsLink").click(othis.showDetails);
 	$(".revision .queryLink").click(othis.showQuery);
 	$(".revision .extendedDataLink").click(othis.showExtendedData);
-	$(".revision .browserLink").click(othis.showBrowser);
+	$(".revision .browserLink").click(othis.loadBrowser);
 	$(".revision .branchButton").click(othis.showBranch);
 	$(".revision .addExtendedDataButton").click(othis.addExtendedDataButtonClick);
 };

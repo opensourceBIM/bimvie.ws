@@ -5,6 +5,7 @@
   	</div>
 	<div class="modal-body">
 		<a class="uploadlink">This project has subprojects, click here if you still want to checkin a new revision</a>
+		<div class="checkinWarning alert initialhide"></div>
 		<div class="uploads">
 			<div class="upload">
 				<div class="uploadStatus"></div>
@@ -80,6 +81,14 @@ function Checkin(containerDiv, project, successFunction) {
 			$(".checkinMergeTr").show();
 		}
 	});
+	
+	Global.bimServerApi.call("ServiceInterface", "getCheckinWarnings", {poid: othis.project.oid}, function(warnings){
+		if (warnings.length > 0) {
+			warnings.forEach(function(warning){
+				$(".checkinWarning").append(warning).show();
+			});
+		}
+	});
 
 	var submitdata = null;
 	var shouldsend = false;
@@ -89,7 +98,7 @@ function Checkin(containerDiv, project, successFunction) {
 	this.progressHandler = function(topicId, state) {
 		var oldStage = othis.stage;
 		othis.stage = state.stage;
-		if (state.state == "ERROR") {
+		if (state.state == "AS_ERROR") {
 			containerDiv.find(".uploadStatus").empty();
 			state.errors.forEach(function(error){
 				containerDiv.find(".uploadStatus").append("<div class=\"alert alert-block alert-error\">" + error + "</div>");
@@ -176,7 +185,13 @@ function Checkin(containerDiv, project, successFunction) {
 				currentCheckinId = data.result.checkinid;
 				containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
 				containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"bar\"></div></div>");
-				Global.bimServerApi.registerProgressHandler(currentCheckinId, othis.progressHandler);
+				Global.bimServerApi.registerProgressHandler(currentCheckinId, othis.progressHandler, function(){
+					Global.bimServerApi.call("Bimsie1NotificationRegistryInterface", "getProgress", {
+						topicId: currentCheckinId
+					}, function(state){
+						othis.progressHandler(currentCheckinId, state);
+					});
+				});
 			} else {
 				containerDiv.find(".uploadStatus").html("<div class=\"alert alert-block alert-error\">" + data.result.exception.message + "</div>");
 				othis.showUpload();
@@ -200,7 +215,7 @@ function Checkin(containerDiv, project, successFunction) {
 				fileName: null
 			}, function(data){
 				
-			});			
+			});
 		} else {
 			shouldsend = true;
 			submitdata.formData = {
@@ -208,7 +223,8 @@ function Checkin(containerDiv, project, successFunction) {
 				deserializerOid: containerDiv.find(".deserializerName").val(),
 				comment: containerDiv.find(".comment").val(),
 				merge: containerDiv.find(".merge").is(':checked'),
-				poid: othis.project.oid
+				poid: othis.project.oid,
+				sync: false
 			};
 			othis.hideUpload();
 			containerDiv.find(".uploadStatus").html("Uploading file...");

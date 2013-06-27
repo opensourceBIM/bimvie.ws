@@ -7,6 +7,7 @@
 				<th>Description</th>
 				<th>State</th>
 				<th>Actions</th>
+				<th>Plugin State</th>
 				<th class="defaultHeader">Default</th>
 			</tr>
 		</thead>
@@ -72,6 +73,10 @@ function GenericPluginSettingsList(main, usersettings, configuration) {
 		var td = $("<td>");
 		td.append(link);
 		tr.append(td);
+		tr.append("<td class=\"pluginstate\"></td>");
+		Global.bimServerApi.call("PluginInterface", "getPluginDescriptor", {oid: plugin.pluginDescriptorId}, function(pluginDescriptor){
+			tr.find(".pluginstate").html((pluginDescriptor.enabled ? "Enabled" : "Disabled"));
+		});
 		if (configuration.setDefaultMethodName != null) {
 			tr.append("<td><input name=\"default\" type=\"radio\"></td>");
 			tr.find("input").change(othis.setDefaultClick);

@@ -75,6 +75,11 @@ function Projects(containerDiv, main) {
 		});
 		
 		projectRow.append(actions);
+		
+		project.subProjects.forEach(function(subProjectOid){
+			console.log(subProjectOid);
+		});
+		
 		$(".projectsTable").append(projectRow);
 	};
 	

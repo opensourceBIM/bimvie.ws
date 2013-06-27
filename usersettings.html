@@ -163,6 +163,7 @@
 			othis.changePage($(".serializersLink"), "genericpluginsettings.html", function(){
 				othis.current = new GenericPluginSettings(main, othis, serializer, {
 					title: "Serializer",
+					getInterface: "Bimsie1ServiceInterface",
 					getMethod: "getSerializerById"
 				});
 				pushHistory({page: "UserSettings", subpage: "Serializer", oid: serializer.oid}, "User Settings");
@@ -173,6 +174,7 @@
 			othis.changePage($(".deserializersLink"), "genericpluginsettings.html", function(){
 				othis.current = new GenericPluginSettings(main, othis, deserializer, {
 					title: "Deserializer",
+					getInterface: "Bimsie1ServiceInterface",
 					getMethod: "getDeserializerById"
 				});
 				pushHistory({page: "UserSettings", subpage: "Deserializer", oid: deserializer.oid}, "User Settings");
@@ -183,6 +185,7 @@
 			othis.changePage($(".objectIdmsLink"), "genericpluginsettings.html", function(){
 				othis.current = new GenericPluginSettings(main, othis, objectidm, {
 					title: "Object IDM",
+					getInterface: "Bimsie1ServiceInterface",
 					getMethod: "getObjectIDMById"
 				});
 				pushHistory({page: "UserSettings", subpage: "ObjectIDM", oid: objectidm.oid}, "User Settings");
@@ -193,6 +196,7 @@
 			othis.changePage($(".renderEnginesLink"), "genericpluginsettings.html", function(){
 				othis.current = new GenericPluginSettings(main, othis, renderEngine, {
 					title: "Render Engine",
+					getInterface: "Bimsie1ServiceInterface",
 					getMethod: "getRenderEngineById"
 				});
 				pushHistory({page: "UserSettings", subpage: "RenderEngine", oid: renderEngine.oid}, "User Settings");
@@ -203,6 +207,7 @@
 			othis.changePage($(".queryEnginesLink"), "genericpluginsettings.html", function(){
 				othis.current = new GenericPluginSettings(main, othis, queryEngine, {
 					title: "Query Engine",
+					getInterface: "Bimsie1ServiceInterface",
 					getMethod: "getQueryEngineById"
 				});
 				pushHistory({page: "UserSettings", subpage: "QueryEngine", oid: queryEngine.oid}, "User Settings");
@@ -213,6 +218,7 @@
 			othis.changePage($(".modelMergersLink"), "genericpluginsettings.html", function(){
 				othis.current = new GenericPluginSettings(main, othis, modelMerger, {
 					title: "Model Merger",
+					getInterface: "Bimsie1ServiceInterface",
 					getMethod: "getModelMergerById"
 				});
 				pushHistory({page: "UserSettings", subpage: "ModelMerger", oid: modelMerger.oid}, "User Settings");
@@ -223,6 +229,7 @@
 			othis.changePage($(".modelComparesLink"), "genericpluginsettings.html", function(){
 				othis.current = new GenericPluginSettings(main, othis, modelCompare, {
 					title: "Model Compare",
+					getInterface: "Bimsie1ServiceInterface",
 					getMethod: "getModelCompareById"
 				});
 				pushHistory({page: "UserSettings", subpage: "ModelCompare", oid: modelCompare.oid}, "User Settings");
@@ -233,6 +240,7 @@
 			othis.changePage($(".internalServicesLink"), "genericpluginsettings.html", function(){
 				othis.current = new GenericPluginSettings(main, othis, internalService, {
 					title: "Internal Service",
+					getInterface: "Bimsie1ServiceInterface",
 					getMethod: "getInternalServiceById"
 				});
 				pushHistory({page: "UserSettings", subpage: "InternalService", oid: internalService.oid}, "User Settings");
