@@ -1,0 +1,44 @@
+<div class="register">
+	<form class="form-horizontal">
+		<div class="control-group">
+			<label class="control-label" for="inputUsername">Username</label>
+			<div class="controls">
+				<input type="text" id="inputUsername" class="inputUsername" placeholder="Email address">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="inputName">Name</label>
+			<div class="controls">
+				<input type="text" id="inputName" class="inputName" placeholder="Full name">
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				<button type="submit" class="btn registerButton">Register</button>
+			</div>
+		</div>
+	</form>
+</div>
+<script>
+function Register(containerDiv) {
+	var othis = this;
+	
+	this.registerClick = function(event){
+		event.preventDefault();
+		Global.bimServerApi.callWithFullIndication("ServiceInterface", "addUser", {
+			username: $(".inputUsername").val(),
+			name: $(".inputName").val(),
+			type: "USER",
+			selfRegistration: true,
+			resetUrl: Global.baseDir + "?page=ResetPassword"
+		}, function(){
+			
+		});
+	};
+
+	pushHistory({page: "Register"}, "Register");
+	
+	$(".registerButton").click(othis.registerClick);
+	$(".inputUsername").focus();
+}
+</script>

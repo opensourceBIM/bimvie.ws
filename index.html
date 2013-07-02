@@ -6,13 +6,12 @@
 	<base href="/"/>
   </head>
   <body>
-	<div class="alert fade in genericErrors" id="login-error" style="display:none;">
-		<span class="text"></span>
-		<button type="button" class="close">×</button>
-	</div>
-	<div class="statusholder">
-		<div class="status alert"></div>
-	</div>
+  	<div class="indexStatus">
+		<div class="alert status">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<div class="message"></div>
+		</div>
+  	</div>
 	<div class="container-fluid">
 		<div class="row-fluid">
 			<div class="sidespan span2">
@@ -102,44 +101,54 @@
 
 			$(".status").hide();
 			
-			Global.notifier = {
-				error: function(message){
-					$(".genericErrors .text").html(message).parent().show();
-				},
-				info: function(message) {
-					$(".genericErrors .text").html(message).parent().show();						
-				},
-				clear: function() {
-					$(".genericErrors .text").html("").parent().hide();
-				},
-				resetStatus: function(){
+			function Notifier() {
+				var othis = this;
+
+				this.error = function(message){
+					$(".status .message").html(message).parent().show();
+				};
+
+				this.info = function(message) {
+					$(".status .message").html(message).parent().show();						
+				};
+
+				this.clear = function() {
+					$(".status .message").html("").parent().hide();
+				};
+
+				this.resetStatus = function(){
 					$(".status").stop(true, true);
 					$(".status").fadeOut(1000);
-				},
-				resetStatusQuick: function(){
+				};
+
+				this.resetStatusQuick = function(){
 					$(".status").hide();
-				},
-				setStatus: function(status, timeToShow) {
+				};
+
+				this.setStatus = function(status, timeToShow) {
 					if (timeToShow == null) {
 						timeToShow = 5000;
 					}
 					$(".status").stop(true, true);
-					if (this.lastTimeOut != null) {
-						clearTimeout(this.lastTimeOut);
-						this.lastTimeOut = null;
+					if (othis.lastTimeOut != null) {
+						clearTimeout(othis.lastTimeOut);
+						othis.lastTimeOut = null;
 					}
-					$(".status").show().html(status).removeClass("error");
+					$(".status .message").html(status).parent().show().removeClass("alert-error");
 					var notifier = this;
 					if (timeToShow != -1) {
-						this.lastTimeOut = setTimeout(function(){
+						othis.lastTimeOut = setTimeout(function(){
 							notifier.resetStatus();
 						}, timeToShow);
 					}
-				},
-				setError: function(error) {
-					$(".status").html(error).addClass("error").show();
-				}
-			};
+				};
+
+				this.setError = function(error) {
+					$(".status .message").html(error).parent().addClass("alert-error").show();
+				};
+			}
+
+			Global.notifier = new Notifier();
 
 			function loadError() {
 				window.clearTimeout(Global.timeoutId);
@@ -173,6 +182,7 @@
 							Global.bimServerApi.token = $.cookie("autologin");
 							Global.bimServerApi.call("AuthInterface", "getLoggedInUser", {}, function(data){
 								$(".indexcontainer").load(Global.baseDir + "main.html", function(){
+									$(".indexStatus").hide();
 									new Main(Global.bimServerApi.baseUrl, data.name).show(false);
 								});
 							}, function(){

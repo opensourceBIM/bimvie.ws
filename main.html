@@ -20,6 +20,10 @@
 		</ul>
 	</div>
 	<div class="clearfix"></div>
+	<div class="alert status">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+		<div class="message"></div>
+	</div>
 	<div class="maincontainer"></div>
 </div>
 <script>
@@ -86,6 +90,7 @@ function Main(address, username) {
 		$(".sidespan").empty();
 		Global.bimServerApi.logout(function(){
 			$(".indexcontainer").load(Global.baseDir + "login.html", function(){
+				$(".indexStatus").show();
 				new Login(Global.bimServerApi.baseUrl);
 			});
 		});
