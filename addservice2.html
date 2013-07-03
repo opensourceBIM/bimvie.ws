@@ -54,10 +54,12 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 	othis.writeExtendedDataOid = -1;
 	othis.token = null;
 
-	this.show = function(){};
+	this.show = function(){
+		pushHistory({page: "AddService2", poid: project.oid, sdoid: serviceDescriptor.oid}, "Add Service 2");
+	};
 	
 	this.loadProjects = function(targetElement) {
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllProjects", {onlyTopLevel: false, onlyActive: true}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getAllWritableProjects", {onlyTopLevel: false, onlyActive: true}, function(data){
 			targetElement.empty();
 			targetElement.append("<option value=\"[SELECT_A_PROJECT]\">[Select a project]</option>");
 			data.forEach(function(project){

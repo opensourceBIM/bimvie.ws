@@ -76,6 +76,14 @@ function Main(address, username) {
 				othis.showTesting(null);
 			} else if (history.page == "ResetPassword") {
 				othis.showResetPassword(null);
+			} else if (history.page == "AddService") {
+				Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: history.poid}, function(project){
+					othis.showAddService(project, null, true);
+				});
+			} else if (history.page == "AddService2") {
+				Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: history.poid}, function(project){
+					othis.showAddService(project, null, true);
+				});
 			} else {
 				if ($(".dashboardLink").is(":visible")) {
 					othis.showDashboard(null);
@@ -138,14 +146,12 @@ function Main(address, username) {
 
 	this.showAddService = function(project, callback) {
 		othis.pageChanger.changePage($(".projectsLink"), "addservice.html", function(){
-			pushHistory({page: "AddService"}, "Add Service");
 			return new AddService(othis, project);
 		}, callback);
 	};
 
 	this.showAddService2 = function(project, serviceDescriptor, isLocal, callback) {
 		othis.pageChanger.changePage($(".projectsLink"), "addservice2.html", function(){
-			pushHistory({page: "AddService2"}, "Add Service");
 			return new AddService2(othis, project, serviceDescriptor, isLocal);
 		}, callback);
 	};

@@ -167,6 +167,7 @@ function Revision(main, revision) {
 		$(document.body).append(div);
 		div.load(Global.baseDir + "addextendeddata.html", function(){
 			new AddExtendedData($(this), othis.revision, function(){
+				othis.showExtendedData();
 			});
 		}).modal({keyboard:true});
 	};
@@ -174,7 +175,7 @@ function Revision(main, revision) {
 	$(".revision .detailsLink").click(othis.showDetails);
 	$(".revision .queryLink").click(othis.showQuery);
 	$(".revision .extendedDataLink").click(othis.showExtendedData);
-	$(".revision .browserLink").click(othis.loadBrowser);
+	$(".revision .browserLink").click(function(){othis.loadBrowser()});
 	$(".revision .branchButton").click(othis.showBranch);
 	$(".revision .addExtendedDataButton").click(othis.addExtendedDataButtonClick);
 };

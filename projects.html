@@ -3,7 +3,7 @@
 		<button class="addProjectButton btn initialhide">Add project</button>
 	</div>
 	<div class="well well-small noprojects">There are no projects yet</div>
-	<table class="projectsTable initialhide table table-striped table-hover">
+	<table class="projectsTable initialhide table table-striped table-hover initialhide">
 		<thead>
 			<tr>
 				<th>Name</th>
@@ -47,19 +47,29 @@ function Projects(containerDiv, main) {
 		});
 	};
 	
-	this.addProject = function(project) {
+	this.addProject = function(project, parent, indent) {
 		$(".projects .projectsTable").show();
 		$(".projects .noprojects").hide();
 		var projectRow = $("<tr>");
+		projectRow.attr("poid", project.oid);
 		projectRow.data("project", project);
 		projectRow.click(othis.projectClick);
 
-		projectRow.append("<td>" + project.name + "</td>");
+		var add = "";
+		if (indent != null) {
+			for (var i=0; i<indent; i++) {
+				add += "&nbsp;&nbsp;&nbsp;&nbsp;";
+			}
+			add += project.name;
+		} else {
+			add += "<b>" + project.name + "</b>";
+		}
+		projectRow.append("<td>" + add + "</td>");
 
 		projectRow.append("<td>" + project.subProjects.length + "</td>");
 		projectRow.append("<td>" + project.revisions.length + "</td>");
 		var actions = newDropdownTd("Actions");
-		
+
 		actions.find(".dropdown-toggle").click(function(){
 			actions.find("ul li").remove();
 			var project = $(this).parents("tr").data("project");
@@ -73,14 +83,28 @@ function Projects(containerDiv, main) {
 				actions.find("ul").append(li);
 			}
 		});
-		
-		projectRow.append(actions);
-		
-		project.subProjects.forEach(function(subProjectOid){
-			console.log(subProjectOid);
+
+		Global.bimServerApi.call("ServiceInterface", "userHasCheckinRights", {uoid: main.user.oid, poid: project.oid}, function(canCheckin){
+			if (canCheckin) {
+				projectRow.addClass("success");
+			} else {
+				projectRow.addClass("warning");
+			}
 		});
 		
-		$(".projectsTable").append(projectRow);
+		projectRow.append(actions);
+
+		project.subProjects.forEach(function(subProjectOid){
+			Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: subProjectOid}, function(subProject){
+				othis.addProject(subProject, project, indent == null ? 1 : (indent + 1));
+			});
+		});
+		
+		if (parent != null) {
+			$(".projectsTable [poid=" + parent.oid + "]").after(projectRow);
+		} else {
+			$(".projectsTable").append(projectRow);
+		}
 	};
 	
 	this.loadProjects = function(){
@@ -96,6 +120,7 @@ function Projects(containerDiv, main) {
 			data.forEach(function(project){
 				othis.addProject(project);
 			});
+			$(".projectsTable").show();
 		});
 	};
 	

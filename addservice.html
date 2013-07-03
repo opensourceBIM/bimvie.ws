@@ -30,7 +30,9 @@
 function AddService(main, project) {
 	var othis = this;
 
-	this.show = function(){};
+	this.show = function(){
+		pushHistory({page: "AddService", poid: project.oid}, "Add Service");
+	};
 	
 	this.proceedWithServiceDescriptor = function(serviceDescriptor, isLocal) {
 		main.showAddService2(project, serviceDescriptor, isLocal);

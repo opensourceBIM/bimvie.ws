@@ -54,16 +54,19 @@ function AddExtendedData(containerDiv, revision, successFunction) {
 			if (data.result.exception == null) {
 				currentCheckinId = data.result.checkinid;
 				containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
-				Global.bimServerApi.call("ServiceInterface", "addExtendedDataToRevision", {
+				Global.bimServerApi.call("Bimsie1ServiceInterface", "addExtendedDataToRevision", {
 					roid: revision.oid,
 					extendedData: {
 						__type: "SExtendedData",
-						title: $(".title").val(),
-						schemaId: $(".schemaSelect").val(),
+						title: $(".addextendeddata .title").val(),
+						schemaId: $(".addextendeddata .schemaSelect").val(),
 						fileId: data.result.fileId
 					}
 				}, function(){
 					containerDiv.find(".addextendeddata").parent().modal("hide").remove();
+					if (successFunction != null) {
+						successFunction();
+					}
 				});
 			} else {
 				containerDiv.find(".uploadStatus").html("<div class=\"alert alert-block alert-error\">" + data.result.exception.message + "</div>");
@@ -77,6 +80,10 @@ function AddExtendedData(containerDiv, revision, successFunction) {
     });
 
 	containerDiv.find(".uploadButton").click(function(event){
+		if ($(".addextendeddata .schemaSelect").val() == null) {
+			Global.notifier.setError("No schema selected");
+			return;
+		}
 		shouldsend = true;
 		submitdata.formData = {
 			action: "file",
