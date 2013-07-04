@@ -98,18 +98,19 @@
 			Global.bimServerApi = null;
 			Global.objectcache = {};
 			Global.timeoutId;
-
-			$(".status").hide();
 			
 			function Notifier() {
 				var othis = this;
+				othis.selector = ".indexStatus .status";
+				
+				$(othis.selector).hide();
 
 				this.error = function(message){
 					if (othis.lastTimeOut != null) {
 						clearTimeout(othis.lastTimeOut);
 						othis.lastTimeOut = null;
 					}
-					$(".status .message").html(message).parent().show();
+					$(othis.selector).find(".message").html(message).parent().show();
 				};
 
 				this.info = function(message) {
@@ -117,11 +118,11 @@
 						clearTimeout(othis.lastTimeOut);
 						othis.lastTimeOut = null;
 					}
-					$(".status .message").html(message).parent().show();						
+					$(othis.selector).find(".message").html(message).parent().show();						
 				};
 
 				this.clear = function() {
-					$(".status .message").html("").parent().hide();
+					$(othis.selector).find(".message").html("").parent().hide();
 				};
 
 				this.resetStatus = function(){
@@ -129,8 +130,8 @@
 						clearTimeout(othis.lastTimeOut);
 						othis.lastTimeOut = null;
 					}
-					$(".status").stop(true, true);
-					$(".status").fadeOut(1000);
+					$(othis.selector).stop(true, true);
+					$(othis.selector).fadeOut(1000);
 				};
 
 				this.resetStatusQuick = function(){
@@ -138,19 +139,19 @@
 						clearTimeout(othis.lastTimeOut);
 						othis.lastTimeOut = null;
 					}
-					$(".status").hide();
+					$(othis.selector).hide();
 				};
 
 				this.setStatus = function(status, timeToShow) {
 					if (timeToShow == null) {
 						timeToShow = 5000;
 					}
-					$(".status").stop(true, true);
+					$(othis.selector).stop(true, true);
 					if (othis.lastTimeOut != null) {
 						clearTimeout(othis.lastTimeOut);
 						othis.lastTimeOut = null;
 					}
-					$(".status .message").html(status).parent().show().removeClass("alert-error");
+					$(othis.selector).find(".message").html(status).parent().show().removeClass("alert-error");
 					var notifier = this;
 					if (timeToShow != -1) {
 						othis.lastTimeOut = setTimeout(function(){
@@ -164,7 +165,7 @@
 						clearTimeout(othis.lastTimeOut);
 						othis.lastTimeOut = null;
 					}
-					$(".status .message").html(error).parent().addClass("alert-error").show();
+					$(othis.selector).find(".message").html(error).parent().addClass("alert-error").show();
 				};
 			}
 

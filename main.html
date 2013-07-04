@@ -20,7 +20,7 @@
 		</ul>
 	</div>
 	<div class="clearfix"></div>
-	<div class="alert status">
+	<div class="alert status initialhide">
 		<button type="button" class="close" data-dismiss="alert">&times;</button>
 		<div class="message"></div>
 	</div>
@@ -41,6 +41,7 @@ function Main(address, username) {
 	$(".main .addressLabel").html(address);
 	
 	this.show = function() {
+		Global.notifier.selector = ".main .status";
 		Global.bimServerApi.call("AuthInterface", "getLoggedInUser", {}, function(user){
 			$(".main .nav li").hide();
 			othis.user = user;
