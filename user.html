@@ -1,5 +1,10 @@
 <div class="user">
 	<h1></h1>
+	<div class="buttonBar well well-small">
+		<button class="btn editButton">Edit</button>
+		<button class="btn btn-primary saveButton initialhide">Save</button>
+		<button class="btn cancelButton initialhide">Cancel</button>
+	</div>
 	<ul class="nav nav-tabs">
 	  <li class="detailsLink active"><a>Details</a></li>
 	  <li class="revisionsLink"><a>Revisions</a></li>
@@ -17,7 +22,14 @@
 			<div class="well well-small norevisions">No revisions</div>
 			<table class="revisionsTable initialhide table table-striped table-hover">
 				<thead>
-					<tr><th>Id</th><th>Date</th><th>Project</th><th>Comment</th><th>Size</th><th>Actions</th></tr>
+					<tr>
+						<th>Id</th>
+						<th>Date</th>
+						<th>Project</th>
+						<th>Comment</th>
+						<th>Size</th>
+						<th>Actions</th>
+					</tr>
 				</thead>
 				<tbody></tbody>
 			</table>
@@ -93,16 +105,21 @@ function User(containerDiv, main, user) {
 		$(".user .checkoutsLink a").html("Checkouts" + (othis.user.checkouts == null || othis.user.checkouts.length == 0 ? "" : (" (" + othis.user.checkouts.length + ")")));
 		$(".user .projectsLink a").html("Projects" + (othis.user.hasRightsOn.length == 0 ? "" : (" (" + othis.user.hasRightsOn.length + ")")));
 		
+		containerDiv.find(".detailsTable tbody").empty();
 		containerDiv.find(".detailsTable").append("<tr><td>Username</td><td>" + othis.user.username + "</td></tr>");
 		containerDiv.find(".detailsTable").append("<tr><td>Name</td><td>" + othis.user.name + "</td></tr>");
 		containerDiv.find(".detailsTable").append("<tr><td>Created on</td><td>" + formatDateTime(new Date(othis.user.createdOn)) + " (by <span class=\"createdBy\"></span>)</td></tr>");
 		containerDiv.find(".createdBy").append(createUserLink(main, othis.user.createdById));
+		containerDiv.find(".detailsTable").append("<tr><td>Type</td><td><div class=\"ro\">" + formatUserType(othis.user.userType) + "</div><div class=\"w\"><select class=\"usertypeSelect\"><option value=\"ADMIN\">Administrator</option><option value=\"USER\">User</option><option value=\"READ_ONLY\">Read only</option></select></div></td></tr>");
+		containerDiv.find(".usertypeSelect").val(othis.user.userType);
 		containerDiv.find(".detailsTable").append("<tr><td>State</td><td>" + othis.user.state + "</td></tr>");
 		containerDiv.find(".detailsTable").append("<tr><td>Token</td><td>" + othis.user.token + "</td></tr>");
 
 		Global.bimServerApi.call("ServiceInterface", "getAllCheckoutsByUser", {uoid: othis.user.oid}, function(checkouts){
 			$(".user .checkoutsLink a").html("Checkouts" + (checkouts == null || checkouts.length == 0 ? "" : (" (" + checkouts.length + ")")));
 		});
+		
+		$(".user .w").hide();
 
 		var history = History.getState().data;
 		if (history.tab == "details") {
@@ -273,9 +290,43 @@ function User(containerDiv, main, user) {
 		});
 	};
 	
+	this.editButtonClick = function(){
+		$(".user .w").show();
+		$(".user .ro").hide();
+		$(".user .editButton").hide();
+		$(".user .cancelButton").show();
+		$(".user .saveButton").show();
+	};
+	
+	this.cancelButtonClick = function(){
+		$(".user .editButton").show();
+		$(".user .cancelButton").hide();
+		$(".user .saveButton").hide();
+		$(".user .ro").show();
+		$(".user .w").hide();
+		containerDiv.find(".usertypeSelect").val(othis.user.userType);
+	};
+	
+	this.saveButtonClick = function(){
+		Global.bimServerApi.callWithFullIndication("ServiceInterface", "changeUserType", {
+			uoid: othis.user.oid,
+			userType: $(".user .usertypeSelect").val()
+		}, function(){
+			othis.reloadUser();
+			$(".user .editButton").show();
+			$(".user .cancelButton").hide();
+			$(".user .saveButton").hide();
+			$(".user .ro").show();
+			$(".user .w").hide();
+		});
+	};
+	
+	$(".user .saveButton").click(othis.saveButtonClick);
+	$(".user .cancelButton").click(othis.cancelButtonClick);
 	$(".user .detailsLink").click(othis.showDetails);
 	$(".user .revisionsLink").click(othis.showRevisions);
 	$(".user .checkoutsLink").click(othis.showCheckouts);
 	$(".user .projectsLink").click(othis.showProjects);
+	$(".user .editButton").click(othis.editButtonClick);
 }
 </script>
