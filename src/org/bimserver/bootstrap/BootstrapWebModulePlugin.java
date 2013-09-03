@@ -16,12 +16,12 @@ public class BootstrapWebModulePlugin extends AbstractWebModulePlugin {
 
 	@Override
 	public String getDescription() {
-		return "Bootstrap based WEB GUI";
+		return "BIM Views";
 	}
 
 	@Override
 	public String getDefaultName() {
-		return "BootstrapBIM";
+		return "BIM Views";
 	}
 
 	@Override
@@ -36,6 +36,6 @@ public class BootstrapWebModulePlugin extends AbstractWebModulePlugin {
 
 	@Override
 	public String getDefaultContextPath() {
-		return "/bootstrap";
+		return "/bimviews";
 	}
 }
