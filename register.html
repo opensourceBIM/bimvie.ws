@@ -1,23 +1,27 @@
-<div class="register">
-	<form class="form-horizontal">
-		<div class="control-group">
-			<label class="control-label" for="inputUsername">Username</label>
-			<div class="controls">
-				<input type="text" id="inputUsername" class="inputUsername" placeholder="Email address">
+<div class="register container">
+    <div class="span7">
+	   	<div class="header"></div>
+		<form class="form-horizontal">
+			<legend>Register</legend>
+			<div class="control-group">
+				<label class="control-label" for="inputUsername">Username</label>
+				<div class="controls">
+					<input type="text" id="inputUsername" class="inputUsername" placeholder="Email address">
+				</div>
 			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="inputName">Name</label>
-			<div class="controls">
-				<input type="text" id="inputName" class="inputName" placeholder="Full name">
+			<div class="control-group">
+				<label class="control-label" for="inputName">Name</label>
+				<div class="controls">
+					<input type="text" id="inputName" class="inputName" placeholder="Full name">
+				</div>
 			</div>
-		</div>
-		<div class="control-group">
-			<div class="controls">
-				<button type="submit" class="btn registerButton">Register</button>
+			<div class="control-group">
+				<div class="controls">
+					<button type="submit" class="btn registerButton">Register</button>
+				</div>
 			</div>
-		</div>
-	</form>
+		</form>
+	</div>
 </div>
 <script>
 function Register(containerDiv) {
@@ -35,6 +39,8 @@ function Register(containerDiv) {
 			
 		});
 	};
+	
+	$(".header").load(Global.baseDir + "header.html");
 
 	pushHistory({page: "Register"}, "Register");
 	
