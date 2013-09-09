@@ -165,7 +165,13 @@
 					othis.loadBimServerApiFromAddress($.cookie("address"), successFunction, errorFunction);
 				} else if (!Settings.allowBimServerAddress()) {
 					Settings.getStaticServerAddress(function(address){
-						othis.loadBimServerApiFromAddress(address, successFunction, errorFunction);
+						if (address != null) {
+							othis.loadBimServerApiFromAddress(address, successFunction, errorFunction);
+						} else {
+							$(".indexcontainer").load(Global.baseDir + "selectserver.html", function(){
+								new SelectServer();
+							});
+						}
 					});
 				} else {
 					$(".indexcontainer").load(Global.baseDir + "selectserver.html", function(){
