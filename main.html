@@ -144,6 +144,12 @@ function Main(address, username) {
 			return new AddService(othis, project);
 		}, callback);
 	};
+	
+	this.showAddCheckinModelChecker = function(project, callback) {
+		othis.pageChanger.changePage($(".projectsLink"), "addmodelchecker.html", function(){
+			return new AddModelChecker(othis, project);
+		}, callback);
+	};
 
 	this.showAddService2 = function(project, serviceDescriptor, isLocal, callback) {
 		othis.pageChanger.changePage($(".projectsLink"), "addservice2.html", function(){

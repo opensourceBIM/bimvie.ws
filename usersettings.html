@@ -9,6 +9,7 @@
 			<li><a class="queryEnginesLink">Query Engines</a></li>
 			<li><a class="modelMergersLink">Model Mergers</a></li>
 			<li><a class="modelComparesLink">Model Compare Engines</a></li>
+			<li><a class="modelCheckersLink">Model Checkers</a></li>
 			<li><a class="internalServicesLink">Internal Services</a></li>
 		</ul>
 		<div class="tab-content">
@@ -146,6 +147,19 @@
 			}, callback);
 		};
 
+		this.showModelCheckers = function(callback) {
+			othis.changePage($(".modelCheckersLink"), "genericpluginsettingslist.html", function(){
+				othis.current = new GenericPluginSettingsList(main, othis, {
+					getAllMethodName: "getAllModelCheckers",
+					updateMethodName: "updateModelChecker",
+					createUpdateObject: function(pluginConfiguration){return {modelChecker: pluginConfiguration}},
+					listTitle: "Model Checkers",
+					showDetailsFunction: othis.showModelChecker
+				});
+				pushHistory({page: "UserSettings", subpage: "ModelCheckers"}, "User Settings");
+			}, callback);
+		};
+
 		this.showInternalServices = function(callback) {
 			othis.changePage($(".internalServicesLink"), "genericpluginsettingslist.html", function(){
 				othis.current = new GenericPluginSettingsList(main, othis, {
@@ -235,6 +249,17 @@
 				pushHistory({page: "UserSettings", subpage: "ModelCompare", oid: modelCompare.oid}, "User Settings");
 			}, callback);
 		};
+
+		this.showModelChecker = function(modelChecker, callback) {
+			othis.changePage($(".modelCheckersLink"), "genericpluginsettings.html", function(){
+				othis.current = new GenericPluginSettings(main, othis, modelChecker, {
+					title: "Model Checker",
+					getInterface: "Bimsie1ServiceInterface",
+					getMethod: "getModelCheckerById"
+				});
+				pushHistory({page: "UserSettings", subpage: "ModelChecker", oid: modelChecker.oid}, "User Settings");
+			}, callback);
+		};
 		
 		this.showInternalService = function(internalService, callback) {
 			othis.changePage($(".internalServicesLink"), "genericpluginsettings.html", function(){
@@ -258,6 +283,7 @@
 		$(".usersettings .queryEnginesLink").click(function(){othis.showQueryEngines(null, true)});
 		$(".usersettings .modelMergersLink").click(function(){othis.showModelMergers(null, true)});
 		$(".usersettings .modelComparesLink").click(function(){othis.showModelCompares(null, true)});
+		$(".usersettings .modelCheckersLink").click(function(){othis.showModelCheckers(null, true)});
 		$(".usersettings .internalServicesLink").click(function(){othis.showInternalServices(null, true)});
 		
 		var history = History.getState().data;
@@ -285,6 +311,10 @@
 			othis.showModelMergers();
 		} else if (history.subpage == "ModelMerger") {
 			othis.showModelMerger(parseInt(history.oid));
+		} else if (history.subpage == "ModelCheckers") {
+			othis.showModelCheckers();
+		} else if (history.subpage == "ModelChecker") {
+			othis.showModelChecker(parseInt(history.oid));
 		} else if (history.subpage == "ModelCompares") {
 			othis.showModelCompares();
 		} else if (history.subpage == "ModelCompare") {

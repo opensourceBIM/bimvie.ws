@@ -3,6 +3,7 @@
 	<div class="btn-group well well-small">
 		<button class="btn checkinButton">Checkin</button>
 		<button class="btn addServiceButton">Add service</button>
+		<button class="btn addCheckinModelCheckerButton">Add checkin model checker</button>
 		<button class="btn addSubProjectButton">Add sub project</button>
 		<button class="btn show3DButton">Show in 3D</button>
 	</div>
@@ -677,6 +678,12 @@ var Project = function(containerDiv, main, project) {
 			othis.addUserLinkClick();
 		});
 	};
+	
+	this.addCheckinModelCheckerClick = function(){
+		main.showAddCheckinModelChecker(othis.project);
+	};
+	
+	containerDiv.find(".addCheckinModelCheckerButton").click(othis.addCheckinModelCheckerClick);
 	
 	containerDiv.find(".detailsLink").click(function(){othis.loadDetails(null, true)});
 	containerDiv.find(".subprojectsLink").click(function(){othis.loadSubProjects(null, true);});
