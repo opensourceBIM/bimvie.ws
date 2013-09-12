@@ -1,7 +1,7 @@
 <div class="testing">
-	<button class="btn testAllSequentiallyButton">Test all sequentially</button>
-	<button class="btn testAllConcurrentlyButton">Test all concurrently</button>
-	<button class="btn lazyProjectStructure">Create lazy project structure</button>
+	<button class="btn btn-default testAllSequentiallyButton">Test all sequentially</button>
+	<button class="btn btn-default testAllConcurrentlyButton">Test all concurrently</button>
+	<button class="btn btn-default lazyProjectStructure">Create lazy project structure</button>
 	<table class="table table-striped">
 		<thead>
 			<tr>
@@ -73,7 +73,7 @@ function Testing() {
 		var tr = $("<tr class=\"testtr\" testid=\"" + testid + "\">");
 		tr.append("<td>" + name + "</td>");
 		tr.append("<td>" + description + "</td>");
-		tr.append("<td><button class=\"btn\">Run</button></td>");
+		tr.append("<td><button class=\"btn btn-default\">Run</button></td>");
 		tr.append("<td class=\"result\"></td>");
 		$(".testing table tbody").append(tr);
 		tr.find("button").click(function(){

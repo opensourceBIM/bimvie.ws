@@ -12,11 +12,11 @@
 			<div class="message"></div>
 		</div>
   	</div>
-	<div class="container-fluid">
-		<div class="row-fluid">
-			<div class="sidespan span2">
+	<div class="container">
+		<div class="row">
+			<div class="sidespan col-md-2">
 			</div>
-			<div class="indexcontainer span10"></div>
+			<div class="indexcontainer col-md-10"></div>
 		</div>
 	</div>
 	<script>
@@ -51,8 +51,8 @@
 		LazyLoad.css([
 		    baseCssDir + "main.css", 
 		    baseCssDir + "bootstrap.min.css",
-		    baseCssDir + "openid.css",
-		    baseCssDir + "glyph.css"
+//		    baseCssDir + "bootstrap-theme.min.css",
+		    baseCssDir + "openid.css"
 		], function(){});
 		
 		LazyLoad.js([
@@ -242,7 +242,7 @@
 						clearTimeout(othis.lastTimeOut);
 						othis.lastTimeOut = null;
 					}
-					$(othis.selector).find(".message").html(status).parent().show().removeClass("alert-error");
+					$(othis.selector).find(".message").html(status).parent().show().removeClass("alert-danger").addClass("alter-info");
 					var notifier = this;
 					if (timeToShow != -1) {
 						othis.lastTimeOut = setTimeout(function(){
@@ -256,7 +256,7 @@
 						clearTimeout(othis.lastTimeOut);
 						othis.lastTimeOut = null;
 					}
-					$(othis.selector).find(".message").html(error).parent().addClass("alert-error").show();
+					$(othis.selector).find(".message").html(error).parent().removeClass("alert-info").addClass("alert-danger").show();
 				};
 			}
 
