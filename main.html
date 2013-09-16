@@ -188,6 +188,12 @@ function Main(address, username) {
 		});
 	};
 
+	this.showModelChecker = function(oid, callback) {
+		this.showServerSettings(function(){
+			this.showModelChecker(oid);
+		});
+	};
+
 	this.makeSchemaLink = function(soid){
 		if (soid == -1) {
 			return "No schema";			

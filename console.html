@@ -512,7 +512,7 @@ LazyLoad.js([
 			container.find(".noparameters").hide();
 			container.find(".parameters").show();
 			method.parameters.forEach(function(parameter, index){
-				var div = $("<div class=\"control-group\">");
+				var div = $("<div class=\"form-group\">");
 				var label = $("<label class=\"control-label\"><a>" + parameter.name + "</a></label>");
 				label.find("a").attr("title", parameter.doc);
 				label.find("a").tooltip();

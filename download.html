@@ -1,49 +1,53 @@
 <div class="downloadpopup">
-	<div class="modal-header">
-    	<a class="close" data-dismiss="modal">&times;</a>
-    	<h3>Download / Checkout</h3>
-  	</div>
-	<div class="modal-body">
-		<div class="checkoutMessage initialhide"></div>
-		<div class="downloadStatus"></div>
-		<div class="progressBarHolder"></div>
-		
-		<div class="downloadProgressBar progress initialhide">
-			<div class="bar" style="width: 0;"></div>
-		</div>
-		<div class="fields">
-			<form class="form-horizontal">
-				<div class="control-group">
-					<label for="serializerOid" class="control-label">Serializer</label>
-					<div class="controls">
-						<select id="serializerOid" name="serializerOid" class="revisionsdownloadcheckoutselect">
-						</select>
-					</div>
+	<div class="modal-dialog">
+    	<div class="modal-content">
+			<div class="modal-header">
+		    	<a class="close" data-dismiss="modal">&times;</a>
+		    	<h3>Download / Checkout</h3>
+		  	</div>
+		    <div class="modal-body">
+				<div class="checkoutMessage initialhide"></div>
+				<div class="downloadStatus"></div>
+				<div class="progressBarHolder"></div>
+				
+				<div class="downloadProgressBar progress initialhide">
+					<div class="bar" style="width: 0;"></div>
 				</div>
-				<div class="control-group">
-					<div class="controls">
-						<label class="checkbox">
-							<input type="checkbox" class="downloadCheckoutZip" name="zip"> Zip
-						</label>
-					</div>
+				<div class="fields">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<label for="serializerOid" class="control-label">Serializer</label>
+							<div class="controls">
+								<select id="serializerOid" name="serializerOid" class="revisionsdownloadcheckoutselect">
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="controls">
+								<label class="checkbox">
+									<input type="checkbox" class="downloadCheckoutZip" name="zip"> Zip
+								</label>
+							</div>
+						</div>
+					</form>
+					<div class="resultsarea"></div>
 				</div>
-			</form>
-			<div class="resultsarea"></div>
+			</div>
+		  	<div class="modal-footer">
+				<a class="btn btn-default" style="margin-right: 8px" data-dismiss="modal">Close</a>
+				<div class="btn-group" style="float: right">
+					<button class="btn downloadButton btn-primary">Download</button>
+					<button class="btn dropdown-toggle btn-primary" data-toggle="dropdown">
+			  			<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a class="checkoutButton">Checkout</a></li>
+						<li><a class="downloadTextButton">Download as Text</a></li>
+					</ul>
+				</div>
+		    </div>
 		</div>
 	</div>
-  	<div class="modal-footer">
-		<a class="btn" style="margin-right: 8px" data-dismiss="modal">Close</a>
-		<div class="btn-group" style="float: right">
-			<button class="btn downloadButton btn-primary">Download</button>
-			<button class="btn dropdown-toggle btn-primary" data-toggle="dropdown">
-	  			<span class="caret"></span>
-			</button>
-			<ul class="dropdown-menu">
-				<li><a class="checkoutButton">Checkout</a></li>
-				<li><a class="downloadTextButton">Download as Text</a></li>
-			</ul>
-		</div>
-    </div>
 </div>
 <script>
 function Download(containerDiv, data) {

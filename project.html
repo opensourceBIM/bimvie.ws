@@ -18,6 +18,7 @@
 	  <li class="browserLink"><a>Browse</a></li>
 	  <!--  <li class="surferLink"><a>Surf</a></li>-->
 	  <li class="usersLink"><a>Users</a></li>
+	  <li class="modelCheckersLink"><a>Model Checkers</a></li>
 	  <li class="logLink"><a>Log</a></li>
 	</ul>
 	<div class="content">
@@ -80,6 +81,18 @@
 					<tr>
 						<th>Name</th>
 						<th>Profile</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+		<div class="tab-pane modelCheckers initialhide">
+			<div class="well well-sm nomodelcheckers">No model checkers</div>
+			<table class="modelCheckersTable initialhide table table-striped table-hover">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Description</th>
 					</tr>
 				</thead>
 				<tbody></tbody>
@@ -461,6 +474,19 @@ var Project = function(containerDiv, main, project) {
 		}, callback);
 	};
 
+	this.loadModelCheckers = function(callback) {
+		othis.tabChanger.changeTab($(".modelCheckersLink"), null, $(".modelCheckers"), function(){
+			Global.bimServerApi.call("ServiceInterface", "getAllModelCheckersOfProject", {poid: othis.project.oid}, function(data){
+				containerDiv.find(".modelCheckersTable tr.modelchecker").remove();
+				data.forEach(function(modelChecker){
+					othis.addModelChecker(modelChecker);
+				});
+			});
+			pushHistory({page: "Project", poid: othis.project.oid, tab: "modelcheckers"}, "Project");
+			return $(".modelcheckers");
+		}, callback);
+	};
+
 	this.downloadCheckoutClick = function(event) {
 		event.preventDefault();
 		othis.showDownloadCheckoutPopup($(this).parents("tr").andSelf().data("revision").oid);
@@ -690,6 +716,7 @@ var Project = function(containerDiv, main, project) {
 	containerDiv.find(".revisionsLink").click(function(){othis.loadRevisions(null, true);});
 	containerDiv.find(".checkoutsLink").click(function(){othis.loadCheckouts(null, true);});
 	containerDiv.find(".servicesLink").click(function(){othis.loadServices(null, true);});
+	containerDiv.find(".modelCheckersLink").click(function(){othis.loadModelCheckers(null, true);});
 	containerDiv.find(".queryLink").click(function(){othis.loadQuery(null, true);});
 	containerDiv.find(".extendedDataLink").click(function(){othis.loadExtendedData(null, true);});
 	containerDiv.find(".browserLink").click(function(){othis.loadBrowser(function(){

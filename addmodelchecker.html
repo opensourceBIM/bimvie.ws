@@ -17,5 +17,11 @@ function AddModelChecker(main, project) {
 			});
 		});
 	};
+	
+	this.saveButtonClick = function(){
+		Global.api.call("addModelChecker")
+	};
+	
+	$(".saveButton").click(othis.saveButtonClick);
 }
 </script>

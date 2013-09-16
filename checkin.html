@@ -3,47 +3,51 @@
     	<a class="close" data-dismiss="modal">&times;</a>
     	<h3>Checkin</h3>
   	</div>
-	<div class="modal-body">
-		<a class="uploadlink">This project has subprojects, click here if you still want to checkin a new revision</a>
-		<div class="checkinWarning alert initialhide"></div>
-		<div class="uploads">
-			<div class="upload">
-				<div class="uploadStatus"></div>
-				<div class="progressBarHolder"></div>
-				<table class="uploadTable">
-					<tr><td><label for="file">File</label></td><td><input class="fileupload" type="file" name="data"/></td></tr>
-					<tr><td><label for="deserializerName">Deserializer</label></td><td><select class="deserializerName" name="deserializerName">
-					<option value="[NONE]">Select a deserializer</option>
-					</select></td></tr>
-					<tr><td><label for="comment">Comment</label></td><td><textarea class="comment" name="comment" cols="57" rows="4"></textarea></td></tr>
-					<tr class="checkinMergeTr initialhide"><td><label for="merge">Merge</label></td><td><input class="merge" name="merge" type="checkbox"/></td></tr>
-				</table>
+	<div class="modal-dialog">
+    	<div class="modal-content">	
+    		<div class="modal-body">
+				<a class="uploadlink">This project has subprojects, click here if you still want to checkin a new revision</a>
+				<div class="checkinWarning alert initialhide"></div>
+				<div class="uploads">
+					<div class="upload">
+						<div class="uploadStatus"></div>
+						<div class="progressBarHolder"></div>
+						<table class="uploadTable">
+							<tr><td><label for="file">File</label></td><td><input class="fileupload" type="file" name="data"/></td></tr>
+							<tr><td><label for="deserializerName">Deserializer</label></td><td><select class="deserializerName" name="deserializerName">
+							<option value="[NONE]">Select a deserializer</option>
+							</select></td></tr>
+							<tr><td><label for="comment">Comment</label></td><td><textarea class="comment" name="comment" cols="57" rows="4"></textarea></td></tr>
+							<tr class="checkinMergeTr initialhide"><td><label for="merge">Merge</label></td><td><input class="merge" name="merge" type="checkbox"/></td></tr>
+						</table>
+					</div>
+					<div class="uploadbranch">
+						<form method="post" action="branch.jsp">
+							<label>Project/Revision</label> 
+							<select class="revisionSelect" name="roid"></select> 
+							<label>Comment</label> <input type="text" name="comment" /> 
+							<input type="hidden" name="action" value="branchtoexistingproject" />
+							<input type="hidden" name="destpoid" />
+						</form>
+						<br/>
+					</div>
+					<div class="checkinurl initialhide">
+						<label>URL
+							<input type="text" class="urlinput input-block-level"/>
+						</label>
+						<label for="deserializerName">Deserializer</label><select class="deserializerName" name="deserializerName"></select>
+					</div>
+					<a class="showuploadlink initialhide">OR Checkin new revision</a>
+					<a class="uploadbranchlink">OR Checkin existing revision</a>
+					<a class="checkinurllink">OR Checkin from URL</a>
+				</div>
 			</div>
-			<div class="uploadbranch">
-				<form method="post" action="branch.jsp">
-					<label>Project/Revision</label> 
-					<select class="revisionSelect" name="roid"></select> 
-					<label>Comment</label> <input type="text" name="comment" /> 
-					<input type="hidden" name="action" value="branchtoexistingproject" />
-					<input type="hidden" name="destpoid" />
-				</form>
-				<br/>
-			</div>
-			<div class="checkinurl initialhide">
-				<label>URL
-					<input type="text" class="urlinput input-block-level"/>
-				</label>
-				<label for="deserializerName">Deserializer</label><select class="deserializerName" name="deserializerName"></select>
-			</div>
-			<a class="showuploadlink initialhide">OR Checkin new revision</a>
-			<a class="uploadbranchlink">OR Checkin existing revision</a>
-			<a class="checkinurllink">OR Checkin from URL</a>
+		  	<div class="modal-footer">
+		    	<a class="btn btn-default" data-dismiss="modal">Close</a>
+		    	<a class="btn uploadButton btn-primary">Checkin new revision</a>
+		  	</div>
 		</div>
 	</div>
-  	<div class="modal-footer">
-    	<a class="btn btn-default" data-dismiss="modal">Close</a>
-    	<a class="btn uploadButton btn-primary">Checkin new revision</a>
-  	</div>
 </div>
 <script>
 var lastVal = "";
