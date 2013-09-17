@@ -3,7 +3,6 @@
 	<div class="btn-group well well-sm">
 		<button class="btn btn-default checkinButton">Checkin</button>
 		<button class="btn btn-default addServiceButton">Add service</button>
-		<button class="btn btn-default addCheckinModelCheckerButton">Add checkin model checker</button>
 		<button class="btn btn-default addSubProjectButton">Add sub project</button>
 		<button class="btn btn-default show3DButton">Show in 3D</button>
 	</div>
@@ -87,12 +86,24 @@
 			</table>
 		</div>
 		<div class="tab-pane modelCheckers initialhide">
+			<div class="well well-sm buttonBar">
+				<form class="form-inline" role="form">
+					<div class="form-group">
+						<select class="modelCheckerSelect form-control"></select>
+					</div>
+					<div class="form-group">
+						<button type="button" class="btn btn-default form-control addModelCheckerButton">Add</button>
+					</div>
+				</form>
+			</div>
 			<div class="well well-sm nomodelcheckers">No model checkers</div>
 			<table class="modelCheckersTable initialhide table table-striped table-hover">
 				<thead>
 					<tr>
 						<th>Name</th>
 						<th>Description</th>
+						<th>Status</th>
+						<th>Actions</th>
 					</tr>
 				</thead>
 				<tbody></tbody>
@@ -413,6 +424,32 @@ var Project = function(containerDiv, main, project) {
 		containerDiv.find(".servicesTable tbody").append(tr);
 	};
 	
+	this.removeModelChecker = function(){
+		Global.bimServerApi.call("ServiceInterface", "removeModelCheckerFromProject", {
+			poid: othis.project.oid,
+			modelCheckerOid: $(this).parent().parent().data("modelchecker").oid
+		}, function(){
+			othis.loadModelCheckers();
+		});
+	};
+
+	this.addModelChecker = function(modelChecker) {
+		containerDiv.find(".nomodelcheckers").hide();
+		containerDiv.find(".modelCheckersTable").show();
+		var tr = $("<tr class=\"modelchecker\">");
+		tr.data("modelchecker", modelChecker);
+		var td = $("<td mcoid=\"" + modelChecker.oid + "\"></td>");
+		td.append(modelChecker.name);
+		tr.append(td);
+		tr.append("<td>" + modelChecker.description + "</td>");
+		tr.append("<td>" + (modelChecker.valid ? "<span class=\"label label-success\">Valid</span>" : "<span class=\"label label-danger\">Not Valid</span>") + "</td>");
+		var dropdowntd = newButton("Delete", othis.removeModelChecker);
+		var td = $("<td></td>");
+		td.append(dropdowntd);
+		tr.append(td);
+		containerDiv.find(".modelCheckersTable tbody").append(tr);
+	};
+	
 	this.loadExtendedData = function(callback) {
 		$(".extendeddata .message").html("Showing extended data for revision " + othis.lastRevision.id);
 		othis.tabChanger.changeTab($(".extendedDataLink"), "extendeddatalist.html", $(".extendeddatacontainer"), function(){
@@ -475,6 +512,7 @@ var Project = function(containerDiv, main, project) {
 	};
 
 	this.loadModelCheckers = function(callback) {
+		$(".modelCheckerSelect").hide();
 		othis.tabChanger.changeTab($(".modelCheckersLink"), null, $(".modelCheckers"), function(){
 			Global.bimServerApi.call("ServiceInterface", "getAllModelCheckersOfProject", {poid: othis.project.oid}, function(data){
 				containerDiv.find(".modelCheckersTable tr.modelchecker").remove();
@@ -621,6 +659,8 @@ var Project = function(containerDiv, main, project) {
 			othis.loadRevisions();
 		} else if (history.tab == "subprojects") {
 			othis.loadSubProjects();
+		} else if (history.tab == "modelcheckers") {
+			othis.loadModelCheckers();
 		} else if (history.tab == "log") {
 			othis.loadLog();
 		} else {
@@ -705,11 +745,25 @@ var Project = function(containerDiv, main, project) {
 		});
 	};
 	
-	this.addCheckinModelCheckerClick = function(){
-		main.showAddCheckinModelChecker(othis.project);
+	this.addModelCheckerButtonClick = function(){
+		if (containerDiv.find(".modelCheckerSelect").is(":visible")) {
+			Global.bimServerApi.call("ServiceInterface", "addModelCheckerToProject", {
+				poid: othis.project.oid,
+				modelCheckerOid: containerDiv.find(".modelCheckerSelect").val()
+			}, function(){
+				othis.loadModelCheckers();
+			});
+		} else {
+			Global.bimServerApi.call("ServiceInterface", "getAllModelCheckers", {}, function(modelCheckers){
+				containerDiv.find(".modelCheckerSelect option").remove();
+				modelCheckers.forEach(function(modelChecker){
+					var option = $("<option value=\"" + modelChecker.oid + "\">" + modelChecker.name + "</option>");
+					containerDiv.find(".modelCheckerSelect").append(option);
+				});
+				containerDiv.find(".modelCheckerSelect").show();
+			});
+		}
 	};
-	
-	containerDiv.find(".addCheckinModelCheckerButton").click(othis.addCheckinModelCheckerClick);
 	
 	containerDiv.find(".detailsLink").click(function(){othis.loadDetails(null, true)});
 	containerDiv.find(".subprojectsLink").click(function(){othis.loadSubProjects(null, true);});
@@ -734,6 +788,9 @@ var Project = function(containerDiv, main, project) {
 	containerDiv.find(".addServiceButton").click(othis.addServiceClick);
 	containerDiv.find(".addSubProjectButton").click(othis.addSubProjectClick);
 
+	containerDiv.find(".addModelCheckerButton").click(othis.addModelCheckerButtonClick);
+	
+	
 	this.newRevisionOnSpecificProjectHandler = function(poid, roid){
 		Global.bimServerApi.call("Bimsie1ServiceInterface", "getRevision", {roid: roid}, function(data){
 			othis.reloadProject(data.projectId);

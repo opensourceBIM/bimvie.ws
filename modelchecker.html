@@ -28,6 +28,7 @@
 		<div class="form-actions">
 			<button type="button" class="btn btn-default cancelButton">Back</button>
 			<button type="button" class="btn btn-primary saveButton">Save</button>
+			<button type="button" class="btn btn-primary validateButton">Validate</button>
 		</div>
 	</form>
 </div>
@@ -53,7 +54,7 @@ function ModelChecker(main, oid) {
 		});
 	});
 	
-	this.saveClick = function(event) {
+	this.saveClick = function() {
 		othis.modelChecker.name = $(".modelchecker .inputName").val();
 		othis.modelChecker.description = $(".modelchecker .inputDescription").val();
 		othis.modelChecker.code = $(".modelchecker .inputCode").val();
@@ -65,13 +66,23 @@ function ModelChecker(main, oid) {
 		});
 	};
 	
-	this.cancelClick = function(event) {
+	this.cancelClick = function() {
 		main.showServerSettings(function(){
 			this.showModelCheckers();
 		});
 	};
 	
+	this.validateClick = function(){
+		othis.modelChecker.name = $(".modelchecker .inputName").val();
+		othis.modelChecker.description = $(".modelchecker .inputDescription").val();
+		othis.modelChecker.code = $(".modelchecker .inputCode").val();
+		othis.modelChecker.modelCheckerPluginClassName = $(".modelchecker .inputPlugin").val();
+		Global.bimServerApi.callWithFullIndication("ServiceInterface", "validateModelChecker", {modelCheckerInstance: othis.modelChecker}, function(){
+		});
+	};
+	
 	$(".modelchecker .cancelButton").click(othis.cancelClick);
 	$(".modelchecker .saveButton").click(othis.saveClick);
+	$(".modelchecker .validateButton").click(othis.validateClick);
 }
 </script>

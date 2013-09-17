@@ -12,7 +12,7 @@
 				<th>Name</th>
 				<th>Description</th>
 				<th>Plugin</th>
-				<th>Valid</th>
+				<th>Status</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -39,7 +39,7 @@ function ModelCheckers(main, serversettings) {
 		tr.append("<td>" + modelChecker.name + "</td>");
 		tr.append("<td>" + modelChecker.description + "</td>");
 		tr.append("<td>" + modelChecker.modelCheckerPluginClassName + "</td>");
-		tr.append("<td>" + modelChecker.valid + "</td>");
+		tr.append("<td>" + (modelChecker.valid ? "<span class=\"label label-success\">Valid</span>" : "<span class=\"label label-danger\">Not Valid</span>") + "</td>");
 		$(".modelcheckers table tbody").append(tr);
 	};
 

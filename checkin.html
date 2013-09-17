@@ -1,10 +1,10 @@
 <div class="checkin">
-	<div class="modal-header">
-    	<a class="close" data-dismiss="modal">&times;</a>
-    	<h3>Checkin</h3>
-  	</div>
 	<div class="modal-dialog">
     	<div class="modal-content">	
+			<div class="modal-header">
+		    	<a class="close" data-dismiss="modal">&times;</a>
+		    	<h3>Checkin</h3>
+		  	</div>
     		<div class="modal-body">
 				<a class="uploadlink">This project has subprojects, click here if you still want to checkin a new revision</a>
 				<div class="checkinWarning alert initialhide"></div>
@@ -14,18 +14,18 @@
 						<div class="progressBarHolder"></div>
 						<table class="uploadTable">
 							<tr><td><label for="file">File</label></td><td><input class="fileupload" type="file" name="data"/></td></tr>
-							<tr><td><label for="deserializerName">Deserializer</label></td><td><select class="deserializerName" name="deserializerName">
+							<tr><td><label for="deserializerName">Deserializer</label></td><td><select class="deserializerName form-control" name="deserializerName">
 							<option value="[NONE]">Select a deserializer</option>
 							</select></td></tr>
-							<tr><td><label for="comment">Comment</label></td><td><textarea class="comment" name="comment" cols="57" rows="4"></textarea></td></tr>
+							<tr><td><label for="comment">Comment</label></td><td><textarea class="comment form-control" name="comment" cols="57" rows="4"></textarea></td></tr>
 							<tr class="checkinMergeTr initialhide"><td><label for="merge">Merge</label></td><td><input class="merge" name="merge" type="checkbox"/></td></tr>
 						</table>
 					</div>
 					<div class="uploadbranch">
 						<form method="post" action="branch.jsp">
 							<label>Project/Revision</label> 
-							<select class="revisionSelect" name="roid"></select> 
-							<label>Comment</label> <input type="text" name="comment" /> 
+							<select class="revisionSelect form-control" name="roid"></select> 
+							<label>Comment</label> <input type="text" class="form-control" name="comment" /> 
 							<input type="hidden" name="action" value="branchtoexistingproject" />
 							<input type="hidden" name="destpoid" />
 						</form>
@@ -33,9 +33,9 @@
 					</div>
 					<div class="checkinurl initialhide">
 						<label>URL
-							<input type="text" class="urlinput input-block-level"/>
+							<input type="text" class="urlinput input-block-level form-control"/>
 						</label>
-						<label for="deserializerName">Deserializer</label><select class="deserializerName" name="deserializerName"></select>
+						<label for="deserializerName">Deserializer</label><select class="deserializerName form-control" name="deserializerName"></select>
 					</div>
 					<a class="showuploadlink initialhide">OR Checkin new revision</a>
 					<a class="uploadbranchlink">OR Checkin existing revision</a>
@@ -105,7 +105,7 @@ function Checkin(containerDiv, project, successFunction) {
 		if (state.state == "AS_ERROR") {
 			containerDiv.find(".uploadStatus").empty();
 			state.errors.forEach(function(error){
-				containerDiv.find(".uploadStatus").append("<div class=\"alert alert-block alert-error\">" + error + "</div>");
+				containerDiv.find(".uploadStatus").append("<div class=\"alert alert-block alert-danger\">" + error + "</div>");
 			});
 			othis.showUpload();
 			Global.bimServerApi.unregisterProgressHandler(topicId, othis.progressHandler);
@@ -113,14 +113,14 @@ function Checkin(containerDiv, project, successFunction) {
 			containerDiv.find(".uploadStatus").html(state.title);
 			if (oldStage != state.stage) {
 				containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
-				containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress initialhide\"><div class=\"bar\"></div></div>");
+				containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress initialhide\"><div class=\"progress-bar\"></div></div>");
 			}
 			if (state.progress == -1) {
 				containerDiv.find(".uploadProgressBar").addClass("progress-striped").addClass("active");
-				containerDiv.find(".uploadProgressBar .bar").css("width", "100%");
+				containerDiv.find(".uploadProgressBar .progress-bar").css("width", "100%");
 			} else {
 				containerDiv.find(".uploadProgressBar").removeClass("progress-striped").removeClass("active");
-				containerDiv.find(".uploadProgressBar .bar").css("width", parseInt(state.progress) + "%");
+				containerDiv.find(".uploadProgressBar .progress-bar").css("width", parseInt(state.progress) + "%");
 			}
 			containerDiv.find(".progressBarHolder .uploadProgressBar").show();
 			if (state.state == "FINISHED") {
@@ -182,13 +182,13 @@ function Checkin(containerDiv, project, successFunction) {
 		    }
         },
 		progress: function(e, data) {
-			containerDiv.find(".uploadProgressBar .bar").css("width", parseInt(data.loaded / data.total * 100, 10) + "%");
+			containerDiv.find(".uploadProgressBar .progress-bar").css("width", parseInt(data.loaded / data.total * 100, 10) + "%");
 		},
 		done: function(e, data) {
 			if (data.result.exception == null) {
 				currentCheckinId = data.result.checkinid;
 				containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
-				containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"bar\"></div></div>");
+				containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"progress-bar\"></div></div>");
 				Global.bimServerApi.registerProgressHandler(currentCheckinId, othis.progressHandler, function(){
 					Global.bimServerApi.call("Bimsie1NotificationRegistryInterface", "getProgress", {
 						topicId: currentCheckinId
@@ -197,7 +197,7 @@ function Checkin(containerDiv, project, successFunction) {
 					});
 				});
 			} else {
-				containerDiv.find(".uploadStatus").html("<div class=\"alert alert-block alert-error\">" + data.result.exception.message + "</div>");
+				containerDiv.find(".uploadStatus").html("<div class=\"alert alert-block alert-danger\">" + data.result.exception.message + "</div>");
 				othis.showUpload();
 			}
 		},
@@ -233,7 +233,7 @@ function Checkin(containerDiv, project, successFunction) {
 			othis.hideUpload();
 			containerDiv.find(".uploadStatus").html("Uploading file...");
 			containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
-			containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"bar\"></div></div>");
+			containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"progress-bar\"></div></div>");
 			containerDiv.find(".fileupload").fileupload('send', submitdata);
 			shouldsend = false;
 			event.preventDefault();

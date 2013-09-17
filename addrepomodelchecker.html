@@ -1,13 +1,13 @@
 <div class="addrepomodelchecker">
 	<div class="well well-sm noschemas initialhide">
-		No (unused) extended data schemas available
+		No (unused) model checkers available
 	</div>
 	<table class="table">
 		<thead>
 			<tr>
 				<th>Name</th>
-				<th>Namespace</th>
 				<th>Description</th>
+				<th>Plugin</th>
 				<th>Add</th>
 			</tr>
 		</thead>
@@ -27,50 +27,46 @@ function AddRepoModelChecker(main, serversettings) {
 	};
 	
 	this.addButtonClick = function() {
-		serversettings.showAddNewExtendedDataSchema($(this).parents("tr").data("extendeddataschema"));
+		serversettings.showAddNewModelChecker($(this).parents("tr").data("modelchecker"));
 	};
 	
-	this.addExtendedDataSchema = function(extendedDataSchema) {
+	this.addModelChecker = function(modelChecker) {
 		var tr = $("<tr>");
 		var td = $("<td>");
-		var link = $("<a>");
-		link.html(extendedDataSchema.name);
-		link.attr("href", extendedDataSchema.url);
-		td.append(link);
-		tr.data("extendeddataschema", extendedDataSchema);
-		tr.append(td);
-		tr.append("<td>" + extendedDataSchema.namespace + "</td>");
-		tr.append("<td>" + extendedDataSchema.description + "</td>");
+		tr.data("modelchecker", modelChecker);
+		tr.append("<td>" + modelChecker.name + "</td>");
+		tr.append("<td>" + modelChecker.description + "</td>");
+		tr.append("<td>" + modelChecker.modelCheckerPluginClassName + "</td>");
 		
-		td = $("<td>");
+		var td = $("<td>");
 		var addButton = $("<button class=\"btn btn-default\">Add</button>");
 		addButton.click(othis.addButtonClick);
 		td.append(addButton);
 		tr.append(td);
 		
-		$(".addrepoextendeddata table tbody").append(tr);
+		$(".addrepomodelchecker table tbody").append(tr);
 	};
 
-	this.loadExtendedDataSchemas = function() {
-		var schemas = {};
-		Global.bimServerApi.call("ServiceInterface", "getAllExtendedDataSchemas", {}, function(extendedDataSchemas){
-			extendedDataSchemas.forEach(function(extendedDataSchema){
-				schemas[extendedDataSchema.namespace] = extendedDataSchema;
+	this.loadModelCheckers = function() {
+		var checkers = {};
+		Global.bimServerApi.call("ServiceInterface", "getAllModelCheckers", {}, function(modelCheckers){
+			modelCheckers.forEach(function(modelChecker){
+				checkers[modelChecker.name] = modelChecker;
 			});
 		});
-		Global.bimServerApi.call("ServiceInterface", "getAllRepositoryExtendedDataSchemas", {}, function(data){
-			$("addrepoextendeddata table tbody tr").remove();
-			data.forEach(function(extendedDataSchema){
-				if (schemas[extendedDataSchema.namespace] == null) {
-					othis.addExtendedDataSchema(extendedDataSchema);
+		Global.bimServerApi.call("ServiceInterface", "getAllRepositoryModelCheckers", {}, function(data){
+			$("addrepomodelchecker table tbody tr").remove();
+			data.forEach(function(modelChecker){
+				if (checkers[modelChecker.name] == null) {
+					othis.addModelChecker(modelChecker);
 				}
 			});
-			if ($(".addrepoextendeddata .table tbody tr").length == 0) {
-				$(".addrepoextendeddata .noschemas").show();
-				$(".addrepoextendeddata .table").hide();
+			if ($(".addrepomodelchecker .table tbody tr").length == 0) {
+				$(".addrepomodelchecker .noschemas").show();
+				$(".addrepomodelchecker .table").hide();
 			} else {
-				$(".addrepoextendeddata .noschemas").hide();
-				$(".addrepoextendeddata .table").show();
+				$(".addrepomodelchecker .noschemas").hide();
+				$(".addrepomodelchecker .table").show();
 			}
 		});
 	};
@@ -106,9 +102,9 @@ function AddRepoModelChecker(main, serversettings) {
 		});
 	};
 	
-	$(".addrepoextendeddata .cancelButton").click(othis.cancelClick);
-	$(".addrepoextendeddata .addAllButton").click(othis.addAllClick);
+	$(".addrepomodelchecker .cancelButton").click(othis.cancelClick);
+	$(".addrepomodelchecker .addAllButton").click(othis.addAllClick);
 	
-	this.loadExtendedDataSchemas();
+	this.loadModelCheckers();
 }
 </script>

@@ -69,7 +69,7 @@ function AddExtendedData(containerDiv, revision, successFunction) {
 					}
 				});
 			} else {
-				containerDiv.find(".uploadStatus").html("<div class=\"alert alert-block alert-error\">" + data.result.exception.message + "</div>");
+				containerDiv.find(".uploadStatus").html("<div class=\"alert alert-block alert-danger\">" + data.result.exception.message + "</div>");
 				othis.showUpload();
 			}
 		},
