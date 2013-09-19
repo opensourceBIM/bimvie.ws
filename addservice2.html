@@ -2,7 +2,7 @@
 	<h1>Add service</h1>
 		<form>
 			<label>Name</label>
-			<input class="serviceName" type="text"/>
+			<input class="serviceName form-control" type="text"/>
 		</form>
 	<h3>Service</h3>
 	<table class="table pluginTable">
@@ -14,6 +14,22 @@
 		No rights required
 	</div>
 	<table class="table rightsTable">
+		<thead></thead>
+		<tbody></tbody>
+	</table>
+	<h3>Model Checkers</h3>
+	<form class="form-inline" role="form">
+		<div class="form-group">
+			<select class="modelCheckerSelect form-control"></select>
+		</div>
+		<div class="form-group">
+			<button type="button" class="btn btn-default form-control addModelCheckerButton">Add</button>
+		</div>
+	</form>
+	<div class="well well-sm nomodelcheckers">
+		No model checkers
+	</div>
+	<table class="table modelCheckersTable">
 		<thead></thead>
 		<tbody></tbody>
 	</table>
@@ -52,6 +68,7 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 	othis.serviceDescriptor = serviceDescriptor;
 	othis.readExtendedDataOid = -1;
 	othis.writeExtendedDataOid = -1;
+	othis.modelCheckers = [];
 	othis.token = null;
 
 	this.show = function(){
@@ -215,7 +232,8 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 				readRevision: othis.serviceDescriptor.readRevision,
 				readExtendedDataId: othis.readExtendedDataOid,
 				writeRevisionId: othis.serviceDescriptor.writeRevision ? $(".addservice2 .projectSelect").val() : -1,
-				writeExtendedDataId: othis.writeExtendedDataOid
+				writeExtendedDataId: othis.writeExtendedDataOid,
+				modelCheckers: othis.modelCheckers
 			};
 			if (isLocal) {
 				Global.bimServerApi.call("ServiceInterface", "addLocalServiceToProject", {poid: othis.project.oid, sService: service, internalServiceOid: profileDescriptor.identifier}, function(data){
@@ -257,9 +275,35 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 		$(".addservice2 .loadPrivateProfilesLink").hide();
 	};
 
+	this.addModelCheckerButtonClick = function(){
+		if ($(".modelCheckerSelect").is(":visible")) {
+			var modelChecker = $(".modelCheckerSelect option:selected").data("modelchecker");
+			othis.modelCheckers.push(modelChecker.oid);
+			var tr = $("<tr></tr>");
+			tr.append("<td>" + modelChecker.name +"</td>");
+			tr.append("<td>" + modelChecker.description +"</td>");
+			tr.append("<td>" + modelChecker.valid +"</td>");
+			$(".modelCheckersTable").append(tr);
+		} else {
+			Global.bimServerApi.call("ServiceInterface", "getAllModelCheckers", {}, function(modelCheckers){
+				$(".modelCheckerSelect option").remove();
+				modelCheckers.forEach(function(modelChecker){
+					var option = $("<option value=\"" + modelChecker.oid + "\">" + modelChecker.name + "</option>");
+					option.data("modelchecker", modelChecker);
+					$(".nomodelcheckers").hide();
+					$(".modelCheckerSelect").append(option);
+				});
+				$(".modelCheckerSelect").show();
+			});
+		}
+	};
+	
+	$(".modelCheckerSelect").hide();
+	
 	$(".addservice2 .addServiceButton").click(othis.addServiceButtonClick);
 	$(".addservice2 .loadPrivateProfilesLink").click(othis.loadPrivateProfilesLinkClick);
 	$(".addservice2 .loadPrivateProfilesButton").click(othis.loadPrivateProfilesClick);
+	$(".addservice2 .addModelCheckerButton").click(othis.addModelCheckerButtonClick);
 
 	othis.loadPublicProfiles();
 	othis.canAdd();

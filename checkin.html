@@ -124,7 +124,7 @@ function Checkin(containerDiv, project, successFunction) {
 			}
 			containerDiv.find(".progressBarHolder .uploadProgressBar").show();
 			if (state.state == "FINISHED") {
-				containerDiv.find(".checkin").parent().modal("hide").remove();
+				containerDiv.find(".checkin").parent().modal("hide");
 				Global.bimServerApi.unregisterProgressHandler(topicId, othis.progressHandler, successFunction);
 			} else if (state.state == "STARTED" || state.state == "NONE") {
 			}
