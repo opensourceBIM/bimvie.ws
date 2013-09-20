@@ -21,6 +21,6 @@ var Settings = {
 		});
 	},
 	allowBimServerAddress: function() {
-		return false;
+		return true;
 	}
 }
