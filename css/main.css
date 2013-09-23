@@ -138,3 +138,7 @@ div.setup form.form-horizontal label {
 .buttonBar {
 	margin-top: 10px;
 }
+
+.tab-pane {
+	padding-top: 10px;	
+}
