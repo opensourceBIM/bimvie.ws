@@ -9,16 +9,10 @@ var Settings = {
 	        "usersLink",
 	        "usersettingsLink",
 	        "serversettingsLink",
-	        "serverinfoLink",
-	        "testingLink"
+	        "serverinfoLink"
 		];
 	},
 	getStaticServerAddress: function(callback){
-		$.getJSON("getbimserveraddress", function(data){
-			callback(data.address);
-		}).fail(function(){
-			callback(null);
-		});
 	},
 	allowBimServerAddress: function() {
 		return true;
