@@ -1,6 +1,9 @@
 <div class="addservice">
 	<h3>Add remote service<small class="loadedFrom"></small></h3>
-	<table class="table servicesTable">
+	<div class="well well-sm noremoteservices">
+		No remote services
+	</div>
+	<table class="table servicesTable initialhide">
 		<tr>
 			<th>Provider</th>
 			<th>Name</th>
@@ -10,7 +13,10 @@
 		</tr>
 	</table>
 	<h3>Add local service</h3>
-	<table class="table localServicesTable">
+	<div class="well well-sm nolocalservices">
+		No local services
+	</div>
+	<table class="table localServicesTable initialhide">
 		<tr>
 			<th>Provider</th>
 			<th>Name</th>
@@ -50,6 +56,13 @@ function AddService(main, project) {
 	};
 	
 	this.addServiceDescriptor = function(table, serviceDescriptor, isLocal) {
+		if (isLocal) {
+			$(".nolocalservices").hide();
+			table.show();
+		} else {
+			$(".noremoteservices").hide();
+			table.show();
+		}
 		var tr = $("<tr class=\"servicedescriptor\"></tr>");
 		tr.data("servicedescriptor", serviceDescriptor);
 		tr.data("isLocal", isLocal);

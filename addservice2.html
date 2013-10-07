@@ -175,7 +175,6 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 	};
 	
 	this.loadPublicProfiles = function() {
-		console.log(isLocal);
 		if (isLocal) {
 			$(".addservice2 .loadPrivateProfilesLink").hide();
 			Global.bimServerApi.call("ServiceInterface", "getAllLocalProfiles", {serviceIdentifier: othis.serviceDescriptor.identifier}, function(data){
