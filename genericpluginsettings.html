@@ -31,6 +31,9 @@ function GenericPluginSettings(main, usersettings, pluginsettings, configuration
 			$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Class</td><td>" + pluginDescriptor.pluginClassName + "</td></tr>");
 			$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Plugin State</td><td>" + (pluginDescriptor.enabled ? "Enabled" : "Disabled") + "</td></tr>");
 		});
+		if (configuration.title == "Internal Service") {
+			$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Remote Accessible</td><td><input class=\"remoteAccessible\" type=\"checkbox\"" + (pluginsettings.remoteAccessible ? " checked=\"checked\"" : "") + "/></td></tr>");
+		}
 		$(".genericpluginsettings h3.title").html(configuration.title);
 		othis.loadPluginObjectDefinition();
 	};
@@ -136,7 +139,8 @@ function GenericPluginSettings(main, usersettings, pluginsettings, configuration
 	
 	this.savePlugin = function() {
 		if (configuration.title == "Internal Service") {
-			Global.bimServerApi.call("ServiceInterface", "updateInternalService", {internalService: othis.pluginsettings}, function(data){
+			othis.pluginsettings.remoteAccessible = $(".genericpluginsettings .remoteAccessible").is(":checked");
+			Global.bimServerApi.call("PluginInterface", "updateInternalService", {internalService: othis.pluginsettings}, function(data){
 			});
 		}
 		othis.saveSettings();
