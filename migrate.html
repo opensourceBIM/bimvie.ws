@@ -1,0 +1,22 @@
+<div class="migrate">
+	<h1>Migrate</h1>
+	<p>
+		Migration of the database is required
+	</p>
+	<button class="btn btn-primary migrateButton">Migrate</button>
+</div>
+<script>
+function Migrate(address) {
+	var othis = this;
+	
+	this.migrate = function(){
+		Global.bimServerApi.callWithFullIndication("AdminInterface", "migrateDatabase", {}, function(){
+			$(".indexcontainer").load(Global.baseDir + "login.html", function(){
+				new Login(address);
+			});
+		});
+	};
+	
+	$(".migrateButton").click(othis.migrate);
+}
+</script>
