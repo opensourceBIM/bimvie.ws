@@ -127,7 +127,7 @@ function Browser(containerDiv, revision) {
 	
 	this.loadType = function(className) {
 		pushHistoryAppend({type: className, oid: false}, "Browser");
-		Global.bimServerApi.call("Bimsie1LowLevelInterface", "getDataObjectsByType", {roid: othis.revision.oid, className: className}, function(data){
+		Global.bimServerApi.call("Bimsie1LowLevelInterface", "getDataObjectsByType", {roid: othis.revision.oid, className: className, flat: true}, function(data){
 			containerDiv.find(".breadcrumb *").remove();
 			containerDiv.find(".breadcrumb").append("<li><a class=\"breadcrumbModel\">Model</a> <span class=\"divider\">/</span></li>");
 			containerDiv.find(".breadcrumb").append("<li class=\"active\">" + className + "</li>");

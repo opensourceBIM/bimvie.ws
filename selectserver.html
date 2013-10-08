@@ -7,9 +7,9 @@
 				<label class="control-label" for="inputServer">Server</label>
 				<div class="controls">
 					<div class="btn-group input-append">
-						<div class="input-prepend input-append">
-		 					<span class="add-on">http://</span>
-							<input type="text" id="inputServer" class="address" placeholder="BIMserver">
+						<div class="input-prepend input-group">
+		 					<span class="input-group-addon">http://</span>
+							<input type="text" id="inputServer" class="form-control address" placeholder="BIMserver">
 						</div>
 					</div>
 				</div>
@@ -29,8 +29,8 @@ function SelectServer(address) {
 	$(".header").load(Global.baseDir + "header.html");
 	
 	pushHistory({page: "SelectServer"}, "Select BIMsie Server");
-	
-	$(".selectServerButton").click(function(){
+
+	this.selectServer = function(){
 		var address = $("#inputServer").val();
 		loadBimServerApi("http://" + address, Global.notifier, function(serverInfo){
 			if (serverInfo.serverState == "NOT_SETUP") {
@@ -49,6 +49,14 @@ function SelectServer(address) {
 		}, function(){
 			
 		});
+	};
+	
+	$(".selectServerButton").click(function(){
+		othis.selectServer();
+	});
+	
+	$(".address").enterpress(function(){
+		othis.selectServer();
 	});
 	
 	$(".address").focus();

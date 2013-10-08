@@ -3,7 +3,7 @@
 		<button class="addProjectButton btn btn-default initialhide">Add project</button>
 	</div>
 	<div class="well well-sm noprojects">There are no projects yet</div>
-	<table class="projectsTable initialhide table table-striped table-hover initialhide">
+	<table class="projectsTable table table-striped table-hover initialhide">
 		<thead>
 			<tr>
 				<th>Name</th>
@@ -19,7 +19,7 @@
 <script>
 function Projects(containerDiv, main) {
 	var othis = this;
-
+	
 	this.projectClick = function(event) {
 		if (!$(event.target).is("a, button, span.caret")) {
 			main.showProject($(this).parents("tr").andSelf().data("project"), null, true);
@@ -118,9 +118,9 @@ function Projects(containerDiv, main) {
 		$(".projectsTable tbody tr").remove();
 		Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllProjects", {onlyTopLevel: true, onlyActive: true}, function(data){
 			data.forEach(function(project){
+				$(".projectsTable").show();
 				othis.addProject(project);
 			});
-			$(".projectsTable").show();
 		});
 	};
 	
