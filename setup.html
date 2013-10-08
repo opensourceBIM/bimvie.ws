@@ -11,7 +11,7 @@
 				<div class="controls">
 					<div class="input-prepend">
   						<span class="siteAddressProtocol add-on">http://</span>
-						<input type="text" class="siteAddressInput" id="inputSiteAddress"/>
+						<input type="text" class="siteAddressInput form-control" id="inputSiteAddress"/>
 					</div>
 				</div>
 			</div>
@@ -19,7 +19,7 @@
 			<div class="form-group">
 				<label class="control-label" for="inputStmpServer">SMTP Server</label>
 				<div class="controls">
-					<input type="text" class="smtpServerInput" id="inputStmpServer" placeholder="Address of the SMTP server to use">
+					<input type="text" class="smtpServerInput form-control" id="inputStmpServer" placeholder="Address of the SMTP server to use">
 				</div>
 			</div>
 			<div class="form-group">
@@ -27,7 +27,7 @@
 				<div class="controls">
 					<div class="input-prepend">
 	  					<span class="add-on">@</span>
-						<input type="text" class="smtpSenderInput" id="inputEmailSender" placeholder="E-mail adres from which to send e-mails">
+						<input type="text" class="smtpSenderInput form-control" id="inputEmailSender" placeholder="E-mail adres from which to send e-mails">
 					</div>
 				</div>
 			</div>
@@ -35,7 +35,7 @@
 			<div class="form-group">
 				<label class="control-label" for="inputAdminName">Admin name</label>
 				<div class="controls">
-					<input type="text" class="adminNameInput" id="inputAdminName" value="Administrator">
+					<input type="text" class="adminNameInput form-control" id="inputAdminName" value="Administrator">
 				</div>
 			</div>
 			<div class="form-group">
@@ -43,22 +43,20 @@
 				<div class="controls">
 					<div class="input-prepend">
 	  					<span class="add-on">@</span>
-						<input type="text" class="adminUsernameInput" id="inputAdminUsername" placeholder="Username (e-mail address)">
+						<input type="text" class="adminUsernameInput form-control" id="inputAdminUsername" placeholder="Username (e-mail address)">
 					</div>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label" for="inputAdminPassword">Admin password</label>
-				<div class="controls">
-					<div class="input-prepend">
-		 				<span class="add-on"><i class="glyphicon-lock"></i></span>
-						<input type="password" class="adminPasswordInput" id="inputAdminPassword">
-					</div>
+				<div class="input-group">
+	 				<span class="input-group-addon"><i class="glyphicon-lock"></i></span>
+					<input type="password" class="adminPasswordInput form-control" id="inputAdminPassword">
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="controls">
-					<button type="submit" class="setupButton btn btn-default">Setup</button>
+					<button type="submit" class="setupButton form-control btn btn-default">Setup</button>
 				</div>
 			</div>
 		</form>
