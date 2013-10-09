@@ -1,61 +1,69 @@
 <div class="addservice2">
 	<h1>Add service</h1>
-		<form>
-			<label>Name</label>
-			<input class="serviceName form-control" type="text"/>
-		</form>
-	<h3>Service</h3>
-	<table class="table pluginTable">
-		<thead></thead>
-		<tbody></tbody>
-	</table>
-	<h3>Rights</h3>
-	<div class="well well-sm norights">
-		No rights required
-	</div>
-	<table class="table rightsTable">
-		<thead></thead>
-		<tbody></tbody>
-	</table>
-	<h3>Model Checkers</h3>
-	<form class="form-inline" role="form">
-		<div class="form-group">
-			<select class="modelCheckerSelect form-control"></select>
-		</div>
-		<div class="form-group">
-			<button type="button" class="btn btn-default form-control addModelCheckerButton">Add</button>
-		</div>
+	<form>
+		<label>Name</label>
+		<input class="serviceName form-control" type="text"/>
 	</form>
-	<div class="well well-sm nomodelcheckers">
-		No model checkers
+	<div class="profilesdiv">
+		<h3>Profiles</h3>
+		<div class="noprofiles well well-sm">
+			No profiles
+		</div>
+		<table class="table profilesTable initialhide">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Description</th>
+					<th>Public</th>
+					<th>Select</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+		<div class="linkspacer">
+			<a class="loadPrivateProfilesLink">Load private profiles</a>
+		</div>
+		<div class="well loadPrivateProfiles initialhide">
+			<form class="form-inline">
+				<label>Token <input type="text" class="privateProfilesTokenInput form-control"/></label>
+				<button class="btn btn-default loadPrivateProfilesButton">Load profiles</button>
+			</form>
+		</div>
 	</div>
-	<table class="table modelCheckersTable">
-		<thead></thead>
-		<tbody></tbody>
-	</table>
-	<h3>Profiles</h3>
-	<div class="noprofiles well well-sm">
-		No profiles
+	<div class="servicediv">
+		<h3>Service</h3>
+		<table class="table pluginTable">
+			<thead></thead>
+			<tbody></tbody>
+		</table>
 	</div>
-	<table class="table profilesTable initialhide">
-		<thead>
-			<tr>
-				<th>Name</th>
-				<th>Description</th>
-				<th>Public</th>
-				<th>Select</th>
-			</tr>
-		</thead>
-		<tbody></tbody>
-	</table>
-	<div class="linkspacer">
-		<a class="loadPrivateProfilesLink">Load private profiles</a>
+	<div class="rightsdiv initialhide">
+		<h3>Rights</h3>
+		<div class="well well-sm norights">
+			No rights required
+		</div>
+		<table class="table rightsTable">
+			<thead></thead>
+			<tbody></tbody>
+		</table>
 	</div>
-	<div class="well loadPrivateProfiles initialhide">
-		<form class="form-inline">
-			<label>Token <input type="text" class="privateProfilesTokenInput"/></label>
-			<button class="btn btn-default loadPrivateProfilesButton">Load profiles</button>
+	<div class="modelcheckersdiv initialhide">
+		<h3>Model Checkers</h3>
+		<form class="form-inline" role="form" style="margin-bottom: 10px">
+			<div class="form-group">
+				<select class="modelCheckerSelect form-control"></select>
+			</div>
+			<div class="form-group">
+				<button type="button" class="btn btn-default form-control addModelCheckerButton">Add</button>
+			</div>
 		</form>
+		<div class="well well-sm nomodelcheckers">
+			No model checkers
+		</div>
+		<table class="table modelCheckersTable">
+			<thead></thead>
+			<tbody></tbody>
+		</table>
 	</div>
 	<div class="well well-sm clearfix">
 		<button class="btn btn-default pull-right addServiceButton">Add service</button>
@@ -78,12 +86,12 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 	this.loadProjects = function(targetElement) {
 		Global.bimServerApi.call("ServiceInterface", "getAllWritableProjects", {onlyTopLevel: false, onlyActive: true}, function(data){
 			targetElement.empty();
-			targetElement.append("<option value=\"[SELECT_A_PROJECT]\">[Select a project]</option>");
+			targetElement.append("<option value=\"[SELECT_A_PROJECT]\" selected=\"selected\">[Select a project]</option>");
 			data.forEach(function(project){
 				var option = $("<option value=\"" + project.oid + "\">" + project.name + "</option>");
-				if (project.oid == othis.project.oid) {
-					option.attr("selected", "selected");
-				}
+//				if (project.oid == othis.project.oid) {
+//					option.attr("selected", "selected");
+//				}
 				targetElement.append(option);
 			});
 		});
@@ -109,16 +117,16 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 	}
 	if (serviceDescriptor.writeRevision) {
 		var form = $("<form class=\"form-inline\">");
-		var select = $("<select class=\"projectSelect\"></select>");
-		select.change(othis.canAdd);
+		var select = $("<select class=\"projectSelect form-control\"></select>");
 		othis.loadProjects(select);
-		var tr = $("<tr><td>Write Revision</td></tr>");
-		var label = $("<label>To project </label>");
+		var tr = $("<tr><td>Write Revision (to project)</td></tr>");
 		var td = $("<td></td>");
 		td.append(form);
-		form.append(label);
-		label.append(select);
+		form.append(select);
 		tr.append(td);
+		select.change(function(){
+			othis.canAdd();
+		});
 		$(".addservice2 .rightsTable").append(tr);
 	}
 	if (serviceDescriptor.readExtendedData != null) {
@@ -168,7 +176,7 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 		tr.append("<td>" + profileDescriptor.name + "</td>");
 		tr.append("<td>" + profileDescriptor.description + "</td>");
 		tr.append("<td>" + profileDescriptor.publicProfile + "</td>");
-		var radio = $("<input type=\"radio\" name=\"profile\" class=\"profileRadio\"/>");
+		var radio = $("<input type=\"radio\" name=\"profile\" class=\"profileRadio form-control\"/>");
 		radio.change(othis.canAdd);
 		tr.append($("<td></td>").append(radio));
 		$(".addservice2 .profilesTable tbody").append(tr);
@@ -204,8 +212,13 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 			(othis.serviceDescriptor.writeExtendedData != null ? othis.writeExtendedDataOid != -1 : true);
 		if (canAdd) {
 			$(".addservice2 .addServiceButton").removeClass("disabled");
+			$(".modelcheckersdiv").show();
 		} else {
 			$(".addservice2 .addServiceButton").addClass("disabled");
+			$(".modelcheckersdiv").hide();
+		}
+		if ($(".addservice2 .profilesTable .profileRadio:checked").size() == 1) {
+			$(".rightsdiv").show();
 		}
 		return canAdd;
 	};
