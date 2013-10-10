@@ -4,6 +4,13 @@
 		<label>Name</label>
 		<input class="serviceName form-control" type="text"/>
 	</form>
+	<div class="servicediv">
+		<h3>Service</h3>
+		<table class="table pluginTable">
+			<thead></thead>
+			<tbody></tbody>
+		</table>
+	</div>
 	<div class="profilesdiv">
 		<h3>Profiles</h3>
 		<div class="noprofiles well well-sm">
@@ -29,13 +36,6 @@
 				<button class="btn btn-default loadPrivateProfilesButton">Load profiles</button>
 			</form>
 		</div>
-	</div>
-	<div class="servicediv">
-		<h3>Service</h3>
-		<table class="table pluginTable">
-			<thead></thead>
-			<tbody></tbody>
-		</table>
 	</div>
 	<div class="rightsdiv initialhide">
 		<h3>Rights</h3>
@@ -100,6 +100,7 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 	$(".addservice2 .serviceName").val(serviceDescriptor.name);
 	$(".addservice2 .serviceName").focus();
 	$(".addservice2 .pluginTable").append("<tr><td>Provider</td><td>" + serviceDescriptor.providerName + "</td></tr>");	
+	$(".addservice2 .pluginTable").append("<tr><td>Website</td><td><a href=\"" + serviceDescriptor.companyUrl + "\">" + serviceDescriptor.companyUrl + "</a></td></tr>");
 	$(".addservice2 .pluginTable").append("<tr><td>Name</td><td>" + serviceDescriptor.name + "</td></tr>");	
 	$(".addservice2 .pluginTable").append("<tr><td>Description</td><td>" + serviceDescriptor.description + "</td></tr>");	
 	$(".addservice2 .pluginTable").append("<tr><td>Trigger</td><td>" + formatTrigger(serviceDescriptor.trigger) + "</td></tr>");

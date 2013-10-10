@@ -4,6 +4,7 @@ function loadBimServerApi(address, notifier, callback, errorCallback) {
 		errorCallback();
 	}, 3000);
 	$.getScript(address + "/js/bimserverapi.js").done(function(){
+		console.log("test");
 		window.clearTimeout(timeoutId);
 		if (typeof BimServerApi != 'function') {
 			notifier.error("Could not connect");

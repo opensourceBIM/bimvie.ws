@@ -145,15 +145,15 @@
 				
 				var successFunction = function(){
 					// We do have an API
-					if ($.cookie("autologin") != null) {
-						Global.bimServerApi.token = $.cookie("autologin");
+					if ($.cookie("autologin" + window.document.location.port) != null) {
+						Global.bimServerApi.token = $.cookie("autologin" + window.document.location.port);
 						Global.bimServerApi.call("AuthInterface", "getLoggedInUser", {}, function(data){
 							$(".indexcontainer").load(Global.baseDir + "main.html", function(){
 								$(".indexStatus").hide();
 								othis.current = new Main(Global.bimServerApi.baseUrl, data.name).show(false);
 							});
 						}, function(){
-							$.removeCookie("autologin");
+							$.removeCookie("autologin" + window.document.location.port);
 							notLoggedInFunction();
 						});
 					} else {
@@ -165,8 +165,8 @@
 					
 				};
 				
-				if ($.cookie("address") != null) {
-					othis.loadBimServerApiFromAddress($.cookie("address"), successFunction, errorFunction);
+				if ($.cookie("address" + window.document.location.port) != null) {
+					othis.loadBimServerApiFromAddress($.cookie("address" + window.document.location.port), successFunction, errorFunction);
 				} else if (!Settings.allowBimServerAddress()) {
 					Settings.getStaticServerAddress(function(address){
 						if (address != null) {
@@ -269,9 +269,9 @@
 			function loadError() {
 				window.clearTimeout(Global.timeoutId);
 				Global.notifier.error("Could not connect");
-				$.removeCookie("username", {path: "/"});
-				$.removeCookie("autologin", {path: "/"});
-				$.removeCookie("address", {path: "/"});
+				$.removeCookie("username" + window.document.location.port, {path: "/"});
+				$.removeCookie("autologin" + window.document.location.port, {path: "/"});
+				$.removeCookie("address" + window.document.location.port, {path: "/"});
 				$(".indexcontainer").load(Global.baseDir + "login.html", function(){
 					new Login();
 				});
