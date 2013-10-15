@@ -92,12 +92,13 @@ function pushHistoryAppend(obj, title) {
 		str = str.substring(0, str.length - 1);
 	}
 	if (!current.cleanUrl.endsWith(str)) {
+		console.log("pha ", obj);
 		History.pushState(obj, "BIM Views" + (title == null ? "" : " - " + title), str);
 	}
 	pushing = false;
 }
 
-function pushHistory(obj, title, force) {
+function pushHistory(obj, title, initial) {
 	pushing = true;
 	var current = History.getState();
 	var str = "?";
@@ -114,10 +115,14 @@ function pushHistory(obj, title, force) {
 	} else {
 		title = current.title;
 	}
-	if (force || !current.cleanUrl.endsWith(str)) {
-		History.pushState(obj, title, str);
+	if (initial) {
+		History.replaceState(obj, title, str);
 	} else {
-		document.title = title;
+		if (!current.cleanUrl.endsWith(str)) {
+			History.pushState(obj, title, str);
+		} else {
+			document.title = title;
+		}
 	}
 	pushing = false;
 }
@@ -133,6 +138,9 @@ function pushInitialState() {
 			obj[s.substring(0, s.indexOf("="))] = s.substring(s.indexOf("=") + 1);
 		}
 		pushHistory(obj, $("title").text(), true);
+		return obj;
+	} else {
+		return {};
 	}
 }
 

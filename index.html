@@ -59,7 +59,8 @@
 		LazyLoad.js([
 		    baseJsDir + "jquery-2.0.3.min.js", 
 		    baseJsDir + "main.js", 
-		    baseJsDir + "jquery.history.js", 
+		    baseJsDir + "history.js", 
+		    baseJsDir + "history.adapter.jquery.js", 
 		    baseJsDir + "jquery.cookie.js", 
 		    baseJsDir + "jquery.numeric.js", 
 		    baseJsDir + "jquery.enterpress.js", 
@@ -94,8 +95,6 @@
 				}
 			});
 			
-			pushInitialState();
-
 			othis.loadBimServerApiFromAddress = function(address, successFunction, errorFunction){
 				loadBimServerApi(address, Global.notifier, function(serverInfo){
 					if (serverInfo.serverState == "NOT_SETUP") {
@@ -118,21 +117,21 @@
 			};
 			
 			function load() {
+				Global.history = pushInitialState();
 				var notLoggedInFunction = function(){
-					var history = History.getState().data;
-					if (history.page == "Login") {
+					if (Global.history.page == "Login") {
 						$(".indexcontainer").load(Global.baseDir + "login.html", function(){
 							othis.current = new Login(null);
 						});
-					} else if (history.page == "SelectServer") {
+					} else if (Global.history.page == "SelectServer") {
 						$(".indexcontainer").load(Global.baseDir + "selectserver.html", function(){
 							othis.current = new SelectServer(null);
 						});
-					} else if (history.page == "Register") {
+					} else if (Global.history.page == "Register") {
 						$(".indexcontainer").load(Global.baseDir + "register.html", function(){
 							othis.current = new Register($(this));
 						});
-					} else if (history.page == "ResetPassword") {
+					} else if (Global.history.page == "ResetPassword") {
 						$(".indexcontainer").load(Global.baseDir + "resetpassword.html", function(){
 							othis.current = new ResetPassword($(this), null);
 						});
@@ -172,15 +171,17 @@
 						if (address != null) {
 							othis.loadBimServerApiFromAddress(address, successFunction, errorFunction);
 						} else {
-							$(".indexcontainer").load(Global.baseDir + "selectserver.html", function(){
-								new SelectServer();
-							});
+							notLoggedInFunction();
+//							$(".indexcontainer").load(Global.baseDir + "selectserver.html", function(){
+//								new SelectServer();
+//							});
 						}
 					});
 				} else {
-					$(".indexcontainer").load(Global.baseDir + "selectserver.html", function(){
-						new SelectServer();
-					});
+					notLoggedInFunction();
+//					$(".indexcontainer").load(Global.baseDir + "selectserver.html", function(){
+//						new SelectServer();
+//					});
 				}
 			}
 			
