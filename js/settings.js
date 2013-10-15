@@ -13,6 +13,9 @@ var Settings = {
 	        "testingLink"
 		];
 	},
+	usableBimServerVersion: function(version) {
+		return version.major == 1 && version.minor == 2 && version.revision == 1;
+	},
 	getStaticServerAddress: function(callback){
 		$.getJSON("getbimserveraddress", function(data){
 			callback(data.address);

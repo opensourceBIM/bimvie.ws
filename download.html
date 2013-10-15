@@ -11,7 +11,7 @@
 				<div class="progressBarHolder"></div>
 				
 				<div class="downloadProgressBar progress initialhide">
-					<div class="bar" style="width: 0;"></div>
+					<div class="progress-bar" style="width: 0;"></div>
 				</div>
 				<div class="fields">
 					<form class="form-horizontal">
@@ -25,7 +25,7 @@
 						<div class="form-group">
 							<div class="controls">
 								<label class="checkbox">
-									<input type="checkbox" class="downloadCheckoutZip  form-control" name="zip"> Zip
+									<input type="checkbox" class="downloadCheckoutZip" name="zip"> Zip
 								</label>
 							</div>
 						</div>
@@ -110,14 +110,14 @@ function Download(containerDiv, data) {
 			containerDiv.find(".downloadStatus").html(state.title);
 			if (oldStage != state.stage) {
 				containerDiv.find(".progressBarHolder .downloadProgressBar").remove();
-				containerDiv.find(".progressBarHolder").append("<div class=\"downloadProgressBar progress\"><div class=\"bar\"></div></div>");
+				containerDiv.find(".progressBarHolder").append("<div class=\"downloadProgressBar progress\"><div class=\"progress-bar\"></div></div>");
 			}
 			if (state.progress == -1) {
 				containerDiv.find(".downloadProgressBar").addClass("progress-striped").addClass("active");
-				containerDiv.find(".downloadProgressBar .bar").css("width", "100%");
+				containerDiv.find(".downloadProgressBar .progress-bar").css("width", "100%");
 			} else {
 				containerDiv.find(".downloadProgressBar").removeClass("progress-striped").removeClass("active");
-				containerDiv.find(".downloadProgressBar .bar").css("width", parseInt(state.progress) + "%");
+				containerDiv.find(".downloadProgressBar .progress-bar").css("width", parseInt(state.progress) + "%");
 			}
 			if (state.errors.length > 0) {
 				containerDiv.find(".fields, .downloadpopup .checkoutMessage").show();
@@ -162,7 +162,7 @@ function Download(containerDiv, data) {
 		containerDiv.find(".downloadStatus").html("Preparing download...");
 		
 		containerDiv.find(".progressBarHolder .downloadProgressBar").remove();
-		containerDiv.find(".progressBarHolder").append("<div class=\"downloadProgressBar progress\"><div class=\"bar\"></div></div>");
+		containerDiv.find(".progressBarHolder").append("<div class=\"downloadProgressBar progress\"><div class=\"progress-bar\"></div></div>");
 		
 		containerDiv.find(".fields").hide();
 		containerDiv.find(".checkoutMessage").hide();

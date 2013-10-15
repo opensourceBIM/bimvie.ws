@@ -31,6 +31,7 @@
 			<a class="loadPrivateProfilesLink">Load private profiles</a>
 		</div>
 		<div class="well loadPrivateProfiles initialhide">
+			<div class="loadPrivateProfilesExtra"></div>
 			<form class="form-inline">
 				<label>Token <input type="text" class="privateProfilesTokenInput form-control"/></label>
 				<button class="btn btn-default loadPrivateProfilesButton">Load profiles</button>
@@ -99,11 +100,17 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 	
 	$(".addservice2 .serviceName").val(serviceDescriptor.name);
 	$(".addservice2 .serviceName").focus();
-	$(".addservice2 .pluginTable").append("<tr><td>Provider</td><td>" + serviceDescriptor.providerName + "</td></tr>");	
-	$(".addservice2 .pluginTable").append("<tr><td>Website</td><td><a href=\"" + serviceDescriptor.companyUrl + "\">" + serviceDescriptor.companyUrl + "</a></td></tr>");
+	$(".addservice2 .pluginTable").append("<tr><td>Provider</td><td>" + serviceDescriptor.providerName + "</td></tr>");
+	if (serviceDescriptor.companyUrl != null) {
+		$(".addservice2 .pluginTable").append("<tr><td>Website</td><td><a href=\"" + serviceDescriptor.companyUrl + "\">" + serviceDescriptor.companyUrl + "</a></td></tr>");
+	}
 	$(".addservice2 .pluginTable").append("<tr><td>Name</td><td>" + serviceDescriptor.name + "</td></tr>");	
 	$(".addservice2 .pluginTable").append("<tr><td>Description</td><td>" + serviceDescriptor.description + "</td></tr>");	
 	$(".addservice2 .pluginTable").append("<tr><td>Trigger</td><td>" + formatTrigger(serviceDescriptor.trigger) + "</td></tr>");
+
+	if (serviceDescriptor.tokenUrl != null) {
+		$(".loadPrivateProfilesExtra").append("<a href=\"" + serviceDescriptor.tokenUrl + "\">Click here to create/get a remote token</a>");
+	}
 	
 	if (serviceDescriptor.readRevision || serviceDescriptor.writeRevision || serviceDescriptor.readExtendedData != null || serviceDescriptor.writeExtendedData != null) {
 		$(".addservice2 .rightsTable").show();
@@ -112,7 +119,7 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 		$(".addservice2 .rightsTable").hide();
 		$(".addservice2 .norights").show();
 	}
-	
+
 	if (serviceDescriptor.readRevision) {
 		$(".addservice2 .rightsTable").append("<tr><td>Read Revision</td><td><input disabled=\"disabled\" checked=\"checked\" type=\"checkbox\"/></td></tr>");	
 	}

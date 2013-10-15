@@ -31,7 +31,7 @@ function SelectServer(address) {
 	pushHistory({page: "SelectServer"}, "Select BIMsie Server");
 
 	this.selectServer = function(){
-		var address = $("#inputServer").val();
+		var address = $(".address").val();
 		loadBimServerApi("http://" + address, Global.notifier, function(serverInfo){
 			if (serverInfo.serverState == "NOT_SETUP") {
 				$(".indexcontainer").load(Global.baseDir + "setup.html", function(){
@@ -50,6 +50,10 @@ function SelectServer(address) {
 			
 		});
 	};
+	
+	if ($.cookie("address" + window.document.location.port) != null) {
+		$(".address").html($.cookie("address" + window.document.location.port));
+	}
 	
 	$(".selectServerButton").click(function(){
 		othis.selectServer();

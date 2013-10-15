@@ -121,7 +121,7 @@
 				var notLoggedInFunction = function(){
 					if (Global.history.page == "Login") {
 						$(".indexcontainer").load(Global.baseDir + "login.html", function(){
-							othis.current = new Login(null);
+							othis.current = new Login($.cookie("address" + window.document.location.port));
 						});
 					} else if (Global.history.page == "SelectServer") {
 						$(".indexcontainer").load(Global.baseDir + "selectserver.html", function(){
