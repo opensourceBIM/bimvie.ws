@@ -171,7 +171,7 @@ function BasicServerSettings(main, serversettings) {
 
 	this.addWhiteListedDomain = function(domain) {
 		var div = $("<div class=\"whiteListedDomainDiv\">");
-		var input = $("<input type=\"text\" class=\"whiteListedDomain input-xlarge\">");
+		var input = $("<input type=\"text\" class=\"form-control whiteListedDomain input-xlarge\">");
 		input.val(domain);
 		if (domain == "") {
 			input.attr("placeHolder", "Add a new domain");

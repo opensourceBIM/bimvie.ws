@@ -6,18 +6,18 @@
 			<div class="form-group">
 				<label class="control-label" for="inputUsername">Username</label>
 				<div class="controls">
-					<input type="text" id="inputUsername" class="inputUsername" placeholder="Email address">
+					<input type="text" id="inputUsername" class="inputUsername form-control" placeholder="Email address">
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label" for="inputName">Name</label>
 				<div class="controls">
-					<input type="text" id="inputName" class="inputName" placeholder="Full name">
+					<input type="text" id="inputName" class="inputName form-control" placeholder="Full name">
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="controls">
-					<button type="submit" class="btn btn-default registerButton">Register</button>
+					<button type="submit" class="btn btn-primary registerButton">Register</button>
 				</div>
 			</div>
 		</form>
@@ -36,7 +36,7 @@ function Register(containerDiv) {
 			selfRegistration: true,
 			resetUrl: Global.baseDir + "?page=ResetPassword"
 		}, function(){
-			
+			window.location = Global.baseDir;
 		});
 	};
 	
