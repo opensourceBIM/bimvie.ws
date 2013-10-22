@@ -1,0 +1,80 @@
+<div class="stripe">
+	<div class="modal fade stripeModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Pay with Stripe</h4>
+				</div>
+				<div class="modal-body">
+					<form action="" method="POST" id="payment-form">
+						<span class="payment-errors"></span>
+
+						<div class="form-row">
+							<label> <span>Card Number</span> <input type="text" class="form-control"
+								size="20" data-stripe="number" />
+							</label>
+						</div>
+
+						<div class="form-row">
+							<label> <span>CVC</span> <input type="text" size="4" class="form-control"
+								data-stripe="cvc" />
+							</label>
+						</div>
+
+						<div class="form-row">
+							<label> <span>Expiration (MM/YYYY)</span> <input
+								type="text" size="2" data-stripe="exp-month" class="form-control"/>
+							</label> <span> / </span> <input type="text" size="4" class="form-control"
+								data-stripe="exp-year" />
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary saveChangesButton">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	function StripeGetToken(tokenCallback) {
+		var othis = this;
+		
+		var stripeResponseHandler = function(status, response) {
+			var $form = $('#payment-form');
+
+			if (response.error) {
+				// Show the errors on the form
+				$form.find('.payment-errors').text(response.error.message);
+				$('.saveChangesButton').prop('disabled', false);
+			} else {
+				// token contains id, last4, and card type
+				var token = response.id;
+				tokenCallback(token);
+			}
+		};
+
+		$.getScript("https://js.stripe.com/v2/", function(){
+			Stripe.setPublishableKey('pk_test_czwzkTp2tactuLOEOqbMTRzG');
+		});
+		
+		jQuery(function($) {
+			$('.saveChangesButton').click(function(event) {
+				var $form = $("#payment-form");
+
+				// Disable the submit button to prevent repeated clicks
+				$(this).prop('disabled', true);
+
+				Stripe.card.createToken($form, stripeResponseHandler);
+
+				// Prevent the form from submitting with the default action
+				return false;
+			});
+		});
+		
+		$(".stripeModal").modal({});
+	}
+</script>
