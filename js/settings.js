@@ -10,6 +10,7 @@ var Settings = {
 	        "usersettingsLink",
 	        "serversettingsLink",
 	        "serverinfoLink",
+	        "gettingStartedLink",
 	        "testingLink"
 		];
 	},
