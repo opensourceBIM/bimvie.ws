@@ -262,6 +262,7 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 					});
 				});
 			} else {
+				service.notificationProtocol = "JSON";
 				Global.bimServerApi.call("ServiceInterface", "addServiceToProject", {poid: othis.project.oid, sService: service}, function(data){
 					main.showProject(othis.project, function(){
 						this.reloadProject();

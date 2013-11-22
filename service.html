@@ -138,6 +138,7 @@ function Service(main, service) {
 	$(".service .profileTable tbody").append("<tr><td>Public</td><td>" + service.profilePublic + "</td></tr>");
 
 	$(".service .technicalDetailsTable tbody").append("<tr><td>URL</td><td>" + (service.url == null ? "No URL (Internal)" : service.url) + "</td></tr>");
+	$(".service .technicalDetailsTable tbody").append("<tr><td>Notification Protocol</td><td>" + service.notificationProtocol + "</td></tr>");
 	$(".service .technicalDetailsTable tbody").append("<tr><td>Service Identifier</td><td>" + service.serviceIdentifier + "</td></tr>");
 	$(".service .technicalDetailsTable tbody").append("<tr><td>Profile Identifier</td><td>" + service.profileIdentifier + "</td></tr>");
 	
