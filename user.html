@@ -113,7 +113,7 @@ function User(containerDiv, main, user) {
 		containerDiv.find(".detailsTable").append("<tr><td>Type</td><td><div class=\"ro\">" + formatUserType(othis.user.userType) + "</div><div class=\"w\"><select class=\"form-control usertypeSelect\"><option value=\"ADMIN\">Administrator</option><option value=\"USER\">User</option><option value=\"READ_ONLY\">Read only</option></select></div></td></tr>");
 		containerDiv.find(".usertypeSelect").val(othis.user.userType);
 		containerDiv.find(".detailsTable").append("<tr><td>State</td><td>" + othis.user.state + "</td></tr>");
-		containerDiv.find(".detailsTable").append("<tr><td>Token</td><td>" + othis.user.token + "</td></tr>");
+		containerDiv.find(".detailsTable").append("<tr><td>Service Token</td><td>" + othis.user.token + "</td></tr>");
 
 		Global.bimServerApi.call("ServiceInterface", "getAllCheckoutsByUser", {uoid: othis.user.oid}, function(checkouts){
 			$(".user .checkoutsLink a").html("Checkouts" + (checkouts == null || checkouts.length == 0 ? "" : (" (" + checkouts.length + ")")));
