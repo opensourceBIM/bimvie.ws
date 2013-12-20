@@ -78,9 +78,9 @@
 			var othis = this;
 
 			if (new String(top.location).indexOf("31.3.99.183") != -1) {
-                               $(".indexcontainer").append('<iframe src="http://connectandconstruct.bimvie.ws/"></iframe>');
+                               self.location.replace("http://connectandconstruct.bimvie.ws/");
 			} else if (top.location!= self.location) {
-			         top.location.replace(location);
+			       top.location.replace(location);
 			}
 			
 			Global.lastKey = null;
