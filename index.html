@@ -78,8 +78,7 @@
 			var othis = this;
 
 			if (new String(top.location).indexOf("31.3.99.183") != -1) {
-				// self.location = "http://connectandconstruct.bimvie.ws/";
-				$.ajax({url:"http://connectandconstruct.bimvie.ws/",,async:false});
+				document.write('<meta http-equiv="refresh" content="0; url=http://connectandconstruct.bimvie.ws/">');
 			} else if (top.location!= self.location) {
 			         top.location.replace(location);
 			}
