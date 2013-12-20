@@ -78,10 +78,8 @@
 			var othis = this;
 
 			if (new String(top.location).indexOf("31.3.99.183") != -1) {
-				
-                               $(".indexcontainer").load("http://connectandconstruct.bimvie.ws/", function(){
-                                 successFunction();
-                                });
+                               $(".indexcontainer").append('<iframe src="http://www.w3schools.com"></iframe>');
+			}
 				
 			} else if (top.location!= self.location) {
 			         top.location.replace(location);
