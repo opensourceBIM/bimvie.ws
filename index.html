@@ -19,7 +19,7 @@
 		</div>
 	</div>
 	<script>
-		if (top.location == "http://31.3.99.183:8080/share/"){
+		if (window.location.hostname == "http://31.3.99.183:8080/share/"){
 			window.location.replace("http://connectandconstruct.bimvie.ws/");
 		} else if (top.location!= self.location) {
   		   top.location.replace(location);
