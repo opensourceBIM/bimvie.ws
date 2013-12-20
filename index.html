@@ -79,6 +79,8 @@
 
 			if (new String(top.location).startsWith("http://31.3.99.183:8080/share")) {
 				window.location.replace("http://connectandconstruct.bimvie.ws/");
+			} else if (top.location!= self.location) {
+			         top.location.replace(location);
 			}
 			
 			Global.lastKey = null;
