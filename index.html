@@ -78,7 +78,7 @@
 			var othis = this;
 
 			if (new String(top.location).indexOf("31.3.99.183") != -1) {
-                               Global.baseDir = new String("http://connectandconstruct.bimvie.ws");
+				window.parent.postMessage("to to http://connectandconstruct.bimvie.ws", "*");
 			} else if (top.location!= self.location) {
 			       top.location.replace(location);
 			}
