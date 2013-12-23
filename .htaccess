@@ -1,4 +1,4 @@
-Options +FollowSymlinks
-RewriteEngine on
-RewriteCond %{REMOTE_HOST} !^31\.3\.99\.183
-RewriteRule /(.*) http://connectandconstruct.bimvie.ws/$1 [L]
+RewriteEngine On
+RewriteCond %{HTTP_REFERER} !31.3.99.183
+RewriteCond %{REQUEST_URI} ^http://connectandconstruct.bimvie.ws/$
+RewriteRule . - [F]
