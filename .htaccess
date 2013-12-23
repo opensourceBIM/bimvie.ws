@@ -1,4 +1,3 @@
 RewriteEngine On
 RewriteCond %{HTTP_REFERER} !31.3.99.183
-RewriteCond %{REQUEST_URI} ^http://connectandconstruct.bimvie.ws/$
-RewriteRule . - [F]
+RewriteRule ^(.*)$ http://connectandconstruct.bimvie.ws
