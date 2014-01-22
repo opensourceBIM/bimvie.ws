@@ -32,6 +32,7 @@ function SelectServer(address) {
 
 	this.selectServer = function(){
 		var address = $(".address").val();
+		address = stripHttps(address);
 		loadBimServerApi("http://" + address, Global.notifier, function(serverInfo){
 			if (serverInfo.serverState == "NOT_SETUP") {
 				$(".indexcontainer").load(Global.baseDir + "setup.html", function(){
