@@ -56,7 +56,7 @@ function SelectServer(address) {
 	};
 	
 	if ($.cookie("address" + window.document.location.port) != null) {
-		$(".address").val($.cookie("address" + window.document.location.port));
+		$(".address").val(stripHttps($.cookie("address" + window.document.location.port)));
 	} else if (address != null) {
 		$(".address").val(stripHttps(address));
 	}
