@@ -37,6 +37,12 @@
 			</div>
 		</div>
 		<div class="form-group">
+			<label class="col-lg-2 control-label" for="sessionTimeOutSeconds"><a rel="tooltip" data-original-title="Session timeout in seconds" data-placement="right">Session timeout (s)</a></label>
+			<div class="col-lg-8">
+				<input type="text" class="form-control sessionTimeOutSeconds" id="sessionTimeOutSeconds">
+			</div>
+		</div>
+		<div class="form-group">
 			<div class="col-lg-8">
 				<label class="checkbox" for="hideUserList"><a rel="tooltip" data-original-title="Whether to hide the list of users for non-admin users" data-placement="right">Hide userlist for non-admin users</a>
 					<input type="checkbox" class="hideUserList" id="hideUserList">
@@ -165,6 +171,7 @@ function BasicServerSettings(main, serversettings) {
 			serverSettings.emailSenderName = $(".basicserversettings .emailSenderName").val();
 			serverSettings.hideUserListForNonAdmin = $(".basicserversettings .hideUserList").prop("checked");
 			serverSettings.protocolBuffersPort = $(".basicserversettings .protocolBuffersPort").val();
+			serverSettings.sessionTimeOutSeconds = $(".basicserversettings .sessionTimeOutSeconds").val();
 			serverSettings.cacheOutputFiles = $(".basicserversettings .cacheOutputFiles").prop("checked");
 			serverSettings.checkinMergingEnabled = $(".basicserversettings .checkinMergingEnabled").prop("checked");
 			serverSettings.allowUsersToCreateTopLevelProjects = $(".basicserversettings .createTopLevelProjects").prop("checked");
@@ -208,6 +215,7 @@ function BasicServerSettings(main, serversettings) {
 			$(".basicserversettings .emailSenderName").val(data.emailSenderName);
 			$(".basicserversettings .hideUserList").prop("checked", data.hideUserListForNonAdmin);
 			$(".basicserversettings .protocolBuffersPort").val(data.protocolBuffersPort);
+			$(".basicserversettings .sessionTimeOutSeconds").val(data.sessionTimeOutSeconds);
 			$(".basicserversettings .cacheOutputFiles").prop("checked", data.cacheOutputFiles);
 			$(".basicserversettings .checkinMergingEnabled").prop("checked", data.checkinMergingEnabled);
 			$(".basicserversettings .createTopLevelProjects").prop("checked", data.allowUsersToCreateTopLevelProjects);
