@@ -168,8 +168,12 @@
 					$.removeCookie("autologin" + window.document.location.port, {path: "/"});
 					$.removeCookie("address" + window.document.location.port, {path: "/"});
 				};
+
+				var address = getParameterByName("address");
 				
-				if ($.cookie("address" + window.document.location.port) != null) {
+				if (address != null) {
+					othis.loadBimServerApiFromAddress(address, successFunction, errorFunction);
+				} else if ($.cookie("address" + window.document.location.port) != null) {
 					othis.loadBimServerApiFromAddress($.cookie("address" + window.document.location.port), successFunction, errorFunction);
 				} else if (!Settings.allowBimServerAddress()) {
 					Settings.getStaticServerAddress(function(address){
