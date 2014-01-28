@@ -99,7 +99,6 @@
 			
 			othis.loadBimServerApiFromAddress = function(address, successFunction, errorFunction){
 				loadBimServerApi(address, Global.notifier, function(serverInfo){
-					$.cookie("address" + window.document.location.port, address, { expires: 31, path: "/"});
 					if (serverInfo.serverState == "NOT_SETUP") {
 						$(".indexcontainer").load(Global.baseDir + "setup.html", function(){
 							new Setup(address);
