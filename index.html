@@ -212,7 +212,6 @@
 					$(othis.selector).hide();
 					othis.selector = selector;
 					if (currentmessage != "" && currentmessage != undefined) {
-						console.log(currentmessage);
 						$(selector).show();
 						$(selector).find(".message").html(currentmessage).parent().addClass("alert-success");
 					} else {
@@ -226,7 +225,6 @@
 				};
 
 				this.resetStatus = function(){
-					console.log("resetstatus");
 					if (othis.lastTimeOut != null) {
 						clearTimeout(othis.lastTimeOut);
 						othis.lastTimeOut = null;
