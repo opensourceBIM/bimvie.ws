@@ -86,6 +86,11 @@ function Users(containerDiv, main) {
 		});
 
 		userRow.append(actions);
+		
+		if ($.cookie(main.user.oid + "showdeleteditems") != "true" && user.state == "DELETED") {
+			userRow.hide();
+		}
+		
 		$(".usersTable tbody").append(userRow);
 	};
 

@@ -214,6 +214,20 @@ var Project = function(containerDiv, main, project) {
 			othis.close();
 		}
 	};
+
+	this.deleteProject = function(project){
+		Global.bimServerApi.callWithFullIndication("Bimsie1ServiceInterface", "deleteProject", {poid: project.oid}, function(){
+			othis.loadSubProjects();
+			othis.loadSideSpan();
+		});
+	};
+	
+	this.undeleteProject = function(project){
+		Global.bimServerApi.callWithFullIndication("Bimsie1ServiceInterface", "undeleteProject", {poid: project.oid}, function(){
+			othis.loadSubProjects();
+			othis.loadSideSpan();
+		});
+	};
 	
 	this.addSubProject = function(subProject) {
 		var subProjectRow = $("<tr class=\"project\">");
@@ -222,7 +236,22 @@ var Project = function(containerDiv, main, project) {
 		
 		subProjectRow.append("<td>" + subProject.name + "</td>");
 		
-		subProjectRow.append(newDropdownTd("Action"));
+		var actions = newDropdownTd("Actions");
+
+		actions.find(".dropdown-toggle").click(function(){
+			actions.find("ul li").remove();
+			var project = $(this).parents("tr").data("project");
+			if (project.state == "ACTIVE") {
+				var li = $("<li><a>Delete</a></li>");
+				li.find("a").click(function(){othis.deleteProject(project)});
+				actions.find("ul").append(li);
+			} else {
+				var li = $("<li><a>Undelete</a></li>");
+				li.find("a").click(function(){othis.undeleteProject(project)});
+				actions.find("ul").append(li);
+			}
+		});
+		subProjectRow.append(actions);
 
 		if ($.cookie(main.user.oid + "showdeleteditems") != "true" && subProject.state == "DELETED") {
 			subProjectRow.hide();
@@ -238,6 +267,8 @@ var Project = function(containerDiv, main, project) {
 		othis.tabChanger.changeTab($(".subprojectsLink"), null, $(".subprojects"), function(){
 			Global.bimServerApi.call("Bimsie1ServiceInterface", "getSubProjects", {poid: othis.project.oid}, function(data){
 				containerDiv.find(".subprojectsTable tr.project").remove();
+				containerDiv.find(".nosubprojects").show();
+				containerDiv.find(".subprojectsTable").hide();
 				data.forEach(function(subProject){
 					othis.addSubProject(subProject);
 				});
@@ -631,6 +662,20 @@ var Project = function(containerDiv, main, project) {
 			othis.loadHistory();
 		}
 		
+		othis.loadSideSpan();
+		
+		if (Settings.get3DViewerUrl != null && othis.project.lastRevisionId != -1) {
+			containerDiv.find(".show3DButton").show();
+			containerDiv.find(".show3DButton").click(function(){
+				var url = Settings.get3DViewerUrl(Global.bimServerApi, othis.project.lastRevisionId);
+				window.open(url);
+			});
+		} else {
+			containerDiv.find(".show3DButton").hide();
+		}
+	};
+	
+	this.loadSideSpan = function(){
 		Global.bimServerApi.call("ServiceInterface", "getAllRelatedProjects", {poid: othis.project.oid}, function(list){
 			var lastParent = -1;
 			var div = $("<div class=\"well\">");
@@ -662,16 +707,6 @@ var Project = function(containerDiv, main, project) {
 				$(".sidespan").empty();
 			}
 		});
-		
-		if (Settings.get3DViewerUrl != null && othis.project.lastRevisionId != -1) {
-			containerDiv.find(".show3DButton").show();
-			containerDiv.find(".show3DButton").click(function(){
-				var url = Settings.get3DViewerUrl(Global.bimServerApi, othis.project.lastRevisionId);
-				window.open(url);
-			});
-		} else {
-			containerDiv.find(".show3DButton").hide();
-		}
 	};
 
 	this.loadHistory = function(){
