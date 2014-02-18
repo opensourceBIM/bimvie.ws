@@ -124,7 +124,7 @@
 			<div class="linkspacer">
 				<a class="addUserLink">Add user</a>
 			</div>
-			<div class="noUsersMessage"></div>
+			<div class="well well-sm noUsersMessage initialhide"></div>
 			<div class="addUserToProjectDiv initialhide">
 				<form class="form-inline">
 					<div class="form-group">
@@ -277,7 +277,11 @@ var Project = function(containerDiv, main, project) {
 		tr.data("user", user);
 		tr.click(othis.userRowClick);
 		tr.append("<td>" + user.name + "</td>");
-		tr.append(newButtonTd("Revoke", othis.revokeUser));
+		if (main.user.userType == "ADMIN") {
+			tr.append(newButtonTd("Revoke", othis.revokeUser));
+		} else {
+			tr.append("<td></td>");
+		}
 		containerDiv.find(".usersTable").append(tr);
 	};
 	
@@ -500,6 +504,20 @@ var Project = function(containerDiv, main, project) {
 					othis.addUser(user);
 				});
 			});
+			if (main.user.userType == "ADMIN") {
+				Global.bimServerApi.call("ServiceInterface", "getAllNonAuthorizedUsersOfProject", {poid: othis.project.oid}, function(data){
+					if (data.length == 0) {
+						containerDiv.find(".noUsersMessage").html("No users available to add").show();
+						containerDiv.find(".addUserLink").hide();
+						containerDiv.find(".addUserToProjectDiv").hide();
+					} else {
+						containerDiv.find(".noUsersMessage").hide();
+						containerDiv.find(".addUserLink").show();
+					}
+				});
+			} else {
+				containerDiv.find(".addUserLink").hide();
+			}
 			pushHistory({page: "Project", poid: othis.project.oid, tab: "users"}, "Project");
 			return $(".users");
 		}, callback);
@@ -739,8 +757,8 @@ var Project = function(containerDiv, main, project) {
 		Global.bimServerApi.call("ServiceInterface", "getAllNonAuthorizedUsersOfProject", {poid: othis.project.oid}, function(data){
 			containerDiv.find(".addUserToProjectDiv select option").remove();
 			if (data.length == 0) {
-				containerDiv.find(".noUsersMessage").html("No users available to add");
-				containerDiv.find(".addUserLink").show();
+				containerDiv.find(".noUsersMessage").html("No users available to add").show();
+				containerDiv.find(".addUserLink").hide();
 				containerDiv.find(".addUserToProjectDiv").hide();
 			} else {
 				data.forEach(function(user){
