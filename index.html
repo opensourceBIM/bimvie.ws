@@ -8,7 +8,7 @@
   <body>
   	<div class="indexStatus">
 		<div class="alert status">
-			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<button type="button" class="close">&times;</button>
 			<div class="message"></div>
 		</div>
   	</div>
@@ -206,10 +206,17 @@
 			
 			function Notifier() {
 				var othis = this;
-				othis.selector = ".indexStatus .status";
 				
-				$(othis.selector).hide();
+				this.setSelector = function(selector) {
+					othis.selector = selector;
+					$(othis.selector).hide();
+					$(othis.selector).find(".close").click(othis.closeClick);
+				};
 
+				this.closeClick = function(){
+					othis.clear();
+				};
+				
 				this.error = function(message){
 					if (othis.lastTimeOut != null) {
 						clearTimeout(othis.lastTimeOut);
@@ -256,7 +263,7 @@
 						clearTimeout(othis.lastTimeOut);
 						othis.lastTimeOut = null;
 					}
-					$(othis.selector).find(".message").html(status).parent().show().removeClass("alert-danger").addClass("alert-info");
+					$(othis.selector).find(".message").html(status).parent().removeClass("alert-danger").addClass("alert-info").show();
 					var notifier = this;
 					if (timeToShow != -1) {
 						othis.lastTimeOut = setTimeout(function(){
@@ -272,6 +279,8 @@
 					}
 					$(othis.selector).find(".message").html(error).parent().removeClass("alert-info").addClass("alert-danger").show();
 				};
+				
+				othis.setSelector(".indexStatus .status");
 			}
 
 			Global.notifier = new Notifier();

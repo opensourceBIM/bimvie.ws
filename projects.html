@@ -84,7 +84,7 @@ function Projects(containerDiv, main) {
 			}
 		});
 
-		Global.bimServerApi.call("ServiceInterface", "userHasCheckinRights", {uoid: main.user.oid, poid: project.oid}, function(canCheckin){
+		Global.bimServerApi.callWithNoIndication("ServiceInterface", "userHasCheckinRights", {uoid: main.user.oid, poid: project.oid}, function(canCheckin){
 			if (canCheckin) {
 				projectRow.addClass("success");
 			} else {
@@ -94,8 +94,8 @@ function Projects(containerDiv, main) {
 		
 		projectRow.append(actions);
 
-		project.subProjects.forEach(function(subProjectOid){
-			Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: subProjectOid}, function(subProject){
+		project.subProjects.forEach(function(subProjectOid) {
+			Global.bimServerApi.callWithNoIndication("Bimsie1ServiceInterface", "getProjectByPoid", {poid: subProjectOid}, function(subProject){
 				othis.addProject(subProject, project, indent == null ? 1 : (indent + 1));
 			});
 		});
@@ -105,10 +105,14 @@ function Projects(containerDiv, main) {
 		} else {
 			$(".projectsTable").append(projectRow);
 		}
+		
+		if (main.user.oid + "showdeleteditems" != "true" && project.state == "DELETED") {
+			projectRow.hide();
+		}
 	};
 	
 	this.loadProjects = function(){
-		Global.bimServerApi.call("SettingsInterface", "isAllowUsersToCreateTopLevelProjects", {}, function(enabled){
+		Global.bimServerApi.callWithNoIndication("SettingsInterface", "isAllowUsersToCreateTopLevelProjects", {}, function(enabled){
 			if (main.user.userType == "ADMIN" || enabled) {
 				$(".buttonBar").show();
 				$(".addProjectButton").show();
@@ -116,7 +120,7 @@ function Projects(containerDiv, main) {
 		});
 		
 		$(".projectsTable tbody tr").remove();
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllProjects", {onlyTopLevel: true, onlyActive: true}, function(data){
+		Global.bimServerApi.callWithNoIndication("Bimsie1ServiceInterface", "getAllProjects", {onlyTopLevel: true, onlyActive: true}, function(data){
 			data.forEach(function(project){
 				$(".projectsTable").show();
 				othis.addProject(project);
@@ -125,7 +129,7 @@ function Projects(containerDiv, main) {
 	};
 	
 	this.newProjectHandler = function(poid){
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: poid}, function(data){
+		Global.bimServerApi.callWithNoIndication("Bimsie1ServiceInterface", "getProjectByPoid", {poid: poid}, function(data){
 			othis.addProject(data);
 		});
 	};

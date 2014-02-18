@@ -210,14 +210,12 @@ var Project = function(containerDiv, main, project) {
 
 	this.projectClick = function(event) {
 		if (!$(event.target).is("a, button, span.caret")) {
-			main.showProject($(this).parents("tr").andSelf().data("project"), event);
+			main.showProject($(this).parents("tr").andSelf().data("project"), null, null);
 			othis.close();
 		}
 	};
 	
 	this.addSubProject = function(subProject) {
-		containerDiv.find(".nosubprojects").hide();
-		containerDiv.find(".subprojectsTable").show();
 		var subProjectRow = $("<tr class=\"project\">");
 		subProjectRow.click(othis.projectClick);
 		subProjectRow.data("project", subProject);
@@ -225,6 +223,13 @@ var Project = function(containerDiv, main, project) {
 		subProjectRow.append("<td>" + subProject.name + "</td>");
 		
 		subProjectRow.append(newDropdownTd("Action"));
+
+		if ($.cookie(main.user.oid + "showdeleteditems") != "true" && subProject.state == "DELETED") {
+			subProjectRow.hide();
+		} else {
+			containerDiv.find(".nosubprojects").hide();
+			containerDiv.find(".subprojectsTable").show();
+		}
 
 		containerDiv.find(".subprojectsTable").append(subProjectRow);
 	};
@@ -585,7 +590,6 @@ var Project = function(containerDiv, main, project) {
 		containerDiv.find(".detailsTable tbody").append("<tr><td>Length measure to use combined downloads</td><td>" + othis.project.exportLengthMeasurePrefix + "</td></tr>");
 
 		containerDiv.find("h1").html(othis.project.name);
-		containerDiv.find(".subprojectsLink a").html("Sub Projects" + (othis.project.subProjects.length == 0 ? "" : (" (" + othis.project.subProjects.length + ")")));
 		containerDiv.find(" .revisionsLink a").html("Revisions" + (othis.project.revisions.length == 0 ? "" : (" (" + othis.project.revisions.length + ")")));
 		containerDiv.find(".servicesLink a").html("Services" + (othis.project.services.length == 0 ? "" : (" (" + othis.project.services.length + ")")));
 		if (othis.project.lastRevisionId != -1) {
@@ -614,6 +618,7 @@ var Project = function(containerDiv, main, project) {
 			var div = $("<div class=\"well\">");
 			var ul = $("<ul class=\"p-1\"></ul>");
 			div.append(ul);
+			var nrSubprojects = 0;
 			list.forEach(function(smallProject){
 				var li = $("<li><a>" + smallProject.name + "</a><ul class=\"p" + smallProject.oid + "\"></ul></li>");
 				li.find("a").data("poid", smallProject.oid);
@@ -621,9 +626,17 @@ var Project = function(containerDiv, main, project) {
 					li.find("a").css("font-weight", "bold");
 				}
 				li.find("a").click(function(event){
-					main.showProject($(this).data("poid"), null, true);
+					main.showProject($(this).data("poid"), null, null);
 				});
 				div.find(".p" + smallProject.parentId).append(li);
+				if ($.cookie(main.user.oid + "showdeleteditems") != "true" && smallProject.state == "DELETED") {
+					li.hide();
+				} else {
+					if (smallProject.parentId == othis.project.oid) {
+						nrSubprojects++;
+						containerDiv.find(".subprojectsLink a").html("Sub Projects" + (othis.project.subProjects.length == 0 ? "" : (" (" + nrSubprojects + ")")));
+					}
+				}
 			});
 			if (list.length > 1) {
 				$(".sidespan").html(div);
