@@ -95,17 +95,10 @@ function Main(address, username) {
 	this.logout = function() {
 		$(".sidespan").empty();
 		Global.bimServerApi.logout(function(){
-			if (Settings.allowBimServerAddress()) {
-				$(".indexcontainer").load(Global.baseDir + "selectserver.html", function(){
-					$(".indexStatus").show();
-					new SelectServer(Global.bimServerApi.baseUrl);
-				});
-			} else {
-				$(".indexcontainer").load(Global.baseDir + "login.html", function(){
-					$(".indexStatus").show();
-					new Login(Global.bimServerApi.baseUrl);
-				});
-			}
+			$(".indexcontainer").load(Global.baseDir + "login.html", function(){
+				Global.notifier.setSelector(".indexStatus .status");
+				new Login(Global.bimServerApi.baseUrl);
+			});
 		});
 	};
 

@@ -208,29 +208,17 @@
 				var othis = this;
 				
 				this.setSelector = function(selector) {
-					othis.selector = selector;
+					var currentmessage = $(othis.selector).find(".message").html();
 					$(othis.selector).hide();
-					$(othis.selector).find(".close").click(othis.closeClick);
-				};
-
-				this.closeClick = function(){
-					othis.clear();
-				};
-				
-				this.error = function(message){
-					if (othis.lastTimeOut != null) {
-						clearTimeout(othis.lastTimeOut);
-						othis.lastTimeOut = null;
+					othis.selector = selector;
+					if (currentmessage != "" && currentmessage != undefined) {
+						console.log(currentmessage);
+						$(selector).show();
+						$(selector).find(".message").html(currentmessage).parent().addClass("alert-success");
+					} else {
+						$(othis.selector).hide();
 					}
-					$(othis.selector).find(".message").html(message).parent().show();
-				};
-
-				this.info = function(message) {
-					if (othis.lastTimeOut != null) {
-						clearTimeout(othis.lastTimeOut);
-						othis.lastTimeOut = null;
-					}
-					$(othis.selector).find(".message").html(message).parent().show();						
+					$(othis.selector).find(".close").click(othis.clear);
 				};
 
 				this.clear = function() {
@@ -238,6 +226,7 @@
 				};
 
 				this.resetStatus = function(){
+					console.log("resetstatus");
 					if (othis.lastTimeOut != null) {
 						clearTimeout(othis.lastTimeOut);
 						othis.lastTimeOut = null;
@@ -254,7 +243,7 @@
 					$(othis.selector).hide();
 				};
 
-				this.setStatus = function(status, timeToShow) {
+				this.setSuccess = function(status, timeToShow) {
 					if (timeToShow == null) {
 						timeToShow = 5000;
 					}
@@ -263,11 +252,29 @@
 						clearTimeout(othis.lastTimeOut);
 						othis.lastTimeOut = null;
 					}
-					$(othis.selector).find(".message").html(status).parent().removeClass("alert-danger").addClass("alert-info").show();
+					$(othis.selector).find(".message").html(status).parent().show().removeClass("alert-danger").removeClass("alert-info").addClass("alert-success");
 					var notifier = this;
 					if (timeToShow != -1) {
 						othis.lastTimeOut = setTimeout(function(){
-							othis.resetStatus();
+							notifier.resetStatus();
+						}, timeToShow);
+					}
+				};
+				
+				this.setInfo = function(status, timeToShow) {
+					if (timeToShow == null) {
+						timeToShow = 5000;
+					}
+					$(othis.selector).stop(true, true);
+					if (othis.lastTimeOut != null) {
+						clearTimeout(othis.lastTimeOut);
+						othis.lastTimeOut = null;
+					}
+					$(othis.selector).find(".message").html(status).parent().show().removeClass("alert-danger").removeClass("alert-success").addClass("alert-info");
+					var notifier = this;
+					if (timeToShow != -1) {
+						othis.lastTimeOut = setTimeout(function(){
+							notifier.resetStatus();
 						}, timeToShow);
 					}
 				};
@@ -277,7 +284,7 @@
 						clearTimeout(othis.lastTimeOut);
 						othis.lastTimeOut = null;
 					}
-					$(othis.selector).find(".message").html(error).parent().removeClass("alert-info").addClass("alert-danger").show();
+					$(othis.selector).find(".message").html(error).parent().removeClass("alert-info").removeClass("alert-success").addClass("alert-danger").show();
 				};
 				
 				othis.setSelector(".indexStatus .status");

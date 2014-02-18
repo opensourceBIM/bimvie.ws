@@ -24,7 +24,7 @@ function BasicUserSettings(containerDiv, main) {
 
 	this.showDeletedItemsChange = function(){
 		$.cookie(main.user.oid + "showdeleteditems", $(this).is(":checked"));
-		Global.notifier.setStatus("Show deleted items settings successfully changed");
+		Global.notifier.setSuccess("Show deleted items settings successfully changed");
 	};
 	
 	this.show = function(){

@@ -292,7 +292,7 @@ var Project = function(containerDiv, main, project) {
 
 	this.revokeUser = function() {
 		var user = $(this).parents("tr").data("user");
-		Global.bimServerApi.call("ServiceInterface", "removeUserFromProject", {
+		Global.bimServerApi.callWithFullIndication("ServiceInterface", "removeUserFromProject", {
 			uoid: user.oid,
 			poid: othis.project.oid
 		}, function(data){
@@ -740,10 +740,12 @@ var Project = function(containerDiv, main, project) {
 		}
 	};
 	
-	this.loadBrowser = function(callback) {
+	this.loadBrowser = function(callback, pushhistory) {
 		$(".browser .message").html("Showing data for revision " + othis.lastRevision.id);
 		othis.tabChanger.changeTab($(".browserLink"), "browser.html", $(".browsercontainer"), function(){
-			pushHistory({page: "Project", poid: othis.project.oid, tab: "browser"}, "Project");
+			if (pushhistory) {
+				pushHistory({page: "Project", poid: othis.project.oid, tab: "browser"}, "Project");
+			}
 			$(".browser").show();
 			return new Browser($(this), othis.lastRevision);
 		}, callback);
@@ -808,7 +810,7 @@ var Project = function(containerDiv, main, project) {
 
 	this.addUserToProject = function(event){
 		event.preventDefault();
-		Global.bimServerApi.call("ServiceInterface", "addUserToProject", {
+		Global.bimServerApi.callWithFullIndication("ServiceInterface", "addUserToProject", {
 			uoid: containerDiv.find(".addUserToProjectDiv select option:selected").val(),
 			poid: othis.project.oid
 		}, function(data){

@@ -7,7 +7,7 @@
 		  	</div>
 		    <div class="modal-body">
 				<div class="checkoutMessage initialhide"></div>
-				<div class="downloadStatus"></div>
+				<div class="downloadStatus initialhide alert alert-info"></div>
 				<div class="progressBarHolder"></div>
 				
 				<div class="downloadProgressBar progress initialhide">
@@ -107,7 +107,7 @@ function Download(containerDiv, data) {
 		if (topicId == othis.laid) {
 			var oldStage = othis.stage;
 			othis.stage = state.stage;
-			containerDiv.find(".downloadStatus").html(state.title);
+			containerDiv.find(".downloadStatus").html(state.title).show();
 			if (oldStage != state.stage) {
 				containerDiv.find(".progressBarHolder .downloadProgressBar").remove();
 				containerDiv.find(".progressBarHolder").append("<div class=\"downloadProgressBar progress\"><div class=\"progress-bar\"></div></div>");
@@ -151,7 +151,7 @@ function Download(containerDiv, data) {
 						window.location = url;
 					}
 					containerDiv.find(".checkoutMessage").html("");
-					containerDiv.find(".downloadStatus").html("Prepare complete, initiating download.");
+					containerDiv.find(".downloadStatus").removeClass("alert-info").addClass("alert-success").html("Prepare complete, initiating download.");
 					containerDiv.find(".fields, .downloadpopup .checkoutMessage").show();
 				});
 			}
@@ -159,7 +159,7 @@ function Download(containerDiv, data) {
 	};
 	
 	this.start = function(data) {
-		containerDiv.find(".downloadStatus").html("Preparing download...");
+		containerDiv.find(".downloadStatus").addClass("alert-info").show().html("Preparing download...");
 		
 		containerDiv.find(".progressBarHolder .downloadProgressBar").remove();
 		containerDiv.find(".progressBarHolder").append("<div class=\"downloadProgressBar progress\"><div class=\"progress-bar\"></div></div>");

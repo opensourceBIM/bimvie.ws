@@ -51,7 +51,6 @@ function Users(containerDiv, main) {
 	
 	this.sendPasswordReset = function(user){
 		Global.bimServerApi.callWithFullIndication("AuthInterface", "requestPasswordChange", {username: user.username, resetUrl: Global.baseDir + "?page=ResetPassword"}, function(){
-			
 		});
 	};
 	

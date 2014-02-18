@@ -61,11 +61,11 @@ function AddProject(main, parentProject) {
 	
 	this.addProject = function() {
 		if (parentProject != null) {
-			Global.bimServerApi.call("Bimsie1ServiceInterface", "addProjectAsSubProject", {parentPoid: parentProject.oid, projectName: $(".addproject .inputName").val()}, function(data){
+			Global.bimServerApi.callWithFullIndication("Bimsie1ServiceInterface", "addProjectAsSubProject", {parentPoid: parentProject.oid, projectName: $(".addproject .inputName").val()}, function(data){
 				othis.updateProject(data);
 			});
 		} else {
-			Global.bimServerApi.call("Bimsie1ServiceInterface", "addProject", {projectName: $(".addproject .inputName").val()}, function(data){
+			Global.bimServerApi.callWithFullIndication("Bimsie1ServiceInterface", "addProject", {projectName: $(".addproject .inputName").val()}, function(data){
 				othis.updateProject(data);
 			});
 		}

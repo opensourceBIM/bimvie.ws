@@ -4,6 +4,7 @@
 		<button class="btn btn-default editButton">Edit</button>
 		<button class="btn btn-primary saveButton initialhide">Save</button>
 		<button class="btn btn-default cancelButton initialhide">Cancel</button>
+		<button class="btn btn-default sendPasswordResetLinkButton initialhide">Send password reset link</button>
 	</div>
 	<ul class="nav nav-tabs">
 	  <li class="detailsLink active"><a>Details</a></li>
@@ -51,6 +52,18 @@
 		</div>
 		<div class="projects tab-pane initialhide">
 			<div class="well well-sm noprojects">No projects</div>
+			<div class="linkspacer">
+				<a class="addProjectLink">Add project</a>
+			</div>
+			<div class="well well-sm noProjectsMessage initialhide"></div>
+			<div class="addProjectToUserDiv initialhide">
+				<form class="form-inline">
+					<div class="form-group">
+						<select class="form-control"></select>
+					</div>
+					<button class="btn btn-default">Add</button>
+				</form>
+			</div>
 			<table class="projectsTable initialhide table table-striped table-hover">
 				<thead>
 					<tr><th>Name</th><th>Sub Projects</th><th>Revisions</th><th>Actions</th></tr>
@@ -262,6 +275,7 @@ function User(containerDiv, main, user) {
 		$(".projects .projectsTable").show();
 		$(".projects .noprojects").hide();
 		var projectRow = $("<tr class=\"project\">");
+		projectRow.data("project", project);
 
 		var nameTd = $("<td></td>");
 		var nameLink = $("<a>" + project.name + "</a>");
@@ -272,8 +286,22 @@ function User(containerDiv, main, user) {
 
 		projectRow.append("<td>" + project.subProjects.length + "</td>");
 		projectRow.append("<td>" + project.revisions.length + "</td>");
-		projectRow.append("<td></td>");
+		if (main.user.userType == "ADMIN") {
+			projectRow.append(newButtonTd("Revoke", othis.revokeProject));
+		} else {
+			projectRow.append("<td></td>");
+		}
 		$(".projectsTable tbody").append(projectRow);
+	};
+	
+	this.revokeProject = function(){
+		var project = $(this).parents("tr").data("project");
+		Global.bimServerApi.callWithFullIndication("ServiceInterface", "removeUserFromProject", {
+			uoid: othis.user.oid,
+			poid: project.oid
+		}, function(data){
+			othis.showProjects();
+		});
 	};
 	
 	this.showProjects = function() {
@@ -288,6 +316,20 @@ function User(containerDiv, main, user) {
 				othis.addProject(project);
 			});
 		});
+		if (main.user.userType == "ADMIN") {
+			Global.bimServerApi.call("ServiceInterface", "getAllNonAuthorizedProjectsOfUser", {uoid: othis.user.oid}, function(data){
+				if (data.length == 0) {
+					containerDiv.find(".noProjectsMessage").html("No projects available to add").show();
+					containerDiv.find(".addProjectLink").hide();
+					containerDiv.find(".addProjectToUserDiv").hide();
+				} else {
+					containerDiv.find(".noProjectsMessage").hide();
+					containerDiv.find(".addProjectLink").show();
+				}
+			});
+		} else {
+			containerDiv.find(".addProjectLink").hide();
+		}
 	};
 	
 	this.editButtonClick = function(){
@@ -321,6 +363,47 @@ function User(containerDiv, main, user) {
 		});
 	};
 	
+	this.sendPasswordResetLink = function(){
+		Global.bimServerApi.callWithFullIndication("AuthInterface", "requestPasswordChange", {username: othis.user.username, resetUrl: Global.baseDir + "?page=ResetPassword"}, function(){
+		});
+	};
+	
+	if (main.user.userType == "ADMIN") {
+		$(".sendPasswordResetLinkButton").show();
+	}
+	
+	this.addProjectLinkClick = function() {
+		Global.bimServerApi.call("ServiceInterface", "getAllNonAuthorizedProjectsOfUser", {uoid: othis.user.oid}, function(data){
+			containerDiv.find(".addProjectToUserDiv select option").remove();
+			if (data.length == 0) {
+				containerDiv.find(".noProjectsMessage").html("No projects available to add").show();
+				containerDiv.find(".addProjectLink").hide();
+				containerDiv.find(".addProjectToUserDiv").hide();
+			} else {
+				data.forEach(function(project){
+					var option = $("<option value=\"" + project.oid + "\">" + project.name + "</option>");
+					containerDiv.find(".addProjectToUserDiv select").append(option);
+				});
+				containerDiv.find(".addProjectLink").hide();
+				containerDiv.find(".addProjectToUserDiv").show();
+			}
+		});
+	};
+	
+	this.addProjectToUser = function(event){
+		event.preventDefault();
+		Global.bimServerApi.callWithFullIndication("ServiceInterface", "addUserToProject", {
+			uoid: othis.user.oid,
+			poid: containerDiv.find(".addProjectToUserDiv select option:selected").val()
+		}, function(data){
+			othis.showProjects();
+			othis.addProjectLinkClick();
+		});
+	};
+
+	containerDiv.find(".addProjectToUserDiv button").click(othis.addProjectToUser);
+	containerDiv.find(".addProjectLink").click(othis.addProjectLinkClick);
+	$(".user .sendPasswordResetLinkButton").click(othis.sendPasswordResetLink);
 	$(".user .saveButton").click(othis.saveButtonClick);
 	$(".user .cancelButton").click(othis.cancelButtonClick);
 	$(".user .detailsLink").click(othis.showDetails);

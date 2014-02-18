@@ -3,7 +3,7 @@
 		<button class="addProjectButton btn btn-default initialhide">Add project</button>
 	</div>
 	<div class="well well-sm noprojects">There are no projects yet</div>
-	<table class="projectsTable table table-striped table-hover initialhide">
+	<table class="projectsTable table table-hover initialhide">
 		<thead>
 			<tr>
 				<th>Name</th>
@@ -40,14 +40,14 @@ function Projects(containerDiv, main) {
 			othis.loadProjects();
 		});
 	};
-	
+
 	this.undeleteProject = function(project){
 		Global.bimServerApi.callWithFullIndication("Bimsie1ServiceInterface", "undeleteProject", {poid: project.oid}, function(){
 			othis.loadProjects();
 		});
 	};
 	
-	this.addProject = function(project, parent, indent) {
+	this.addProject = function(project) {
 		$(".projects .projectsTable").show();
 		$(".projects .noprojects").hide();
 		var projectRow = $("<tr>");
@@ -55,19 +55,30 @@ function Projects(containerDiv, main) {
 		projectRow.data("project", project);
 		projectRow.click(othis.projectClick);
 
-		var add = "";
-		if (indent != null) {
-			for (var i=0; i<indent; i++) {
-				add += "&nbsp;&nbsp;&nbsp;&nbsp;";
+		var indent = 0;
+		
+		if (project.parentId != -1 && project.parentId != null) {
+			var parentRow = $(".projectsTable [poid=" + project.parentId + "]");
+			if (parentRow.length > 0) {
+				indent = parseInt(parentRow.attr("indent")) + 1;
 			}
-			add += project.name;
-		} else {
+		}
+		
+		projectRow.attr("indent", indent);
+
+		var add = "";
+		for (var i=0; i<indent; i++) {
+			add += "&nbsp;&nbsp;&nbsp;&nbsp;";
+		}
+		if (indent == 0) {
 			add += "<b>" + project.name + "</b>";
+		} else {
+			add += project.name;
 		}
 		projectRow.append("<td>" + add + "</td>");
 
-		projectRow.append("<td>" + project.subProjects.length + "</td>");
-		projectRow.append("<td>" + project.revisions.length + "</td>");
+		projectRow.append("<td>" + project.nrSubProjects+ "</td>");
+		projectRow.append("<td>" + project.nrRevisions + "</td>");
 		var actions = newDropdownTd("Actions");
 
 		actions.find(".dropdown-toggle").click(function(){
@@ -84,27 +95,15 @@ function Projects(containerDiv, main) {
 			}
 		});
 
-		Global.bimServerApi.callWithNoIndication("ServiceInterface", "userHasCheckinRights", {uoid: main.user.oid, poid: project.oid}, function(canCheckin){
-			if (canCheckin) {
-				projectRow.addClass("success");
-			} else {
-				projectRow.addClass("warning");
-			}
-		});
+		if (project.hasCheckinRights) {
+			projectRow.addClass("success");
+		} else {
+			projectRow.addClass("warning");
+		}
 		
 		projectRow.append(actions);
 
-		project.subProjects.forEach(function(subProjectOid) {
-			Global.bimServerApi.callWithNoIndication("Bimsie1ServiceInterface", "getProjectByPoid", {poid: subProjectOid}, function(subProject){
-				othis.addProject(subProject, project, indent == null ? 1 : (indent + 1));
-			});
-		});
-		
-		if (parent != null) {
-			$(".projectsTable [poid=" + parent.oid + "]").after(projectRow);
-		} else {
-			$(".projectsTable").append(projectRow);
-		}
+		$(".projectsTable").append(projectRow);
 		
 		if ($.cookie(main.user.oid + "showdeleteditems") != "true" && project.state == "DELETED") {
 			projectRow.hide();
@@ -120,7 +119,7 @@ function Projects(containerDiv, main) {
 		});
 		
 		$(".projectsTable tbody tr").remove();
-		Global.bimServerApi.callWithNoIndication("Bimsie1ServiceInterface", "getAllProjects", {onlyTopLevel: true, onlyActive: false}, function(data){
+		Global.bimServerApi.callWithNoIndication("Bimsie1ServiceInterface", "getAllProjectsSmall", {}, function(data){
 			data.forEach(function(project){
 				$(".projectsTable").show();
 				othis.addProject(project);
