@@ -111,20 +111,20 @@
 					} else if (serverInfo.serverState == "MIGRATION_IMPOSSIBLE") {
 					} else if (serverInfo.serverState == "FATAL_ERROR") {
 					} else if (serverInfo.serverState == "RUNNING") {
-						successFunction();
+						successFunction(address);
 					}
 				}, function(){
-					errorFunction();
+					errorFunction(address);
 				});
 			};
 			
 			function load() {
 				$(".sidespan").empty();
 				Global.history = pushInitialState();
-				var notLoggedInFunction = function(){
+				var notLoggedInFunction = function(address){
 					if (Global.history.page == "Login") {
 						$(".indexcontainer").load(Global.baseDir + "login.html", function(){
-							othis.current = new Login($.cookie("address" + window.document.location.port));
+							othis.current = new Login(address);
 						});
 					} else if (Global.history.page == "SelectServer") {
 						$(".indexcontainer").load(Global.baseDir + "selectserver.html", function(){
@@ -140,12 +140,12 @@
 						});
 					} else {
 						$(".indexcontainer").load(Global.baseDir + "login.html", function(){
-							othis.current = new Login(null);
+							othis.current = new Login(address);
 						});
 					}
 				};
 				
-				var successFunction = function(){
+				var successFunction = function(address){
 					// We do have an API
 					if ($.cookie("autologin" + window.document.location.port) != null) {
 						Global.bimServerApi.token = $.cookie("autologin" + window.document.location.port);
@@ -156,10 +156,10 @@
 							});
 						}, function(){
 							$.removeCookie("autologin" + window.document.location.port);
-							notLoggedInFunction();
+							notLoggedInFunction(address);
 						});
 					} else {
-						notLoggedInFunction();
+						notLoggedInFunction(address);
 					}
 				};
 				
@@ -180,7 +180,7 @@
 						if (address != null) {
 							othis.loadBimServerApiFromAddress(address, successFunction, errorFunction);
 						} else {
-							notLoggedInFunction();
+							notLoggedInFunction(address);
 //							$(".indexcontainer").load(Global.baseDir + "selectserver.html", function(){
 //								new SelectServer();
 //							});
