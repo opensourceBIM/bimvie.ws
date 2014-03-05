@@ -1,0 +1,24 @@
+<html>
+<input type="file" name="test" id="upl"/>
+
+<script>
+var input = document.getElementById("upl");
+
+function upload() {
+	console.log("go");
+	var formData = new FormData();
+	formData.append("token", "535a6583d3b0c5ac4b5b773e2d98d8ef9f093218646e2b50e84b6f330dcc0f3c7120cd34d67be4a8804d918eb1911ce4");
+	formData.append("deserializerOid", 262185);
+	formData.append("comment", "kijken of dit werkt....");
+	formData.append("merge", false);
+	formData.append("poid", 327681);
+	formData.append("data", input.files[0]);
+
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", "http://localhost:8080/upload", false);
+	xhr.send(formData);
+}
+
+input.onchange = upload;
+</script>
+</html>
