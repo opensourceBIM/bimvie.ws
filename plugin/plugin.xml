@@ -2,6 +2,6 @@
 <PluginDescriptor>
 	<PluginImplementation>
 		<interfaceClass>org.bimserver.plugins.web.WebModulePlugin</interfaceClass>
-		<implementationClass>org.bimserver.bootstrap.BootstrapWebModulePlugin</implementationClass>
+		<implementationClass>org.bimserver.bimviews.BimViewsWebModulePlugin</implementationClass>
 	</PluginImplementation>
 </PluginDescriptor>

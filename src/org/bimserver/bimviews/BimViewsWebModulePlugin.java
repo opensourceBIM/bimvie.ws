@@ -1,10 +1,10 @@
-package org.bimserver.bootstrap;
+package org.bimserver.bimviews;
 
 import org.bimserver.plugins.PluginException;
 import org.bimserver.plugins.PluginManager;
 import org.bimserver.plugins.web.AbstractWebModulePlugin;
 
-public class BootstrapWebModulePlugin extends AbstractWebModulePlugin {
+public class BimViewsWebModulePlugin extends AbstractWebModulePlugin {
 
 	private boolean initialized;
 
