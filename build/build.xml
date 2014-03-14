@@ -15,6 +15,7 @@
 			<fileset dir=".">
 				<exclude name="plugin"/>
 				<exclude name="build"/>
+				<exclude name="bimviews-${version}.jar"/>
 			</fileset>
 		</jar>
 
