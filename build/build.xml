@@ -43,7 +43,7 @@
 			</arg>
 			<arg value="${version}">
 			</arg>
-			<arg value="BIMviews Release">
+			<arg value="BIMviews Release. Fore more info goto: https://github.com/opensourceBIM/bimvie.ws/wiki/Releases">
 			</arg>
 			<arg value="true">
 			</arg>
