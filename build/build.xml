@@ -31,7 +31,7 @@
 			</arg>
 			<arg value="opensourceBIM">
 			</arg>
-			<arg value="BIMviews">
+			<arg value="bimvie.ws">
 			</arg>
 			<arg value="${version}">
 			</arg>
