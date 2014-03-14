@@ -12,7 +12,10 @@
 
 	<target name="release">
 		<jar destfile="bimviews-${version}.jar">
-			<fileset dir="../css"/>
+			<fileset dir=".">
+				<exclude name="plugin"/>
+				<exclude name="build"/>
+			</fileset>
 		</jar>
 
 		<java jar="antlibs/githubrelease.jar" fork="true">
