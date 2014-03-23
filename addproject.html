@@ -55,7 +55,7 @@ function AddProject(main, parentProject) {
 		project.description = $(".descriptionInput").val();
 		project.exportLengthMeasurePrefix = $(".lengthMeasureInput").val();
 		Global.bimServerApi.call("ServiceInterface", "updateProject", {sProject: project}, function(){
-			main.showProject(project, null, true);
+			main.showProject(project.oid, null, true);
 		});
 	};
 	

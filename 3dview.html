@@ -1,0 +1,151 @@
+<div class="threedview">
+	<div class="panel panel-default">
+		<div class="panel-heading">3D View
+		</div>
+		<div class="panel-body">
+			<div class="progressbars">
+			</div>
+			<div id="viewport"></div>
+		</div>
+	</div>
+</div>
+<script>
+function ThreeDView(containerDiv, projectPage) {
+	var o = this;
+	o.selectListeners = [];
+	o.unselectListeners = [];
+	o.selectedId = -1;
+	
+	this.nodeSelected = function(groupId, node){
+		o.selectedId = node.id;
+		o.selectListeners.forEach(function(listener){
+			listener(groupId, node.id);
+		});
+	};
+	
+	this.nodeUnselected = function(groupId, node){
+		o.selectedId = -1;
+		if (groupId != null && node != null) {
+			o.unselectListeners.forEach(function(listener){
+				listener(groupId, node.id);
+			});
+		}
+	};
+	
+	this.selected = function(groupId, id){
+		if (o.selectedId == id) {
+			return;
+		}
+		o.selectedId = id;
+		// todo use groupid		
+		var sceneJsNode = o.viewer.scene.findNode(id);
+		if (sceneJsNode != null) {
+			sceneJsNode.nodeId = sceneJsNode.id;
+			o.viewer.getControl("BIMSURFER.Control.ClickSelect").pick(sceneJsNode);
+		}
+	};
+	
+	this.unselected = function(groupId, id){
+		
+	};
+	
+	this.objectVisibilityChanged = function(object, oldMode){
+		// todo use groupid		
+		var threeDObject = o.viewer.scene.findNode(object.oid);
+		if (threeDObject != null) {
+			var material = BIMSURFER.Constants.materials[object.getType()];
+			// Hack to get the roof to be red.....
+			if (object.getType() == "IfcSlab") {
+				if (object.getPredefinedType() == "ROOF") {
+					material = BIMSURFER.Constants.materials["IfcRoof"];
+				}
+			}
+			var mode = object.trans.mode;
+			if (mode == 0) {
+				threeDObject.parent.parent.setEnabled(true);
+				threeDObject.parent.parent.parent.set("flags", {transparent: material.a < 1});
+				threeDObject.parent.set("alpha", material.a);
+				threeDObject.parent.set("baseColor", material);
+			} else if (mode == 1) {
+				threeDObject.parent.parent.setEnabled(true);
+				threeDObject.parent.parent.parent.set("flags", {transparent: true});
+				threeDObject.parent.set("alpha", 0.5);
+				threeDObject.parent.set("baseColor", {r: 0.5, g: 0.5, b: 0.5});
+				if (o.selectedId == object.oid) {
+					threeDObject.getNode("highlight").set("alpha", 0.5);
+				}
+			} else if (mode == 2) {
+				threeDObject.parent.parent.setEnabled(false);
+				threeDObject.parent.parent.parent.set("flags", {transparent: material.a < 1});
+				threeDObject.parent.set("alpha", material.a);
+				threeDObject.parent.set("baseColor", material);
+			}
+		}
+	};
+	
+	this.show = function(){
+		o.server = new BIMSURFER.Server(Global.bimServerApi);
+		o.viewer = new BIMSURFER.Viewer(Global.bimServerApi, 'viewport');
+		o.resize();
+		$(window).resize(o.resize);
+		o.viewer.loadScene(function(){
+			var clickSelect = o.viewer.getControl("BIMSURFER.Control.ClickSelect");
+			clickSelect.activate();
+			clickSelect.events.register('select', o.nodeSelected);
+			clickSelect.events.register('unselect', o.nodeUnselected);
+		});
+	};
+
+	this.resize = function(){
+		$("#viewport").width($("panel-body").width() + "px");
+		$("#viewport").height(($(window).height() - $(".navbar").outerHeight() - $(".3dview .panel-heading").outerHeight() - 98) + "px");
+		o.viewer.resize($('div#viewport').width(), $('div#viewport').height());
+	};
+	
+	this.unloadRevision = function(poid, roid) {
+		if (roid != -1) {
+			var node = o.viewer.scene.findNode("model_node_" + roid);
+			if (node != null) {
+				node.destroy();
+			}
+		}
+	};
+	
+	this.loadRevision = function(project, roid, types){
+		if (roid != -1 && project.nrSubProjects == 0) {
+			var geometryLoader = new GeometryLoader(Global.bimServerApi, o.viewer);
+
+			var progressdiv = $("<div class=\"progressdiv\">");
+			var text = $("<div class=\"text\">");
+			text.html(project.name);
+			var progress = $("<div class=\"progress progress-striped\">");
+			var progressbar = $("<div class=\"progress-bar\">");
+			progressdiv.append(text)
+			progressdiv.append(progress);
+			progress.append(progressbar);
+			
+			containerDiv.find(".progressbars").append(progressdiv);
+
+			geometryLoader.addProgressListener(function(progress){
+				progressbar.css("width", progress + "%");
+				if (progress == 100) {
+					progressdiv.fadeOut(800);
+				}
+			});
+			o.viewer.geometryLoaders.push(geometryLoader);
+			geometryLoader.loadRevision(roid, types);
+		}
+	};
+	
+	this.close = function(){};
+	
+	o.show();
+	
+	projectPage.selectListeners.push(o.selected);
+	projectPage.unselectListeners.push(o.unselected);
+	projectPage.objectVisibilityListeners.push(o.objectVisibilityChanged);
+	projectPage.modelLoadedListeners.push(o.loadRevision);
+	projectPage.modelUnloadedListeners.push(o.unloadRevision);
+
+}
+</script>

@@ -1,0 +1,109 @@
+<div class="properties">
+	<table class="table table-no-top">
+		<thead></thead>
+		<tbody>
+			<tr><td>No object selected</td></tr>
+		</tbody>
+	</table>
+</div>
+<script>
+function Properties(containerDiv, projectPage, models, main, oid) {
+	var othis = this;
+	othis.selectedId = oid;
+	
+	this.close = function(){};
+	
+	this.selected = function(groupId, id) {
+		if (othis.selectedId == id) {
+			return;
+		}
+		othis.selectedId = id;
+		containerDiv.find("table tbody tr").remove();
+		containerDiv.find("table tbody").append("<tr class=\"noprop\"><td>No properties</td></tr>");
+		var model = models[groupId];
+		model.get(id, function(product){
+			if (product.oid == id) {
+//				var tr = $("<tr class=\"active\"></tr>");
+//				tr.append("<td>Type</td><td><b>" + stripIfc(product.__type) + "</b></td>");
+//				if (product.name != null) {
+//					tr.append("<td colspan=\"2\"><b>" + product.name + "</b></td>");
+//				}
+//				containerDiv.find("table tbody").append(tr);
+				product.getIsDefinedBy(function(isDefinedBy){
+					if (isDefinedBy.getType() == "IfcRelDefinesByProperties") {
+						isDefinedBy.getRelatingPropertyDefinition(function(propertySet){
+							if (propertySet.getType() == "IfcPropertySet") {
+								containerDiv.find("table tbody tr.noprop").remove();
+								othis.showPropertySet(propertySet);
+							}
+						});
+					}
+				});
+			}
+		});
+	};
+	
+	this.hide = function(){
+		containerDiv.hide();
+	};
+	
+	this.show = function(){
+		containerDiv.show();
+	};
+	
+	this.getSelectedId = function(){
+		return othis.selectedId;
+	};
+	
+	this.unselected = function(groupId, id){
+		containerDiv.find("table tbody tr").remove();
+	};
+	
+	this.showProperty = function (propertySet, property, headerTr){
+		var tr = $("<tr></tr>");
+		tr.attr("oid", property.oid);
+		tr.attr("psetoid", propertySet.oid);
+		headerTr.after(tr);
+		tr.append("<td>" + property.getName() + "</td>");
+		othis.getValue(tr, property);
+	};
+	
+	this.showProperties = function(propertySet, headerTr) {
+		propertySet.getHasProperties(function(property){
+			if (property.getType() == "IfcPropertySingleValue") {
+				othis.showProperty(propertySet, property, headerTr);
+			}
+		});
+	}
+	
+	this.showPropertySet = function(propertySet) {
+		var headerTr = $("<tr class=\"active\"></tr>");
+		headerTr.attr("oid", propertySet.oid);
+		headerTr.attr("uri", propertySet.getName());
+		containerDiv.find("table tbody").append(headerTr);
+		var headerTd = $("<td colspan=\"2\"></td>");
+		headerTr.append(headerTd);
+		headerTd.append("<b>" + propertySet.getName() + "</b>");
+		othis.showProperties(propertySet, headerTr);
+	}
+
+	this.getValue = function(tr, property) {
+		(function (tr) {
+			property.getNominalValue(function(value){
+				var td = $("<td>");
+				var v = value == null ? "" : value.value;
+				var span = $("<span class=\"value nonEditable\">" + v + "</span>");
+				td.append(span);
+				tr.append(td);
+			});
+		} )(tr);
+	}
+
+	projectPage.selectListeners.push(othis.selected);
+	projectPage.unselectListeners.push(othis.unselected);
+	
+	if (othis.selectedId != null && othis.selectedId != -1) {
+		othis.selected(othis.selectedId);
+	}
+}
+</script>

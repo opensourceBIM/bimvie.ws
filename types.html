@@ -1,0 +1,126 @@
+<div class="types">
+	<table class="table table-no-top">
+		<thead></thead>
+		<tbody></tbody>
+	</table>
+</div>
+<script>
+function Types(containerDiv, projectPage, projects, models, main) {
+	var othis = this;
+	
+	othis.types = {};
+	
+	this.close = function(){};
+	
+	this.toggleEye = function(type, mode){
+		for (var roid in models) {
+			(function(roid){
+				var model = models[roid];
+				model.getAllOfType(type, true, function(object){
+					projectPage.setObjectVisibility(roid, object.oid, mode);
+				});
+			})(roid);
+		}
+	};
+	
+	this.getSelectedId = function(){
+		return -1;
+	};
+	
+	this.hide = function(){
+		containerDiv.hide();
+	};
+	
+	this.show = function(){
+		containerDiv.show();
+	};
+	
+	this.objectVisibilityChanged = function(object, oldMode){
+		var item = othis.types[object.getType()];
+		if (item != null) {
+			var tr = containerDiv.find("table tbody").find("tr[type='" + object.getType() + "']");
+			if (oldMode == 0) {
+				item.visible--;
+			} else if (oldMode == 1) {
+				item.transparent--;
+			}
+			var newMode = object.trans.mode;
+			if (newMode == 0) {
+				item.visible++;
+			} else if (newMode == 1) {
+				item.transparent++;
+			}
+			var eye = tr.find(".eye");
+			if (item.visible == item.total) {
+				eye.attr("mode", 0);
+				eye.removeClass("eyeclosed").removeClass("eyehalfopen").addClass("eyeopen");
+			} else if (item.transparent == item.total) {
+				eye.attr("mode", 1);
+				eye.removeClass("eyeopen").removeClass("eyeclosed").addClass("eyehalfopen");
+			} else if (item.visible == 0) {
+				eye.attr("mode", 2);
+				eye.removeClass("eyehalfopen").removeClass("eyeopen").addClass("eyeclosed");
+			}
+		}
+	};
+	
+	this.loadRevision = function(project, roid, types, objectsToHide){
+		if (roid != -1 && project.nrSubProjects == 0) {
+			for (var type in types) {
+				var state = types[type];
+				if (othis.types[type] == null) {
+					othis.types[type] = {visible: 0, transparent: 0, total: 0};
+				}
+				if (state.mode == 0) {
+					othis.types[type].visible = othis.types[type].visible + state.count;
+				} else if (state.mode == 1) {
+					othis.types[type].transparent = othis.types[type].transparent + state.count;
+				}
+				othis.types[type].total = othis.types[type].total + state.count;
+			}
+			containerDiv.find("table tbody tr").remove();
+			for (var key in othis.types) {
+				var tr = $("<tr>");
+				var count = othis.types[key].total;
+				tr.attr("type", key);
+				var td = $("<td>" + stripIfc(key) + "</td>");
+				tr.append(td);
+				containerDiv.find("table tbody").append(tr);
+				
+				var eye = $("<div>");
+				eye.addClass("eye");
+				var mode = 0;
+				var state = types[key];
+				if (state != null) {
+					mode = state.mode;
+				}
+				if (mode == 0) {
+					eye.addClass("eyeopen");
+				} else if (mode == 1) {
+					eye.addClass("eyehalfopen");
+				} else if (mode == 2) {
+					eye.addClass("eyeclosed");
+				}
+				eye.attr("type", key);
+				eye.attr("mode", mode);
+				eye.click(function(){
+					var eye = $(this);
+					var mode = parseInt(eye.attr("mode"));
+					othis.toggleEye(eye.attr("type"), (mode + 1) % 3);
+				});
+				td.append(eye);
+				
+				td.append(" <span class=\"badge\" style=\"float: right\">" + count + "</span>");
+			}
+		}
+	};
+	
+	othis.unloadRevision = function(poid, roid) {
+		
+	};
+	
+	projectPage.objectVisibilityListeners.push(othis.objectVisibilityChanged);
+	projectPage.modelLoadedListeners.push(othis.loadRevision);
+	projectPage.modelUnloadedListeners.push(othis.unloadRevision);
+};
+</script>
