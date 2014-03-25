@@ -1,4 +1,4 @@
-<div class="addnewextendeddataschema">
+<div class="addextendeddataschema">
 	<form class="form-horizontal">
 		<legend>Add extended data schema</legend>
 		<div class="form-group">
@@ -51,13 +51,13 @@ function AddExtendedDataSchema(main, serversettings, extendedDataSchema) {
 	};
 	
 	if (extendedDataSchema != null) {
-		$(".addnewextendeddataschema .inputName").val(extendedDataSchema.name);
-		$(".addnewextendeddataschema .inputNamespace").val(extendedDataSchema.namespace);
-		$(".addnewextendeddataschema .inputUrl").val(extendedDataSchema.url);
-		$(".addnewextendeddataschema .typeSelect").val(extendedDataSchema.type);
+		$(".addextendeddataschema .inputName").val(extendedDataSchema.name);
+		$(".addextendeddataschema .inputNamespace").val(extendedDataSchema.namespace);
+		$(".addextendeddataschema .inputUrl").val(extendedDataSchema.url);
+		$(".addextendeddataschema .typeSelect").val(extendedDataSchema.type);
 	}
 	
-	$(".addnewextendeddataschema .cancelButton").click(function(event){
+	$(".addextendeddataschema .cancelButton").click(function(event){
 		event.preventDefault();
 		serversettings.showExtendedDataSchemas();
 	});
@@ -65,21 +65,21 @@ function AddExtendedDataSchema(main, serversettings, extendedDataSchema) {
 	this.createObject = function() {
 		var extendedDataSchema = {
 			__type: "SExtendedDataSchema",
-			name: $(".addnewextendeddataschema .inputName").val(),
-			namespace: $(".addnewextendeddataschema .inputNamespace").val(),
-			url: $(".addnewextendeddataschema .inputUrl").val(),
-			type: $(".addnewextendeddataschema .typeSelect").val()
+			name: $(".addextendeddataschema .inputName").val(),
+			namespace: $(".addextendeddataschema .inputNamespace").val(),
+			url: $(".addextendeddataschema .inputUrl").val(),
+			type: $(".addextendeddataschema .typeSelect").val()
 		};
 		return extendedDataSchema;
 	}
 	
-	$(".addnewextendeddataschema .addButton").click(function(event){
+	$(".addextendeddataschema .addButton").click(function(event){
 		event.preventDefault();
 		Global.bimServerApi.call("ServiceInterface", "addExtendedDataSchema", {extendedDataSchema: othis.createObject()}, function(data){
 			serversettings.showExtendedDataSchemas();
 		});
 	});
 	
-	$(".addnewextendeddataschema .inputName").focus();
+	$(".addextendeddataschema .inputName").focus();
 }
 </script>

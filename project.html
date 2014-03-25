@@ -235,6 +235,16 @@ function Project(containerDiv, main, project) {
 		othis.sidespan.show();
 	};
 	
+	this.loadDetails = function(){
+		containerDiv.find(".rightCol").load("projectdetails.html", function(){
+			new ProjectDetails($(this), main, othis.project).show();
+		});
+	};
+	
+	main.addMenuItem("Project", "Add Service", function(){
+		main.showAddService(othis.project);
+	});
+	
 	containerDiv.find(".btnProjectTree").click(othis.loadProjectTree);
 	containerDiv.find(".btnProperties").click(othis.showProperties);
 	containerDiv.find(".btnTypes").click(othis.showTypes);

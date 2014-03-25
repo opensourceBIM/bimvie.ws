@@ -168,7 +168,7 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 				Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaFromRepository", {namespace: serviceDescriptor.writeExtendedData}, function(data){
 					var exs = data;
 					main.showServerSettings(function(){
-						this.showAddNewExtendedDataSchema(exs);
+						this.showAddExtendedDataSchema(exs);
 					});
 				})
 			});

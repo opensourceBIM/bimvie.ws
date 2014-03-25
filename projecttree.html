@@ -6,8 +6,7 @@
 				<a>Revisions</a>
 				<ul class="revisions dropdown-menu"></ul>
 			</li>
-			<li><a>Delete</a></li>
-			<li><a>Details</a></li>
+			<li><a class="btnDetails">Details</a></li>
 			<li><a class="btnDownload">Download...</a></li>
 			<li><a class="btnCheckin">Checkin...</a></li>
 		</ul>
@@ -314,6 +313,10 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 	dropdown.find(".btnDownload").click(function(){
 		dropdown.hide();
 		main.showDownloadCheckoutPopup(othis.selectedNode.poid, othis.selectedNode.roid);
+	});
+	dropdown.find(".btnDetails").click(function(){
+		dropdown.hide();
+		projectPage.loadDetails();
 	});
 	dropdown.find(".btnCheckin").click(function(){
 		dropdown.hide();

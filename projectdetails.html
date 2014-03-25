@@ -595,23 +595,6 @@ var ProjectDetails = function(containerDiv, main, project) {
 		main.showAddService(othis.project, null, true);
 	};
 	
-	this.gatherLeafSubProjects = function(project, list){
-		if (project.subProjects.length == 0) {
-			list.push(project);
-			if (project.lastRevisionId != -1) {
-				Global.bimServerApi.getModel(project.oid, project.lastRevisionId, false, function(model){
-					othis.models[project.lastRevisionId] = model;
-				});
-			}
-		} else {
-			project.subProjects.forEach(function(subProjectId){
-				Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: subProjectId}, function(subProject){
-					othis.gatherLeafSubProjects(subProject, list);
-				});
-			});
-		}
-	};
-	
 	this.updateProject = function() {
 		Global.bimServerApi.registerNewRevisionOnSpecificProjectHandler(othis.project.oid, othis.newRevisionOnSpecificProjectHandler);
 		if (othis.project.lastRevisionId != -1) {
@@ -630,23 +613,7 @@ var ProjectDetails = function(containerDiv, main, project) {
 					});
 				}
 			});
-			
-			$(".projectTreeWrapper").load("projecttree.html", function(){
-				othis.projecttree = new ProjectTree($(this), othis, othis.project, othis.models, main, othis.threeDView, othis.selectedObjectId);
-				othis.sidespan = othis.projecttree;
-			});
-			$(".propertiesWrapper").load("properties.html", function(){
-				othis.properties = new Properties($(this), othis, othis.models, main, othis.selectedObjectId);
-			});
-			$(".typesWrapper").load("types.html", function(){
-				othis.types = new Types($(this), othis.projects, othis.models, main, othis.threeDView);
-			});
-			$(".classificationWrapper").load("classifications.html", function(){
-				othis.classifications = new Classifications($(this), othis.projects, othis.models, main);
-			});
 		});
-		
-//		othis.gatherLeafSubProjects(othis.project, othis.projects);
 		
 		containerDiv.find(".detailsTable tbody").empty();
 		containerDiv.find(".detailsTable tbody").append("<tr><td>Name</td><td>" + othis.project.name + "</td></tr>");
@@ -663,7 +630,6 @@ var ProjectDetails = function(containerDiv, main, project) {
 			Global.bimServerApi.call("Bimsie1ServiceInterface", "getRevision", {roid: othis.project.lastRevisionId}, function(data){
 				othis.lastRevision = data;
 				containerDiv.find(".browserLink").show();
-				containerDiv.find(".surferLink").show();
 				containerDiv.find(".queryLink").show();
 				containerDiv.find(".extendedDataLink").show();
 				containerDiv.find(" .extendedDataLink a").html("Extended Data" + (data.extendedData.length == 0 ? "" : (" (" + data.extendedData.length + ")")));
@@ -678,15 +644,6 @@ var ProjectDetails = function(containerDiv, main, project) {
 			containerDiv.find(".queryLink").hide();
 			containerDiv.find(".extendedDataLink").hide();
 			othis.loadHistory();
-		}
-		
-		if (Settings.get3DViewerUrl != null && othis.project.lastRevisionId != -1) {
-			containerDiv.find(".show3DButton").show();
-			containerDiv.find(".show3DButton").click(function(){
-				othis.show3dView();
-			});
-		} else {
-			containerDiv.find(".show3DButton").hide();
 		}
 	};
 	

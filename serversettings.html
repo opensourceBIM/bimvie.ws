@@ -24,8 +24,8 @@
 		othis.pageChanger = new PageChanger($(".serversettings .nav"), $(".serversettings .tab-content"));
 		
 		this.showAddNewExtendedDataSchema = function(extendedDataSchema, callback) {
-			othis.pageChanger.changePage($(".extendedDataSchemasLink"), "addnewextendeddataschema.html", function(){
-				pushHistory({page: "ServerSettings", subpage: "AddNewExtendedDataSchema"}, "Server Settings");
+			othis.pageChanger.changePage($(".extendedDataSchemasLink"), "addextendeddataschema.html", function(){
+				pushHistory({page: "ServerSettings", subpage: "AddExtendedDataSchema"}, "Server Settings");
 				return new AddExtendedDataSchema(main, othis, extendedDataSchema);
 			}, callback);
 		};
