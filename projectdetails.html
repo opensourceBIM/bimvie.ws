@@ -311,14 +311,6 @@ var ProjectDetails = function(containerDiv, main, project) {
 		containerDiv.find(".usersTable").append(tr);
 	};
 	
-	this.share = function(roid) {
-		var div = $("<div class=\"modal fade\">");
-		$(document.body).append(div);
-		div.load(Global.baseDir + "share.html", function(){
-			new Share(roid);
-		}).modal({keyboard:true});
-	};
-
 	this.addRevision = function(revision) {
 		containerDiv.find(".norevisions").hide();
 		containerDiv.find(".revisionsTable").show();

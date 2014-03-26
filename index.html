@@ -167,7 +167,10 @@
 				
 				var successFunction = function(address){
 					// We do have an API
-					var token = $.cookie("autologin" + window.document.location.port);
+					var token = getParameterByName("token");
+					if (token == null) {
+						token = $.cookie("autologin" + window.document.location.port);
+					}
 					if (token != null) {
 						Global.bimServerApi.setToken(token, function(){
 							$(".indexcontainer").load(Global.baseDir + "main.html", function(){

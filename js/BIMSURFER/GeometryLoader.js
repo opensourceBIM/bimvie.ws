@@ -73,6 +73,8 @@ function GeometryLoader(bimServerApi, viewer) {
 				progressListener(100);
 			});
 			o.viewer.events.trigger('sceneLoaded', [o.viewer.scene]);
+			o.bimServerApi.call("ServiceInterface", "cleanupLongAction", {actionId: o.topicId}, function(){
+			});
 		}
 	};
 	
@@ -199,12 +201,12 @@ function GeometryLoader(bimServerApi, viewer) {
 
 		var material = BIMSURFER.Constants.materials[o.state.materialName];
 		var hasTransparency = false;
-		if (material != null) {
-			if (material.a != 1) {
-				hasTransparency = true;
-			}
-		} else {
+		if (material == null) {
 			console.log("material not found", o.state.materialName);
+			material = BIMSURFER.Constants.materials["DEFAULT"];
+		}
+		if (material.a < 1) {
+			hasTransparency = true;
 		}
 
 		var enabled = false;
@@ -245,7 +247,7 @@ function GeometryLoader(bimServerApi, viewer) {
 	
 	this.process = function(count){
 		if (o.asyncStream != null) {
-			o.asyncStream.process(Math.ceil(1 + o.state.nrObjects / 10));
+			o.asyncStream.process(Math.ceil(1 + o.state.nrObjects / 12));
 		}
 	};
 	

@@ -125,6 +125,8 @@ function Checkin(containerDiv, project, successFunction) {
 			containerDiv.find(".progressBarHolder .uploadProgressBar").show();
 			if (state.state == "FINISHED") {
 				containerDiv.find(".checkin").parent().modal("hide");
+				Global.bimServerApi.call("ServiceInterface", "cleanupLongAction", {actionId: topicId}, function(){
+				});
 				Global.bimServerApi.unregisterProgressHandler(topicId, othis.progressHandler, successFunction);
 			} else if (state.state == "STARTED" || state.state == "NONE") {
 			}

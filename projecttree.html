@@ -44,6 +44,7 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 //		if (project.oid == othis.project.oid) {
 //			node.select();
 //		}
+
 		if (project.nrSubProjects == 0) {
 			othis.loadProjectTree(project.oid, roid, node, types);
 		} else {
@@ -268,6 +269,8 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 						newNode.doneLoading();
 					});
 				});
+			}).done(function(){
+				newNode.doneLoading();
 			});
 		} else {
 			object.getIsDecomposedBy(function(isDecomposedBy){
