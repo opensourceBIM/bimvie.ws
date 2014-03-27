@@ -1,21 +1,26 @@
 var Settings = {
-	get3DViewerUrl: function(bimServerApi, roid){
-		return "http://test.bimsurfer.org/index.html?token=" + bimServerApi.token + "&roid=" + roid + "&server=" + bimServerApi.baseUrl;
+	createStartPage: function(container, main){
+		main.pageChanger.changePage($(".serverinfoLink"), "projects.html", function(){
+			return new Projects($(this), main);
+		});
 	},
 	getMenuItems: function(){
 		return [
 	        "dashboardLink",
-	        "projectsLink",
-	        "usersLink",
+	        "userLink",
+	        "projectLink",
 	        "usersettingsLink",
 	        "serversettingsLink",
-	        "serverinfoLink"
+	        "gettingStartedLink",
+	        "userDivider",
+	        "btnAddUser",
+	        "btnListUsers"
 		];
 	},
 	getStaticServerAddress: function(callback){
 	},
 	usableBimServerVersion: function(version) {
-		return version.major == 1 && version.minor == 2 && version.revision == 1;
+		return version.major == 1 && version.minor == 3 && version.revision == 0;
 	},
 	allowBimServerAddress: function() {
 		return true;
