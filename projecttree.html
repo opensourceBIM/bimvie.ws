@@ -2,7 +2,7 @@
 	<div class="dropdown">
 		<ul id="dropdown" class="dropdown-menu treeDropDown" role="menu">
 			<li><a class="addSubProject">Add sub project</a></li>
-			<li class="dropdown-submenu">
+			<li class="dropdown-submenu revisionsLi">
 				<a>Revisions</a>
 				<ul class="revisions dropdown-menu"></ul>
 			</li>
@@ -84,21 +84,26 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		
 		Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllRevisionsOfProject", {poid: othis.selectedNode.poid}, function(revisions){
 			dropdown.find(".revisions li").remove();
-			revisions.forEach(function(revision){
-				var li = $("<li><a>" + revision.id + " (" + revision.comment + ")</a></li>");
-				li.find("a").attr("poid", othis.selectedNode.poid);
-				li.find("a").attr("roid", revision.oid);
-				li.find("a").data("project", othis.selectedNode.project);
-				if (othis.selectedNode.roid == revision.oid) {
-					li.find("a").css("font-weight", "bold");
-				}
-				li.find("a").click(function(){
-					dropdown.hide();
-					var a = $(this);
-					projectPage.changeRevision(a.data("project"), a.attr("roid"));
+			if (revisions.length == 0) {
+				$(".revisionsLi").hide();
+			} else {
+				$(".revisionsLi").show();
+				revisions.forEach(function(revision){
+					var li = $("<li><a>" + revision.id + " (" + revision.comment + ")</a></li>");
+					li.find("a").attr("poid", othis.selectedNode.poid);
+					li.find("a").attr("roid", revision.oid);
+					li.find("a").data("project", othis.selectedNode.project);
+					if (othis.selectedNode.roid == revision.oid) {
+						li.find("a").css("font-weight", "bold");
+					}
+					li.find("a").click(function(){
+						dropdown.hide();
+						var a = $(this);
+						projectPage.changeRevision(a.data("project"), a.attr("roid"));
+					});
+					dropdown.find(".revisions").append(li);
 				});
-				dropdown.find(".revisions").append(li);
-			});
+			}
 		});
 		
 		containerDiv.find(".treeDropDown").dropdown("toggle");
