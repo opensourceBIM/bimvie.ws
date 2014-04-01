@@ -3,18 +3,18 @@
 		<div class="col-md-3">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<div class="btn-group" data-toggle="buttons">
+					<div class="btn-group projectTabs" data-toggle="buttons">
 						<label class="btnProjectTree btn btn-default active">
-							<input checked="checked" type="radio" name="options" id="option1"> Tree
+							<input checked="checked" type="radio" name="options"> Tree
 						</label>
 						<label class="btnTypes btn btn-default">
-							<input type="radio" name="options" id="option1"> Types
+							<input type="radio" name="options"> Types
 						</label>
 						<label class="btnProperties btn btn-default">
-							<input type="radio" name="options" id="option1"> Properties
+							<input type="radio" name="options"> Properties
 						</label>
 						<label class="btnClassifications btn btn-default">
-							<input type="radio" name="options" id="option1"> Classifications
+							<input type="radio" name="options"> Classifications
 						</label>
 					</div>
 				</div>
@@ -223,6 +223,30 @@ function Project(containerDiv, main, project) {
 				}
 			});
 			
+			Global.pluginManager.allOfType("TabPlugin", function(pluginConstructor){
+				var plugin = Object.create(pluginConstructor.prototype);
+
+				var label = $("<label class=\"btn btn-default\">");
+				var input = $("<input type=\"radio\" name=\"options\">");
+				label.append(input);
+				label.append(plugin.getTabTitle());
+				containerDiv.find(".projectTabs").append(label);
+
+				var div = $("<div>");
+				div.hide();
+				containerDiv.find(".sidespanWrapper .sidespan").append(div);
+				plugin.init(div, othis);
+				
+				label.click(function(){
+					if (othis.sidespan != null) {
+						othis.sidespan.hide();
+					}
+					othis.sidespan = plugin;
+					othis.sidespan.show();
+					div.show();
+				});
+			});
+			
 			$(".propertiesWrapper").load("properties.html", function(){
 				othis.properties = new Properties($(this), othis, othis.models, main, othis.selectedObjectId);
 				$(".projectTreeWrapper").load("projecttree.html", function(){
@@ -250,7 +274,6 @@ function Project(containerDiv, main, project) {
 	};
 	
 	this.loadProjectTree = function(){
-		$(this).parents("div.leftSelector").find("button span.title").html("Project tree");
 		if (othis.sidespan != null) {
 			othis.sidespan.hide();
 		}
@@ -259,7 +282,6 @@ function Project(containerDiv, main, project) {
 	};
 
 	this.showProperties = function(){
-		$(this).parents("div.leftSelector").find("button span.title").html("Properties");
 		if (othis.sidespan != null) {
 			othis.sidespan.hide();
 		}
@@ -268,7 +290,6 @@ function Project(containerDiv, main, project) {
 	};
 
 	this.showTypes = function(){
-		$(this).parents("div.leftSelector").find("button span.title").html("Types");
 		if (othis.sidespan != null) {
 			othis.sidespan.hide();
 		}
@@ -277,7 +298,6 @@ function Project(containerDiv, main, project) {
 	};
 	
 	this.showClassifications = function(){
-		$(this).parents("div.leftSelector").find("button span.title").html("Classifications");
 		if (othis.sidespan != null) {
 			othis.sidespan.hide();
 		}
