@@ -36,6 +36,15 @@
 				</select>
 			</div>
 		</div>
+		<div class="form-group">
+			<label class="col-lg-3 control-label" for="schema">Schema</label>
+			<div class="col-lg-5">
+				<select class="schemaInput form-control span6" id="schema">
+					<option>Ifc2x3tc1</option>
+					<option>Ifc4</option>
+				</select>
+			</div>
+		</div>		
 		<div class="well well-small buttonBar">
 			<button type="button" class="btn btn-primary addButton">Add</button>
 		</div>
@@ -61,11 +70,18 @@ function AddProject(main, parentProject) {
 	
 	this.addProject = function() {
 		if (parentProject != null) {
-			Global.bimServerApi.callWithFullIndication("Bimsie1ServiceInterface", "addProjectAsSubProject", {parentPoid: parentProject.oid, projectName: $(".addproject .inputName").val()}, function(data){
+			Global.bimServerApi.callWithFullIndication("Bimsie1ServiceInterface", "addProjectAsSubProject", {
+				schema: $(".schemaInput").val(),
+				parentPoid: parentProject.oid, 
+				projectName: $(".addproject .inputName").val()
+			}, function(data){
 				othis.updateProject(data);
 			});
 		} else {
-			Global.bimServerApi.callWithFullIndication("Bimsie1ServiceInterface", "addProject", {projectName: $(".addproject .inputName").val()}, function(data){
+			Global.bimServerApi.callWithFullIndication("Bimsie1ServiceInterface", "addProject", {
+				schema: $(".schemaInput").val(),
+				projectName: $(".addproject .inputName").val()
+			}, function(data){
 				othis.updateProject(data);
 			});
 		}

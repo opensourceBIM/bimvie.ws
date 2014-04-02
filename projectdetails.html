@@ -614,6 +614,7 @@ var ProjectDetails = function(containerDiv, main, project) {
 		containerDiv.find(".createdBy").append(createUserLink(main, othis.project.createdById));
 		containerDiv.find(".detailsTable tbody").append("<tr><td>State</td><td>" + othis.project.state + "</td></tr>");
 		containerDiv.find(".detailsTable tbody").append("<tr><td>Length measure to use combined downloads</td><td>" + othis.project.exportLengthMeasurePrefix + "</td></tr>");
+		containerDiv.find(".detailsTable tbody").append("<tr><td>Schema</td><td>" + othis.project.schema + "</td></tr>");
 
 		containerDiv.find("h1").html(othis.project.name);
 		containerDiv.find(".revisionsLink a").html("Revisions" + (othis.project.revisions.length == 0 ? "" : (" (" + othis.project.revisions.length + ")")));

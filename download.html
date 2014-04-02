@@ -63,7 +63,7 @@ function Download(containerDiv, data) {
 			"PluginInterface", "getDefaultSerializer", {}
 		],
 		[
-			"PluginInterface", "getAllSerializers", {onlyEnabled: true}
+			"PluginInterface", "getAllSerializersForRoids", {roids: [data.roid], onlyEnabled: true}
 		],
 		[
 		 	"ServiceInterface", "userHasCheckinRights", {uoid: user.oid, poid: data.poid}
