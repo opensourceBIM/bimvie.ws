@@ -146,15 +146,27 @@ function AsyncStream() {
 	};
 	
 	othis.addReadFloatArray = function(length, callback){
-		othis.todolist.push(new ReadFloatArray(othis, length, callback));
+		if (length == 0) {
+			callback();
+		} else {
+			othis.todolist.push(new ReadFloatArray(othis, length, callback));
+		}
 	};
 
 	othis.addReadIntArray = function(length, callback){
-		othis.todolist.push(new ReadIntArray(othis, length, callback));
+		if (length == 0) {
+			callback();
+		} else {
+			othis.todolist.push(new ReadIntArray(othis, length, callback));
+		}
 	};
 
 	othis.addReadFloats = function(length, callback){
-		othis.todolist.push(new ReadFloats(othis, length, callback));
+		if (length == 0) {
+			callback();
+		} else {
+			othis.todolist.push(new ReadFloats(othis, length, callback));
+		}
 	};
 	
 	othis.addReadInt = function(callback){

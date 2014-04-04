@@ -7,6 +7,13 @@ var Settings = {
 			return new Projects($(this), main);
 		});
 	},
+	getPlugins: function(){
+		return {
+			relatics: {
+				enabled: false
+			}
+		};
+	},
 	getMenuItems: function(){
 		return [
 	        "dashboardLink",

@@ -107,6 +107,11 @@ function ThreeDView(containerDiv, projectPage) {
 			var node = o.viewer.scene.findNode("model_node_" + roid);
 			if (node != null) {
 				node.destroy();
+				var boundsTranslate = o.viewer.scene.findNode("bounds_translate");
+				if (boundsTranslate.nodes.length == 0) {
+					// If this was the last model, let's clear the bound_translate as well, so we can start with a fresh one after this
+					boundsTranslate.destroy();
+				}
 			}
 		}
 	};

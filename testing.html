@@ -93,7 +93,7 @@ function Testing() {
 			}).done(function(model){
 				model.commit("initial revision", function(roid){
 					// Now we will test and see if the objects are really there
-					Global.bimServerApi.getModel(project.oid, roid, false, function(model){
+					Global.bimServerApi.getModel(project.oid, roid, false, project.schema, function(model){
 						var first = true;
 						model.getAllOfType("IfcFurnishingElement", true, function(furnishingElement){
 							if (first) {
@@ -132,7 +132,7 @@ function Testing() {
 			}).done(function(model){
 				model.commit("initial revision with 10 walls", function(roid){
 					// Stage 2: count the walls and remove the 6th
-					Global.bimServerApi.getModel(project.oid, roid, false, function(model){
+					Global.bimServerApi.getModel(project.oid, roid, project.schema, false, function(model){
 						model.count("IfcWall", true, function(count){
 							if (count == 10) {
 								model.getByGuid("wall6", function(wall6){
@@ -145,7 +145,7 @@ function Testing() {
 					}).done(function(model){
 						model.commit("removing the 6th wall", function(roid){
 							// Stage 3: count again
-							Global.bimServerApi.getModel(project.oid, roid, false, function(model){
+							Global.bimServerApi.getModel(project.oid, roid, project.schema, false, function(model){
 								model.count("IfcWall", true, function(count){
 									if (count == 9) {
 										doneCallback("SUCCESS");
@@ -176,7 +176,7 @@ function Testing() {
 			}).done(function(model){
 				model.commit("10 windows", function(roid){
 					// Stage 2: count the walls and remove the 6th
-					Global.bimServerApi.getModel(project.oid, roid, false, function(model){
+					Global.bimServerApi.getModel(project.oid, roid, project.schema, false, function(model){
 						model.getByName("window7", function(window7){
 							if (window7 == null) {
 								doneCallback("ERROR", "Window not found");
@@ -202,13 +202,13 @@ function Testing() {
 				});
 			}).done(function(model){
 				model.commit("1 window", function(roid){
-					Global.bimServerApi.getModel(project.oid, roid, false, function(model){
+					Global.bimServerApi.getModel(project.oid, roid, project.schema, false, function(model){
 						model.getByName("window", function(window){
 							window.setName(null);
 						});
 					}).done(function(model){
 						model.commit("name unset", function(roid){
-							Global.bimServerApi.getModel(project.oid, roid, false, function(model){
+							Global.bimServerApi.getModel(project.oid, roid, project.schema, false, function(model){
 								model.getByGuid("window", function(window){
 									if (window.getName() == null) {
 										doneCallback("SUCCESS");
@@ -239,7 +239,7 @@ function Testing() {
 				});
 			}).done(function(model){
 				model.commit("1 window + ownerhistory", function(roid){
-					Global.bimServerApi.getModel(project.oid, roid, false, function(model){
+					Global.bimServerApi.getModel(project.oid, roid, project.schema, false, function(model){
 						model.getByName("window", function(window){
 							console.log(window);
 							window.getOwnerHistory(function(ownerHistory){
@@ -252,7 +252,7 @@ function Testing() {
 						});
 					}).done(function(model){
 						model.commit("unsetting owner history of window", function(roid){
-							Global.bimServerApi.getModel(project.oid, roid, false, function(model){
+							Global.bimServerApi.getModel(project.oid, roid, project.schema, false, function(model){
 								model.getByGuid("window", function(window){
 									if (window.getOwnerHistory() == null) {
 										doneCallback("SUCCESS");
@@ -281,7 +281,7 @@ function Testing() {
 				});
 			}).done(function(model){
 				model.commit("ownerhistory with state and creation date", function(roid){
-					Global.bimServerApi.getModel(project.oid, roid, false, function(model){
+					Global.bimServerApi.getModel(project.oid, roid, false, project.schema, function(model){
 						model.get(ownerHistoryOid, function(ownerHistory){
 							if (ownerHistory.getState() == "READWRITELOCKED" && ownerHistory.getCreationDate() == timestamp) {
 								doneCallback("SUCCESS");
@@ -306,7 +306,7 @@ function Testing() {
 				});
 			}).done(function(model){
 				model.commit("IfcRectangularTrimmedSurface with booleans", function(roid){
-					Global.bimServerApi.getModel(project.oid, roid, false, function(model){
+					Global.bimServerApi.getModel(project.oid, roid, project.schema, false, function(model){
 						model.get(ifcRectangularTrimmedSurfaceOid, function(ifcRectangularTrimmedSurface){
 							if (ifcRectangularTrimmedSurface.getUsense() == true && ifcRectangularTrimmedSurface.getVsense() == false) {
 								doneCallback("SUCCESS");
@@ -330,7 +330,7 @@ function Testing() {
 				});
 			}).done(function(model){
 				model.commit("IfcCartesianPoint with values", function(roid){
-					Global.bimServerApi.getModel(project.oid, roid, false, function(model){
+					Global.bimServerApi.getModel(project.oid, roid, project.schema, false, function(model){
 						model.get(oid, function(ifcCartesianPoint){
 							console.log(ifcCartesianPoint.getCoordinates());
 							if (ifcCartesianPoint.getCoordinates()[0] == 0.1 && ifcCartesianPoint.getCoordinates()[1] == 0.2 && ifcCartesianPoint.getCoordinates()[2] == 0.3) {
@@ -358,7 +358,7 @@ function Testing() {
 					sync: true
 				}, function(checkinId){
 					Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: project.oid}, function(project){
-						Global.bimServerApi.getModel(project.oid, project.lastRevisionId, false, function(model){
+						Global.bimServerApi.getModel(project.oid, project.lastRevisionId, project.schema, false, function(model){
 							model.size(function(size){
 								if (size == 49664) {
 									doneCallback("SUCCESS");
@@ -386,7 +386,7 @@ function Testing() {
 					sync: true
 				}, function(checkinId){
 					Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: project.oid}, function(project){
-						Global.bimServerApi.getModel(project.oid, project.lastRevisionId, false, function(model){
+						Global.bimServerApi.getModel(project.oid, project.lastRevisionId, project.schema, false, function(model){
 							model.load(false, function(){
 								doneCallback("SUCCESS");
 							});

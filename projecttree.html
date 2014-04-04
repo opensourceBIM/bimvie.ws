@@ -82,6 +82,8 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 	this.toggleDropDown = function(node){
 		othis.selectedNode = node;
 		
+		var thisElement = $(this);
+		
 		Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllRevisionsOfProject", {poid: othis.selectedNode.poid}, function(revisions){
 			dropdown.find(".revisions li").remove();
 			if (revisions.length == 0) {
@@ -104,11 +106,10 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 					dropdown.find(".revisions").append(li);
 				});
 			}
+			containerDiv.find(".treeDropDown").dropdown("toggle");
+			dropdown.show();
+			containerDiv.find(".dropdown").offset({top: thisElement.offset().top + 20, left: thisElement.offset().left - 120});
 		});
-		
-		containerDiv.find(".treeDropDown").dropdown("toggle");
-		dropdown.show();
-		containerDiv.find(".dropdown").offset({top: $(this).offset().top + 20, left: $(this).offset().left - 120});
 	};
 	
 	this.createDropDown = function(node){
@@ -227,7 +228,11 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 			typeNode = new Node(relatedElement.getType(), stripIfc(relatedElement.getType()));
 			typeNode.type = relatedElement.getType();
 			
-			othis.createEye(typeNode, types[relatedElement.getType()].mode);
+			if (types[relatedElement.getType()] == null) {
+				othis.createEye(typeNode, 0);
+			} else {
+				othis.createEye(typeNode, types[relatedElement.getType()].mode);
+			}
 			
 			createdTypes[relatedElement.getType()] = typeNode;
 			parentNode.add(typeNode);

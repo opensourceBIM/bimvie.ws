@@ -93,7 +93,7 @@ function Checkin(containerDiv, project, successFunction) {
 			});
 		}
 	});
-	
+
 	var submitdata = null;
 	var shouldsend = false;
 	var currentCheckinId = null;
@@ -177,7 +177,7 @@ function Checkin(containerDiv, project, successFunction) {
 		    var lastIndex = path.lastIndexOf(".");
 		    if (lastIndex != -1) {
 			    var extension = path.substring(path.lastIndexOf(".") + 1);
-			    Global.bimServerApi.call("Bimsie1ServiceInterface", "getSuggestedDeserializerForExtension", {extension: extension}, function(data){
+			    Global.bimServerApi.call("Bimsie1ServiceInterface", "getSuggestedDeserializerForExtension", {extension: extension, poid: project.oid}, function(data){
 			    	containerDiv.find(".deserializerName").val(data.oid);
 					othis.updateSubmitButton();
 				});
@@ -210,12 +210,6 @@ function Checkin(containerDiv, project, successFunction) {
     });
 
 	containerDiv.find(".uploadButton").click(function(event){
-		if (containerDiv.find(".deserializerName").val() == null) {
-			containerDiv.find(".uploadStatus").html("<div class=\"alert alert-block alert-danger\">Select a deserializer</div>");
-			return;
-		} else {
-			containerDiv.find(".uploadStatus").html("");
-		}
 		if (containerDiv.find(".checkinurl").is(":visible")) {
 			Global.bimServerApi.callWithFullIndication("ServiceInterface", "checkinFromUrl", {
 				deserializerOid: containerDiv.find(".checkinurl .deserializerName").val(),

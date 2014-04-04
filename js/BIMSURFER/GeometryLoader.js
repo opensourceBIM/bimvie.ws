@@ -42,6 +42,7 @@ function GeometryLoader(bimServerApi, viewer) {
 											o.asyncStream.addReadFloatArray(nrColors * 4, function(colors){
 //												console.log("add");
 												o.state.nrObjectsRead++;
+//												console.log(o.state.nrObjectsRead, o.state.nrObjects);
 												o.processGeometry(geometryType, indices, vertices, normals, colors);
 												o.updateProgress();
 											});
@@ -117,6 +118,9 @@ function GeometryLoader(bimServerApi, viewer) {
 						y: (modelBounds.max.y + modelBounds.min.y) / 2,
 						z: (modelBounds.max.z + modelBounds.min.z) / 2,
 					};
+					
+//					console.log("Model Bounds", modelBounds);
+//					console.log("Center", center);
 					
 					o.boundsTranslate = o.viewer.scene.findNode("bounds_translate");
 					var firstModel = false;
@@ -203,7 +207,8 @@ function GeometryLoader(bimServerApi, viewer) {
 			geometry.indices = indices;
 			geometry.positions = vertices;
 			geometry.normals = normals;
-			if (colors.length > 0) {
+			
+			if (colors != null && colors.length > 0) {
 				geometry.colors = colors;
 			}
 			o.library.add("node", geometry);

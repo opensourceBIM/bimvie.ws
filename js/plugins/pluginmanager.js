@@ -4,13 +4,17 @@ function PluginManager() {
 
 	this.allOfType = function(type, callback){
 		if (o.byType[type] != null) {
-			o.byType[type].forEach(callback);
+			o.byType[type].forEach(function(plugin){
+				var pluginInstance = Object.create(plugin.prototype);
+				if (Settings.getPlugins()[pluginInstance.getName()].enabled) {
+					callback(plugin);
+				}
+			});
 		}
 	};
 	
 	this.register = function(pluginConstructor){
 		var plugin = Object.create(pluginConstructor.prototype);
-		console.log(plugin);
 		var type = plugin.getType();
 		if (o.byType[type] == null) {
 			o.byType[type] = [];

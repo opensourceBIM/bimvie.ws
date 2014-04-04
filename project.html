@@ -2,21 +2,19 @@
 	<div class="row">
 		<div class="col-md-3">
 			<div class="panel panel-default">
-				<div class="panel-heading">
-					<div class="btn-group projectTabs" data-toggle="buttons">
-						<label class="btnProjectTree btn btn-default active">
-							<input checked="checked" type="radio" name="options"> Tree
-						</label>
-						<label class="btnTypes btn btn-default">
-							<input type="radio" name="options"> Types
-						</label>
-						<label class="btnProperties btn btn-default">
-							<input type="radio" name="options"> Properties
-						</label>
-						<label class="btnClassifications btn btn-default">
-							<input type="radio" name="options"> Classifications
-						</label>
-					</div>
+				<div class="panel-heading btn-group projectTabs" data-toggle="buttons" style="padding: 0; width: 100%">
+					<label class="btnProjectTree btn btn-default active">
+						<input checked="checked" type="radio" name="options"> Tree
+					</label>
+					<label class="btnTypes btn btn-default">
+						<input type="radio" name="options"> Types
+					</label>
+					<label class="btnProperties btn btn-default">
+						<input type="radio" name="options"> Properties
+					</label>
+					<label class="btnClassifications btn btn-default">
+						<input type="radio" name="options"> Classifications
+					</label>
 				</div>
 				<div class="panel-body sidespanWrapper">
 					<div class="sidespan">
@@ -107,7 +105,7 @@ function Project(containerDiv, main, project) {
 
 		if (project.nrSubProjects == 0 && roid != -1) {
 			// TODO possibly cache
-			Global.bimServerApi.getModel(project.oid, roid, false, function(model){
+			Global.bimServerApi.getModel(project.oid, roid, project.schema, false, function(model){
 				var promise = new CountingPromise();
 				
 				var preLoadQuery = {
@@ -164,7 +162,7 @@ function Project(containerDiv, main, project) {
 						summary.list.forEach(function(item){
 							if (item.name == "IFC Entities") {
 								item.types.forEach(function(type, index){
-									if (Global.bimServerApi.isA(type.name, "IfcProduct")) {
+									if (Global.bimServerApi.isA(project.schema, type.name, "IfcProduct")) {
 										var state = {
 											count: type.count,
 											mode: 0
@@ -217,7 +215,7 @@ function Project(containerDiv, main, project) {
 					othis.projects.push(smallProject);
 				}
 				if (smallProject.lastRevisionId != -1 && smallProject.nrSubProjects == 0) {
-					Global.bimServerApi.getModel(smallProject.oid, smallProject.lastRevisionId, false, function(model){
+					Global.bimServerApi.getModel(smallProject.oid, smallProject.lastRevisionId, smallProject.schema, false, function(model){
 						othis.models[smallProject.lastRevisionId] = model;
 					});
 				}

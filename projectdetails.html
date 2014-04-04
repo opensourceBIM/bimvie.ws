@@ -600,7 +600,7 @@ var ProjectDetails = function(containerDiv, main, project) {
 					othis.projects.push(smallProject);
 				}
 				if (smallProject.lastRevisionId != -1) {
-					Global.bimServerApi.getModel(smallProject.oid, smallProject.lastRevisionId, false, function(model){
+					Global.bimServerApi.getModel(smallProject.oid, smallProject.lastRevisionId, smallProject.schema, false, function(model){
 						othis.models[smallProject.lastRevisionId] = model;
 					});
 				}
