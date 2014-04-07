@@ -36,7 +36,7 @@
 				</select>
 			</div>
 		</div>
-		<div class="form-group">
+		<div class="form-group schemaGroup">
 			<label class="col-lg-3 control-label" for="schema">Schema</label>
 			<div class="col-lg-5">
 				<select class="schemaInput form-control span6" id="schema">
@@ -51,7 +51,7 @@
 	</form>
 </div>
 <script>
-function AddProject(main, parentProject) {
+function AddProject(containerDiv, main, parentProject) {
 	var othis = this;
 
 	this.show = function(){
@@ -95,5 +95,9 @@ function AddProject(main, parentProject) {
 		}
 	});
 	$(".addproject .inputName").focus();
+	
+	if (Global.bimServerApi.version.major == 1 && Global.bimServerApi.version.minor == 3) {
+		containerDiv.find(".schemaGroup").hide();
+	}
 }
 </script>

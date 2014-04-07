@@ -30,7 +30,6 @@
 							</div>
 						</div>
 					</form>
-					<div class="resultsarea"></div>
 				</div>
 			</div>
 		  	<div class="modal-footer">
@@ -121,17 +120,16 @@ function Download(containerDiv, data) {
 			}
 			if (state.errors.length > 0) {
 				containerDiv.find(".fields, .downloadpopup .checkoutMessage").show();
-				containerDiv.find(".resultsarea").empty();
 				containerDiv.find(".downloadProgressBar").hide();
 				state.errors.map(function(error){
-					containerDiv.find(".resultsarea").append(error + "<br/>");
+					containerDiv.find(".message").append(error + "<br/>");
 				});
 				containerDiv.find(".message").html("");
 				Global.bimServerApi.unregisterProgressHandler(othis.laid, othis.progressHandler);
 			} else if (state.state == "FINISHED") {
 				if (state.warnings.length > 0) {
 					state.warnings.map(function(warning){
-						containerDiv.find(".resultsarea").append(warning + "<br/>");
+						containerDiv.find(".message").append(warning + "<br/>");
 					});
 				}
 				

@@ -73,26 +73,49 @@ function Checkin(containerDiv, project, successFunction) {
 	
 	containerDiv.find(".uploadajaxloader").hide();
 
-	var requests = [];
-	requests.push(["PluginInterface", "getAllDeserializersForProject", {onlyEnabled: true, poid: project.oid}]);
-	requests.push(["SettingsInterface", "isCheckinMergingEnabled", {}]);
-	requests.push(["ServiceInterface", "getCheckinWarnings", {poid: othis.project.oid}]);
-	
-	Global.bimServerApi.multiCall(requests, function(data){
-		data[0].result.forEach(function(deserializer){
-			var option = $("<option value=\"" + deserializer.oid + "\">" + deserializer.name + "</option>");
-			containerDiv.find(".deserializerName").append(option);
-		});
-		if (data[1].result) {
-			$(".checkinMergeTr").show();
-		}
-		var warnings = data[2].result;
-		if (warnings.length > 0) {
-			warnings.forEach(function(warning){
-				$(".checkinWarning").append(warning).show();
+	if (Global.bimServerApi.version.major == 1 && Global.bimServerApi.version.minor == 4) {
+		var requests = [];
+		requests.push(["PluginInterface", "getAllDeserializersForProject", {onlyEnabled: true, poid: project.oid}]);
+		requests.push(["SettingsInterface", "isCheckinMergingEnabled", {}]);
+		requests.push(["ServiceInterface", "getCheckinWarnings", {poid: othis.project.oid}]);
+		
+		Global.bimServerApi.multiCall(requests, function(data){
+			data[0].result.forEach(function(deserializer){
+				var option = $("<option value=\"" + deserializer.oid + "\">" + deserializer.name + "</option>");
+				containerDiv.find(".deserializerName").append(option);
 			});
-		}
-	});
+			if (data[1].result) {
+				$(".checkinMergeTr").show();
+			}
+			var warnings = data[2].result;
+			if (warnings.length > 0) {
+				warnings.forEach(function(warning){
+					$(".checkinWarning").append(warning).show();
+				});
+			}
+		});
+	} else if (Global.bimServerApi.version.major == 1 && Global.bimServerApi.version.minor == 3) {
+		Global.bimServerApi.call("PluginInterface", "getAllDeserializers", {onlyEnabled: true}, function(data){
+			data.forEach(function(deserializer){
+				var option = $("<option value=\"" + deserializer.oid + "\">" + deserializer.name + "</option>");
+				containerDiv.find(".deserializerName").append(option);
+			});
+		});
+		
+		Global.bimServerApi.call("SettingsInterface", "isCheckinMergingEnabled", {}, function(enabled){
+			if (enabled) {
+				$(".checkinMergeTr").show();
+			}
+		});
+		
+		Global.bimServerApi.call("ServiceInterface", "getCheckinWarnings", {poid: othis.project.oid}, function(warnings){
+			if (warnings.length > 0) {
+				warnings.forEach(function(warning){
+					$(".checkinWarning").append(warning).show();
+				});
+			}
+		});
+	}
 
 	var submitdata = null;
 	var shouldsend = false;

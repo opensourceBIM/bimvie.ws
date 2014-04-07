@@ -170,7 +170,11 @@ function GeometryLoader(bimServerApi, viewer) {
 				}); // model bounds
 				o.asyncStream.addReadInt(function(nrObjects){
 					o.state.nrObjects = nrObjects;
-					o.addReadObject();
+					if (o.state.nrObjects > 0) {
+						o.addReadObject();
+					} else {
+						o.updateProgress();
+					}
 				});
 			});
 		});

@@ -160,7 +160,7 @@ function Main(address, user) {
 	this.showAddProject = function(callback, parentProject) {
 		othis.pageChanger.changePage($(".projectsLink"), "addproject.html", function(){
 			pushHistory({page: "AddProject"}, "Add Project");
-			return new AddProject(othis, parentProject);
+			return new AddProject($(this), othis, parentProject);
 		}, callback);
 	};
 
