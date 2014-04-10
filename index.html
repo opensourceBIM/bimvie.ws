@@ -246,6 +246,7 @@
 				};
 
 				this.clear = function() {
+					console.log("clear");
 					$(othis.selector).find(".message").html("").parent().hide();
 				};
 
@@ -275,7 +276,7 @@
 						clearTimeout(othis.lastTimeOut);
 						othis.lastTimeOut = null;
 					}
-					$(othis.selector).find(".message").html(status).parent().show().removeClass("alert-danger").removeClass("alert-info").addClass("alert-success");
+					$(othis.selector).find(".message").html(status).parent().removeClass("initialhide").removeClass("alert-danger").removeClass("alert-info").addClass("alert-success").show();
 					var notifier = this;
 					if (timeToShow != -1) {
 						othis.lastTimeOut = setTimeout(function(){

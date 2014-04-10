@@ -80,7 +80,7 @@ table .btn {
 	top: 10px;
 	cursor: pointer;
 	left: 50%;
-	margin-left: -300%;
+	margin-left: -300px;
 	width: 600px;
 	padding-top: 4px;
 	padding-bottom: 4px;
@@ -336,6 +336,16 @@ div#viewport {
 
 .projectTabs label {
 	border: 0;
+	padding: 10px;
+}
+
+.projectTabs .btn {
+	border-bottom-left-radius: 0;
+}
+
+.projectTabs .btn.active, .projectTabs .btn:active {
+	webkit-box-shadow: none;
+	box-shadow: none;
 }
 
 .dropdown-submenu{position:relative;}

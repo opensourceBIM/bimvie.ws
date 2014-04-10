@@ -56,10 +56,11 @@
 			</div>
 		</div>
 	</nav>
-	<div class="clearfix"></div>
-	<div class="alert status initialhide">
-		<button type="button" class="close">&times;</button>
-		<div class="message"></div>
+	<div class="mainStatus">
+		<div class="alert status">
+			<button type="button" class="close">&times;</button>
+			<div class="message"></div>
+		</div>
 	</div>
 	<div class="maincontainer"></div>
 </div>
@@ -72,7 +73,7 @@ function Main(address, user) {
 	$(".main .addressLabel").html(address);
 	
 	this.show = function() {
-		Global.notifier.setSelector(".main .status");
+		Global.notifier.setSelector(".main .mainStatus .status");
 		Global.bimServerApi.call("AuthInterface", "getLoggedInUser", {}, function(user){
 			//$(".main .nav li").hide();
 			othis.user = user;
