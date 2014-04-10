@@ -75,17 +75,28 @@ table .btn {
 	margin-left: 260px;
 }
 
-.status {
+.statusWrapper {
 	position: fixed;
 	top: 10px;
+	width: 100%;
+	text-align: center;
+	height: 0px;
+}
+
+.status {
 	cursor: pointer;
-	left: 50%;
-	margin-left: -300px;
-	width: 600px;
 	padding-top: 4px;
-	padding-bottom: 4px;
+	padding-bottom: 6px;
 	padding-left: 6px;
 	padding-right: 6px;
+	margin: 0;
+	height: 30px;
+	position: relative;
+	display: inline-block;
+}
+
+.status .message {
+	white-space: nowrap;
 }
 
 .classpath {
@@ -301,10 +312,25 @@ div#viewport {
 	display: none;
 }
 
+.threedview .progressbars .waiting {
+	opacity: 0.6;
+	height: 40px;
+	z-index: 5000;
+	padding: 10px;
+	margin: 10px;
+	background-color: #555555;
+	border-radius: 5px;
+}
+
+.threedview .progressbars .waiting .text {
+	color: white;
+	padding-bottom: 2px;
+}
+
 .threedview .progressbars {
 	position: fixed;
 	right: 30px;
-	bottom: 40px;
+	bottom: 30px;
 	width: 300px;
 }
 

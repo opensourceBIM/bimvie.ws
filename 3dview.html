@@ -4,6 +4,9 @@
 		</div>
 		<div class="panel-body">
 			<div class="progressbars">
+				<div class="waiting">
+					<span class="badge">3</span><span class="text"> Waiting...</span>
+				</div>
 			</div>
 			<div id="viewport"></div>
 		</div>
@@ -137,8 +140,8 @@ function ThreeDView(containerDiv, projectPage) {
 					progressdiv.fadeOut(800);
 				}
 			});
-			o.viewer.geometryLoaders.push(geometryLoader);
-			geometryLoader.loadRevision(roid, types);
+			geometryLoader.setLoadRevision(roid, types);
+			o.viewer.loadGeometry(geometryLoader);
 		}
 	};
 	
