@@ -87,7 +87,6 @@ function ThreeDView(containerDiv, projectPage) {
 	};
 	
 	this.show = function(){
-		o.server = new BIMSURFER.Server(Global.bimServerApi);
 		o.viewer = new BIMSURFER.Viewer(Global.bimServerApi, 'viewport');
 		o.resize();
 		$(window).resize(o.resize);
