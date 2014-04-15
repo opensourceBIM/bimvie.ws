@@ -149,6 +149,8 @@ function ThreeDView(containerDiv, projectPage) {
 	
 	o.show();
 	
+	containerDiv.find(".waiting").hide();
+	
 	projectPage.selectListeners.push(o.selected);
 	projectPage.unselectListeners.push(o.unselected);
 	projectPage.objectVisibilityListeners.push(o.objectVisibilityChanged);

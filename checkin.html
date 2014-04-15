@@ -54,6 +54,7 @@ var lastVal = "";
 
 function Checkin(containerDiv, project, successFunction) {
 	var othis = this;
+	othis.progressDoneHandled = false;
 	othis.project = project;
 	
 	this.hideUpload = function() {
@@ -147,13 +148,16 @@ function Checkin(containerDiv, project, successFunction) {
 			}
 			containerDiv.find(".progressBarHolder .uploadProgressBar").show();
 			if (state.state == "FINISHED") {
-				containerDiv.find(".checkin").parent().modal("hide");
-				Global.bimServerApi.callWithNoIndication("ServiceInterface", "cleanupLongAction", {actionId: topicId}, function(){
-				}).done(function(){
-					// This also automatically unregisters the progress handler, so we only have to tell bimserverapi that it's unregistered
-					Global.bimServerApi.unregister(othis.progressHandler);
-					successFunction();
-				});
+				if (!othis.progressDoneHandled) {
+					othis.progressDoneHandled = true;
+					containerDiv.find(".checkin").parent().modal("hide");
+					Global.bimServerApi.callWithNoIndication("ServiceInterface", "cleanupLongAction", {actionId: topicId}, function(){
+					}).done(function(){
+						// This also automatically unregisters the progress handler, so we only have to tell bimserverapi that it's unregistered
+						Global.bimServerApi.unregister(othis.progressHandler);
+						successFunction();
+					});
+				}
 			} else if (state.state == "STARTED" || state.state == "NONE") {
 			}
 		}
