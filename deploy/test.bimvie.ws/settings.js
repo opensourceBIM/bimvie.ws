@@ -24,5 +24,9 @@ var Settings = {
 	},
 	allowBimServerAddress: function() {
 		return true;
-	}
+	},
+	getPlugins: function(){
+		return {
+		};
+	},
 }
