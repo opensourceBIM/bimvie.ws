@@ -134,9 +134,10 @@ function ThreeDView(containerDiv, projectPage) {
 			containerDiv.find(".progressbars").append(progressdiv);
 
 			geometryLoader.addProgressListener(function(progress){
-				progressbar.css("width", progress + "%");
-				if (progress == 100) {
+				if (progress == "done") {
 					progressdiv.fadeOut(800);
+				} else {
+					progressbar.css("width", progress + "%");
 				}
 			});
 			geometryLoader.setLoadRevision(roid, types);
