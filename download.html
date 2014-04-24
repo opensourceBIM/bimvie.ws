@@ -57,30 +57,57 @@ function Download(containerDiv, data) {
 	othis.laid;
 	othis.zip = false;
 
-	Global.bimServerApi.resolveUser(function(user){
-		Global.bimServerApi.multiCall([[
-			"PluginInterface", "getDefaultSerializer", {}
-		],
-		[
-			"PluginInterface", "getAllSerializersForRoids", {roids: [data.roid], onlyEnabled: true}
-		],
-		[
-		 	"ServiceInterface", "userHasCheckinRights", {uoid: user.oid, poid: data.poid}
-		]
-		], function(data){
-			var defaultSerializer = data[0].result;
-			var serializers = data[1].result;
-			othis.userHasCheckinRights = data[2].result;
-			serializers.forEach(function(serializer){
-				var option = $("<option value=\"" + serializer.oid + "\">" + serializer.name + "</option>");
-				if (serializer.oid == defaultSerializer.oid) {
-					option.attr("selected", "selected");
-				}
-				containerDiv.find(".revisionsdownloadcheckoutselect").append(option);
+	if (Global.bimServerApi.version.major == 1 && Global.bimServerApi.version.minor == 4) {
+		Global.bimServerApi.resolveUser(function(user){
+			Global.bimServerApi.multiCall([[
+				"PluginInterface", "getDefaultSerializer", {}
+			],
+			[
+				"PluginInterface", "getAllSerializersForRoids", {roids: [data.roid], onlyEnabled: true}
+			],
+			[
+			 	"ServiceInterface", "userHasCheckinRights", {uoid: user.oid, poid: data.poid}
+			]
+			], function(data){
+				var defaultSerializer = data[0].result;
+				var serializers = data[1].result;
+				othis.userHasCheckinRights = data[2].result;
+				serializers.forEach(function(serializer){
+					var option = $("<option value=\"" + serializer.oid + "\">" + serializer.name + "</option>");
+					if (serializer.oid == defaultSerializer.oid) {
+						option.attr("selected", "selected");
+					}
+					containerDiv.find(".revisionsdownloadcheckoutselect").append(option);
+				});
+				othis.checkRevisionsCheckoutButton();
 			});
-			othis.checkRevisionsCheckoutButton();
 		});
-	});
+	} else if (Global.bimServerApi.version.major == 1 && Global.bimServerApi.version.minor == 3) {
+		Global.bimServerApi.resolveUser(function(user){
+			Global.bimServerApi.multiCall([[
+				"PluginInterface", "getDefaultSerializer", {}
+			],
+			[
+				"PluginInterface", "getAllSerializers", {onlyEnabled: true}
+			],
+			[
+			 	"ServiceInterface", "userHasCheckinRights", {uoid: user.oid, poid: data.poid}
+			]
+			], function(data){
+				var defaultSerializer = data[0].result;
+				var serializers = data[1].result;
+				othis.userHasCheckinRights = data[2].result;
+				serializers.forEach(function(serializer){
+					var option = $("<option value=\"" + serializer.oid + "\">" + serializer.name + "</option>");
+					if (serializer.oid == defaultSerializer.oid) {
+						option.attr("selected", "selected");
+					}
+					containerDiv.find(".revisionsdownloadcheckoutselect").append(option);
+				});
+				othis.checkRevisionsCheckoutButton();
+			});
+		});		
+	}
 	
 	this.checkRevisionsCheckoutButton = function(event) {
 		if (!othis.data.allowCheckouts) {
