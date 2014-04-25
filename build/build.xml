@@ -13,7 +13,6 @@
 	<target name="release">
 		<jar destfile="bimviews-${version}.jar">
 			<fileset dir="../">
-				<exclude name="plugin/**"/>
 				<exclude name="build/**"/>
 				<exclude name=".settings/**"/>
 				<exclude name="deploy/**"/>
