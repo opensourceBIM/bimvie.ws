@@ -223,6 +223,7 @@ function Project(containerDiv, main, project) {
 			});
 			
 			Global.pluginManager.allOfType("TabPlugin", function(pluginConstructor){
+				console.log(pluginConstructor);
 				var plugin = Object.create(pluginConstructor.prototype);
 
 				var label = $("<label class=\"btn btn-default\">");
