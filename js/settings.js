@@ -14,6 +14,9 @@ var Settings = {
 			}
 		};
 	},
+	getTitle: function(){
+		return "BIMvie.ws";
+	},
 	getMenuItems: function(){
 		return [
 	        "dashboardLink",
