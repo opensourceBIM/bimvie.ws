@@ -17,6 +17,9 @@ var Settings = {
 	getTitle: function(){
 		return "BIMvie.ws";
 	},
+	useBimSurfer: function(){
+		return true;
+	},
 	getMenuItems: function(){
 		return [
 	        "dashboardLink",
