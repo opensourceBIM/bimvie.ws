@@ -13,13 +13,16 @@
 	<target name="release">
 		<jar destfile="bimviews-${version}.jar">
 			<fileset dir="../">
+				<exclude name="bin/**"/>
 				<exclude name="build/**"/>
 				<exclude name=".settings/**"/>
 				<exclude name="deploy/**"/>
 				<exclude name="src/**"/>
 			</fileset>
+			<fileset dir="../bin">
+			</fileset>
 		</jar>
-
+		
 		<java jar="antlibs/githubrelease.jar" fork="true">
 			<classpath>
 				<pathelement location="antlibs/httpclient-4.3.2.jar"/>
