@@ -8,6 +8,7 @@
 			</li>
 			<li><a class="btnDetails">Details</a></li>
 			<li><a class="btnDownload">Download...</a></li>
+			<li><a class="btn3dView">3D View</a></li>
 			<li><a class="btnCheckin">Checkin...</a></li>
 		</ul>
 	</div>
@@ -301,7 +302,7 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 				});
 			}
 		}
-	}
+	};
 	
 	this.loadProjectTree = function(poid, roid, node, types){
 		var model = models[roid];
@@ -330,6 +331,10 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 	dropdown.find(".btnDetails").click(function(){
 		dropdown.hide();
 		projectPage.loadDetails();
+	});
+	dropdown.find(".btn3dView").click(function(){
+		dropdown.hide();
+		projectPage.load3dView();
 	});
 	dropdown.find(".btnCheckin").click(function(){
 		dropdown.hide();
