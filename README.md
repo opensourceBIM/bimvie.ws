@@ -7,9 +7,8 @@ More info on http://bimvie.ws/
 ## How to get a working copy after a git clone:
 if you do a plain checkout your missing the bimsurfer package (wich is implemented as a git submodule).
 to utilize this do the following:
-1. `cd <Path to bimvie.ws>`
-2. `git submodule update`
-3. Result :
+
+    $ cd <Path to bimvie.ws>
     $ git submodule update
     Cloning into 'js/bimsurfer'...
     remote: Reusing existing pack: 3329, done.
