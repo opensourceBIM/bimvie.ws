@@ -316,6 +316,17 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		}
 	};
 	
+	this.gatherRoidList = function(node, list){
+		if (node.type == "Project") {
+			if (node.roid != -1) {
+				list.push(node.roid);
+			}
+			node.children.forEach(function(child){
+				othis.gatherRoidList(child, list);
+			});
+		}
+	};
+	
 	projectPage.selectListeners.push(othis.selected);
 	projectPage.unselectListeners.push(othis.unselected);
 	projectPage.objectVisibilityListeners.push(othis.objectVisibilityChanged);
@@ -325,7 +336,10 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 	var dropdown = containerDiv.find(".dropdown");
 	dropdown.find(".btnDownload").click(function(){
 		dropdown.hide();
-		main.showDownloadCheckoutPopup(othis.selectedNode.poid, othis.selectedNode.roid);
+		var list = [];
+		othis.gatherRoidList(othis.selectedNode, list);
+		console.log(list);
+		main.showDownloadRevisionsPopup(list);
 	});
 	dropdown.find(".btnDetails").click(function(){
 		dropdown.hide();

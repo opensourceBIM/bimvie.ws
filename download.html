@@ -59,19 +59,24 @@ function Download(containerDiv, data) {
 
 	if (Global.bimServerApi.version.major == 1 && Global.bimServerApi.version.minor == 4) {
 		Global.bimServerApi.resolveUser(function(user){
-			Global.bimServerApi.multiCall([[
+			var requests = [];
+			requests.push([
 				"PluginInterface", "getDefaultSerializer", {}
-			],
-			[
+			]);
+			requests.push([
 				"PluginInterface", "getAllSerializersForRoids", {roids: [data.roid], onlyEnabled: true}
-			],
-			[
-			 	"ServiceInterface", "userHasCheckinRights", {uoid: user.oid, poid: data.poid}
-			]
-			], function(data){
+			]);
+			if (data.downloadType != "downloadRevisions") {
+				requests.push([
+					"ServiceInterface", "userHasCheckinRights", {uoid: user.oid, poid: data.poid}
+				]);
+			}
+			Global.bimServerApi.multiCall(requests, function(data){
 				var defaultSerializer = data[0].result;
 				var serializers = data[1].result;
-				othis.userHasCheckinRights = data[2].result;
+				if (data.length > 2) {
+					othis.userHasCheckinRights = data[2].result;
+				}
 				serializers.forEach(function(serializer){
 					var option = $("<option value=\"" + serializer.oid + "\">" + serializer.name + "</option>");
 					if (serializer.oid == defaultSerializer.oid) {
@@ -84,19 +89,24 @@ function Download(containerDiv, data) {
 		});
 	} else if (Global.bimServerApi.version.major == 1 && Global.bimServerApi.version.minor == 3) {
 		Global.bimServerApi.resolveUser(function(user){
-			Global.bimServerApi.multiCall([[
+			var requests = [];
+			requests.push([
 				"PluginInterface", "getDefaultSerializer", {}
-			],
-			[
+			]);
+			requests.push([
 				"PluginInterface", "getAllSerializers", {onlyEnabled: true}
-			],
-			[
-			 	"ServiceInterface", "userHasCheckinRights", {uoid: user.oid, poid: data.poid}
-			]
-			], function(data){
+			]);
+			if (data.downloadType != "downloadRevisions") {
+				requests.push([
+					"ServiceInterface", "userHasCheckinRights", {uoid: user.oid, poid: data.poid}
+				]);
+			}
+			Global.bimServerApi.multiCall(requests, function(data){
 				var defaultSerializer = data[0].result;
 				var serializers = data[1].result;
-				othis.userHasCheckinRights = data[2].result;
+				if (data.length > 2) {
+					othis.userHasCheckinRights = data[2].result;
+				}
 				serializers.forEach(function(serializer){
 					var option = $("<option value=\"" + serializer.oid + "\">" + serializer.name + "</option>");
 					if (serializer.oid == defaultSerializer.oid) {
@@ -203,6 +213,15 @@ function Download(containerDiv, data) {
 		} else if (data.downloadType == "checkout") {
 			Global.bimServerApi.call("Bimsie1ServiceInterface", "checkout", data, function(data){
 				containerDiv.find(".downloadStatus").html("Preparing checkout...");
+				othis.laid = parseInt(data);
+				Global.bimServerApi.registerProgressHandler(othis.laid, othis.progressHandler);
+			}, function(){
+				containerDiv.find(".downloadStatus").html("Error: " + textStatus);
+				containerDiv.find(".checkoutMessage").show();
+			});
+		} else if (data.downloadType == "downloadRevisions") {
+			Global.bimServerApi.call("Bimsie1ServiceInterface", "downloadRevisions", data, function(data){
+				containerDiv.find(".downloadStatus").html("Preparing download...");
 				othis.laid = parseInt(data);
 				Global.bimServerApi.registerProgressHandler(othis.laid, othis.progressHandler);
 			}, function(){
