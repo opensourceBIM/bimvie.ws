@@ -22,8 +22,6 @@ function ExtendedDataList(main, revision, parent) {
 	var othis = this;
 	othis.revision = revision;
 
-	Global.bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
-	
 	this.userClick = function(event){
 		if (!$(event.target).is("a, button, span.caret")) {
 			main.showUser($(this).data("user"), event);
@@ -107,6 +105,7 @@ function ExtendedDataList(main, revision, parent) {
 	
 	this.loadExtendedData = function() {
 		Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllExtendedDataOfRevision", {roid: revision.oid}, function(data){
+			console.log(data);
 			$(".extendeddatalist table tbody").empty();
 			data.forEach(function(extendedData){
 				othis.addExtendedData(extendedData);
@@ -117,6 +116,8 @@ function ExtendedDataList(main, revision, parent) {
 	this.close = function(){
 		Global.bimServerApi.unregister(othis.newLogAction);
 	};
+
+	Global.bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
 	
 	othis.loadExtendedData();
 }
