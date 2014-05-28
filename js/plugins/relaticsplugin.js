@@ -45,7 +45,7 @@ RelaticsPlugin.prototype.loadData = function(username, password, object, callbac
 	$.ajax({
 		type: "POST",
 		crossDomain: true,
-		url: "[ENTER URL]",
+		url: "[SERVER_URL]",
 		dataType: "json",
 		cache: false,
 		contentType: "application/json",

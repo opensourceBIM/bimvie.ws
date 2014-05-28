@@ -3,7 +3,6 @@ function PluginManager() {
 	o.byType = {};
 
 	this.allOfType = function(type, callback){
-		console.log(type);
 		if (o.byType[type] != null) {
 			o.byType[type].forEach(function(plugin){
 				var pluginInstance = Object.create(plugin.prototype);
