@@ -37,8 +37,17 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 			main.showProject(node.id, null, null);
 		});
 		
-		othis.createDropDown(node);
-		othis.createEye(node, 0);
+		var dropdown = othis.createDropDown(node);
+		
+		if (roid == -1) {
+			dropdown.popover("show");
+			dropdown.on('shown.bs.popover', function () {
+				containerDiv.find(".popover").offset({top: dropdown.offset().top - 5, left: dropdown.offset().left + 34});
+				containerDiv.find(".popover").width("200px");
+			})
+		}
+		
+		othis.createEye(node, 0).hide();
 		node.hint("Project");
 		othis.tree.find(project.parentId).add(node);
 //		if (project.oid == othis.project.oid) {
@@ -116,11 +125,14 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		var dropdown = $("<a>");
 		dropdown.addClass("tree-dropdown");
 		dropdown.attr("data-toggle", "dropdown");
+		dropdown.attr("title", "New project");
+		dropdown.attr("data-html", "<p>To <span class=\"underline\">checkin a revision</span> or <span class=\"underline\">add subprojects</span> click on the triangle <img src=\"../img/dropdown.png\"/> or use the project menu in the top-left corner</p>");
 		dropdown.attr("data-target", "#dropdown");
 		dropdown.click(function(){
 			othis.toggleDropDown.call(this, node);
 		});
 		node.addButton(dropdown);
+		return dropdown;
 	};
 	
 	this.hide = function(){
@@ -220,6 +232,7 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		});
 		node.eye = eye;
 		node.addButton(eye);
+		return eye;
 	};
 	
 	this.processRelatedElement = function(parentNode, relatedElement, createdTypes, types){
