@@ -45,7 +45,7 @@ RelaticsPlugin.prototype.loadData = function(username, password, object, callbac
 	$.ajax({
 		type: "POST",
 		crossDomain: true,
-		url: "[SERVER_URL]",
+		url: "https://23.253.203.178:8243/services/bim-client-dataservice",
 		dataType: "json",
 		cache: false,
 		contentType: "application/json",
@@ -58,7 +58,8 @@ RelaticsPlugin.prototype.loadData = function(username, password, object, callbac
 		success: function (response){
 			$.cookie("relatics-wso2-username", username);
 			$.cookie("relatics-wso2-password", password);
-			var realResponse = response.bimdataservice_response;
+			console.log(response);
+			var realResponse = response.bimdataservice_riesponse;
 			if (realResponse.succesfull == true) {
 				var table = $("<table class=\"table table-no-top\">");
 				table.append("<thead></thead>");

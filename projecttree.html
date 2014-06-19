@@ -351,7 +351,6 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		dropdown.hide();
 		var list = [];
 		othis.gatherRoidList(othis.selectedNode, list);
-		console.log(list);
 		main.showDownloadRevisionsPopup(list);
 	});
 	dropdown.find(".btnDetails").click(function(){
