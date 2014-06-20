@@ -35,11 +35,11 @@ function Project(containerDiv, main, project) {
 	var othis = this;
 	othis.loaded = {}; // poid -> roid
 	othis.models = {};
-	othis.selectListeners = [];
-	othis.unselectListeners = [];
-	othis.objectVisibilityListeners = [];
-	othis.modelLoadedListeners = [];
-	othis.modelUnloadedListeners = [];
+	othis.selectListeners = new EventRegistry();
+	othis.unselectListeners = new EventRegistry();
+	othis.objectVisibilityListeners = new EventRegistry();
+	othis.modelLoadedListeners = new EventRegistry();
+	othis.modelUnloadedListeners = new EventRegistry();
 	othis.menuItems = [];
 	
 	this.show = function(){
@@ -68,13 +68,13 @@ function Project(containerDiv, main, project) {
 	};
 
 	this.selected = function(groupId, id){
-		othis.selectListeners.forEach(function(selectListener){
+		othis.selectListeners.trigger(function(selectListener){
 			selectListener(groupId, id);
 		});
 	};
 	
 	this.unselected = function(groupId, id){
-		othis.unselectListeners.forEach(function(unselectListener){
+		othis.unselectListeners.trigger(function(unselectListener){
 			unselectListener(groupId, id);
 		});
 	};
@@ -84,7 +84,7 @@ function Project(containerDiv, main, project) {
 			if (object != null) {
 				var oldMode = object.trans.mode;
 				object.trans.mode = mode;
-				othis.objectVisibilityListeners.forEach(function(objectVisibilityListener){
+				othis.objectVisibilityListeners.trigger(function(objectVisibilityListener){
 					objectVisibilityListener(object, oldMode);
 				});
 			}
@@ -97,7 +97,7 @@ function Project(containerDiv, main, project) {
 	
 	this.changeRevision = function(project, roid){
 		if (othis.loaded[project.oid] != null) {
-			othis.modelUnloadedListeners.forEach(function(modelUnloadedListener){
+			othis.modelUnloadedListeners.trigger(function(modelUnloadedListener){
 				modelUnloadedListener(project.oid, othis.loaded[project.oid]);
 			});
 		}
@@ -189,14 +189,15 @@ function Project(containerDiv, main, project) {
 					});
 					promise.done(function(){
 						othis.models[roid] = model;
-						othis.modelLoadedListeners.forEach(function(modelLoadedListener){
+						console.log("triggering A");
+						othis.modelLoadedListeners.trigger(function(modelLoadedListener){
 							modelLoadedListener(project, roid, types, objectsToHide);
 						});
 					});
 				});
 			});
 		} else {
-			othis.modelLoadedListeners.forEach(function(modelLoadedListener){
+			othis.modelLoadedListeners.trigger(function(modelLoadedListener){
 				modelLoadedListener(project, -1, [], {});
 			});
 		}
@@ -245,6 +246,12 @@ function Project(containerDiv, main, project) {
 					div.show();
 				});
 			});
+			
+			othis.selectListeners.clear();
+			othis.unselectListeners.clear();
+			othis.objectVisibilityListeners.clear();
+			othis.modelLoadedListeners.clear();
+			othis.modelUnloadedListeners.clear();
 			
 			$(".propertiesWrapper").load("properties.html", function(){
 				othis.properties = new Properties($(this), othis, othis.models, main, othis.selectedObjectId);

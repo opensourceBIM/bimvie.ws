@@ -40,11 +40,11 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		var dropdown = othis.createDropDown(node);
 		
 		if (roid == -1) {
-			dropdown.popover("show");
-			dropdown.on('shown.bs.popover', function () {
-				containerDiv.find(".popover").offset({top: dropdown.offset().top - 5, left: dropdown.offset().left + 34});
-				containerDiv.find(".popover").width("200px");
-			})
+//			dropdown.on("shown.bs.popover", function () {
+//				containerDiv.find(".popover").offset({top: dropdown.offset().top - 5, left: dropdown.offset().left + 34});
+//				containerDiv.find(".popover").width("200px");
+//			})
+//			dropdown.popover("show");
 		}
 		
 		othis.createEye(node, 0).hide();
@@ -340,11 +340,11 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		}
 	};
 	
-	projectPage.selectListeners.push(othis.selected);
-	projectPage.unselectListeners.push(othis.unselected);
-	projectPage.objectVisibilityListeners.push(othis.objectVisibilityChanged);
-	projectPage.modelLoadedListeners.push(othis.loadRevision);
-	projectPage.modelUnloadedListeners.push(othis.unloadRevision);
+	projectPage.selectListeners.register(othis.selected);
+	projectPage.unselectListeners.register(othis.unselected);
+	projectPage.objectVisibilityListeners.register(othis.objectVisibilityChanged);
+	projectPage.modelLoadedListeners.register(othis.loadRevision);
+	projectPage.modelUnloadedListeners.register(othis.unloadRevision);
 
 	var dropdown = containerDiv.find(".dropdown");
 	dropdown.find(".btnDownload").click(function(){

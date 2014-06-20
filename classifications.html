@@ -131,8 +131,8 @@ function Classifications(containerDiv, projectPage, projects, models, main) {
 		}
 	};
 	
-	projectPage.modelLoadedListeners.push(othis.loadRevision);
-	projectPage.modelUnloadedListeners.push(othis.unloadRevision);
-	projectPage.objectVisibilityListeners.push(othis.objectVisibilityChanged);
+	projectPage.modelLoadedListeners.register(othis.loadRevision);
+	projectPage.modelUnloadedListeners.register(othis.unloadRevision);
+	projectPage.objectVisibilityListeners.register(othis.objectVisibilityChanged);
 }
 </script>

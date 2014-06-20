@@ -64,7 +64,7 @@ function Download(containerDiv, data) {
 				"PluginInterface", "getDefaultSerializer", {}
 			]);
 			requests.push([
-				"PluginInterface", "getAllSerializersForRoids", {roids: data.roids, onlyEnabled: true}
+				"PluginInterface", "getAllSerializersForRoids", {roids: data.roids == null ? [data.roid] : data.roids, onlyEnabled: true}
 			]);
 			if (data.downloadType != "downloadRevisions") {
 				requests.push([

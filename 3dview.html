@@ -151,11 +151,11 @@ function ThreeDView(containerDiv, projectPage) {
 	
 	containerDiv.find(".waiting").hide();
 	
-	projectPage.selectListeners.push(o.selected);
-	projectPage.unselectListeners.push(o.unselected);
-	projectPage.objectVisibilityListeners.push(o.objectVisibilityChanged);
-	projectPage.modelLoadedListeners.push(o.loadRevision);
-	projectPage.modelUnloadedListeners.push(o.unloadRevision);
+	projectPage.selectListeners.register(o.selected);
+	projectPage.unselectListeners.register(o.unselected);
+	projectPage.objectVisibilityListeners.register(o.objectVisibilityChanged);
+	projectPage.modelLoadedListeners.register(o.loadRevision);
+	projectPage.modelUnloadedListeners.register(o.unloadRevision);
 
 }
 </script>

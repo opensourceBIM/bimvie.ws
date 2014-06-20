@@ -4,7 +4,7 @@ function RelaticsPlugin() {
 RelaticsPlugin.prototype.init = function(containerDiv, projectPage){
 	this.containerDiv = containerDiv;
 	this.projectPage = projectPage;
-	projectPage.selectListeners.push(this.pick.bind(this));
+	projectPage.selectListeners.register(this.pick.bind(this));
 };
 
 RelaticsPlugin.prototype.show = function(){

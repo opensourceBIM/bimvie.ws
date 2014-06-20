@@ -99,8 +99,8 @@ function Properties(containerDiv, projectPage, models, main, oid) {
 		} )(tr);
 	}
 
-	projectPage.selectListeners.push(othis.selected);
-	projectPage.unselectListeners.push(othis.unselected);
+	projectPage.selectListeners.register(othis.selected);
+	projectPage.unselectListeners.register(othis.unselected);
 	
 	if (othis.selectedId != null && othis.selectedId != -1) {
 		othis.selected(othis.selectedId);

@@ -570,7 +570,8 @@ var ProjectDetails = function(containerDiv, main, project) {
 
 	this.downloadCheckoutClick = function(event) {
 		event.preventDefault();
-		othis.showDownloadCheckoutPopup($(this).parents("tr").andSelf().data("revision").oid);
+		var revision = $(this).parents("tr").andSelf().data("revision");
+		main.showDownloadCheckoutPopup(revision.projectId, revision.oid);
 	};
 	
 	this.reloadProject = function(poid) {
@@ -678,7 +679,7 @@ var ProjectDetails = function(containerDiv, main, project) {
 				pushHistory({page: "Project", poid: othis.project.oid, tab: "browser"}, "Project");
 			}
 			$(".browser").show();
-			return new Browser($(this), othis.lastRevision);
+			return new Browser($(this), othis.project, othis.lastRevision);
 		}, callback);
 	};
 
