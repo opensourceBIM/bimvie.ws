@@ -189,7 +189,6 @@ function Project(containerDiv, main, project) {
 					});
 					promise.done(function(){
 						othis.models[roid] = model;
-						console.log("triggering A");
 						othis.modelLoadedListeners.trigger(function(modelLoadedListener){
 							modelLoadedListener(project, roid, types, objectsToHide);
 						});
