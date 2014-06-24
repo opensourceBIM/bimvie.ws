@@ -1,6 +1,6 @@
 function loadBimServerApi(address, notifier, callback, errorCallback) {
-	if (Window.Global == null) {
-		Window.Global = {};
+	if (window.Global == null) {
+		window.Global = {};
 	}
 	var timeoutId = window.setTimeout(function() {
 		notifier.setError("Could not connect");

@@ -125,7 +125,15 @@ function ThreeDView(containerDiv, projectPage) {
 			var progressdiv = $("<div class=\"progressdiv\">");
 			var text = $("<div class=\"text\">");
 			text.html(project.name);
+			var startLink = $("<br/><a class=\"startLink\">&rarr; Load</a>");
+			text.append(startLink);
 			var progress = $("<div class=\"progress progress-striped\">");
+			startLink.click(function(){
+				startLink.hide();
+				progress.show();
+				o.viewer.loadGeometry(geometryLoader);
+			});
+			progress.hide();
 			var progressbar = $("<div class=\"progress-bar\">");
 			progressdiv.append(text)
 			progressdiv.append(progress);
@@ -141,7 +149,6 @@ function ThreeDView(containerDiv, projectPage) {
 				}
 			});
 			geometryLoader.setLoadRevision(roid, types);
-			o.viewer.loadGeometry(geometryLoader);
 		}
 	};
 	
