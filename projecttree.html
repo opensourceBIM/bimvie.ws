@@ -26,18 +26,26 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 	};
 	
 	this.loadRevision = function(project, roid, types) {
-		var node = new Node(project.oid, project.name);
-		node.type = "Project";
-		node.project = project;
-		node.groupId = roid;
-		node.roid = roid;
-		node.poid = project.oid;
-		node.setLoading();
-		node.click(function(node){
-			main.showProject(node.id, null, null);
-		});
+		var parentNode = othis.tree.find(project.parentId);
+		var node = othis.tree.find(project.oid);
+		var existed = true;
+		if (node == null) {
+			existed = false;
+			node = new Node(project.oid, project.name);
+			parentNode.add(node);
+			var dropdown = othis.createDropDown(node);
+			othis.createEye(node, 0).hide();
+			node.type = "Project";
+			node.project = project;
+			node.groupId = roid;
+			node.roid = roid;
+			node.sort = true;
+			node.poid = project.oid;
+		}
+//		node.click(function(node){
+//			main.showProject(node.id, null, null);
+//		});
 		
-		var dropdown = othis.createDropDown(node);
 		
 		if (roid == -1) {
 //			dropdown.on("shown.bs.popover", function () {
@@ -47,15 +55,20 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 //			dropdown.popover("show");
 		}
 		
-		othis.createEye(node, 0).hide();
 		node.hint("Project");
-		othis.tree.find(project.parentId).add(node);
 //		if (project.oid == othis.project.oid) {
 //			node.select();
 //		}
 
 		if (project.nrSubProjects == 0) {
-			othis.loadProjectTree(project.oid, roid, node, types);
+			if (existed) {
+				othis.loadProjectTree(project, roid, node, types);
+				node.open();
+			} else {
+				node.onLoad(function(){
+					othis.loadProjectTree(project, roid, node, types);
+				});
+			}
 		} else {
 			node.doneLoading();
 			node.open();
@@ -96,8 +109,10 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllRevisionsOfProject", {poid: othis.selectedNode.poid}, function(revisions){
 			dropdown.find(".revisions li").remove();
 			if (revisions.length == 0) {
+				dropdown.find(".btnDownload").hide();
 				$(".revisionsLi").hide();
 			} else {
+				dropdown.find(".btnDownload").show();
 				$(".revisionsLi").show();
 				revisions.forEach(function(revision){
 					var li = $("<li><a>" + revision.id + " (" + revision.comment + ")</a></li>");
@@ -316,13 +331,16 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		}
 	}
 	
-	this.loadProjectTree = function(poid, roid, node, types){
+	this.loadProjectTree = function(project, roid, node, types){
+		node.setLoading();
 		var model = models[roid];
 		if (model != null) {
-			model.getAllOfType("IfcProject", true, function(project){
-				othis.buildDecomposedTree(project, node, types);
-			}).done(function(){
-				node.doneLoading();
+			projectPage.preloadModel(project, roid).done(function(){
+				model.getAllOfType("IfcProject", true, function(project){
+					othis.buildDecomposedTree(project, node, types);
+				}).done(function(){
+					node.doneLoading();
+				});
 			});
 		} else {
 			node.doneLoading();
@@ -343,6 +361,7 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 	projectPage.selectListeners.register(othis.selected);
 	projectPage.unselectListeners.register(othis.unselected);
 	projectPage.objectVisibilityListeners.register(othis.objectVisibilityChanged);
+	projectPage.modelAddedListeners.register(othis.loadRevision);
 	projectPage.modelLoadedListeners.register(othis.loadRevision);
 	projectPage.modelUnloadedListeners.register(othis.unloadRevision);
 

@@ -12,6 +12,7 @@
 	  <li class="usersLink"><a>Users</a></li>
 	  <li class="modelCheckersLink"><a>Model Checkers</a></li>
 	  <li class="logLink"><a>Log</a></li>
+	  <li class="3dLink"><a>3D</a></li>
 	</ul>
 	<div class="content">
 		<div class="tab-pane details">
@@ -163,7 +164,7 @@
 	</div>
 </div>
 <script>
-var ProjectDetails = function(containerDiv, main, project) {
+var ProjectDetails = function(containerDiv, main, project, projectPage) {
 	var othis = this;
 	othis.tabChanger = new TabChanger(containerDiv.find(".nav"), containerDiv.find(".content"));
 	othis.lastRevision = null;
@@ -789,6 +790,9 @@ var ProjectDetails = function(containerDiv, main, project) {
 	containerDiv.find(".addUserToProjectDiv button").click(othis.addUserToProject);
 	
 	containerDiv.find(".addUserLink").click(othis.addUserLinkClick);
+	containerDiv.find(".3dLink a").click(function(){
+		projectPage.load3DView();
+	});
 	
 	containerDiv.find(".checkinButton").click(othis.showCheckinPopup);
 	containerDiv.find(".addServiceButton").click(othis.addServiceClick);

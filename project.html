@@ -39,6 +39,7 @@ function Project(containerDiv, main, project) {
 	othis.unselectListeners = new EventRegistry();
 	othis.objectVisibilityListeners = new EventRegistry();
 	othis.modelLoadedListeners = new EventRegistry();
+	othis.modelAddedListeners = new EventRegistry();
 	othis.modelUnloadedListeners = new EventRegistry();
 	othis.menuItems = [];
 	
@@ -106,93 +107,9 @@ function Project(containerDiv, main, project) {
 		if (project.nrSubProjects == 0 && roid != -1) {
 			// TODO possibly cache
 			Global.bimServerApi.getModel(project.oid, roid, project.schema, false, function(model){
-				var promise = new CountingPromise();
-				
-				var preLoadQuery = {
-					defines: {
-						ContainsElementsDefine: {
-							field: "ContainsElements",
-							include: {
-								field: "RelatedElements",
-								include: [
-									"IsDecomposedByDefine",
-									"ContainsElementsDefine"
-								]
-							}				
-						},
-						IsDecomposedByDefine: {
-							field: "IsDecomposedBy",
-							include: {
-								field: "RelatedObjects",
-								include: [
-									"IsDecomposedByDefine",
-									"ContainsElementsDefine"
-								]
-							}
-						}
-					},
-					queries: [
-					    {
-							type: "IfcProject",
-							include: [
-								"IsDecomposedByDefine",
-								"ContainsElementsDefine"
-							]
-					    },
-					    {
-					    	type: "IfcRelAssociatesClassification",
-					    	include: [
-					    		{
-					    			field: "RelatedObjects"
-					    		},
-					    		{
-					    			field: "RelatingClassification"
-					    		}
-					    	]
-					    }
-					]
-				};
-				
-				model.query(preLoadQuery, function(loaded){
-				}).done(function(){
-					var types = [];
-					var objectsToHide = [];
-					promise.inc();
-					Global.bimServerApi.call("ServiceInterface", "getRevisionSummary", {roid: roid}, function(summary){
-						summary.list.forEach(function(item){
-							if (item.name == "IFC Entities") {
-								item.types.forEach(function(type, index){
-									var schema = Global.bimServerApi.version.minor == 3 ? "ifc2x3tc1" : project.schema;
-									if (Global.bimServerApi.isA(schema, type.name, "IfcProduct")) {
-										var state = {
-											count: type.count,
-											mode: 0
-										};
-										if (type.name == "IfcSpace" || type.name == "IfcOpeningElement") {
-											state.mode = 2;
-											promise.inc();
-											model.getAllOfType(type.name, true, function(object){
-												objectsToHide[object.oid] = {};
-												object.trans.mode = 2;
-											}).done(function(){
-												promise.dec();
-											});
-										} else {
-											state.mode = 0;
-										}
-										types[type.name] = state;
-									}
-								});
-							}
-						});
-						promise.dec();
-					});
-					promise.done(function(){
-						othis.models[roid] = model;
-						othis.modelLoadedListeners.trigger(function(modelLoadedListener){
-							modelLoadedListener(project, roid, types, objectsToHide);
-						});
-					});
+				othis.models[roid] = model;
+				othis.modelAddedListeners.trigger(function(listener){
+					listener(project, roid, [], {});
 				});
 			});
 		} else {
@@ -200,6 +117,107 @@ function Project(containerDiv, main, project) {
 				modelLoadedListener(project, -1, [], {});
 			});
 		}
+	};
+	
+	this.preloadModel = function(project, roid){
+		var countingPromise = new CountingPromise();
+		var promise = new Promise();
+		var model = othis.models[roid];
+		if (model.isPreloaded) {
+			promise.fire();
+			return promise;
+		} else {
+			var preLoadQuery = {
+				defines: {
+					ContainsElementsDefine: {
+						field: "ContainsElements",
+						include: {
+							field: "RelatedElements",
+							include: [
+								"IsDecomposedByDefine",
+								"ContainsElementsDefine"
+							]
+						}				
+					},
+					IsDecomposedByDefine: {
+						field: "IsDecomposedBy",
+						include: {
+							field: "RelatedObjects",
+							include: [
+								"IsDecomposedByDefine",
+								"ContainsElementsDefine"
+							]
+						}
+					}
+				},
+				queries: [
+				    {
+						type: "IfcProject",
+						include: [
+							"IsDecomposedByDefine",
+							"ContainsElementsDefine"
+						]
+				    },
+				    {
+				    	type: "IfcRelAssociatesClassification",
+				    	include: [
+				    		{
+				    			field: "RelatedObjects"
+				    		},
+				    		{
+				    			field: "RelatingClassification"
+				    		}
+				    	]
+				    }
+				]
+			};
+			
+			model.query(preLoadQuery, function(loaded){
+			}).done(function(){
+				Global.notifier.setInfo("Loading model data...");
+				var types = [];
+				var objectsToHide = [];
+				countingPromise.inc();
+				Global.bimServerApi.call("ServiceInterface", "getRevisionSummary", {roid: roid}, function(summary){
+					summary.list.forEach(function(item){
+						if (item.name == "IFC Entities") {
+							item.types.forEach(function(type, index){
+								var schema = Global.bimServerApi.version.minor == 3 ? "ifc2x3tc1" : project.schema;
+								if (Global.bimServerApi.isA(schema, type.name, "IfcProduct")) {
+									var state = {
+										count: type.count,
+										mode: 0
+									};
+									if (type.name == "IfcSpace" || type.name == "IfcOpeningElement") {
+										state.mode = 2;
+										countingPromise.inc();
+										model.getAllOfType(type.name, true, function(object){
+											objectsToHide[object.oid] = {};
+											object.trans.mode = 2;
+										}).done(function(){
+											countingPromise.dec();
+										});
+									} else {
+										state.mode = 0;
+									}
+									types[type.name] = state;
+								}
+							});
+						}
+					});
+					countingPromise.dec();
+				});
+				countingPromise.done(function(){
+					model.isPreloaded = true;
+					othis.modelLoadedListeners.trigger(function(modelLoadedListener){
+						modelLoadedListener(project, roid, types, objectsToHide);
+					});
+					promise.fire();
+				});
+			});			
+		}
+
+		return promise;
 	};
 
 	this.updateProject = function() {
@@ -262,18 +280,22 @@ function Project(containerDiv, main, project) {
 						$(".classificationWrapper").load("classifications.html", function(){
 							othis.classifications = new Classifications($(this), othis, othis.projects, othis.models, main);
 
-							containerDiv.find(".rightCol").load("3dview.html", function(){
-								othis.threeDView = new ThreeDView($(this), othis);
-								othis.threeDView.selectListeners.push(othis.selected);
-								othis.threeDView.unselectListeners.push(othis.unselected);
-
-								othis.projects.forEach(function(project){
-									othis.changeRevision(project, project.lastRevisionId);
-								});
-							});
+							othis.load3DView();
 						});
 					});
 				});
+			});
+		});
+	};
+	
+	this.load3DView = function(){
+		containerDiv.find(".rightCol").load("3dview.html", function(){
+			othis.threeDView = new ThreeDView($(this), othis);
+			othis.threeDView.selectListeners.push(othis.selected);
+			othis.threeDView.unselectListeners.push(othis.unselected);
+
+			othis.projects.forEach(function(project){
+				othis.changeRevision(project, project.lastRevisionId);
 			});
 		});
 	};
@@ -312,7 +334,7 @@ function Project(containerDiv, main, project) {
 	
 	this.loadDetails = function(){
 		containerDiv.find(".rightCol").load("projectdetails.html", function(){
-			new ProjectDetails($(this), main, othis.project).show();
+			new ProjectDetails($(this), main, othis.project, othis).show();
 		});
 	};
 	

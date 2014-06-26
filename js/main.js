@@ -302,3 +302,7 @@ function EventRegistry() {
 		o.registry = [];
 	};
 }
+
+function ModelManager() {
+	
+}
