@@ -220,6 +220,17 @@ li.treenode {
 	background-repeat: no-repeat;
 }
 
+.treenode .treepreicon {
+	display: inline-block;
+	width: 23px;
+	height: 23px;
+	border: 0;
+	margin: 0;
+	padding: 0;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
 .treenode .treelabel {
 	position: relative;
 	top: -5px;
@@ -238,8 +249,24 @@ li.treenode {
 	background-image: url("../img/loading.gif");
 }
 
+.ball {
+	background-image: url("../img/ball.gif");
+}
+
+.hierarchy {
+	background-image: url("../img/hierarchy.gif");
+}
+
+.types {
+	background-image: url("../img/types.png");
+}
+
 .treenodeclosed {
 	background-image: url("../img/black_arrow.png");
+}
+
+.folder {
+	background-image: url("../img/folder.gif");
 }
 
 .treenodeclosed:hover {

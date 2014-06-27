@@ -80,15 +80,25 @@ function Project(containerDiv, main, project) {
 		});
 	};
 	
-	this.setObjectVisibility = function(groupId, id, mode) {
-		othis.models[groupId].get(id, function(object){
-			if (object != null) {
-				var oldMode = object.trans.mode;
-				object.trans.mode = mode;
-				othis.objectVisibilityListeners.trigger(function(objectVisibilityListener){
-					objectVisibilityListener(object, oldMode);
-				});
-			}
+	this.setObjectVisibility = function(groupId, ids, mode) {
+		if (!Array.isArray(ids)) {
+			ids = [ids];
+		}
+		var objectArray = [];
+		var oldModeArray = [];
+		
+		ids.forEach(function(id){
+			othis.models[groupId].get(id, function(object){
+				if (object != null) {
+					var oldMode = object.trans.mode;
+					object.trans.mode = mode;
+					objectArray.push(object);
+					oldModeArray.push(oldMode);
+				}
+			});
+		});
+		othis.objectVisibilityListeners.trigger(function(objectVisibilityListener){
+			objectVisibilityListener(objectArray, oldModeArray);
 		});
 	};
 	
@@ -113,8 +123,8 @@ function Project(containerDiv, main, project) {
 				});
 			});
 		} else {
-			othis.modelLoadedListeners.trigger(function(modelLoadedListener){
-				modelLoadedListener(project, -1, [], {});
+			othis.modelAddedListeners.trigger(function(modelAddedListener){
+				modelAddedListener(project, -1, [], {});
 			});
 		}
 	};
@@ -186,7 +196,7 @@ function Project(containerDiv, main, project) {
 								if (Global.bimServerApi.isA(schema, type.name, "IfcProduct")) {
 									var state = {
 										count: type.count,
-										mode: 0
+										mode: 2
 									};
 									if (type.name == "IfcSpace" || type.name == "IfcOpeningElement") {
 										state.mode = 2;

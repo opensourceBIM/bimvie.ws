@@ -45,12 +45,6 @@ function Node(id, title) {
 
 	this.add = function(node){
 		node.parent = o;
-		if (o.children.length == 0) {
-			o.img.addClass("treenodeclosed");
-		} else if (o.isOpen) {
-			o.img.addClass("treenodeopen");
-		}
-		o.img.show();
 		node.tree = o.tree;
 		node.tree.idToNodeMap[node.id] = node;
 
@@ -74,7 +68,19 @@ function Node(id, title) {
 		} else {
 			o.ul.append(node.li);
 		}
+		// TODO sync order in array with dom nodes order?
 		o.children.push(node);
+		
+		if (o.isOpen) {
+			o.img.addClass("treenodeopen");
+		} else {
+			o.img.addClass("treenodeclosed");
+		}
+		o.img.show();
+	};
+	
+	this.setIcon = function(icon){
+		o.icon.addClass(icon);
 	};
 	
 	this.onLoad = function(listener){
@@ -148,6 +154,13 @@ function Node(id, title) {
 	
 	this.doneLoading = function(){
 		o.img.removeClass("loading");
+		if (o.children.length > 0) {
+			if (o.isOpen) {
+				o.img.addClass("treenodeopen");
+			} else {
+				o.img.addClass("treenodeclosed");
+			}
+		}			
 	};
 	
 	this.toggle = function(){
@@ -179,6 +192,19 @@ function Node(id, title) {
 		o.li.remove();
 	};
 	
+	this.list = function(){
+		var result = [];
+		o.internalList(result);
+		return result;
+	};
+
+	this.internalList = function(result){
+		result.push(o);
+		o.children.forEach(function(subNode){
+			subNode.internalList(result);
+		});
+	};
+	
 	this.addButton = function(button){
 		o.div.after(button);
 	};
@@ -190,6 +216,8 @@ function Node(id, title) {
 	o.img = $("<div class=\"treeicon\"/>");
 	o.img.click(o.toggle);
 	o.li.append(o.img);
+	o.icon = $("<div class=\"treepreicon\">");
+	o.li.append(o.icon);
 	o.div.append(o.a);
 	o.li.append(o.div);
 	o.ul = $("<ul>");

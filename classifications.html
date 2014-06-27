@@ -32,32 +32,36 @@ function Classifications(containerDiv, projectPage, projects, models, main) {
 		}
 	};
 	
-	this.objectVisibilityChanged = function(object, oldMode){
-		var classifications = othis.objectToClassification[object.oid];
-		var mode = object.trans.mode;
-		if (classifications != null) {
-			classifications.forEach(function(relAssociatesClassification){
-				if (oldMode == 0) {
-					othis.classifications[relAssociatesClassification.oid].visible--;
-				} else if (oldMode == 1) {
-					othis.classifications[relAssociatesClassification.oid].transparent--;
-				}
-				if (mode == 0) {
-					othis.classifications[relAssociatesClassification.oid].visible++;
-				} else if (mode == 1) {
-					othis.classifications[relAssociatesClassification.oid].transparent++;
-				}
-				var eye = containerDiv.find("table tbody").find("tr[oid='" + relAssociatesClassification.oid + "'] .eye");
-				var classification = othis.classifications[relAssociatesClassification.oid];
-				eye.attr("mode", mode);
-				if (classification.visible == classification.total) {
-					eye.addClass("eyeopen").removeClass("eyeclosed").removeClass("eyehalfopen");
-				} else if (classification.transparent == classification.total) {
-					eye.addClass("eyehalfopen").removeClass("eyeopen").removeClass("eyeclosed");
-				} else if (classification.visible == 0) {
-					eye.addClass("eyeclosed").removeClass("eyehalfopen").removeClass("eyeopen");
-				}
-			});
+	this.objectVisibilityChanged = function(objects, oldModes){
+		for (var i=0; i<objects.length; i++) {
+			var object = objects[i];
+			var oldMode = oldModes[i];
+			var classifications = othis.objectToClassification[object.oid];
+			var mode = object.trans.mode;
+			if (classifications != null) {
+				classifications.forEach(function(relAssociatesClassification){
+					if (oldMode == 0) {
+						othis.classifications[relAssociatesClassification.oid].visible--;
+					} else if (oldMode == 1) {
+						othis.classifications[relAssociatesClassification.oid].transparent--;
+					}
+					if (mode == 0) {
+						othis.classifications[relAssociatesClassification.oid].visible++;
+					} else if (mode == 1) {
+						othis.classifications[relAssociatesClassification.oid].transparent++;
+					}
+					var eye = containerDiv.find("table tbody").find("tr[oid='" + relAssociatesClassification.oid + "'] .eye");
+					var classification = othis.classifications[relAssociatesClassification.oid];
+					eye.attr("mode", mode);
+					if (classification.visible == classification.total) {
+						eye.addClass("eyeopen").removeClass("eyeclosed").removeClass("eyehalfopen");
+					} else if (classification.transparent == classification.total) {
+						eye.addClass("eyehalfopen").removeClass("eyeopen").removeClass("eyeclosed");
+					} else if (classification.visible == 0) {
+						eye.addClass("eyeclosed").removeClass("eyehalfopen").removeClass("eyeopen");
+					}
+				});
+			}
 		}
 	};
 	

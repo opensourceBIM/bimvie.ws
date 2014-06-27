@@ -52,37 +52,87 @@ function ThreeDView(containerDiv, projectPage) {
 		
 	};
 	
-	this.objectVisibilityChanged = function(object, oldMode){
-		// todo use groupid		
-		var threeDObject = o.viewer.scene.findNode(object.oid);
-		if (threeDObject != null) {
-			var material = BIMSURFER.Constants.materials[object.getType()];
-			// Hack to get the roof to be red.....
-			if (object.getType() == "IfcSlab") {
-				if (object.getPredefinedType() == "ROOF") {
-					material = BIMSURFER.Constants.materials["IfcRoof"];
-				}
+	this.objectVisibilityChanged = function(objects, oldModes){
+		// todo use groupid
+
+		var uniqueRoids = [];
+		
+		if (Array.isArray(objects) && Array.isArray(oldModes)) {
+		} else {
+			objects = [objects];
+			oldModes = [oldModes];
+		}
+
+		var oidsNotLoaded = [];
+
+		for (var i=0; i<objects.length; i++) {
+			var object = objects[i];
+			var oldMode = oldModes[i];
+			
+			if (i == 0) {
+				// TODO actually do something useful here
+				uniqueRoids.push(object.model.roid);
 			}
-			var mode = object.trans.mode;
-			if (mode == 0) {
-				threeDObject.parent.parent.setEnabled(true);
-				threeDObject.parent.parent.parent.set("flags", {transparent: material.a < 1});
-				threeDObject.parent.set("alpha", material.a);
-				threeDObject.parent.set("baseColor", material);
-			} else if (mode == 1) {
-				threeDObject.parent.parent.setEnabled(true);
-				threeDObject.parent.parent.parent.set("flags", {transparent: true});
-				threeDObject.parent.set("alpha", 0.5);
-				threeDObject.parent.set("baseColor", {r: 0.5, g: 0.5, b: 0.5});
-				if (o.selectedId == object.oid) {
-					threeDObject.getNode("highlight").set("alpha", 0.5);
+			
+			var threeDObject = o.viewer.scene.findNode(object.oid);
+			if (threeDObject != null) {
+				var material = BIMSURFER.Constants.materials[object.getType()];
+				// Hack to get the roof to be red.....
+				if (object.getType() == "IfcSlab") {
+					if (object.getPredefinedType() == "ROOF") {
+						material = BIMSURFER.Constants.materials["IfcRoof"];
+					}
 				}
-			} else if (mode == 2) {
-				threeDObject.parent.parent.setEnabled(false);
-				threeDObject.parent.parent.parent.set("flags", {transparent: material.a < 1});
-				threeDObject.parent.set("alpha", material.a);
-				threeDObject.parent.set("baseColor", material);
+				var mode = object.trans.mode;
+				if (mode == 0) {
+					threeDObject.parent.parent.setEnabled(true);
+					threeDObject.parent.parent.parent.set("flags", {transparent: material.a < 1});
+					threeDObject.parent.set("alpha", material.a);
+					threeDObject.parent.set("baseColor", material);
+				} else if (mode == 1) {
+					threeDObject.parent.parent.setEnabled(true);
+					threeDObject.parent.parent.parent.set("flags", {transparent: true});
+					threeDObject.parent.set("alpha", 0.5);
+					threeDObject.parent.set("baseColor", {r: 0.5, g: 0.5, b: 0.5});
+					if (o.selectedId == object.oid) {
+						threeDObject.getNode("highlight").set("alpha", 0.5);
+					}
+				} else if (mode == 2) {
+					threeDObject.parent.parent.setEnabled(false);
+					threeDObject.parent.parent.parent.set("flags", {transparent: material.a < 1});
+					threeDObject.parent.set("alpha", material.a);
+					threeDObject.parent.set("baseColor", material);
+				}
+			} else {
+				oidsNotLoaded.push(object.oid);
 			}
+		}
+		
+		console.log(oidsNotLoaded);
+		
+		if (oidsNotLoaded.length > 0) {
+			var geometryLoader = new GeometryLoader(Global.bimServerApi, o.viewer);
+
+			var progressdiv = $("<div class=\"progressdiv\">");
+			var text = $("<div class=\"text\">");
+			text.html("Stuff");
+			var progress = $("<div class=\"progress progress-striped\">");
+			var progressbar = $("<div class=\"progress-bar\">");
+			progressdiv.append(text)
+			progressdiv.append(progress);
+			progress.append(progressbar);
+			
+			containerDiv.find(".progressbars").append(progressdiv);
+
+			geometryLoader.addProgressListener(function(progress){
+				if (progress == "done") {
+					progressdiv.fadeOut(800);
+				} else {
+					progressbar.css("width", progress + "%");
+				}
+			});
+			geometryLoader.setLoadOids(uniqueRoids, oidsNotLoaded);
+			o.viewer.loadGeometry(geometryLoader);
 		}
 	};
 	

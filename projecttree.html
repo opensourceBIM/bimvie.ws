@@ -21,27 +21,44 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 	othis.selectedId = selectedId;
 	othis.selectedNode = null;
 	
-	this.loadProject = function(project){
-		othis.loadRevision(project, -1);
+//	this.loadProject = function(project){
+//		othis.loadRevision(project, -1);
+//	};
+	
+	this.addRevision = function(project, roid, types){
+		var parentNode = othis.tree.find(project.parentId);
+		var node = new Node(project.oid, project.name);
+		parentNode.add(node);
+		var dropdown = othis.createDropDown(node);
+		var eye = othis.createEye(node, 2);
+		if (project.nrSubProjects == 0 && roid == -1) {
+			eye.css('visibility', 'hidden');
+		}
+		node.setIcon("folder");
+		node.type = "Project";
+		node.project = project;
+		node.groupId = roid;
+		node.roid = roid;
+		node.sort = true;
+		node.poid = project.oid;
+		node.hint("Project");
+		if ($.cookie(main.user.oid + "showdeleteditems") != "true" && project.state == "DELETED") {
+			node.hide();
+		}		
+		if (project.nrSubProjects == 0) {
+			if (roid != -1) {
+				node.onLoad(function(){
+					othis.loadProjectTree(project, roid, node, types);
+				});
+			}
+		} else {
+			node.doneLoading();
+			node.open();
+		}
 	};
 	
 	this.loadRevision = function(project, roid, types) {
-		var parentNode = othis.tree.find(project.parentId);
 		var node = othis.tree.find(project.oid);
-		var existed = true;
-		if (node == null) {
-			existed = false;
-			node = new Node(project.oid, project.name);
-			parentNode.add(node);
-			var dropdown = othis.createDropDown(node);
-			othis.createEye(node, 0).hide();
-			node.type = "Project";
-			node.project = project;
-			node.groupId = roid;
-			node.roid = roid;
-			node.sort = true;
-			node.poid = project.oid;
-		}
 //		node.click(function(node){
 //			main.showProject(node.id, null, null);
 //		});
@@ -55,20 +72,13 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 //			dropdown.popover("show");
 		}
 		
-		node.hint("Project");
 //		if (project.oid == othis.project.oid) {
 //			node.select();
 //		}
 
 		if (project.nrSubProjects == 0) {
-			if (existed) {
-				othis.loadProjectTree(project, roid, node, types);
-				node.open();
-			} else {
-				node.onLoad(function(){
-					othis.loadProjectTree(project, roid, node, types);
-				});
-			}
+//			othis.loadProjectTree(project, roid, node, types);
+			node.open();
 		} else {
 			node.doneLoading();
 			node.open();
@@ -210,23 +220,30 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 			projectPage.selected(groupNode.groupId, treeNode.id);
 		}
 	};
+	
+	this.getIfcOids = function(nodeList){
+		var result = [];
+		nodeList.forEach(function(node){
+			if (node.type.startsWith("Ifc") && typeof node.id === "number") {
+				result.push(node.id);
+			}
+		});
+		return result;
+	};
 
 	this.toggleEye = function(node, mode){
-		if (typeof node.id === "number" && node.type.startsWith("Ifc")) {
-			var groupNode = node.findFirstParentWithAttr("groupId");
-			projectPage.setObjectVisibility(groupNode.groupId, node.id, mode);
-		} else {
-			node.eye.attr("mode", mode);
+		var nodeList = node.list();
+		var groupNode = node.findFirstParentWithAttr("groupId");
+		projectPage.setObjectVisibility(groupNode.groupId, othis.getIfcOids(nodeList), mode);
+		nodeList.forEach(function(n){
+			n.eye.attr("mode", mode);
 			if (mode == 0) {
-				node.eye.removeClass("eyeclosed").removeClass("eyehalfopen").addClass("eyeopen");
+				n.eye.removeClass("eyeclosed").removeClass("eyehalfopen").addClass("eyeopen");
 			} else if (mode == 1) {
-				node.eye.removeClass("eyeopen").removeClass("eyeclosed").addClass("eyehalfopen");
+				n.eye.removeClass("eyeopen").removeClass("eyeclosed").addClass("eyehalfopen");
 			} else if (mode == 2) {
-				node.eye.removeClass("eyehalfopen").removeClass("eyeopen").addClass("eyeclosed");
+				n.eye.removeClass("eyehalfopen").removeClass("eyeopen").addClass("eyeclosed");
 			}
-		}
-		node.children.forEach(function(subNode){
-			othis.toggleEye(subNode, mode);
 		});
 	};
 	
@@ -254,10 +271,11 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		typeNode = createdTypes[relatedElement.getType()];
 		if (typeNode == null) {
 			typeNode = new Node(relatedElement.getType(), stripIfc(relatedElement.getType()));
+			typeNode.setIcon("types");
 			typeNode.type = relatedElement.getType();
 			
 			if (types[relatedElement.getType()] == null) {
-				othis.createEye(typeNode, 0);
+				othis.createEye(typeNode, 2);
 			} else {
 				othis.createEye(typeNode, types[relatedElement.getType()].mode);
 			}
@@ -285,11 +303,16 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		}
 		var newNode = new Node(object.oid, name);
 		newNode.type = object.getType();
+		if (object.getType() == "IfcProject" || object.getType() == "IfcSite" || object.getType() == "IfcBuilding" || object.getType() == "IfcBuildingStorey" || object.getType() == "IfcSpace") {
+			newNode.setIcon("hierarchy");
+		} else {
+			newNode.setIcon("ball");
+		}
 		newNode.click(othis.treeItemClick);
 		newNode.setLoading();
 		newNode.hint(object.getType());
 		var state = types[object.getType()];
-		othis.createEye(newNode, state == null ? 0 : state.mode);
+		othis.createEye(newNode, state == null ? 2 : state.mode);
 		tree.add(newNode);
 		if (object.getType() == "IfcBuildingStorey") {
 			var createdTypes = {};
@@ -361,7 +384,7 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 	projectPage.selectListeners.register(othis.selected);
 	projectPage.unselectListeners.register(othis.unselected);
 	projectPage.objectVisibilityListeners.register(othis.objectVisibilityChanged);
-	projectPage.modelAddedListeners.register(othis.loadRevision);
+	projectPage.modelAddedListeners.register(othis.addRevision);
 	projectPage.modelLoadedListeners.register(othis.loadRevision);
 	projectPage.modelUnloadedListeners.register(othis.unloadRevision);
 
