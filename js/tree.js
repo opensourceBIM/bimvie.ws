@@ -93,9 +93,10 @@ function Node(id, title) {
 	};
 	
 	this.open = function(){
+		var promise = new Promise();
 		o.isOpen = true;
 		o.onLoadListeners.trigger(function(listener){
-			listener();
+			promise.chain(listener());
 		});
 		o.onLoadListeners.clear();
 		o.ul.show();
@@ -103,6 +104,7 @@ function Node(id, title) {
 			o.img.removeClass("treenodeclosed");
 			o.img.addClass("treenodeopen");
 		}
+		return promise;
 	};
 	
 	this.close = function(){
@@ -191,6 +193,12 @@ function Node(id, title) {
 		o.tree.remove(o);
 		o.li.remove();
 	};
+
+	this.listFilterByType = function(type){
+		var result = [];
+		o.internalListFilterByType(result, type);
+		return result;
+	};
 	
 	this.list = function(){
 		var result = [];
@@ -202,6 +210,15 @@ function Node(id, title) {
 		result.push(o);
 		o.children.forEach(function(subNode){
 			subNode.internalList(result);
+		});
+	};
+	
+	this.internalListFilterByType = function(result, type){
+		if (o.type == type) {
+			result.push(o);
+		}
+		o.children.forEach(function(subNode){
+			subNode.internalListFilterByType(result, type);
 		});
 	};
 	

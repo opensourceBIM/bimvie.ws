@@ -31,7 +31,7 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		parentNode.add(node);
 		var dropdown = othis.createDropDown(node);
 		var eye = othis.createEye(node, 2);
-		if (project.nrSubProjects == 0 && roid == -1) {
+		if ((project.nrSubProjects == 0 && roid == -1) || project.lastRevisionId == -1) {
 			eye.css('visibility', 'hidden');
 		}
 		node.setIcon("folder");
@@ -48,7 +48,7 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		if (project.nrSubProjects == 0) {
 			if (roid != -1) {
 				node.onLoad(function(){
-					othis.loadProjectTree(project, roid, node, types);
+					return othis.loadProjectTree(project, roid, node, types);
 				});
 			}
 		} else {
@@ -58,6 +58,7 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 	};
 	
 	this.loadRevision = function(project, roid, types) {
+		var promise = new Promise();
 		var node = othis.tree.find(project.oid);
 //		node.click(function(node){
 //			main.showProject(node.id, null, null);
@@ -78,10 +79,10 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 
 		if (project.nrSubProjects == 0) {
 //			othis.loadProjectTree(project, roid, node, types);
-			node.open();
+			promise.chain(node.open());
 		} else {
 			node.doneLoading();
-			node.open();
+			promise.chain(node.open());
 		}
 		if ($.cookie(main.user.oid + "showdeleteditems") != "true" && project.state == "DELETED") {
 			node.hide();
@@ -91,6 +92,7 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 //				containerDiv.find(".subprojectsLink a").html("Sub Projects" + (othis.project.subProjects.length == 0 ? "" : (" (" + nrSubprojects + ")")));
 //			}
 		}
+		return promise;
 	};
 	
 	this.unloadRevision = function(poid, roid) {
@@ -232,20 +234,41 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 	};
 
 	this.toggleEye = function(node, mode){
-		var nodeList = node.list();
-		var groupNode = node.findFirstParentWithAttr("groupId");
-		projectPage.setObjectVisibility(groupNode.groupId, othis.getIfcOids(nodeList), mode);
-		nodeList.forEach(function(n){
-			n.eye.attr("mode", mode);
-			if (mode == 0) {
-				n.eye.removeClass("eyeclosed").removeClass("eyehalfopen").addClass("eyeopen");
-			} else if (mode == 1) {
-				n.eye.removeClass("eyeopen").removeClass("eyeclosed").addClass("eyehalfopen");
-			} else if (mode == 2) {
-				n.eye.removeClass("eyehalfopen").removeClass("eyeopen").addClass("eyeclosed");
-			}
-		});
+		var projectNodes = node.listFilterByType("Project");
+		if (projectNodes.length == 0) {
+			othis.internalToggleEye(node, mode);
+		} else {
+			projectNodes.forEach(function(projectNode){
+				if (projectNode.roid != -1) {
+					if (!projectPage.models[projectNode.roid].isPreloaded) {
+						othis.loadRevision(projectNode.project, projectNode.roid, []).done(function(){
+							othis.internalToggleEye(projectNode, mode);
+						});
+					} else {
+						othis.internalToggleEye(projectNode, mode);
+					}
+				}
+			});
+		}
 	};
+
+	this.internalToggleEye = function(projectNode, mode) {
+		var nodeList = projectNode.list();
+		var groupNode = projectNode.findFirstParentWithAttr("groupId");
+		if (groupNode.groupId != -1) {
+			projectPage.setObjectVisibility(groupNode.groupId, othis.getIfcOids(nodeList), mode);
+			nodeList.forEach(function(n){
+				n.eye.attr("mode", mode);
+				if (mode == 0) {
+					n.eye.removeClass("eyeclosed").removeClass("eyehalfopen").addClass("eyeopen");
+				} else if (mode == 1) {
+					n.eye.removeClass("eyeopen").removeClass("eyeclosed").addClass("eyehalfopen");
+				} else if (mode == 2) {
+					n.eye.removeClass("eyehalfopen").removeClass("eyeopen").addClass("eyeclosed");
+				}
+			});
+		}
+	}
 	
 	this.createEye = function(node, mode){
 		var eye = $("<div>");
@@ -355,19 +378,23 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 	}
 	
 	this.loadProjectTree = function(project, roid, node, types){
+		var promise = new Promise();
 		node.setLoading();
 		var model = models[roid];
 		if (model != null) {
 			projectPage.preloadModel(project, roid).done(function(){
 				model.getAllOfType("IfcProject", true, function(project){
 					othis.buildDecomposedTree(project, node, types);
+					promise.fire();
 				}).done(function(){
 					node.doneLoading();
 				});
 			});
 		} else {
 			node.doneLoading();
+			promise.fire();
 		}
+		return promise;
 	};
 	
 	this.gatherRoidList = function(node, list){

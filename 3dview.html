@@ -18,6 +18,7 @@ function ThreeDView(containerDiv, projectPage) {
 	o.selectListeners = [];
 	o.unselectListeners = [];
 	o.selectedId = -1;
+	o.loadedOids = {};
 	
 	this.nodeSelected = function(groupId, node){
 		o.selectedId = node.id;
@@ -103,12 +104,11 @@ function ThreeDView(containerDiv, projectPage) {
 					threeDObject.parent.set("alpha", material.a);
 					threeDObject.parent.set("baseColor", material);
 				}
-			} else {
+			}
+			if (o.loadedOids[object.oid] == null) {
 				oidsNotLoaded.push(object.oid);
 			}
 		}
-		
-		console.log(oidsNotLoaded);
 		
 		if (oidsNotLoaded.length > 0) {
 			var geometryLoader = new GeometryLoader(Global.bimServerApi, o.viewer);
@@ -132,6 +132,18 @@ function ThreeDView(containerDiv, projectPage) {
 				}
 			});
 			geometryLoader.setLoadOids(uniqueRoids, oidsNotLoaded);
+			
+			// This might be needed when the geometrloader comes up with more objects than requested...
+			geometryLoader.objectAddedListeners.push(function(oid){
+				o.loadedOids[oid] = true;
+			});
+			geometryLoader.progressListeners.push(function(state){
+				if (state == "done") {
+					for (var i=0; i<oidsNotLoaded.length; i++) {
+						o.loadedOids[oidsNotLoaded[i]] = true;
+					}
+				}
+			});
 			o.viewer.loadGeometry(geometryLoader);
 		}
 	};
@@ -169,6 +181,7 @@ function ThreeDView(containerDiv, projectPage) {
 	};
 	
 	this.loadRevision = function(project, roid, types){
+		/*
 		if (roid != -1 && project.nrSubProjects == 0) {
 			var geometryLoader = new GeometryLoader(Global.bimServerApi, o.viewer);
 
@@ -200,6 +213,7 @@ function ThreeDView(containerDiv, projectPage) {
 			});
 			geometryLoader.setLoadRevision(roid, types);
 		}
+		*/
 	};
 	
 	this.close = function(){};
