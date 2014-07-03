@@ -249,7 +249,13 @@ function Project(containerDiv, main, project) {
 					});
 				}
 			});
-			
+
+			othis.selectListeners.clear();
+			othis.unselectListeners.clear();
+			othis.objectVisibilityListeners.clear();
+			othis.modelLoadedListeners.clear();
+			othis.modelUnloadedListeners.clear();
+
 			Global.pluginManager.allOfType("TabPlugin", function(pluginConstructor){
 				var plugin = Object.create(pluginConstructor.prototype);
 
@@ -273,12 +279,6 @@ function Project(containerDiv, main, project) {
 					div.show();
 				});
 			});
-			
-			othis.selectListeners.clear();
-			othis.unselectListeners.clear();
-			othis.objectVisibilityListeners.clear();
-			othis.modelLoadedListeners.clear();
-			othis.modelUnloadedListeners.clear();
 			
 			$(".propertiesWrapper").load("properties.html", function(){
 				othis.properties = new Properties($(this), othis, othis.models, main, othis.selectedObjectId);
