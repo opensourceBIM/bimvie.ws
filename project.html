@@ -27,6 +27,10 @@
 			</div>
 		</div>
 		<div class="col-md-8 rightCol">
+			<div class="threedview ih">
+			</div>
+			<div class="details ih">
+			</div>
 		</div>
 	</div>
 </div>
@@ -97,6 +101,10 @@ function Project(containerDiv, main, project) {
 				}
 			});
 		});
+
+		containerDiv.find(".rightCol > .details").hide();
+		containerDiv.find(".rightCol > .threedview").show();
+		
 		othis.objectVisibilityListeners.trigger(function(objectVisibilityListener){
 			objectVisibilityListener(objectArray, oldModeArray);
 		});
@@ -299,7 +307,9 @@ function Project(containerDiv, main, project) {
 	};
 	
 	this.load3DView = function(){
-		containerDiv.find(".rightCol").load("3dview.html", function(){
+		containerDiv.find(".rightCol > .details").hide();
+		containerDiv.find(".rightCol > .threedview").show();
+		containerDiv.find(".rightCol > .threedview").load("3dview.html", function(){
 			othis.threeDView = new ThreeDView($(this), othis);
 			othis.threeDView.selectListeners.push(othis.selected);
 			othis.threeDView.unselectListeners.push(othis.unselected);
@@ -342,9 +352,11 @@ function Project(containerDiv, main, project) {
 		othis.sidespan.show();
 	};
 	
-	this.loadDetails = function(){
-		containerDiv.find(".rightCol").load("projectdetails.html", function(){
-			new ProjectDetails($(this), main, othis.project, othis).show();
+	this.loadDetails = function(project){
+		containerDiv.find(".rightCol > .threedview").hide();
+		containerDiv.find(".rightCol > .details").load("projectdetails.html", function(){
+			new ProjectDetails($(this), main, project, othis).show();
+			containerDiv.find(".rightCol > .details").show();
 		});
 	};
 	

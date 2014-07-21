@@ -424,7 +424,9 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 	});
 	dropdown.find(".btnDetails").click(function(){
 		dropdown.hide();
-		projectPage.loadDetails();
+		Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: othis.selectedNode.poid}, function(project){
+			projectPage.loadDetails(project);
+		});
 	});
 	dropdown.find(".btnCheckin").click(function(){
 		dropdown.hide();

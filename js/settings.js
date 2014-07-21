@@ -10,7 +10,7 @@ var Settings = {
 	getPlugins: function(){
 		return {
 			relatics: {
-				enabled: false
+				enabled: true
 			}
 		};
 	},
