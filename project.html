@@ -256,11 +256,16 @@ function Project(containerDiv, main, project) {
 						othis.types = new Types($(this), othis, othis.projects, othis.models, main, othis.threeDView);
 						$(".classificationWrapper").load("classifications.html", function(){
 							othis.classifications = new Classifications($(this), othis, othis.projects, othis.models, main);
-							
-							othis.projects.forEach(function(project){
+
+							containerDiv.find(".rightCol").load("3dview.html", function(){
+								othis.threeDView = new ThreeDView($(this), othis);
+								othis.threeDView.selectListeners.push(othis.selected);
+								othis.threeDView.unselectListeners.push(othis.unselected);
+
+								othis.projects.forEach(function(project){
 									othis.changeRevision(project, project.lastRevisionId);
+								});
 							});
-							othis.loadDetails();
 						});
 					});
 				});
@@ -303,20 +308,6 @@ function Project(containerDiv, main, project) {
 	this.loadDetails = function(){
 		containerDiv.find(".rightCol").load("projectdetails.html", function(){
 			new ProjectDetails($(this), main, othis.project).show();
-		});
-	};
-	
-	this.load3dView = function(){
-		containerDiv.find(".rightCol").load("3dview.html", function(){
-			othis.threeDView = new ThreeDView($(this), othis);
-			othis.threeDView.selectListeners.push(othis.selected);
-			othis.threeDView.unselectListeners.push(othis.unselected);
-			
-			
-			othis.projects.forEach(function(project){
-				othis.changeRevision(project, project.lastRevisionId);
-			});
-			
 		});
 	};
 	
