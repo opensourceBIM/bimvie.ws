@@ -133,7 +133,7 @@ function ThreeDView(containerDiv, projectPage) {
 			});
 			geometryLoader.setLoadOids(uniqueRoids, oidsNotLoaded);
 			
-			// This might be needed when the geometrloader comes up with more objects than requested...
+			// This might be needed when the geometryloader comes up with more objects than requested...
 			geometryLoader.objectAddedListeners.push(function(oid){
 				o.loadedOids[oid] = true;
 			});
@@ -181,6 +181,22 @@ function ThreeDView(containerDiv, projectPage) {
 	};
 	
 	this.loadRevision = function(project, roid, types){
+		var model = projectPage.models[roid];
+		model.getAllOfType("IfcProject", false, function(ifcProduct){
+			ifcProduct.getUnitsInContext(function(ifcUnitAssignment){
+				ifcUnitAssignment.getUnits(function(ifcUnit){
+					if (ifcUnit.getType() == "IfcSIUnit") {
+						if (ifcUnit.getUnitType() == "LENGTHUNIT") {
+							var prefix = ifcUnit.getPrefix();
+							if (prefix == "MILLI") {
+								
+							}
+						}
+					}
+				});
+			});
+		});
+		
 		/*
 		if (roid != -1 && project.nrSubProjects == 0) {
 			var geometryLoader = new GeometryLoader(Global.bimServerApi, o.viewer);
