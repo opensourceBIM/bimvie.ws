@@ -111,7 +111,7 @@ function Project(containerDiv, main, project) {
 	};
 	
 	this.resize = function(){
-		containerDiv.find(".sidespanWrapper").height(($(window).height() - $(".navbar").outerHeight() - containerDiv.find(".col-md-3 .panel-heading").outerHeight() - 57) + "px");
+		containerDiv.find(".sidespanWrapper").height(($(window).height() - $(".navbar").outerHeight() - containerDiv.find(".col-md-4 .panel-heading").outerHeight() - 57) + "px");
 	};
 	
 	this.changeRevision = function(project, roid){
