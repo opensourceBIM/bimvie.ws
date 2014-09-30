@@ -184,7 +184,7 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 		tr.append("<td>" + profileDescriptor.name + "</td>");
 		tr.append("<td>" + profileDescriptor.description + "</td>");
 		tr.append("<td>" + profileDescriptor.publicProfile + "</td>");
-		var radio = $("<input type=\"radio\" name=\"profile\" class=\"profileRadio form-control\"/>");
+		var radio = $("<input type=\"radio\" name=\"profile\" class=\"profileRadio\"/>");
 		radio.change(othis.canAdd);
 		tr.append($("<td></td>").append(radio));
 		$(".addservice2 .profilesTable tbody").append(tr);
