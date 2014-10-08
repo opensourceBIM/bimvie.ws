@@ -14,7 +14,6 @@
 					<div class="btn-group" data-toggle="buttons" style="margin-bottom: 10px">
 						<label class="btn btn-default active btnFileUpload"><input type="radio" selected>File upload</label>
 						<label class="btn btn-default btnUrl"><input type="radio">URL</label>
-						<label class="btn btn-default btnBranch"><input type="radio">Branch</label>
 					</div>
 					<div class="upload">
 						<div class="form-group">
@@ -31,7 +30,7 @@
 							<label for="comment">Comment</label>
 							<textarea id="comment" class="comment form-control" name="comment" rows="4"></textarea>
 						</div>
-						<div class="checkbox">
+						<div class="checkbox mergeDiv ih">
 							<label>Merge
 								<input class="merge" name="merge" type="checkbox"/>
 							</label>
@@ -40,7 +39,8 @@
 					<div class="uploadbranch initialhide">
 						<form method="post">
 							<label for="projectRevision">Project/Revision</label>
-							<select id="projectRevision" class="revisionSelect form-control" name="roid"></select> 
+							<select id="projectRevision" class="revisionSelect form-control" name="roid">
+							</select> 
 							<label for="branchComment">Comment</label>
 							<textarea id="branchComment" class="form-control" name="comment" rows="4"></textarea>
 							<input type="hidden" name="action" value="branchtoexistingproject" />
@@ -55,11 +55,13 @@
 						</div>
 						<div class="form-group">
 							<label for="deserializerNameUrl">Deserializer</label>
-							<select id="deserializerNameUrl" class="deserializerName form-control" name="deserializerName"></select>
+							<select id="deserializerNameUrl" class="deserializerNameUrl form-control" name="deserializerName">
+								<option value="[NONE]">Select a deserializer</option>
+							</select>
 						</div>
 						<div class="form-group">
 							<label for="commentUrl">Comment</label>
-							<textarea id="commentUrl" class="comment form-control" name="comment" rows="4"></textarea>
+							<textarea id="commentUrl" class="commentUrl form-control" name="comment" rows="4"></textarea>
 						</div>
 					</div>
 				</div>
@@ -104,9 +106,12 @@ function Checkin(containerDiv, project, successFunction) {
 			data[0].result.forEach(function(deserializer){
 				var option = $("<option value=\"" + deserializer.oid + "\">" + deserializer.name + "</option>");
 				containerDiv.find(".deserializerName").append(option);
+				
+				var option = $("<option value=\"" + deserializer.oid + "\">" + deserializer.name + "</option>");
+				containerDiv.find(".deserializerNameUrl").append(option);
 			});
 			if (data[1].result) {
-				$(".checkinMergeTr").show();
+				$(".mergeDiv").show();
 			}
 			var warnings = data[2].result;
 			if (warnings.length > 0) {
@@ -120,6 +125,9 @@ function Checkin(containerDiv, project, successFunction) {
 			data.forEach(function(deserializer){
 				var option = $("<option value=\"" + deserializer.oid + "\">" + deserializer.name + "</option>");
 				containerDiv.find(".deserializerName").append(option);
+				
+				var option = $("<option value=\"" + deserializer.oid + "\">" + deserializer.name + "</option>");
+				containerDiv.find(".deserializerNameUrl").append(option);
 			});
 		});
 		
@@ -184,11 +192,21 @@ function Checkin(containerDiv, project, successFunction) {
 	};
 	
 	this.updateSubmitButton = function() {
-        if (containerDiv.find(".deserializerName").val() != "[NONE]" && fileselected) {
-        	containerDiv.find(".uploadButton").show();
-        } else {
-        	containerDiv.find(".uploadButton").hide();
-        }
+		window.setTimeout(function(){
+			if (containerDiv.find(".btnFileUpload").hasClass("active")) {
+		        if (containerDiv.find(".deserializerName").val() != "[NONE]" && fileselected) {
+		        	containerDiv.find(".uploadButton").show();
+		        } else {
+		        	containerDiv.find(".uploadButton").hide();
+		        }
+			} else if (containerDiv.find(".btnUrl").hasClass("active")) {
+		        if (containerDiv.find(".deserializerNameUrl").val() != "[NONE]" && containerDiv.find(".urlinput").val().trim() != "") {
+		        	containerDiv.find(".uploadButton").show();
+		        } else {
+		        	containerDiv.find(".uploadButton").hide();
+		        }
+			}
+		}, 0);
 	}
 	
 	containerDiv.find(".deserializerName").change(othis.updateSubmitButton);
@@ -263,9 +281,9 @@ function Checkin(containerDiv, project, successFunction) {
 		if (containerDiv.find(".checkinurl").is(":visible")) {
 			othis.hideUpload();
 			Global.bimServerApi.callWithFullIndication("ServiceInterface", "checkinFromUrl", {
-				deserializerOid: containerDiv.find(".checkinurl .deserializerName").val(),
-				comment: containerDiv.find(".comment").val(),
-				merge: containerDiv.find(".merge").is(':checked'),
+				deserializerOid: containerDiv.find(".checkinurl .deserializerNameUrl").val(),
+				comment: containerDiv.find(".commentUrl").val(),
+				merge: false,
 				poid: othis.project.oid,
 				url: containerDiv.find(".urlinput").val(),
 				sync: false,
@@ -305,36 +323,37 @@ function Checkin(containerDiv, project, successFunction) {
 			event.preventDefault();
 		}
 	});
-	containerDiv.find(".showuploadlink").hide();
-	containerDiv.find(".uploadbranch").hide();
 
 	containerDiv.find(".btnBranch").click(function(){
 		containerDiv.find(".upload").hide();
 		containerDiv.find(".showuploadlink, .checkinurllink").show();
 		containerDiv.find(".checkinurl").hide();
 		containerDiv.find(".uploadbranch").show();
-		containerDiv.find(".uploadbranchlink").hide();
 		containerDiv.find(".uploadButton").html("Checkin existing revision");
+		othis.updateSubmitButton();
 	});
 	
 	containerDiv.find(".btnUrl").click(function(){
 		containerDiv.find(".upload, .uploadbranch").hide();
-		containerDiv.find(".showuploadlink, .uploadbranchlink").show();
 		containerDiv.find(".checkinurl").show();
 		containerDiv.find(".checkinurllink").hide();
 		containerDiv.find(".urlinput").focus();
+		containerDiv.find(".uploadButton").html("Checkin new revision");
+		othis.updateSubmitButton();
 	});
 	
 	containerDiv.find(".btnFileUpload").click(function(){
 		containerDiv.find(".upload").show();
 		containerDiv.find(".showuploadlink").hide();
 		containerDiv.find(".uploadbranch, .checkinurl").hide();
-		containerDiv.find(".uploadbranchlink, .checkinurllink").show();
 		containerDiv.find(".uploadButton").html("Checkin new revision");
+		othis.updateSubmitButton();
 	});
 
+	containerDiv.find(".deserializerNameUrl").change(othis.updateSubmitButton);
+	containerDiv.find(".urlinput").keyup(othis.updateSubmitButton);
 	containerDiv.find(".urlinput").bind("paste", function(){
-		containerDiv.find(".uploadButton").show();
+		othis.updateSubmitButton();
 	});
 
 	containerDiv.find(".uploadButton").hide();
