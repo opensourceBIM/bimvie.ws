@@ -8,38 +8,60 @@
     		<div class="modal-body">
 				<a class="uploadlink">This project has subprojects, click here if you still want to checkin a new revision</a>
 				<div class="checkinWarning alert initialhide"></div>
+				<div class="uploadStatus"></div>
+				<div class="progressBarHolder"></div>
 				<div class="uploads">
-					<div class="upload">
-						<div class="uploadStatus"></div>
-						<div class="progressBarHolder"></div>
-						<table class="uploadTable">
-							<tr><td><label for="file">File</label></td><td><input class="fileupload" type="file" name="data"/></td></tr>
-							<tr><td><label for="deserializerName">Deserializer</label></td><td><select class="deserializerName form-control" name="deserializerName">
-							<option value="[NONE]">Select a deserializer</option>
-							</select></td></tr>
-							<tr><td><label for="comment">Comment</label></td><td><textarea class="comment form-control" name="comment" cols="57" rows="4"></textarea></td></tr>
-							<tr class="checkinMergeTr initialhide"><td><label for="merge">Merge</label></td><td><input class="merge" name="merge" type="checkbox"/></td></tr>
-						</table>
+					<div class="btn-group" data-toggle="buttons" style="margin-bottom: 10px">
+						<label class="btn btn-default active btnFileUpload"><input type="radio" selected>File upload</label>
+						<label class="btn btn-default btnUrl"><input type="radio">URL</label>
+						<label class="btn btn-default btnBranch"><input type="radio">Branch</label>
 					</div>
-					<div class="uploadbranch">
-						<form method="post" action="branch.jsp">
-							<label>Project/Revision</label> 
-							<select class="revisionSelect form-control" name="roid"></select> 
-							<label>Comment</label> <input type="text" class="form-control" name="comment" /> 
+					<div class="upload">
+						<div class="form-group">
+							<label for="file">File</label>
+							<input class="fileupload" id="file" type="file" name="data"/>
+						</div>
+						<div class="form-group">
+							<label for="deserializerName">Deserializer</label>
+							<select id="deserializerName" class="deserializerName form-control" name="deserializerName">
+								<option value="[NONE]">Select a deserializer</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="comment">Comment</label>
+							<textarea id="comment" class="comment form-control" name="comment" rows="4"></textarea>
+						</div>
+						<div class="checkbox">
+							<label>Merge
+								<input class="merge" name="merge" type="checkbox"/>
+							</label>
+						</div>
+					</div>
+					<div class="uploadbranch initialhide">
+						<form method="post">
+							<label for="projectRevision">Project/Revision</label>
+							<select id="projectRevision" class="revisionSelect form-control" name="roid"></select> 
+							<label for="branchComment">Comment</label>
+							<textarea id="branchComment" class="form-control" name="comment" rows="4"></textarea>
 							<input type="hidden" name="action" value="branchtoexistingproject" />
 							<input type="hidden" name="destpoid" />
 						</form>
 						<br/>
 					</div>
 					<div class="checkinurl initialhide">
-						<label>URL
-							<input type="text" class="urlinput input-block-level form-control"/>
-						</label>
-						<label for="deserializerName">Deserializer</label><select class="deserializerName form-control" name="deserializerName"></select>
+						<div class="form-group">
+							<label for="url">URL</label>
+							<input id="url" type="text" class="urlinput form-control"/>
+						</div>
+						<div class="form-group">
+							<label for="deserializerNameUrl">Deserializer</label>
+							<select id="deserializerNameUrl" class="deserializerName form-control" name="deserializerName"></select>
+						</div>
+						<div class="form-group">
+							<label for="commentUrl">Comment</label>
+							<textarea id="commentUrl" class="comment form-control" name="comment" rows="4"></textarea>
+						</div>
 					</div>
-					<a class="showuploadlink initialhide">OR Checkin new revision</a>
-					<a class="uploadbranchlink">OR Checkin existing revision</a>
-					<a class="checkinurllink">OR Checkin from URL</a>
 				</div>
 			</div>
 		  	<div class="modal-footer">
@@ -58,16 +80,14 @@ function Checkin(containerDiv, project, successFunction) {
 	othis.project = project;
 	
 	this.hideUpload = function() {
-		containerDiv.find(".uploadbranchlink, .checkinurllink").hide();			
-		containerDiv.find(".uploadTable").hide();
+		containerDiv.find(".uploads").hide();
 		containerDiv.find(".uploadProgressBar").show();
 		containerDiv.find(".uploadButton").hide();
 		containerDiv.find(".uploadStatus").show();
 	};
 
 	this.showUpload = function() {
-		containerDiv.find(".uploadbranchlink").show();			
-		containerDiv.find(".uploadTable").show();
+		containerDiv.find(".uploads").show();
 		containerDiv.find(".uploadProgressBar").hide();
 		containerDiv.find(".uploadButton").show();
 	};
@@ -241,16 +261,30 @@ function Checkin(containerDiv, project, successFunction) {
 
 	containerDiv.find(".uploadButton").click(function(event){
 		if (containerDiv.find(".checkinurl").is(":visible")) {
+			othis.hideUpload();
 			Global.bimServerApi.callWithFullIndication("ServiceInterface", "checkinFromUrl", {
 				deserializerOid: containerDiv.find(".checkinurl .deserializerName").val(),
 				comment: containerDiv.find(".comment").val(),
 				merge: containerDiv.find(".merge").is(':checked'),
 				poid: othis.project.oid,
 				url: containerDiv.find(".urlinput").val(),
-				sync: true,
+				sync: false,
 				fileName: null
 			}, function(data){
+				currentCheckinId = data;
+				containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
+				containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"progress-bar\"></div></div>");
+				Global.bimServerApi.registerProgressHandler(currentCheckinId, othis.progressHandler, function(){
+					Global.bimServerApi.call("Bimsie1NotificationRegistryInterface", "getProgress", {
+						topicId: currentCheckinId
+					}, function(state){
+						othis.progressHandler(currentCheckinId, state);
+					});
+				});
 				
+				containerDiv.find(".uploadStatus").html("Uploading file...");
+				containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
+				containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"progress-bar\"></div></div>");
 			});
 		} else {
 			shouldsend = true;
@@ -274,7 +308,7 @@ function Checkin(containerDiv, project, successFunction) {
 	containerDiv.find(".showuploadlink").hide();
 	containerDiv.find(".uploadbranch").hide();
 
-	containerDiv.find(".uploadbranchlink").click(function(){
+	containerDiv.find(".btnBranch").click(function(){
 		containerDiv.find(".upload").hide();
 		containerDiv.find(".showuploadlink, .checkinurllink").show();
 		containerDiv.find(".checkinurl").hide();
@@ -283,7 +317,7 @@ function Checkin(containerDiv, project, successFunction) {
 		containerDiv.find(".uploadButton").html("Checkin existing revision");
 	});
 	
-	containerDiv.find(".checkinurllink").click(function(){
+	containerDiv.find(".btnUrl").click(function(){
 		containerDiv.find(".upload, .uploadbranch").hide();
 		containerDiv.find(".showuploadlink, .uploadbranchlink").show();
 		containerDiv.find(".checkinurl").show();
@@ -291,7 +325,7 @@ function Checkin(containerDiv, project, successFunction) {
 		containerDiv.find(".urlinput").focus();
 	});
 	
-	containerDiv.find(".showuploadlink").click(function(){
+	containerDiv.find(".btnFileUpload").click(function(){
 		containerDiv.find(".upload").show();
 		containerDiv.find(".showuploadlink").hide();
 		containerDiv.find(".uploadbranch, .checkinurl").hide();

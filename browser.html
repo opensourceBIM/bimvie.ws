@@ -58,7 +58,8 @@ function Browser(containerDiv, project, revision) {
 				containerDiv.find(".objectTable tbody tr").remove();
 				containerDiv.find("table").hide();
 				containerDiv.find(".3dviewport").hide();
-				var docUrl = "docs/R2x3_TC1/" + Global.bimServerApi.schemas[othis.project.schema][data.type].domain + "/lexical/" + data.type.toLowerCase() + ".htm";
+				var schema = Global.bimServerApi.version.minor == 3 ? "ifc2x3tc1" : project.schema;
+				var docUrl = "docs/R2x3_TC1/" + Global.bimServerApi.schemas[schema][data.type].domain + "/lexical/" + data.type.toLowerCase() + ".htm";
 				containerDiv.find(".objectTable tbody").append("<tr class=\"extra\"><td>Type</td><td><a href=\"" + docUrl + "\">" + data.type + "</a></td></tr>");
 				containerDiv.find(".objectTable tbody").append("<tr class=\"extra\"><td>Oid</td><td>" + oid + "</td></tr>");
 				data.values.forEach(function(value){
