@@ -280,6 +280,9 @@ function Checkin(containerDiv, project, successFunction) {
 	containerDiv.find(".uploadButton").click(function(event){
 		if (containerDiv.find(".checkinurl").is(":visible")) {
 			othis.hideUpload();
+			containerDiv.find(".uploadProgressBar").addClass("progress-striped").addClass("active");
+			containerDiv.find(".uploadProgressBar .progress-bar").css("width", "100%");
+			containerDiv.find(".uploadStatus").html("<div class=\"alert alert-block alert-info\">Connecting to remote server...</div>");
 			Global.bimServerApi.callWithFullIndication("ServiceInterface", "checkinFromUrl", {
 				deserializerOid: containerDiv.find(".checkinurl .deserializerNameUrl").val(),
 				comment: containerDiv.find(".commentUrl").val(),
