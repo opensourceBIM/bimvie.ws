@@ -161,6 +161,7 @@ div.setup form.form-horizontal label {
 
 .my-fluid-container {
 	padding: 15px;
+	padding-bottom: 0px;
 	margin-left: auto;
 	margin-right: auto;
 }
