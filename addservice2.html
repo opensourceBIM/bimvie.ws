@@ -165,12 +165,9 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 			var addEds2 = $("<a>Add extended data schema</a>");
 			td2.append(addEds2);
 			addEds2.click(function(){
-				Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaFromRepository", {namespace: serviceDescriptor.writeExtendedData}, function(data){
-					var exs = data;
-					main.showServerSettings(function(){
-						this.showAddExtendedDataSchema(exs);
-					});
-				})
+				main.showServerSettings(function(){
+					this.showAddExtendedDataSchema({name: serviceDescriptor.writeExtendedData, namespace: serviceDescriptor.writeExtendedData});
+				});
 			});
 		});
 	}
