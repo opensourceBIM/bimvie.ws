@@ -357,6 +357,17 @@ function Checkin(containerDiv, project, successFunction) {
 	containerDiv.find(".urlinput").keyup(othis.updateSubmitButton);
 	containerDiv.find(".urlinput").bind("paste", function(){
 		othis.updateSubmitButton();
+		window.setTimeout(function(){
+			var path = containerDiv.find(".urlinput").val();
+		    var lastIndex = path.lastIndexOf(".");
+		    if (lastIndex != -1) {
+			    var extension = path.substring(path.lastIndexOf(".") + 1);
+			    Global.bimServerApi.call("Bimsie1ServiceInterface", "getSuggestedDeserializerForExtension", {extension: extension, poid: project.oid}, function(data){
+			    	containerDiv.find(".deserializerNameUrl").val(data.oid);
+					othis.updateSubmitButton();
+				});
+		    }
+		}, 0);
 	});
 
 	containerDiv.find(".uploadButton").hide();
