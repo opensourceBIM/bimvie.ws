@@ -38,7 +38,6 @@
 		var base = document.getElementsByTagName("base");
 		base[0].href = Global.baseDir;
 		
-		
 		function loadResources() {
 			(function() {
 			    var link = document.createElement('link');
@@ -113,6 +112,12 @@
 				    			$.ajaxSetup({
 				    				cache: true
 				    			});
+				    			
+				    			var jQueryLoad = $.fn.load;
+				    			$.fn.load = function(url, params, callback) {
+				    				url += "?_v=" + Global.version;
+			    			        return jQueryLoad.apply(this, arguments);
+				    			}
 				    			
 				    			$("body").on("keyup", function (e) {
 				    				if (e.target.nodeName == "BODY") {

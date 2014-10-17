@@ -1,7 +1,9 @@
 <div class="classifications">
 	<table class="table table-no-top">
 		<thead></thead>
-		<tbody></tbody>
+		<tbody>
+			<tr class="empty"><td>No classification</td></tr>
+		</tbody>
 	</table>
 </div>
 <script>
@@ -127,6 +129,7 @@ function Classifications(containerDiv, projectPage, projects, models, main) {
 							td.append(" <span class=\"badge\" style=\"float: right\">" + info.total + "</span>");
 							tr.append(td);
 							
+							containerDiv.find("table tbody tr.empty").remove();
 							containerDiv.find("table tbody").append(tr);
 						});
 					}

@@ -9,6 +9,9 @@
 					<label class="btnTypes btn btn-default">
 						<input type="radio" name="options"> Types
 					</label>
+					<label class="btnLayers btn btn-default">
+						<input type="radio" name="options"> Layers
+					</label>
 					<label class="btnProperties btn btn-default">
 						<input type="radio" name="options"> Properties
 					</label>
@@ -22,6 +25,7 @@
 						<div class="propertiesWrapper ih"></div>
 						<div class="classificationWrapper ih"></div>
 						<div class="typesWrapper ih"></div>
+						<div class="layersWrapper ih"></div>
 					</div>
 				</div>
 			</div>
@@ -177,6 +181,15 @@ function Project(containerDiv, main, project) {
 						]
 				    },
 				    {
+				    	type: "IfcRepresentation"
+				    },
+				    {
+				    	type: "IfcProductRepresentation"
+				    },
+				    {
+				    	type: "IfcPresentationLayerAssignment"
+				    },
+				    {
 				    	type: "IfcRelAssociatesClassification",
 				    	include: [
 				    		{
@@ -189,6 +202,9 @@ function Project(containerDiv, main, project) {
 				    },
 				    {
 				    	type: "IfcSIUnit"
+				    },
+				    {
+				    	type: "IfcPresentationLayerAssignment"
 				    }
 				]
 			};
@@ -207,20 +223,20 @@ function Project(containerDiv, main, project) {
 								if (Global.bimServerApi.isA(schema, type.name, "IfcProduct")) {
 									var state = {
 										count: type.count,
-										mode: 2
+										mode: 0
 									};
-									if (type.name == "IfcSpace" || type.name == "IfcOpeningElement") {
-										state.mode = 2;
-										countingPromise.inc();
-										model.getAllOfType(type.name, true, function(object){
-											objectsToHide[object.oid] = {};
-											object.trans.mode = 2;
-										}).done(function(){
-											countingPromise.dec();
-										});
-									} else {
-										state.mode = 0;
-									}
+//									if (type.name == "IfcSpace" || type.name == "IfcOpeningElement") {
+//										state.mode = 2;
+//										countingPromise.inc();
+//										model.getAllOfType(type.name, true, function(object){
+//											objectsToHide[object.oid] = {};
+//											object.trans.mode = 2;
+//										}).done(function(){
+//											countingPromise.dec();
+//										});
+//									} else {
+//										state.mode = 0;
+//									}
 									types[type.name] = state;
 								}
 							});
@@ -290,7 +306,7 @@ function Project(containerDiv, main, project) {
 					div.show();
 				});
 			});
-			
+
 			$(".propertiesWrapper").load("properties.html", function(){
 				othis.properties = new Properties($(this), othis, othis.models, main, othis.selectedObjectId);
 				$(".projectTreeWrapper").load("projecttree.html", function(){
@@ -298,10 +314,13 @@ function Project(containerDiv, main, project) {
 					othis.sidespan = othis.projecttree;
 					$(".typesWrapper").load("types.html", function(){
 						othis.types = new Types($(this), othis, othis.projects, othis.models, main, othis.threeDView);
-						$(".classificationWrapper").load("classifications.html", function(){
-							othis.classifications = new Classifications($(this), othis, othis.projects, othis.models, main);
-
-							othis.load3DView();
+						$(".layersWrapper").load("layers.html", function(){
+							othis.layers = new Layers($(this), othis, othis.projects, othis.models, main, othis.threeDView);
+							$(".classificationWrapper").load("classifications.html", function(){
+								othis.classifications = new Classifications($(this), othis, othis.projects, othis.models, main);
+	
+								othis.load3DView();
+							});
 						});
 					});
 				});
@@ -347,6 +366,14 @@ function Project(containerDiv, main, project) {
 		othis.sidespan.show();
 	};
 	
+	this.showLayers = function(){
+		if (othis.sidespan != null) {
+			othis.sidespan.hide();
+		}
+		othis.sidespan = othis.layers;
+		othis.sidespan.show();
+	};
+	
 	this.showClassifications = function(){
 		if (othis.sidespan != null) {
 			othis.sidespan.hide();
@@ -384,6 +411,7 @@ function Project(containerDiv, main, project) {
 	containerDiv.find(".btnProjectTree").click(othis.loadProjectTree);
 	containerDiv.find(".btnProperties").click(othis.showProperties);
 	containerDiv.find(".btnTypes").click(othis.showTypes);
+	containerDiv.find(".btnLayers").click(othis.showLayers);
 	containerDiv.find(".btnClassifications").click(othis.showClassifications);
 }
 </script>

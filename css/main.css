@@ -175,15 +175,15 @@ div.sidespan > div > ul {
 	z-index: 5000;
 }
 
+.sidespan .tree ul.rootnode {
+	padding-left: 0px;
+}
+
 .sidespan .tree ul {
 	padding-left: 10px;
 	padding-bottom: 0px;
 	padding-top: 0px;
 	margin: 0;
-}
-
-ul.rootnode {
-	padding-left: 0px;
 }
 
 .nav-stacked {
@@ -332,7 +332,7 @@ div#viewport {
 	border-top: 0px;
 }
 
-.types .badge, .classifications .badge {
+.types .badge, .classifications .badge, .layers .badge {
 	background-color: #DDDDDD;
 }
 
