@@ -38,9 +38,8 @@
 		var base = document.getElementsByTagName("base");
 		base[0].href = Global.baseDir;
 		
-		var onLoad = function(){
-			Global.version = JSON.parse(this.responseText).version;
-			
+		
+		function loadResources() {
 			(function() {
 			    var link = document.createElement('link');
 			    link.type = 'image/x-icon';
@@ -355,9 +354,22 @@
 				    			console.log(err);
 				    		});			
 			});
-		};
+		}
+		
 		var myRequest = new XMLHttpRequest();
-		myRequest.onload = onLoad;
+		myRequest.onreadystatechange = function() {
+			if (myRequest.readyState != 4)  {
+				return;
+			}
+			if (myRequest.status != 200)  {
+				Global.version = new Date().getTime();
+				loadResources();
+				return;
+			} else {
+				Global.version = JSON.parse(myRequest.responseText).version;
+				loadResources();
+			}
+		};
 		myRequest.open("GET", Global.baseDir + "pluginversion", true);
 		myRequest.send();
 	</script>
