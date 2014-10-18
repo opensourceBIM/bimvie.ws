@@ -190,6 +190,7 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 	this.loadPublicProfiles = function() {
 		if (isLocal) {
 			$(".addservice2 .loadPrivateProfilesLink").hide();
+			console.log(othis.serviceDescriptor.identifier);
 			Global.bimServerApi.call("ServiceInterface", "getAllLocalProfiles", {serviceIdentifier: othis.serviceDescriptor.identifier}, function(data){
 				$(".addservice2 .profilesTable tbody tr.publicprofiledescriptor").remove();
 				data.forEach(function(profileDescriptor){
