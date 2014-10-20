@@ -6,7 +6,7 @@
 	<div class="bcf">
 		<img/>
 	</div>
-	<div class="validationreport">
+	<div class="validationreport ih">
 		<h2></h2>
 		<table class="table">
 			<thead>
@@ -17,6 +17,13 @@
 					<th>Should be</th>
 				</tr>
 			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
+	<div class="csv ih">
+		<h2></h2>
+		<table class="table">
+			<thead></thead>
 			<tbody></tbody>
 		</table>
 	</div>
@@ -39,6 +46,16 @@ function ExtendedData(main, extendedData, parent) {
 	tr.append(schemaTd);
 	$(".extendeddata table.detailsTable tbody").append(tr);
 	$(".extendeddata table.detailsTable tbody").append("<tr><td>Size</td><td class=\"size\"></td></tr>");
+	var downloadLink = $("<a>Download</a>");
+	var td = $("<td>");
+	td.append(downloadLink);
+	downloadLink.click(function(){
+		document.location = Global.bimServerApi.generateExtendedDataDownloadUrl(extendedData.oid);
+	});
+	tr = $("<tr>");
+	tr.append("<td>Download</td>");
+	tr.append(td);
+	$(".extendeddata table.detailsTable tbody").append(tr);
 	$(".extendeddata table.detailsTable tbody").append("<tr><td>Added</td><td>" + formatDateTime(new Date(extendedData.added)) + "</td></tr>");
 
 	this.showBcf = function(schema, extendedData, file){
@@ -77,12 +94,27 @@ function ExtendedData(main, extendedData, parent) {
 		});
 	};
 	
+	this.showCsv = function(schema, extendedData, data){
+		$(".csv h2").html(extendedData.title + " (CSV)");
+		var json = Papa.parse(data);
+		json.data.forEach(function(row){
+			var tr = $("<tr>");
+			row.forEach(function(val){
+				tr.append("<td>" + val + "</td>");
+			});
+			$(".csv table tbody").append(tr);
+		});
+		$(".csv").show();
+	};
+	
 	Global.bimServerApi.call("ServiceInterface", "getFile", {fileId: extendedData.fileId}, function(file){
 		var data = atob(file.data);
 		$(".size").html(GetHumanSize(data.length));
 		Global.bimServerApi.call("Bimsie1ServiceInterface", "getExtendedDataSchemaById", {oid: extendedData.schemaId}, function(schema){
 			if (schema.namespace == "http://www.buildingsmart-tech.org/specifications/bcf-releases") {
 				othis.showBcf(schema, extendedData, data);
+			} else if (schema.namespace == "geometrymatching") {
+				othis.showCsv(schema, extendedData, data);
 			} else if (schema.namespace == "http://extend.bimserver.org/validationreport") {
 				othis.showValidationReport(schema, extendedData, data);
 			}
