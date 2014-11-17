@@ -44,6 +44,16 @@ table .header {
 	margin: 8px;
 }
 
+.threedviewTabs .btn.active, .threedviewTabs .btn:active {
+	webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+.threedviewTabs label {
+	border: 0;
+	padding: 10px;
+}
+
 table.table-hover tr {
 	cursor: pointer;
 }

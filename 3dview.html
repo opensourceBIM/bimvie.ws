@@ -1,6 +1,9 @@
 <div class="threedview">
 	<div class="panel panel-default">
-		<div class="panel-heading">3D View
+		<div class="panel-heading btn-group threedviewTabs" style="padding: 0px; width: 100%" data-toggle="buttons">
+			<label class="btn btn-default active"> <input type="radio" name="options" id="option1" autocomplete="off" checked>2D</label>
+			<label class="btn btn-default"> <input type="radio" name="options" id="option2" autocomplete="off">3D</label>
+			<label class="btn btn-default"> <input type="radio" name="options" id="option3" autocomplete="off">Details</label>
 		</div>
 		<div class="panel-body">
 			<div class="progressbars">
@@ -244,5 +247,8 @@ function ThreeDView(containerDiv, projectPage) {
 	projectPage.modelLoadedListeners.register(o.loadRevision);
 	projectPage.modelUnloadedListeners.register(o.unloadRevision);
 
+	$("#viewport").on("contextmenu", function(e){
+		e.preventDefault();
+	});
 }
 </script>
