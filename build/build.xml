@@ -15,6 +15,7 @@
 			<fileset dir="../">
 				<exclude name="bin/**"/>
 				<exclude name="build/**"/>
+				<exclude name="build/antlibs/*"/>
 				<exclude name=".settings/**"/>
 				<exclude name="deploy/**"/>
 				<exclude name="src/**"/>
