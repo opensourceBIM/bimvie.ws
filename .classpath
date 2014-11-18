@@ -7,5 +7,13 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/Shared"/>
+	<classpathentry kind="lib" path="build/antlibs/commons-codec-1.6.jar"/>
+	<classpathentry kind="lib" path="build/antlibs/commons-logging-1.1.3.jar"/>
+	<classpathentry kind="lib" path="build/antlibs/githubrelease.jar"/>
+	<classpathentry kind="lib" path="build/antlibs/httpclient-4.3.2.jar"/>
+	<classpathentry kind="lib" path="build/antlibs/httpclient-cache-4.3.2.jar"/>
+	<classpathentry kind="lib" path="build/antlibs/httpcore-4.3.1.jar"/>
+	<classpathentry kind="lib" path="build/antlibs/httpmime-4.3.2.jar"/>
+	<classpathentry kind="lib" path="build/antlibs/org.eclipse.egit.github.core-2.1.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
