@@ -1,4 +1,4 @@
-<project name="BIMviews">
+<project name="BIMviews" default="release">
 	<tstamp>
 		<format property="builddate" pattern="yyyy-MM-dd" />
 	</tstamp>
@@ -25,12 +25,12 @@
 		
 		<java jar="antlibs/githubrelease.jar" fork="true">
 			<classpath>
-				<pathelement location="antlibs/httpcore-4.3.1.jar"/>
-				<pathelement location="antlibs/httpclient-4.3.2.jar"/>
+				<pathelement location="antlibs/httpcore-4.3.3.jar"/>
+				<pathelement location="antlibs/httpclient-4.3.6.jar"/>
 				<pathelement location="antlibs/commons-codec-1.6.jar"/>
 				<pathelement location="antlibs/commons-logging-1.1.3.jar"/>
-				<pathelement location="antlibs/httpmime-4.3.2.jar"/>
-				<pathelement location="antlibs/httpclient-cache-4.3.2.jar"/>
+				<pathelement location="antlibs/httpmime-4.3.6.jar"/>
+				<pathelement location="antlibs/httpclient-cache-4.3.6.jar"/>
 				<pathelement location="antlibs/org.eclipse.egit.github.core-2.1.5.jar"/>
 			</classpath>
 			<arg value="${github_username}">
