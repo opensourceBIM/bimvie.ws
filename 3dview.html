@@ -1,19 +1,5 @@
 <div class="threedview">
-	<div class="panel panel-default">
-		<div class="panel-heading btn-group threedviewTabs" style="padding: 0px; width: 100%" data-toggle="buttons">
-			<label class="btn btn-default active"> <input type="radio" name="options" id="option1" autocomplete="off" checked>2D</label>
-			<label class="btn btn-default"> <input type="radio" name="options" id="option2" autocomplete="off">3D</label>
-			<label class="btn btn-default"> <input type="radio" name="options" id="option3" autocomplete="off">Details</label>
-		</div>
-		<div class="panel-body">
-			<div class="progressbars">
-				<div class="waiting">
-					<span class="badge">3</span><span class="text"> Waiting...</span>
-				</div>
-			</div>
-			<div id="viewport"></div>
-		</div>
-	</div>
+	<div id="viewport"></div>
 </div>
 <script>
 function ThreeDView(containerDiv, projectPage) {
@@ -165,7 +151,7 @@ function ThreeDView(containerDiv, projectPage) {
 
 	this.resize = function(){
 		$("#viewport").width($("panel-body").width() + "px");
-		$("#viewport").height(($(window).height() - $(".navbar").outerHeight() - $(".3dview .panel-heading").outerHeight() - 98) + "px");
+		$("#viewport").height(($(window).height() - $(".navbar").outerHeight() - $(".rightpanel .panel-heading").outerHeight() - 88) + "px");
 		o.viewer.resize($('div#viewport').width(), $('div#viewport').height());
 	};
 	

@@ -31,7 +31,7 @@
 			</div>
 		</div>
 		<div class="col-md-8 rightCol">
-			<div class="threedview ih">
+			<div class="rightpanel ih">
 			</div>
 			<div class="details ih">
 			</div>
@@ -107,7 +107,7 @@ function Project(containerDiv, main, project) {
 		});
 
 		containerDiv.find(".rightCol > .details").hide();
-		containerDiv.find(".rightCol > .threedview").show();
+		containerDiv.find(".rightCol > .rightpanel").show();
 		
 		othis.objectVisibilityListeners.trigger(function(objectVisibilityListener){
 			objectVisibilityListener(objectArray, oldModeArray);
@@ -310,12 +310,12 @@ function Project(containerDiv, main, project) {
 			$(".propertiesWrapper").load("properties.html", function(){
 				othis.properties = new Properties($(this), othis, othis.models, main, othis.selectedObjectId);
 				$(".projectTreeWrapper").load("projecttree.html", function(){
-					othis.projecttree = new ProjectTree($(this), othis, othis.project, othis.models, main, othis.threeDView, othis.selectedObjectId);
+					othis.projecttree = new ProjectTree($(this), othis, othis.project, othis.models, main, othis.rightpanel, othis.selectedObjectId);
 					othis.sidespan = othis.projecttree;
 					$(".typesWrapper").load("types.html", function(){
-						othis.types = new Types($(this), othis, othis.projects, othis.models, main, othis.threeDView);
+						othis.types = new Types($(this), othis, othis.projects, othis.models, main, othis.rightpanel);
 						$(".layersWrapper").load("layers.html", function(){
-							othis.layers = new Layers($(this), othis, othis.projects, othis.models, main, othis.threeDView);
+							othis.layers = new Layers($(this), othis, othis.projects, othis.models, main, othis.rightpanel);
 							$(".classificationWrapper").load("classifications.html", function(){
 								othis.classifications = new Classifications($(this), othis, othis.projects, othis.models, main);
 	
@@ -330,11 +330,11 @@ function Project(containerDiv, main, project) {
 	
 	this.load3DView = function(){
 		containerDiv.find(".rightCol > .details").hide();
-		containerDiv.find(".rightCol > .threedview").show();
-		containerDiv.find(".rightCol > .threedview").load("3dview.html", function(){
-			othis.threeDView = new ThreeDView($(this), othis);
-			othis.threeDView.selectListeners.push(othis.selected);
-			othis.threeDView.unselectListeners.push(othis.unselected);
+		containerDiv.find(".rightCol > .rightpanel").show();
+		containerDiv.find(".rightCol > .rightpanel").load("rightpanel.html", function(){
+			othis.rightPanel = new RightPanel($(this), othis);
+			othis.rightPanel.selectListeners.push(othis.selected);
+			othis.rightPanel.unselectListeners.push(othis.unselected);
 
 			othis.projects.forEach(function(project){
 				othis.changeRevision(project, project.lastRevisionId);
@@ -383,7 +383,7 @@ function Project(containerDiv, main, project) {
 	};
 	
 	this.loadDetails = function(project){
-		containerDiv.find(".rightCol > .threedview").hide();
+		containerDiv.find(".rightCol > .rightpanel").hide();
 		containerDiv.find(".rightCol > .details").load("projectdetails.html", function(){
 			new ProjectDetails($(this), main, project, othis).show();
 			containerDiv.find(".rightCol > .details").show();

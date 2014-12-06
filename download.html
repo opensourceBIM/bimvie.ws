@@ -8,6 +8,7 @@
 		    <div class="modal-body">
 				<div class="checkoutMessage initialhide"></div>
 				<div class="downloadStatus initialhide alert alert-info"></div>
+				<div class="message alert initialhide"></div>
 				<div class="progressBarHolder"></div>
 				
 				<div class="downloadProgressBar progress initialhide">
@@ -140,6 +141,7 @@ function Download(containerDiv, data) {
 	};
 
 	this.progressHandler = function(topicId, state) {
+		console.log(state.title);
 		if (topicId == othis.laid) {
 			var oldStage = othis.stage;
 			othis.stage = state.stage;
@@ -159,39 +161,46 @@ function Download(containerDiv, data) {
 				containerDiv.find(".fields, .downloadpopup .checkoutMessage").show();
 				containerDiv.find(".downloadProgressBar").hide();
 				state.errors.map(function(error){
-					containerDiv.find(".message").append(error + "<br/>");
+					containerDiv.find(".message").addClass("alert-danger").append(error + "<br/>").show();
 				});
-				containerDiv.find(".message").html("");
 				Global.bimServerApi.unregisterProgressHandler(othis.laid, othis.progressHandler);
-			} else if (state.state == "FINISHED") {
+			} else if (state.title == "Done preparing") {
 				if (state.warnings.length > 0) {
 					state.warnings.map(function(warning){
-						containerDiv.find(".message").append(warning + "<br/>");
+						containerDiv.find(".message").addClass("alert-danger").append(warning + "<br/>").show();
+					});
+				}
+				if (state.errors.length > 0) {
+					state.errors.map(function(error){
+						containerDiv.find(".message").addClass("alert-danger").append(error + "<br/>").show();
 					});
 				}
 				
-				containerDiv.find(".progressBarHolder .downloadProgressBar").remove();
-
+				// Waiting for the callback, because changing the window.location will cancel all running ajax calls
+				var url = Global.bimServerApi.generateRevisionDownloadUrl({
+					topicId: topicId,
+					zip: containerDiv.find(".downloadCheckoutZip").attr('checked') != undefined,
+					serializerOid: containerDiv.find(".revisionsdownloadcheckoutselect").val(),
+					laid: othis.laid
+				});
+				
+				if (othis.mimeTypeOverride != null) {
+					url += "&mime=" + othis.mimeTypeOverride;
+					window.open(url);
+				} else {
+					window.location = url;
+				}
+				containerDiv.find(".checkoutMessage").html("");
+				containerDiv.find(".downloadStatus").html("Prepare complete, initiating download.");
+			} else if (state.state == "FINISHED") {
 				Global.bimServerApi.unregisterProgressHandler(othis.laid, othis.progressHandler, function(){
-					// Waiting for the callback, because changing the window.location will cancel all running ajax calls
-					var url = Global.bimServerApi.generateRevisionDownloadUrl({
-						zip: containerDiv.find(".downloadCheckoutZip").attr('checked') != undefined,
-						serializerOid: containerDiv.find(".revisionsdownloadcheckoutselect").val(),
-						laid: othis.laid
-					});
+					containerDiv.find(".progressBarHolder .downloadProgressBar").remove();
+					containerDiv.find(".downloadStatus").removeClass("alert-info").addClass("alert-success").html("Download complete.");
+					containerDiv.find(".fields, .downloadpopup .checkoutMessage").show();
+					
 					// Setting laid to null to make sure that cancelling at this moment won't try to termintate something that's already done					
 					othis.laid = null;
-					
-					if (othis.mimeTypeOverride != null) {
-						url += "&mime=" + othis.mimeTypeOverride;
-						window.open(url);
-					} else {
-						window.location = url;
-					}
-					containerDiv.find(".checkoutMessage").html("");
-					containerDiv.find(".downloadStatus").removeClass("alert-info").addClass("alert-success").html("Prepare complete, initiating download.");
-					containerDiv.find(".fields, .downloadpopup .checkoutMessage").show();
-				});
+				});				
 			}
 		}
 	};

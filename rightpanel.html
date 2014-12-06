@@ -1,0 +1,37 @@
+<div class="rightpanel">
+	<div class="panel panel-default">
+		<div class="panel-heading btn-group threedviewTabs" style="padding: 0px; width: 100%" data-toggle="buttons">
+			<label class="btn btn-default button2d"> <input type="radio" name="options" id="option1" autocomplete="off">2D</label>
+			<label class="btn btn-default button3d active"> <input type="radio" name="options" id="option2" autocomplete="off" checked>3D</label>
+			<label class="btn btn-default"> <input type="radio" name="options" id="option3" autocomplete="off">Details</label>
+		</div>
+		<div class="panel-body">
+			<div class="content">
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+function RightPanel(containerDiv, projectPage) {
+	var o = this;
+	
+	o.selectListeners = [];
+	o.unselectListeners = [];
+	
+	containerDiv.find(".content").load("3dview.html", function(){
+		new ThreeDView($(this), projectPage);
+	});
+	
+	containerDiv.find(".button2d").click(function(){
+		containerDiv.find(".content").load("2dview.html", function(){
+			new TwoDView($(this), projectPage);
+		});
+	});
+
+	containerDiv.find(".button3d").click(function(){
+		containerDiv.find(".content").load("3dview.html", function(){
+			new ThreeDView($(this), projectPage);
+		});
+	});
+}
+</script>

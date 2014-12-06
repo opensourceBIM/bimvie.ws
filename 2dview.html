@@ -1,8 +1,82 @@
 <div class="twodview">
+	<div id="viewport" class="viewport">
+		<svg xmlns="http://www.w3.org/2000/svg"></svg>
+	</div>
 </div>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script>
-function TwoDView(containerDiv) {
+function TwoDView(containerDiv, projectPage) {
 	var o = this;
 	
+	this.resize = function(){
+		$("#viewport").width($("panel-body").width() + "px");
+		$("#viewport").height(($(window).height() - $(".navbar").outerHeight() - $(".rightpanel .panel-heading").outerHeight() - 88) + "px");
+	};
+	
+	this.show = function(){
+		o.resize();
+		$(window).resize(o.resize);
+	};
+	
+	
+	this.selected = function(groupId, id){
+	};
+	
+	this.unselected = function(groupId, id){
+	};
+	
+	this.objectVisibilityChanged = function(objects, oldModes){
+	};
+	
+	this.unloadRevision = function(poid, roid) {
+	};
+	
+	this.loadRevision = function(project, roid, types){
+		var model = projectPage.models[roid];
+		model.getAllOfType("IfcWall", true, function(ifcProduct){
+			ifcProduct.getObjectPlacement(function(objectPlacement){
+				if (objectPlacement.getType() == "IfcLocalPlacement") {
+					objectPlacement.getRelativePlacement(function(relPlace){
+						relPlace.getLocation(function(location){
+							var locCoords = location.getCoordinates();
+							ifcProduct.getRepresentation(function(representation){
+								if (representation != null) {
+									representation.getRepresentations(function(rep){
+										if (rep.getType() == "IfcShapeRepresentation") {
+											if (rep.getRepresentationType() == "Curve2D") {
+												rep.getItems(function(item){
+													if (item.getType() == "IfcPolyline") {
+														var polyline = d3.select("svg").append("polyline").attr("style", "fill:white;stroke:black;stroke-width:1");
+														var points = [];
+														var scale = 10;
+														item.getPoints(function(cartesianPoint){
+															var coords = cartesianPoint.getCoordinates();
+															points.push((coords[0] + locCoords[0]) * scale, (coords[1] + locCoords[1]) * scale);
+														}).done(function(){
+															polyline.attr("points", points)
+														});
+													}
+												});
+											} else {
+												console.log("Unimplemented " + rep.getRepresentationType());
+											}
+										}
+									});
+								}
+							});
+						});
+					});					
+				}
+			});
+		});
+	};
+	
+	projectPage.selectListeners.register(o.selected);
+	projectPage.unselectListeners.register(o.unselected);
+	projectPage.objectVisibilityListeners.register(o.objectVisibilityChanged);
+	projectPage.modelLoadedListeners.register(o.loadRevision);
+	projectPage.modelUnloadedListeners.register(o.unloadRevision);
+
+	o.show();
 }
 </script>
