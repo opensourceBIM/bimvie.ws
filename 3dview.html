@@ -1,4 +1,9 @@
 <div class="threedview">
+	<div class="progressbars">
+		<div class="waiting">
+			<span class="badge">3</span><span class="text"> Waiting...</span>
+		</div>
+	</div>
 	<div id="viewport"></div>
 </div>
 <script>
@@ -44,7 +49,7 @@ function ThreeDView(containerDiv, projectPage) {
 	
 	this.objectVisibilityChanged = function(objects, oldModes){
 		// todo use groupid
-
+		
 		var uniqueRoids = [];
 		
 		if (Array.isArray(objects) && Array.isArray(oldModes)) {
@@ -170,8 +175,8 @@ function ThreeDView(containerDiv, projectPage) {
 	};
 	
 	this.loadRevision = function(project, roid, types){
-		var model = projectPage.models[roid];
-		model.getAllOfType("IfcProject", false, function(ifcProduct){
+//		var model = projectPage.models[roid];
+/*		model.getAllOfType("IfcProject", false, function(ifcProduct){
 			ifcProduct.getUnitsInContext(function(ifcUnitAssignment){
 				ifcUnitAssignment.getUnits(function(ifcUnit){
 					if (ifcUnit.getType() == "IfcSIUnit") {
@@ -185,8 +190,7 @@ function ThreeDView(containerDiv, projectPage) {
 				});
 			});
 		});
-		
-		/*
+
 		if (roid != -1 && project.nrSubProjects == 0) {
 			var geometryLoader = new GeometryLoader(Global.bimServerApi, o.viewer);
 
@@ -218,7 +222,7 @@ function ThreeDView(containerDiv, projectPage) {
 			});
 			geometryLoader.setLoadRevision(roid, types);
 		}
-		*/
+*/
 	};
 	
 	this.close = function(){};

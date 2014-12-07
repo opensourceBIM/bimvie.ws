@@ -332,7 +332,7 @@ function Project(containerDiv, main, project) {
 		containerDiv.find(".rightCol > .details").hide();
 		containerDiv.find(".rightCol > .rightpanel").show();
 		containerDiv.find(".rightCol > .rightpanel").load("rightpanel.html", function(){
-			othis.rightPanel = new RightPanel($(this), othis);
+			othis.rightPanel = new RightPanel($(this), main, othis);
 			othis.rightPanel.selectListeners.push(othis.selected);
 			othis.rightPanel.unselectListeners.push(othis.unselected);
 

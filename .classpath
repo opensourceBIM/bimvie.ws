@@ -12,10 +12,6 @@
 	<classpathentry kind="lib" path="build/antlibs/githubrelease.jar"/>
 	<classpathentry kind="lib" path="build/antlibs/org.eclipse.egit.github.core-2.1.5.jar"/>
 	<classpathentry kind="lib" path="build/antlibs/fluent-hc-4.3.6.jar"/>
-	<classpathentry kind="lib" path="build/antlibs/httpclient-4.3.6.jar"/>
-	<classpathentry kind="lib" path="build/antlibs/httpclient-cache-4.3.6.jar"/>
-	<classpathentry kind="lib" path="build/antlibs/httpcore-4.3.3.jar"/>
-	<classpathentry kind="lib" path="build/antlibs/httpmime-4.3.6.jar"/>
 	<classpathentry kind="lib" path="build/antlibs/httpclient-4.3.2.jar"/>
 	<classpathentry kind="lib" path="build/antlibs/httpclient-cache-4.3.2.jar"/>
 	<classpathentry kind="lib" path="build/antlibs/httpcore-4.3.1.jar"/>
