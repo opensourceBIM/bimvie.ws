@@ -28,7 +28,9 @@
 		</jar>
 		
 		<java jar="antlibs/githubrelease.jar" fork="true">
-			<classpath refid="lib"/>
+			<classpath>
+				<fileset refid="lib"></fileset>
+			</classpath>
 			<arg value="${github_username}">
 			</arg>
 			<arg value="${github_password}">
