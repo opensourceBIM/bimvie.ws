@@ -71,7 +71,7 @@ function Classifications(containerDiv, projectPage, projects, models, main) {
 		
 	};
 	
-	this.loadRevision = function(project, roid, types, objectsToHide){
+	this.loadRevision = function(project, roid, types){
 		if (project.lastRevisionId != -1 && project.nrSubProjects == 0) {
 			var model = models[roid];
 			model.getAllOfType("IfcRelAssociatesClassification", true, function(relAssociatesClassification){
@@ -85,9 +85,9 @@ function Classifications(containerDiv, projectPage, projects, models, main) {
 				relAssociatesClassification.getRelatedObjects(function(object){
 					if (object.isA("IfcProduct")) {
 						othis.classifications[relAssociatesClassification.oid].total++;
-						if (objectsToHide[object.oid] == null) {
-							othis.classifications[relAssociatesClassification.oid].visible++; 
-						}
+//						if (objectsToHide[object.oid] == null) {
+//							othis.classifications[relAssociatesClassification.oid].visible++; 
+//						}
 						if (othis.objectToClassification[object.oid] == null) {
 							othis.objectToClassification[object.oid] = [];
 						}

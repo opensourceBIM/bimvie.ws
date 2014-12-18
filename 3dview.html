@@ -105,7 +105,11 @@ function ThreeDView(containerDiv, projectPage) {
 		}
 		
 		if (oidsNotLoaded.length > 0) {
-			var geometryLoader = new GeometryLoader(Global.bimServerApi, o.viewer);
+			var models = {};
+			uniqueRoids.forEach(function(roid){
+				models[roid] = projectPage.models[roid];
+			});
+			var geometryLoader = new GeometryLoader(Global.bimServerApi, models, o.viewer);
 
 			var progressdiv = $("<div class=\"progressdiv\">");
 			var text = $("<div class=\"text\">");

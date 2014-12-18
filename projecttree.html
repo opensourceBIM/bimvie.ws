@@ -21,10 +21,6 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 	othis.selectedId = selectedId;
 	othis.selectedNode = null;
 	
-//	this.loadProject = function(project){
-//		othis.loadRevision(project, -1);
-//	};
-	
 	this.addRevision = function(project, roid, types){
 		var parentNode = othis.tree.find(project.parentId);
 		var node = new Node(project.oid, project.name);
@@ -190,6 +186,8 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 			setTimeout(function(){
 				$(".sidespanWrapper").scrollTo(treeNode.li);
 			}, 0);
+		} else {
+			console.log("Cannot find " + id);
 		}
 	};
 

@@ -213,30 +213,25 @@ function Project(containerDiv, main, project) {
 			}).done(function(){
 				Global.notifier.setInfo("Loading model data...");
 				var types = [];
-				var objectsToHide = [];
 				countingPromise.inc();
 				Global.bimServerApi.call("ServiceInterface", "getRevisionSummary", {roid: roid}, function(summary){
 					summary.list.forEach(function(item){
 						if (item.name == "IFC Entities") {
 							item.types.forEach(function(type, index){
-								var schema = project.schema;
-								if (Global.bimServerApi.isA(schema, type.name, "IfcProduct")) {
+								if (Global.bimServerApi.isA(project.schema, type.name, "IfcProduct")) {
 									var state = {
 										count: type.count,
 										mode: 0
 									};
-//									if (type.name == "IfcSpace" || type.name == "IfcOpeningElement") {
-//										state.mode = 2;
-//										countingPromise.inc();
-//										model.getAllOfType(type.name, true, function(object){
-//											objectsToHide[object.oid] = {};
-//											object.trans.mode = 2;
-//										}).done(function(){
-//											countingPromise.dec();
-//										});
-//									} else {
-//										state.mode = 0;
-//									}
+									if (type.name == "IfcSpace" || type.name == "IfcOpeningElement") {
+										state.mode = 2;
+										countingPromise.inc();
+										model.getAllOfType(type.name, true, function(object){
+											object.trans.mode = 2;
+										}).done(function(){
+											countingPromise.dec();
+										});
+									}
 									types[type.name] = state;
 								}
 							});
@@ -247,7 +242,7 @@ function Project(containerDiv, main, project) {
 				countingPromise.done(function(){
 					model.isPreloaded = true;
 					othis.modelLoadedListeners.trigger(function(modelLoadedListener){
-						modelLoadedListener(project, roid, types, objectsToHide);
+						modelLoadedListener(project, roid, types);
 					});
 					promise.fire();
 				});
