@@ -219,7 +219,7 @@ function Project(containerDiv, main, project) {
 					summary.list.forEach(function(item){
 						if (item.name == "IFC Entities") {
 							item.types.forEach(function(type, index){
-								var schema = Global.bimServerApi.version.minor == 3 ? "ifc2x3tc1" : project.schema;
+								var schema = project.schema;
 								if (Global.bimServerApi.isA(schema, type.name, "IfcProduct")) {
 									var state = {
 										count: type.count,

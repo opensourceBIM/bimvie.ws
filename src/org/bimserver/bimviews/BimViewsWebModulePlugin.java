@@ -26,7 +26,7 @@ public class BimViewsWebModulePlugin extends AbstractWebModulePlugin {
 
 	@Override
 	public String getVersion() {
-		return "1.3.9";
+		return "1.3.10";
 	}
 
 	@Override

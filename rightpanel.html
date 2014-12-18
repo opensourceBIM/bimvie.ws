@@ -18,9 +18,17 @@ function RightPanel(containerDiv, main, projectPage) {
 	o.selectListeners = [];
 	o.unselectListeners = [];
 	
-	containerDiv.find(".content").load("3dview.html", function(){
-		new ThreeDView($(this), projectPage);
-	});
+	this.select = function(groupId, id){
+		o.selectListeners.forEach(function(listener){
+			listener(groupId, id);
+		});
+	};
+
+	this.unselect = function(groupId, id){
+		o.unselectListeners.forEach(function(listener){
+			listener(groupId, id);
+		});
+	};
 	
 	containerDiv.find(".button2d").click(function(){
 		containerDiv.find(".content").load("2dview.html", function(){
@@ -28,11 +36,19 @@ function RightPanel(containerDiv, main, projectPage) {
 		});
 	});
 
-	containerDiv.find(".button3d").click(function(){
+	this.showThreeD = function(){
 		containerDiv.find(".content").load("3dview.html", function(){
-			new ThreeDView($(this), projectPage);
+			var threeDView = new ThreeDView($(this), projectPage);
+			threeDView.selectListeners.push(o.select);
+			threeDView.unselectListeners.push(o.unselect);
 		});
+	};
+	
+	containerDiv.find(".button3d").click(function(){
+		o.showThreeD();
 	});
+	
+	o.showThreeD();
 
 	containerDiv.find(".buttonDetails").click(function(){
 		containerDiv.find(".content").load("projectdetails.html", function(){

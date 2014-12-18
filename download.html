@@ -61,67 +61,35 @@ function Download(containerDiv, data) {
 	// Make sure we don't process the "Done preparing" message more than once
 	othis.prepareReceived = false;
 
-	if (Global.bimServerApi.version.major == 1 && Global.bimServerApi.version.minor == 4) {
-		Global.bimServerApi.resolveUser(function(user){
-			var requests = [];
+	Global.bimServerApi.resolveUser(function(user){
+		var requests = [];
+		requests.push([
+			"PluginInterface", "getDefaultSerializer", {}
+		]);
+		requests.push([
+			"PluginInterface", "getAllSerializersForRoids", {roids: data.roids == null ? [data.roid] : data.roids, onlyEnabled: true}
+		]);
+		if (data.downloadType != "downloadRevisions") {
 			requests.push([
-				"PluginInterface", "getDefaultSerializer", {}
+				"ServiceInterface", "userHasCheckinRights", {uoid: user.oid, poid: data.poid}
 			]);
-			requests.push([
-				"PluginInterface", "getAllSerializersForRoids", {roids: data.roids == null ? [data.roid] : data.roids, onlyEnabled: true}
-			]);
-			if (data.downloadType != "downloadRevisions") {
-				requests.push([
-					"ServiceInterface", "userHasCheckinRights", {uoid: user.oid, poid: data.poid}
-				]);
+		}
+		Global.bimServerApi.multiCall(requests, function(data){
+			var defaultSerializer = data[0].result;
+			var serializers = data[1].result;
+			if (data.length > 2) {
+				othis.userHasCheckinRights = data[2].result;
 			}
-			Global.bimServerApi.multiCall(requests, function(data){
-				var defaultSerializer = data[0].result;
-				var serializers = data[1].result;
-				if (data.length > 2) {
-					othis.userHasCheckinRights = data[2].result;
+			serializers.forEach(function(serializer){
+				var option = $("<option value=\"" + serializer.oid + "\">" + serializer.name + "</option>");
+				if (serializer.oid == defaultSerializer.oid) {
+					option.attr("selected", "selected");
 				}
-				serializers.forEach(function(serializer){
-					var option = $("<option value=\"" + serializer.oid + "\">" + serializer.name + "</option>");
-					if (serializer.oid == defaultSerializer.oid) {
-						option.attr("selected", "selected");
-					}
-					containerDiv.find(".revisionsdownloadcheckoutselect").append(option);
-				});
-				othis.checkRevisionsCheckoutButton();
+				containerDiv.find(".revisionsdownloadcheckoutselect").append(option);
 			});
+			othis.checkRevisionsCheckoutButton();
 		});
-	} else if (Global.bimServerApi.version.major == 1 && Global.bimServerApi.version.minor == 3) {
-		Global.bimServerApi.resolveUser(function(user){
-			var requests = [];
-			requests.push([
-				"PluginInterface", "getDefaultSerializer", {}
-			]);
-			requests.push([
-				"PluginInterface", "getAllSerializers", {onlyEnabled: true}
-			]);
-			if (data.downloadType != "downloadRevisions") {
-				requests.push([
-					"ServiceInterface", "userHasCheckinRights", {uoid: user.oid, poid: data.poid}
-				]);
-			}
-			Global.bimServerApi.multiCall(requests, function(data){
-				var defaultSerializer = data[0].result;
-				var serializers = data[1].result;
-				if (data.length > 2) {
-					othis.userHasCheckinRights = data[2].result;
-				}
-				serializers.forEach(function(serializer){
-					var option = $("<option value=\"" + serializer.oid + "\">" + serializer.name + "</option>");
-					if (serializer.oid == defaultSerializer.oid) {
-						option.attr("selected", "selected");
-					}
-					containerDiv.find(".revisionsdownloadcheckoutselect").append(option);
-				});
-				othis.checkRevisionsCheckoutButton();
-			});
-		});		
-	}
+	});
 	
 	this.checkRevisionsCheckoutButton = function(event) {
 		if (!othis.data.allowCheckouts) {
@@ -223,12 +191,9 @@ function Download(containerDiv, data) {
 	};
 	
 	this.cancel = function(){
-		if (Global.bimServerApi.version.major == 1 && Global.bimServerApi.version.minor == 4) {
-			// Cancelling long running action was added to BIMserver in version 1.4
-			if (othis.laid != null) {
-				Global.bimServerApi.call("Bimsie1ServiceInterface", "terminateLongRunningAction", {actionId: othis.laid}, function(){
-				});
-			}
+		if (othis.laid != null) {
+			Global.bimServerApi.call("Bimsie1ServiceInterface", "terminateLongRunningAction", {actionId: othis.laid}, function(){
+			});
 		}
 	};
 	

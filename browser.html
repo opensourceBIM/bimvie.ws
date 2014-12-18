@@ -58,7 +58,7 @@ function Browser(containerDiv, project, revision) {
 				containerDiv.find(".objectTable tbody tr").remove();
 				containerDiv.find("table").hide();
 				containerDiv.find(".3dviewport").hide();
-				var schema = Global.bimServerApi.version.minor == 3 ? "ifc2x3tc1" : project.schema;
+				var schema = project.schema;
 				var docUrl = "docs/R2x3_TC1/" + Global.bimServerApi.schemas[schema][data.type].domain + "/lexical/" + data.type.toLowerCase() + ".htm";
 				containerDiv.find(".objectTable tbody").append("<tr class=\"extra\"><td>Type</td><td><a href=\"" + docUrl + "\">" + data.type + "</a></td></tr>");
 				containerDiv.find(".objectTable tbody").append("<tr class=\"extra\"><td>Oid</td><td>" + oid + "</td></tr>");
@@ -132,7 +132,7 @@ function Browser(containerDiv, project, revision) {
 	this.loadType = function(poid, className) {
 		othis.loadProject(poid, function(){
 			pushHistoryAppend({type: className, poid: poid, oid: false}, "Browser");
-			Global.bimServerApi.call("Bimsie1LowLevelInterface", "getDataObjectsByType", {roid: othis.revision.oid, className: className, flat: true, schema: othis.schema}, function(data){
+			Global.bimServerApi.call("Bimsie1LowLevelInterface", "getDataObjectsByType", {roid: othis.revision.oid, packageName: othis.project.schema, className: className, flat: true, schema: othis.schema}, function(data){
 				containerDiv.find(".breadcrumb *").remove();
 				containerDiv.find(".breadcrumb").append("<li><a class=\"breadcrumbModel\">Model</a> <span class=\"divider\">/</span></li>");
 				containerDiv.find(".breadcrumb").append("<li class=\"active\">" + className + "</li>");
