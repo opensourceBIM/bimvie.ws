@@ -221,11 +221,13 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		}
 	};
 	
-	this.getIfcOids = function(nodeList){
+	this.getIfcOids = function(nodeList, hiddenTypes){
 		var result = [];
 		nodeList.forEach(function(node){
 			if (node.type.startsWith("Ifc") && typeof node.id === "number") {
-				result.push(node.id);
+				if (hiddenTypes == null || hiddenTypes[node.type] == null) {
+					result.push(node.id);
+				}
 			}
 		});
 		return result;
@@ -240,7 +242,24 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 				if (projectNode.roid != -1) {
 					if (!projectPage.models[projectNode.roid].isPreloaded) {
 						othis.loadRevision(projectNode.project, projectNode.roid, []).done(function(){
-							othis.internalToggleEye(projectNode, mode);
+							var nodeList = projectNode.list();
+							var groupNode = projectNode.findFirstParentWithAttr("groupId");
+							if (groupNode.groupId != -1) {
+								var ifcOids = othis.getIfcOids(nodeList, Settings.getDefaultHiddenTypes());
+								projectPage.setObjectVisibility(groupNode.groupId, ifcOids, mode);
+								nodeList.forEach(function(n){
+									if (Settings.getDefaultHiddenTypes()[n.type] == null) {
+										n.eye.attr("mode", mode);
+										if (mode == 0) {
+											n.eye.removeClass("eyeclosed").removeClass("eyehalfopen").addClass("eyeopen");
+										} else if (mode == 1) {
+											n.eye.removeClass("eyeopen").removeClass("eyeclosed").addClass("eyehalfopen");
+										} else if (mode == 2) {
+											n.eye.removeClass("eyehalfopen").removeClass("eyeopen").addClass("eyeclosed");
+										}
+									}
+								});
+							}
 						});
 					} else {
 						othis.internalToggleEye(projectNode, mode);

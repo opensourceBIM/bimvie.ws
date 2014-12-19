@@ -3,6 +3,10 @@ a {
 	cursor: pointer;
 }
 
+.spaced {
+	margin: 9px;
+}
+
 .sidespan .tree ul li {
 	list-style: none;
 }

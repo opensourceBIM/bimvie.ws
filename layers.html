@@ -1,8 +1,11 @@
 <div class="layers">
+	<div class="spaced modelLoader">
+		No models loaded
+		<button class="btn btn-default btn-xs btnLoad">Load all</button>
+	</div>
 	<table class="table table-no-top">
 		<thead></thead>
 		<tbody>
-			<tr><td>No layers</td></tr>
 		</tbody>
 	</table>
 </div>
@@ -69,6 +72,7 @@ function Layers(containerDiv, projectPage, projects, models, main) {
 	};
 	
 	this.loadRevision = function(project, roid, types, objectsToHide){
+		containerDiv.find(".modelLoader").hide();
 		if (project.lastRevisionId != -1 && project.nrSubProjects == 0) {
 			var model = models[roid];
 			containerDiv.find("table tbody tr").remove();
@@ -141,6 +145,8 @@ function Layers(containerDiv, projectPage, projects, models, main) {
 	othis.unloadRevision = function(poid, roid) {
 		
 	};
+	
+	containerDiv.find(".btnLoad").click(projectPage.loadModel);
 	
 	projectPage.objectVisibilityListeners.register(othis.objectVisibilityChanged);
 	projectPage.modelLoadedListeners.register(othis.loadRevision);

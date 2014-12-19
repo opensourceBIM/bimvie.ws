@@ -12,11 +12,11 @@
 					<label class="btnLayers btn btn-default">
 						<input type="radio" name="options"> Layers
 					</label>
-					<label class="btnProperties btn btn-default">
-						<input type="radio" name="options"> Properties
-					</label>
 					<label class="btnClassifications btn btn-default">
 						<input type="radio" name="options"> Classifications
+					</label>
+					<label class="btnProperties btn btn-default">
+						<input type="radio" name="options"> Properties
 					</label>
 				</div>
 				<div class="panel-body sidespanWrapper">
@@ -141,6 +141,21 @@ function Project(containerDiv, main, project) {
 		}
 	};
 	
+	this.loadModel = function(){
+		othis.projects.forEach(function(project){
+			var ids = [];
+			var roid = project.lastRevisionId;
+			var model = othis.models[roid];
+			othis.preloadModel(project, roid).done(function(){
+//				for (var oid in model.objects) {
+//					var object = model.objects[oid];
+//					ids.push(object.oid);
+//				}
+//				othis.setObjectVisibility(roid, ids, 0);
+			});
+		});
+	};
+	
 	this.preloadModel = function(project, roid){
 		var countingPromise = new CountingPromise();
 		var promise = new Promise();
@@ -240,7 +255,14 @@ function Project(containerDiv, main, project) {
 					countingPromise.dec();
 				});
 				countingPromise.done(function(){
+//					for (var key in model.objects) {
+//						var object = model.objects[key];
+//						if (object.getType() == "IfcSpace") {
+//							console.log(object.getType(), object.trans.mode);
+//						}
+//					}
 					model.isPreloaded = true;
+					console.log(types);
 					othis.modelLoadedListeners.trigger(function(modelLoadedListener){
 						modelLoadedListener(project, roid, types);
 					});

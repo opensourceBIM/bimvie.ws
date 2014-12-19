@@ -1,8 +1,11 @@
 <div class="types">
+	<div class="spaced modelLoader">
+		No models loaded
+		<button class="btn btn-default btn-xs btnLoad">Load all</button>
+	</div>
 	<table class="table table-no-top">
 		<thead></thead>
 		<tbody>
-			<tr><td>No types</td></tr>
 		</tbody>
 	</table>
 </div>
@@ -71,6 +74,7 @@ function Types(containerDiv, projectPage, projects, models, main) {
 	};
 	
 	this.loadRevision = function(project, roid, types, objectsToHide){
+		containerDiv.find(".modelLoader").hide();
 		if (roid != -1 && project.nrSubProjects == 0) {
 			for (var type in types) {
 				var state = types[type];
@@ -128,6 +132,8 @@ function Types(containerDiv, projectPage, projects, models, main) {
 	othis.unloadRevision = function(poid, roid) {
 		
 	};
+	
+	containerDiv.find(".btnLoad").click(projectPage.loadModel);
 	
 	projectPage.objectVisibilityListeners.register(othis.objectVisibilityChanged);
 	projectPage.modelLoadedListeners.register(othis.loadRevision);

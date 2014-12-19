@@ -100,7 +100,14 @@ function ThreeDView(containerDiv, projectPage) {
 				}
 			}
 			if (o.loadedOids[object.oid] == null) {
-				oidsNotLoaded.push(object.oid);
+				if (object.isA("IfcProduct")) {
+					// Assuming sync return here because of preloading!!
+					object.getRepresentation(function(representation){
+						if (representation != null) {
+							oidsNotLoaded.push(object.oid);
+						}
+					});
+				}
 			}
 		}
 		
@@ -179,54 +186,6 @@ function ThreeDView(containerDiv, projectPage) {
 	};
 	
 	this.loadRevision = function(project, roid, types){
-//		var model = projectPage.models[roid];
-/*		model.getAllOfType("IfcProject", false, function(ifcProduct){
-			ifcProduct.getUnitsInContext(function(ifcUnitAssignment){
-				ifcUnitAssignment.getUnits(function(ifcUnit){
-					if (ifcUnit.getType() == "IfcSIUnit") {
-						if (ifcUnit.getUnitType() == "LENGTHUNIT") {
-							var prefix = ifcUnit.getPrefix();
-							if (prefix == "MILLI") {
-								
-							}
-						}
-					}
-				});
-			});
-		});
-
-		if (roid != -1 && project.nrSubProjects == 0) {
-			var geometryLoader = new GeometryLoader(Global.bimServerApi, o.viewer);
-
-			var progressdiv = $("<div class=\"progressdiv\">");
-			var text = $("<div class=\"text\">");
-			text.html(project.name);
-			var startLink = $("<br/><a class=\"startLink\">&rarr; Load 3D</a>");
-			text.append(startLink);
-			var progress = $("<div class=\"progress progress-striped\">");
-			startLink.click(function(){
-				startLink.hide();
-				progress.show();
-				o.viewer.loadGeometry(geometryLoader);
-			});
-			progress.hide();
-			var progressbar = $("<div class=\"progress-bar\">");
-			progressdiv.append(text)
-			progressdiv.append(progress);
-			progress.append(progressbar);
-			
-			containerDiv.find(".progressbars").append(progressdiv);
-
-			geometryLoader.addProgressListener(function(progress){
-				if (progress == "done") {
-					progressdiv.fadeOut(800);
-				} else {
-					progressbar.css("width", progress + "%");
-				}
-			});
-			geometryLoader.setLoadRevision(roid, types);
-		}
-*/
 	};
 	
 	this.close = function(){};

@@ -1,8 +1,11 @@
 <div class="classifications">
+	<div class="spaced modelLoader">
+		No models loaded
+		<button class="btn btn-default btn-xs btnLoad">Load all</button>
+	</div>
 	<table class="table table-no-top">
 		<thead></thead>
 		<tbody>
-			<tr class="empty"><td>No classification</td></tr>
 		</tbody>
 	</table>
 </div>
@@ -72,6 +75,7 @@ function Classifications(containerDiv, projectPage, projects, models, main) {
 	};
 	
 	this.loadRevision = function(project, roid, types){
+		containerDiv.find(".modelLoader").hide();
 		if (project.lastRevisionId != -1 && project.nrSubProjects == 0) {
 			var model = models[roid];
 			model.getAllOfType("IfcRelAssociatesClassification", true, function(relAssociatesClassification){
@@ -138,6 +142,8 @@ function Classifications(containerDiv, projectPage, projects, models, main) {
 		}
 	};
 	
+	containerDiv.find(".btnLoad").click(projectPage.loadModel);
+
 	projectPage.modelLoadedListeners.register(othis.loadRevision);
 	projectPage.modelUnloadedListeners.register(othis.unloadRevision);
 	projectPage.objectVisibilityListeners.register(othis.objectVisibilityChanged);

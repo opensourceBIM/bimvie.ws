@@ -1,8 +1,11 @@
 <div class="properties">
+	<div class="spaced modelLoader">
+		No models loaded
+		<button class="btn btn-default btn-xs btnLoad">Load all</button>
+	</div>
 	<table class="table table-no-top">
 		<thead></thead>
 		<tbody>
-			<tr><td>No object selected</td></tr>
 		</tbody>
 	</table>
 </div>
@@ -98,10 +101,20 @@ function Properties(containerDiv, projectPage, models, main, oid) {
 			});
 		} )(tr);
 	}
+	
+	this.loadRevision = function(){
+		containerDiv.find(".modelLoader").hide();
+	};
+	
+	this.unloadRevision = function(){};
 
 	projectPage.selectListeners.register(othis.selected);
 	projectPage.unselectListeners.register(othis.unselected);
-	
+	projectPage.modelLoadedListeners.register(othis.loadRevision);
+	projectPage.modelUnloadedListeners.register(othis.unloadRevision);
+
+	containerDiv.find(".btnLoad").click(projectPage.loadModel);
+
 	if (othis.selectedId != null && othis.selectedId != -1) {
 		othis.selected(othis.selectedId);
 	}

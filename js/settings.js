@@ -45,5 +45,8 @@ var Settings = {
 	},
 	allowBimServerAddress: function() {
 		return false;
+	},
+	getDefaultHiddenTypes: function() {
+		return {"IfcOpeningElement": true, "IfcSpace": true};
 	}
 }
