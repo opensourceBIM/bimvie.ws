@@ -202,6 +202,9 @@ function Project(containerDiv, main, project) {
 				    	type: "IfcProductRepresentation"
 				    },
 				    {
+				    	type: "IfcProductDefinitionShape"
+				    },
+				    {
 				    	type: "IfcPresentationLayerAssignment"
 				    },
 				    {
@@ -262,7 +265,6 @@ function Project(containerDiv, main, project) {
 //						}
 //					}
 					model.isPreloaded = true;
-					console.log(types);
 					othis.modelLoadedListeners.trigger(function(modelLoadedListener){
 						modelLoadedListener(project, roid, types);
 					});

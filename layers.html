@@ -87,9 +87,9 @@ function Layers(containerDiv, projectPage, projects, models, main) {
 								if (othis.layers[layer.oid] == null) {
 									othis.layers[layer.oid] = {visible: 0, total: 0, transparent: 0, objects: {}};
 								}
-								if (objectsToHide[product.oid] == null) {
-									othis.layers[layer.oid].visible++; 
-								}
+//								if (objectsToHide[product.oid] == null) {
+//									othis.layers[layer.oid].visible++; 
+//								}
 								othis.layers[layer.oid].total++;
 								othis.layers[layer.oid].objects[product.oid] = true;
 							});
