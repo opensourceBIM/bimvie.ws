@@ -23,7 +23,8 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 	
 	this.addRevision = function(project, roid, types){
 		var parentNode = othis.tree.find(project.parentId);
-		var node = new Node(project.oid, project.name);
+		var node = Object.create(Node.prototype);
+		node.init(project.oid, project.name);
 		parentNode.add(node);
 		var dropdown = othis.createDropDown(node);
 		var eye = othis.createEye(node, 2);
@@ -310,7 +311,9 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 	this.processRelatedElement = function(parentNode, relatedElement, createdTypes, types){
 		typeNode = createdTypes[relatedElement.getType()];
 		if (typeNode == null) {
-			typeNode = new Node(relatedElement.getType(), stripIfc(relatedElement.getType()));
+			var typeNode = Object.create(Node.prototype);
+			typeNode.init(relatedElement.getType(), stripIfc(relatedElement.getType()));
+
 			typeNode.setIcon("types");
 			typeNode.type = relatedElement.getType();
 			
@@ -341,7 +344,9 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		if (name == null) {
 			name = "Unknown";
 		}
-		var newNode = new Node(object.oid, name);
+		var newNode = Object.create(Node.prototype);
+		newNode.init(object.oid, name);
+		
 		newNode.type = object.getType();
 		if (object.getType() == "IfcProject" || object.getType() == "IfcSite" || object.getType() == "IfcBuilding" || object.getType() == "IfcBuildingStorey" || object.getType() == "IfcSpace") {
 			newNode.setIcon("hierarchy");
@@ -397,13 +402,16 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 	this.loadProjectTree = function(project, roid, node, types){
 		var promise = new Promise();
 		node.setLoading();
+		node.ul.remove();
 		var model = models[roid];
 		if (model != null) {
 			projectPage.preloadModel(project, roid).done(function(){
 				model.getAllOfType("IfcProject", true, function(project){
 					othis.buildDecomposedTree(project, node, types);
-					promise.fire();
 				}).done(function(){
+					promise.fire();
+					model.dumpByType();
+					node.li.append(node.ul);
 					node.doneLoading();
 				});
 			});
