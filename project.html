@@ -157,7 +157,6 @@ function Project(containerDiv, main, project) {
 	};
 	
 	this.preloadModel = function(project, roid){
-		console.log("preloadmodel", roid);
 		var countingPromise = new CountingPromise();
 		var promise = new Promise();
 		var model = othis.models[roid];
