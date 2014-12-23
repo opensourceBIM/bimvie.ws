@@ -43,7 +43,7 @@ Node.prototype.init = function(id, title){
 	this.parent = null;
 	this.children = [];
 	this.sort = false;
-	this.onLoadListeners = new EventRegistry();
+	this.onLoadListeners;
 
 	this.li = $("<li class=\"treenode\">");
 	this.li.attr("nodeid", id);
@@ -60,13 +60,22 @@ Node.prototype.init = function(id, title){
 	this.ul.hide();
 	this.li.append(this.ul);
 
-	this.a.click(function(){
-		if (this.onClick != null) {
-			this.onClick(o);
-			this.toggle();
-			this.select();
-		}
-	});
+	this.a.click(this.linkClick);
+};
+
+Node.prototype.linkClick = function(){
+	if (this.onClick != null) {
+		this.onClick(o);
+		this.toggle();
+		this.select();
+	}
+};
+
+Node.prototype.getOnLoadListeners = function(){
+	if (this.onLoadListeners == null) {
+		this.onLoadListeners = new EventRegistry();
+	}
+	return this.onLoadListeners;
 };
 
 Node.prototype.add = function(node){
@@ -80,9 +89,9 @@ Node.prototype.add = function(node){
 			var diff = this.title.localeCompare(this.children[i].title);
 			if (diff < 0) {
 				if (i == 0) {
-					this.ul.prepend(this.li);
+					this.ul.prepend(node.li);
 				} else {
-					this.ul.children().eq(i-1).after(this.li);
+					this.ul.children().eq(i-1).after(node.li);
 				}
 				found = true;
 				break;
@@ -110,7 +119,7 @@ Node.prototype.setIcon = function(icon){
 };
 
 Node.prototype.onLoad = function(listener){
-	this.onLoadListeners.register(listener);
+	this.getOnLoadListeners().register(listener);
 	this.img.addClass("treenodeclosed");
 };
 
@@ -121,10 +130,12 @@ Node.prototype.click = function(click){
 Node.prototype.open = function(){
 	var promise = new Promise();
 	this.isOpen = true;
-	this.onLoadListeners.trigger(function(listener){
-		promise.chain(listener());
-	});
-	this.onLoadListeners.clear();
+	if (this.onLoadListeners != null) {
+		this.onLoadListeners.trigger(function(listener){
+			promise.chain(listener());
+		});
+		this.onLoadListeners.clear();
+	}
 	this.ul.show();
 	if (this.children.length > 0) {
 		this.img.removeClass("treenodeclosed");
@@ -153,7 +164,7 @@ Node.prototype.select = function(){
 	if (this.tree.selectedNode != null) {
 		this.tree.selectedNode.unselect();
 	}
-	this.tree.setSelectedNode(o);
+	this.tree.setSelectedNode(this);
 	this.li.addClass("selected");
 };
 
@@ -200,8 +211,8 @@ Node.prototype.toggle = function(){
 };
 
 Node.prototype.findFirstParentWithAttr = function(attrName){
-	if (o[attrName] != null) {
-		return o;
+	if (this[attrName] != null) {
+		return this;
 	}
 	if (this.parent != null) {
 		return this.parent.findFirstParentWithAttr(attrName);
@@ -233,7 +244,7 @@ Node.prototype.list = function(){
 };
 
 Node.prototype.internalList = function(result){
-	result.push(o);
+	result.push(this);
 	this.children.forEach(function(subNode){
 		subNode.internalList(result);
 	});
@@ -241,7 +252,7 @@ Node.prototype.internalList = function(result){
 
 Node.prototype.internalListFilterByType = function(result, type){
 	if (this.type == type) {
-		result.push(o);
+		result.push(this);
 	}
 	this.children.forEach(function(subNode){
 		subNode.internalListFilterByType(result, type);

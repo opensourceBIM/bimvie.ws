@@ -94,7 +94,7 @@ function Properties(containerDiv, projectPage, models, main, oid) {
 		(function (tr) {
 			property.getNominalValue(function(value){
 				var td = $("<td>");
-				var v = value == null ? "" : value.value;
+				var v = value == null ? "" : value._v;
 				var span = $("<span class=\"value nonEditable\">" + v + "</span>");
 				td.append(span);
 				tr.append(td);

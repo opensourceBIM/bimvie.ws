@@ -410,7 +410,6 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 					othis.buildDecomposedTree(project, node, types);
 				}).done(function(){
 					promise.fire();
-					model.dumpByType();
 					node.li.append(node.ul);
 					node.doneLoading();
 				});
