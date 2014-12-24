@@ -4,19 +4,19 @@
 			<div class="panel panel-default">
 				<div class="panel-heading btn-group projectTabs" data-toggle="buttons" style="padding: 0; width: 100%">
 					<label class="btnProjectTree btn btn-default active">
-						<input checked="checked" type="radio" name="options"> Tree
+						<input checked="checked" type="radio" name="options"/> Tree
 					</label>
 					<label class="btnTypes btn btn-default">
-						<input type="radio" name="options"> Types
+						<input type="radio" name="options"/> Types
 					</label>
 					<label class="btnLayers btn btn-default">
-						<input type="radio" name="options"> Layers
+						<input type="radio" name="options"/> Layers
 					</label>
 					<label class="btnClassifications btn btn-default">
-						<input type="radio" name="options"> Classifications
+						<input type="radio" name="options"/> Classifications
 					</label>
 					<label class="btnProperties btn btn-default">
-						<input type="radio" name="options"> Properties
+						<input type="radio" name="options"/> Properties
 					</label>
 				</div>
 				<div class="panel-body sidespanWrapper">
@@ -201,6 +201,10 @@ function Project(containerDiv, main, project) {
 				    },
 				    {
 				    	type: "IfcProductRepresentation"
+				    },
+				    {
+				    	type: "IfcProduct",
+				    	includeAllSubTypes: true
 				    },
 				    {
 				    	type: "IfcProductDefinitionShape"
