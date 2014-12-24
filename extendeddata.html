@@ -59,7 +59,7 @@ function ExtendedData(main, extendedData, parent) {
 	$(".extendeddata table.detailsTable tbody").append("<tr><td>Added</td><td>" + formatDateTime(new Date(extendedData.added)) + "</td></tr>");
 
 	this.showBcf = function(schema, extendedData, file){
-		$(".bcf img").attr("src", "data:image/png;base64," + file.data);
+		$(".bcf img").attr("src", "https://github.com/BuildingSMART/BCF/raw/master/Icons/BCFicon128.png?raw=true");
 	};
 
 	this.objectClick = function(){
