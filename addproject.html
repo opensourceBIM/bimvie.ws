@@ -55,6 +55,9 @@ function AddProject(containerDiv, main, parentProject) {
 	var othis = this;
 
 	this.show = function(){
+		if (parentProject != null && parentProject.schema == "ifc4") {
+			containerDiv.find(".schemaInput").val("ifc4");
+		}
 	};
 
 	this.close = function(){

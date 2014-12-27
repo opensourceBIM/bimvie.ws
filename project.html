@@ -166,15 +166,19 @@ function Project(containerDiv, main, project) {
 		} else {
 			var preLoadQuery = {
 				defines: {
+					Representation: {
+						field: "Representation"
+					},
 					ContainsElementsDefine: {
 						field: "ContainsElements",
 						include: {
 							field: "RelatedElements",
 							include: [
 								"IsDecomposedByDefine",
-								"ContainsElementsDefine"
+								"ContainsElementsDefine",
+								"Representation"
 							]
-						}				
+						}
 					},
 					IsDecomposedByDefine: {
 						field: "IsDecomposedBy",
@@ -182,7 +186,8 @@ function Project(containerDiv, main, project) {
 							field: "RelatedObjects",
 							include: [
 								"IsDecomposedByDefine",
-								"ContainsElementsDefine"
+								"ContainsElementsDefine",
+								"Representation"
 							]
 						}
 					}
