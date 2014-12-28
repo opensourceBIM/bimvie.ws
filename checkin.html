@@ -267,6 +267,7 @@ function Checkin(containerDiv, project, successFunction) {
 				fileName: null
 			}, function(data){
 				currentCheckinId = data;
+				containerDiv.find(".uploadStatus").html("Uploading file...");
 				containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
 				containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"progress-bar\"></div></div>");
 				Global.bimServerApi.registerProgressHandler(currentCheckinId, othis.progressHandler, function(){
@@ -291,6 +292,7 @@ function Checkin(containerDiv, project, successFunction) {
 				sync: false
 			};
 			othis.hideUpload();
+			containerDiv.find(".uploadStatus").html("Uploading file...");
 			containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
 			containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"progress-bar\"></div></div>");
 			containerDiv.find(".fileupload").fileupload('send', submitdata);
