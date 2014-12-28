@@ -5,17 +5,13 @@
 
 	<property name="majorversion" value="1"/>
 	<property name="minorversion" value="3"/>
-	<property name="revisionversion" value="10"/>
+	<property name="revisionversion" value="11"/>
 	<property name="type" value="FINAL"/>
 	<property name="revisiondate" value="${builddate}"/>
 	<property name="version" value="${majorversion}.${minorversion}.${revisionversion}-${type}-${revisiondate}"/>
 
-	<fileset id="lib" dir="antlibs">
-		<include name="**/*.jar" />
-	</fileset>
-
-	<target name="release">
-		<jar destfile="bimviews-${version}.jar">
+	<target name="nightly">
+		<jar destfile="bimviews-${revisiondate}.jar">
 			<fileset dir="../">
 				<exclude name="bin/**"/>
 				<exclude name="build/**"/>
@@ -26,31 +22,26 @@
 			<fileset dir="../bin">
 			</fileset>
 		</jar>
-		
+	</target>
+	
+	<target name="release">
 		<java jar="antlibs/githubrelease.jar" fork="true">
 			<classpath>
-				<fileset refid="lib"></fileset>
+				<pathelement location="antlibs/gson-2.2.4.jar"/>
+				<pathelement location="antlibs/org.eclipse.egit.github.core-2.1.5.jar"/>
+				<pathelement location="antlibs/httpcore-4.3.1.jar"/>
+				<pathelement location="antlibs/httpclient-4.3.2.jar"/>
 			</classpath>
-			<arg value="${github_username}">
-			</arg>
-			<arg value="${github_password}">
-			</arg>
-			<arg value="opensourceBIM">
-			</arg>
-			<arg value="bimvie.ws">
-			</arg>
-			<arg value="${version}">
-			</arg>
-			<arg value="${version}">
-			</arg>
-			<arg value="BIMviews Release. For more info goto: https://github.com/opensourceBIM/bimvie.ws/wiki/Releases">
-			</arg>
-			<arg value="true">
-			</arg>
-			<arg value="true">
-			</arg>
-			<arg value="bimviews-${version}.jar">
-			</arg>
+			<arg value="${github_username}"></arg>
+			<arg value="${github_password}"></arg>
+			<arg value="opensourceBIM"></arg>
+			<arg value="bimvie.ws"></arg>
+			<arg value="${version}"></arg>
+			<arg value="${version}"></arg>
+			<arg value="BIMviews Release. For more info goto: https://github.com/opensourceBIM/bimvie.ws/wiki/Releases"></arg>
+			<arg value="true"></arg>
+			<arg value="true"></arg>
+			<arg value="bimviews-${version}.jar"></arg>
 		</java>
 	</target>
 </project>

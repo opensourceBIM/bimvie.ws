@@ -101,7 +101,6 @@ function AddService(main, project) {
 			baseUrl: $(".addservice .inputUrl").val(),
 			serviceIdentifier: $(".addservice .inputServiceIdentifier").val()
 		}, function(data){
-			console.log(data);
 			othis.proceedWithServiceDescriptor(data, null);
 		});
 	};
