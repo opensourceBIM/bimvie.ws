@@ -11,7 +11,7 @@
 	<property name="version" value="${majorversion}.${minorversion}.${revisionversion}-${type}-${revisiondate}"/>
 
 	<target name="nightly">
-		<jar destfile="bimviews-${revisiondate}.jar">
+		<jar destfile="nightly/bimviews-${revisiondate}.jar">
 			<fileset dir="../">
 				<exclude name="bin/**"/>
 				<exclude name="build/**"/>
