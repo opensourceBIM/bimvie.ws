@@ -115,6 +115,8 @@ function ExtendedData(main, extendedData, parent) {
 				othis.showBcf(schema, extendedData, data);
 			} else if (schema.namespace == "geometrymatching") {
 				othis.showCsv(schema, extendedData, data);
+			} else if (schema.namespace == "http://www.elassticbim.eu/simulation") {
+				othis.showCsv(schema, extendedData, data);
 			} else if (schema.namespace == "http://extend.bimserver.org/validationreport") {
 				othis.showValidationReport(schema, extendedData, data);
 			}
