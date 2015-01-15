@@ -1,8 +1,8 @@
 <div class="browser">
 	<ul class="breadcrumb">
-		<li><a class="breadcrumbModel">Model</a> <span class="divider">/</span></li>
-		<li><a class="breadcrumbClass">Class</a> <span class="divider">/</span></li>
-		<li><a class="breadcrumbObject">Object</a> <span class="divider">/</span></li>
+		<li><a class="breadcrumbModel">Model</a> <span class="divider"></span></li>
+		<li><a class="breadcrumbClass">Class</a> <span class="divider"></span></li>
+		<li><a class="breadcrumbObject">Object</a> <span class="divider"></span></li>
 		<li class="active">Data</li>
 	</ul>
 	<table class="typesTable initialhide table table-striped table-hover">
@@ -50,8 +50,8 @@ function Browser(containerDiv, project, revision) {
 			pushHistoryAppend({oid: oid, poid: poid, type: false}, "Browser");
 			Global.bimServerApi.call("Bimsie1LowLevelInterface", "getDataObjectByOid", {roid: othis.revision.oid, oid: oid}, function(data){
 				containerDiv.find(".breadcrumb *").remove();
-				containerDiv.find(".breadcrumb").append("<li><a class=\"breadcrumbModel\">Model</a> <span class=\"divider\">/</span></li>");
-				containerDiv.find(".breadcrumb").append("<li><a class=\"breadcrumbClass\">" + data.type + "</a> <span class=\"divider\">/</span></li>");
+				containerDiv.find(".breadcrumb").append("<li><a class=\"breadcrumbModel\">Model</a> <span class=\"divider\"></span></li>");
+				containerDiv.find(".breadcrumb").append("<li><a class=\"breadcrumbClass\">" + data.type + "</a> <span class=\"divider\"></span></li>");
 				containerDiv.find(".breadcrumb").append("<li class=\"active\">" + oid + "</li>");
 				othis.augmentBreadcrumbs();
 	
@@ -134,7 +134,7 @@ function Browser(containerDiv, project, revision) {
 			pushHistoryAppend({type: className, poid: poid, oid: false}, "Browser");
 			Global.bimServerApi.call("Bimsie1LowLevelInterface", "getDataObjectsByType", {roid: othis.revision.oid, packageName: othis.project.schema, className: className, flat: true, schema: othis.schema}, function(data){
 				containerDiv.find(".breadcrumb *").remove();
-				containerDiv.find(".breadcrumb").append("<li><a class=\"breadcrumbModel\">Model</a> <span class=\"divider\">/</span></li>");
+				containerDiv.find(".breadcrumb").append("<li><a class=\"breadcrumbModel\">Model</a> <span class=\"divider\"></span></li>");
 				containerDiv.find(".breadcrumb").append("<li class=\"active\">" + className + "</li>");
 				othis.augmentBreadcrumbs();
 	

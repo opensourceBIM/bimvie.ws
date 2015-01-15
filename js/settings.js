@@ -3,6 +3,7 @@ var Settings = {
 		return "http://test.bimsurfer.org/index.html?token=" + bimServerApi.token + "&roid=" + roid + "&server=" + bimServerApi.baseUrl;
 	},
 	createStartPage: function(container, main){
+		pushHistory({page: "Projects"}, "Projects");
 		main.pageChanger.changePage($(".serverinfoLink"), "projects.html", function(){
 			return new Projects($(this), main);
 		});

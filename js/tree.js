@@ -86,7 +86,7 @@ Node.prototype.add = function(node){
 	if (this.sort) {
 		var found = false;
 		for (var i=0; i<this.children.length; i++) {
-			var diff = this.title.localeCompare(this.children[i].title);
+			var diff = node.title.localeCompare(this.children[i].title);
 			if (diff < 0) {
 				if (i == 0) {
 					this.ul.prepend(node.li);

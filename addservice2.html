@@ -146,8 +146,13 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 			othis.readExtendedDataOid = data.oid;
 			td1.append(main.createExtendedDataSchemaLink(data));
 		}, function(){
-			tr1.addClass("error");
-			td1.append("<br/>Missing extended data schema");
+			othis.addExtendedDataSchema(serviceDescriptor.readExtendedData, function(data){
+				othis.readExtendedDataOid = data.oid;
+				td1.append(main.createExtendedDataSchemaLink(data));
+			}, function(){
+				tr1.addClass("error");
+				td1.append("<br/>Error adding extended data schema");
+			});
 		});
 	}
 	if (serviceDescriptor.writeExtendedData != null) {
@@ -159,18 +164,37 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 			othis.writeExtendedDataOid = data.oid;
 			td2.append(main.createExtendedDataSchemaLink(data));
 		}, function(){
-			tr2.addClass("error");
-			td2.append(serviceDescriptor.writeExtendedData);
-			td2.append("<br/>");
-			var addEds2 = $("<a>Add extended data schema</a>");
-			td2.append(addEds2);
-			addEds2.click(function(){
-				main.showServerSettings(function(){
-					this.showAddExtendedDataSchema({name: serviceDescriptor.writeExtendedData, namespace: serviceDescriptor.writeExtendedData});
-				});
+			othis.addExtendedDataSchema(serviceDescriptor.writeExtendedData, function(data){
+				othis.writeExtendedData = data.oid;
+				td2.append(main.createExtendedDataSchemaLink(data));
+			}, function(){
+				tr1.addClass("error");
+				td2.append("<br/>Error adding extended data schema");
 			});
+
+//			tr2.addClass("error");
+//			td2.append(serviceDescriptor.writeExtendedData);
+//			td2.append("<br/>");
+//			var addEds2 = $("<a>Add extended data schema</a>");
+//			td2.append(addEds2);
+//			addEds2.click(function(){
+//				main.showServerSettings(function(){
+//					this.showAddExtendedDataSchema({name: serviceDescriptor.writeExtendedData, namespace: serviceDescriptor.writeExtendedData});
+//				});
+//			});
 		});
 	}
+	
+	this.addExtendedDataSchema = function(namespaceurl, callback, errorCallback){
+		var extendedDataSchema = {
+			__type: "SExtendedDataSchema",
+			name: namespaceurl,
+			namespace: namespaceurl,
+			url: namespaceurl,
+			type: "TXT"
+		};
+		Global.bimServerApi.call("ServiceInterface", "addExtendedDataSchema", {extendedDataSchema: extendedDataSchema}, callback, errorCallback);
+	};
 	
 	this.addProfileDescriptor = function(profileDescriptor) {
 		$(".addservice2 .noprofiles").hide();

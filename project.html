@@ -427,15 +427,12 @@ function Project(containerDiv, main, project) {
 		}).modal({keyboard:true});
 	};
 
-	othis.menuItems.push(main.addMenuDivider("Project"));
-	othis.menuItems.push(main.addMenuHeader("Project", "This project"));
+//	othis.menuItems.push(main.addMenuDivider("Project"));
+//	othis.menuItems.push(main.addMenuHeader("Project", "This project"));
 
-	othis.menuItems.push(main.addMenuItem("Project", "Add Service", function(){
-		main.showAddService(othis.project);
-	}));
-	othis.menuItems.push(main.addMenuItem("Project", "Share", function(){
-		othis.share(othis.project.oid, othis.project.lastRevisionId);
-	}));
+//	othis.menuItems.push(main.addMenuItem("Project", "Share", function(){
+//		othis.share(othis.project.oid, othis.project.lastRevisionId);
+//	}));
 	
 	containerDiv.find(".btnProjectTree").click(othis.loadProjectTree);
 	containerDiv.find(".btnProperties").click(othis.showProperties);

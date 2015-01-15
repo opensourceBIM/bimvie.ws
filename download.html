@@ -115,7 +115,7 @@ function Download(containerDiv, data) {
 		if (topicId == othis.laid) {
 			var oldStage = othis.stage;
 			othis.stage = state.stage;
-			containerDiv.find(".downloadStatus").html(state.title).show();
+			containerDiv.find(".downloadStatus").removeClass("alert-danger").addClass("alert-info").html(state.title).show();
 			if (oldStage != state.stage) {
 				containerDiv.find(".progressBarHolder .downloadProgressBar").remove();
 				containerDiv.find(".progressBarHolder").append("<div class=\"downloadProgressBar progress\"><div class=\"progress-bar\"></div></div>");
@@ -128,18 +128,10 @@ function Download(containerDiv, data) {
 				containerDiv.find(".downloadProgressBar .progress-bar").css("width", parseInt(state.progress) + "%");
 			}
 			if (state.errors != null && state.errors.length > 0) {
-				containerDiv.find(".fields, .downloadpopup .checkoutMessage").show();
-				containerDiv.find(".downloadProgressBar").hide();
+				othis.afterDownload();
 				state.errors.map(function(error){
 					containerDiv.find(".message").addClass("alert-danger").append(error + "<br/>").show();
 				});
-
-				Global.bimServerApi.unregisterProgressHandler(othis.laid, othis.progressHandler, function(){
-					othis.prepareReceived = false;
-					othis.laid = null;
-				});
-				
-				containerDiv.find(".modal-footer .btn-group").show();
 			} else if (state.title == "Done preparing") {
 				if (!othis.prepareReceived) {
 					othis.prepareReceived = true;
@@ -197,8 +189,19 @@ function Download(containerDiv, data) {
 		}
 	};
 	
+	this.afterDownload = function(){
+		containerDiv.find(".fields, .downloadpopup .checkoutMessage").show();
+		containerDiv.find(".downloadProgressBar").hide();
+		Global.bimServerApi.unregisterProgressHandler(othis.laid, othis.progressHandler, function(){
+			othis.prepareReceived = false;
+			othis.laid = null;
+		});
+		
+		containerDiv.find(".modal-footer .btn-group").show();
+	};
+	
 	this.start = function(data) {
-		containerDiv.find(".downloadStatus").addClass("alert-info").show().html("Preparing download...");
+		containerDiv.find(".downloadStatus").addClass("alert-info").removeClass("alert-danger").show().html("Preparing download...");
 		
 		containerDiv.find(".progressBarHolder .downloadProgressBar").remove();
 		containerDiv.find(".progressBarHolder").append("<div class=\"downloadProgressBar progress\"><div class=\"progress-bar\"></div></div>");
@@ -222,8 +225,8 @@ function Download(containerDiv, data) {
 				othis.laid = parseInt(data);
 				Global.bimServerApi.registerProgressHandler(othis.laid, othis.progressHandler, afterRegistration);
 			}, function(){
-				containerDiv.find(".downloadStatus").html("Error: " + textStatus);
-				containerDiv.find(".checkoutMessage").show();
+				othis.afterDownload();
+				containerDiv.find(".downloadStatus").addClass("alert-danger").html(exception.message);
 			});
 		} else if (data.downloadType == "checkout") {
 			Global.bimServerApi.call("Bimsie1ServiceInterface", "checkout", data, function(data){
@@ -231,17 +234,17 @@ function Download(containerDiv, data) {
 				othis.laid = parseInt(data);
 				Global.bimServerApi.registerProgressHandler(othis.laid, othis.progressHandler, afterRegistration);
 			}, function(){
-				containerDiv.find(".downloadStatus").html("Error: " + textStatus);
-				containerDiv.find(".checkoutMessage").show();
+				othis.afterDownload();
+				containerDiv.find(".downloadStatus").addClass("alert-danger").html(exception.message);
 			});
 		} else if (data.downloadType == "downloadRevisions") {
 			Global.bimServerApi.call("Bimsie1ServiceInterface", "downloadRevisions", data, function(data){
 				containerDiv.find(".downloadStatus").html("Preparing download...");
 				othis.laid = parseInt(data);
 				Global.bimServerApi.registerProgressHandler(othis.laid, othis.progressHandler, afterRegistration);
-			}, function(){
-				containerDiv.find(".downloadStatus").html("Error: " + textStatus);
-				containerDiv.find(".checkoutMessage").show();
+			}, function(exception){
+				othis.afterDownload();
+				containerDiv.find(".downloadStatus").addClass("alert-danger").html(exception.message);
 			});
 		} else {
 			Global.bimServerApi.call("Bimsie1ServiceInterface", "download", data, function(data){
@@ -249,8 +252,8 @@ function Download(containerDiv, data) {
 				othis.laid = parseInt(data);
 				Global.bimServerApi.registerProgressHandler(othis.laid, othis.progressHandler, afterRegistration);
 			}, function(){
-				containerDiv.find(".downloadStatus").html("Error: " + textStatus);
-				containerDiv.find(".checkoutMessage").show();
+				othis.afterDownload();
+				containerDiv.find(".downloadStatus").addClass("alert-danger").html(exception.message);
 			});
 		}
 	};
@@ -268,12 +271,16 @@ function Download(containerDiv, data) {
 
 	this.initDownload = function(event) {
 		event.preventDefault();
-		othis.data.serializerOid = containerDiv.find(".revisionsdownloadcheckoutselect").val();
-		othis.data.showOwn = true;
-		othis.data.sync = false;
-		othis.data.zip = containerDiv.find(".downloadCheckoutZip").is(":checked");
-		othis.mimeTypeOverride = null;
-		othis.start(data);
+		if (containerDiv.find(".revisionsdownloadcheckoutselect").val() == null) {
+			containerDiv.find(".downloadStatus").addClass("alert-danger").html("Select a serializer").show();
+		} else {
+			othis.data.serializerOid = containerDiv.find(".revisionsdownloadcheckoutselect").val();
+			othis.data.showOwn = true;
+			othis.data.sync = false;
+			othis.data.zip = containerDiv.find(".downloadCheckoutZip").is(":checked");
+			othis.mimeTypeOverride = null;
+			othis.start(data);
+		}
 	};
 
 	this.initTextDownload = function(event) {
