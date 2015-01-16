@@ -25,6 +25,17 @@
 	</target>
 	
 	<target name="release">
+		<jar destfile="bimviews-${version}.jar">
+			<fileset dir="../">
+				<exclude name="bin/**"/>
+				<exclude name="build/**"/>
+				<exclude name=".settings/**"/>
+				<exclude name="deploy/**"/>
+				<exclude name="src/**"/>
+			</fileset>
+			<fileset dir="../bin">
+			</fileset>
+		</jar>
 		<java classname="org.bimserver.build.CreateGitHubRelease" fork="true">
 			<classpath>
 				<pathelement location="antlibs/gson-2.2.4.jar"/>
