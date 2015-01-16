@@ -294,7 +294,9 @@ function EventRegistry() {
 	this.unregister = function(fn) {
 		var len = o.registry.length;
 		while (len--) {
-			o.registry.splice(len, 1);
+			if (o.registry[len] == fn) {
+				o.registry.splice(len, 1);
+			}
 		}
 	};
 	

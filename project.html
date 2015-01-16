@@ -33,8 +33,6 @@
 		<div class="col-md-8 rightCol">
 			<div class="rightpanel ih">
 			</div>
-			<div class="details ih">
-			</div>
 		</div>
 	</div>
 </div>
@@ -106,8 +104,7 @@ function Project(containerDiv, main, project) {
 			});
 		});
 
-		containerDiv.find(".rightCol > .details").hide();
-		containerDiv.find(".rightCol > .rightpanel").show();
+		containerDiv.find(".rightCol > .details").show();
 		
 		othis.objectVisibilityListeners.trigger(function(objectVisibilityListener){
 			objectVisibilityListener(objectArray, oldModeArray);
@@ -279,6 +276,7 @@ function Project(containerDiv, main, project) {
 						modelLoadedListener(project, roid, types);
 					});
 					promise.fire();
+					Global.notifier.clear();
 				});
 			});			
 		}
@@ -348,7 +346,10 @@ function Project(containerDiv, main, project) {
 							$(".classificationWrapper").load("classifications.html", function(){
 								othis.classifications = new Classifications($(this), othis, othis.projects, othis.models, main);
 	
-								othis.load3DView();
+								othis.loadDetails();
+								othis.projects.forEach(function(project){
+									othis.changeRevision(project, project.lastRevisionId);
+								});
 							});
 						});
 					});
@@ -361,7 +362,7 @@ function Project(containerDiv, main, project) {
 		containerDiv.find(".rightCol > .details").hide();
 		containerDiv.find(".rightCol > .rightpanel").show();
 		containerDiv.find(".rightCol > .rightpanel").load("rightpanel.html", function(){
-			othis.rightPanel = new RightPanel($(this), main, othis);
+			othis.rightPanel = new RightPanel($(this), main, othis.project, othis);
 			othis.rightPanel.selectListeners.push(othis.selected);
 			othis.rightPanel.unselectListeners.push(othis.unselected);
 
@@ -412,9 +413,8 @@ function Project(containerDiv, main, project) {
 	};
 	
 	this.loadDetails = function(project){
-		containerDiv.find(".rightCol > .rightpanel").hide();
-		containerDiv.find(".rightCol > .details").load("projectdetails.html", function(){
-			new ProjectDetails($(this), main, project, othis).show();
+		containerDiv.find(".rightCol").load("rightpanel.html", function(){
+			new RightPanel($(this), main, othis.project, othis).show();
 			containerDiv.find(".rightCol > .details").show();
 		});
 	};

@@ -166,8 +166,8 @@ function ThreeDView(containerDiv, projectPage) {
 	};
 
 	this.resize = function(){
-		$("#viewport").width($("panel-body").width() + "px");
-		$("#viewport").height(($(window).height() - $(".navbar").outerHeight() - $(".rightpanel .panel-heading").outerHeight() - 88) + "px");
+		$("#viewport").width(containerDiv.parents("panel-body").first().width() + "px");
+		$("#viewport").height(($(window).height() - $(".navbar").outerHeight() - $(".rightpanel .panel-heading").outerHeight() - 98) + "px");
 		o.viewer.resize($('div#viewport').width(), $('div#viewport').height());
 	};
 	
@@ -188,9 +188,13 @@ function ThreeDView(containerDiv, projectPage) {
 	this.loadRevision = function(project, roid, types){
 	};
 	
-	this.close = function(){};
-	
-	o.show();
+	this.close = function(){
+		projectPage.selectListeners.unregister(o.selected);
+		projectPage.unselectListeners.unregister(o.unselected);
+		projectPage.objectVisibilityListeners.unregister(o.objectVisibilityChanged);
+		projectPage.modelLoadedListeners.unregister(o.loadRevision);
+		projectPage.modelUnloadedListeners.unregister(o.unloadRevision);
+	};
 	
 	containerDiv.find(".waiting").hide();
 	
