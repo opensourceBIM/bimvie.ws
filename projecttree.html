@@ -4,12 +4,10 @@
 			<li><a class="addSubProject">Add sub project</a></li>
 			<li><a class="btnAddService">Add service</a></li>
 			<li class="divider"></li>
-			<li><a class="btnDetails">Details</a></li>
 			<li class="dropdown-submenu revisionsLi">
 				<a>Revisions</a>
 				<ul class="revisions dropdown-menu"></ul>
 			</li>
-			<li class="divider"></li>
 			<li><a class="btnDownload"><i class="glyphicon glyphicon-cloud-download"></i> Download...</a></li>
 			<li><a class="btnCheckin"><i class="glyphicon glyphicon-cloud-upload"></i> Checkin...</a></li>
 		</ul>
@@ -452,12 +450,6 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 	dropdown.find(".btnAddService").click(function(){
 		dropdown.hide();
 		main.showAddService(othis.project);
-	});
-	dropdown.find(".btnDetails").click(function(){
-		dropdown.hide();
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: othis.selectedNode.poid}, function(project){
-			projectPage.loadDetails(project);
-		});
 	});
 	dropdown.find(".btnCheckin").click(function(){
 		dropdown.hide();
