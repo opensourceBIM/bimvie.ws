@@ -200,8 +200,6 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		othis.tabChanger.changeTab($(".button3d"), "3dview.html", $(".3dview"), function(){
 			pushHistory({page: "Project", poid: othis.project.oid, tab: "3dview"}, "Project");
 			threeDView = new ThreeDView($(this), projectPage);
-			threeDView.selectListeners.push(o.select);
-			threeDView.unselectListeners.push(o.unselect);
 			return threeDView;
 		}, function(){
 			threeDView.show();
@@ -846,7 +844,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	
 	this.newRevisionOnSpecificProjectHandler = function(poid, roid){
 		Global.bimServerApi.call("Bimsie1ServiceInterface", "getRevision", {roid: roid}, function(data){
-			othis.reloadProject(data.projectId);
+//			othis.reloadProject(data.projectId);
 			othis.addRevision(data);
 		});
 	};

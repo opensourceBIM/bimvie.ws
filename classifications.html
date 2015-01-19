@@ -30,9 +30,11 @@ function Classifications(containerDiv, projectPage, projects, models, main) {
 		for (var roid in models) {
 			var model = models[roid];
 			model.get([oid], function(relAssociateClassification){
+				var oids = [];
 				relAssociateClassification.getRelatedObjects(function(object){
-					projectPage.setObjectVisibility(roid, object.oid, mode);
+					oids.push(object.oid);
 				});
+				projectPage.setObjectVisibility(roid, oids, mode);
 			});
 		}
 	};

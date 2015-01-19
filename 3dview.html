@@ -9,28 +9,20 @@
 <script>
 function ThreeDView(containerDiv, projectPage) {
 	var o = this;
-	o.selectListeners = [];
-	o.unselectListeners = [];
 	o.selectedId = -1;
 	o.loadedOids = {};
 	
 	this.nodeSelected = function(groupId, node){
+		projectPage.selected(o, groupId, node.id);
 		o.selectedId = node.id;
-		o.selectListeners.forEach(function(listener){
-			listener(groupId, node.id);
-		});
 	};
 	
 	this.nodeUnselected = function(groupId, node){
+		projectPage.unselected(o, groupId, node.id);
 		o.selectedId = -1;
-		if (groupId != null && node != null) {
-			o.unselectListeners.forEach(function(listener){
-				listener(groupId, node.id);
-			});
-		}
 	};
 	
-	this.selected = function(groupId, id){
+	this.selected = function(origin, groupId, id){
 		if (o.selectedId == id) {
 			return;
 		}
@@ -129,7 +121,8 @@ function ThreeDView(containerDiv, projectPage) {
 			
 			containerDiv.find(".progressbars").append(progressdiv);
 
-			geometryLoader.addProgressListener(function(progress){
+			geometryLoader.addProgressListener(function(progress, nrObjectsRead, totalNrObjects){
+				text.html("Loading... (" + nrObjectsRead + "/" + totalNrObjects + ")");
 				if (progress == "done") {
 					progressdiv.fadeOut(800);
 				} else {

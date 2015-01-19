@@ -174,7 +174,7 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		}
 	};
 
-	this.selected = function(groupId, id){
+	this.selected = function(origin, groupId, id){
 		if (othis.selectedId == id) {
 			return;
 		}
@@ -183,11 +183,13 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		if (treeNode != null) {
 			treeNode.openRecursive();
 			treeNode.select();
-			
-			// Somehow scrollTo messes up the selection of the selected object in WebGL, probably some browser drawing issue
-			setTimeout(function(){
-				$(".sidespanWrapper").scrollTo(treeNode.li);
-			}, 0);
+
+			if (origin != othis) {
+				// Somehow scrollTo messes up the selection of the selected object in WebGL, probably some browser drawing issue
+				setTimeout(function(){
+					$(".sidespanWrapper").scrollTo(treeNode.li);
+				}, 0);
+			}
 		} else {
 			console.log("Cannot find " + id);
 		}
@@ -200,41 +202,31 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		}				
 	};
 	
-	this.objectVisibilityChanged = function(object, oldMode){
+	this.objectVisibilityChanged = function(objects, oldMode){
 		//todo use groupid
-		var node = othis.tree.find(object.oid);
-		if (node != null) {
-			var mode = object.trans.mode;
-			node.eye.attr("mode", mode);
-			if (mode == 0) {
-				node.eye.removeClass("eyeclosed").removeClass("eyehalfopen").addClass("eyeopen");
-			} else if (mode == 1) {
-				node.eye.removeClass("eyeopen").removeClass("eyeclosed").addClass("eyehalfopen");
-			} else if (mode == 2) {
-				node.eye.removeClass("eyehalfopen").removeClass("eyeopen").addClass("eyeclosed");
+		objects.forEach(function(object){
+			var node = othis.tree.find(object.oid);
+			if (node != null) {
+				var mode = object.trans.mode;
+				node.eye.attr("mode", mode);
+				if (mode == 0) {
+					node.eye.removeClass("eyeclosed").removeClass("eyehalfopen").addClass("eyeopen");
+				} else if (mode == 1) {
+					node.eye.removeClass("eyeopen").removeClass("eyeclosed").addClass("eyehalfopen");
+				} else if (mode == 2) {
+					node.eye.removeClass("eyehalfopen").removeClass("eyeopen").addClass("eyeclosed");
+				}
 			}
-		}
+		});
 	};
 	
 	this.treeItemClick = function(treeNode) {
 		if (typeof treeNode.id === "number" && treeNode.type.startsWith("Ifc")) {
 			var groupNode = treeNode.findFirstParentWithAttr("groupId");
-			projectPage.selected(groupNode.groupId, treeNode.id);
+			projectPage.selected(othis, groupNode.groupId, treeNode.id);
 		}
 	};
 	
-	this.getIfcOids = function(nodeList, hiddenTypes){
-		var result = [];
-		nodeList.forEach(function(node){
-			if (node.type.startsWith("Ifc") && typeof node.id === "number") {
-				if (hiddenTypes == null || hiddenTypes[node.type] == null) {
-					result.push(node.id);
-				}
-			}
-		});
-		return result;
-	};
-
 	this.toggleEye = function(node, mode){
 		var projectNodes = node.listFilterByType("Project");
 		if (projectNodes.length == 0) {
@@ -244,24 +236,7 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 				if (projectNode.roid != -1) {
 					if (!projectPage.models[projectNode.roid].isPreloaded) {
 						othis.loadRevision(projectNode.project, projectNode.roid, []).done(function(){
-							var nodeList = projectNode.list();
-							var groupNode = projectNode.findFirstParentWithAttr("groupId");
-							if (groupNode.groupId != -1) {
-								var ifcOids = othis.getIfcOids(nodeList, Settings.getDefaultHiddenTypes());
-								projectPage.setObjectVisibility(groupNode.groupId, ifcOids, mode);
-								nodeList.forEach(function(n){
-									if (Settings.getDefaultHiddenTypes()[n.type] == null) {
-										n.eye.attr("mode", mode);
-										if (mode == 0) {
-											n.eye.removeClass("eyeclosed").removeClass("eyehalfopen").addClass("eyeopen");
-										} else if (mode == 1) {
-											n.eye.removeClass("eyeopen").removeClass("eyeclosed").addClass("eyehalfopen");
-										} else if (mode == 2) {
-											n.eye.removeClass("eyehalfopen").removeClass("eyeopen").addClass("eyeclosed");
-										}
-									}
-								});
-							}
+							othis.internalToggleEye(projectNode, mode);
 						});
 					} else {
 						othis.internalToggleEye(projectNode, mode);
@@ -270,24 +245,37 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 			});
 		}
 	};
-
-	this.internalToggleEye = function(projectNode, mode) {
-		var nodeList = projectNode.list();
-		var groupNode = projectNode.findFirstParentWithAttr("groupId");
+	
+	this.internalToggleEye = function(node, mode) {
+		var nodeList = node.list();
+		var groupNode = node.findFirstParentWithAttr("groupId");
 		if (groupNode.groupId != -1) {
-			projectPage.setObjectVisibility(groupNode.groupId, othis.getIfcOids(nodeList), mode);
+			var hiddenTypes = Settings.getDefaultHiddenTypes();
+			var ifcOids = [];
+			nodeList.forEach(function(subNode){
+				if (subNode.type.startsWith("Ifc") && typeof subNode.id === "number") {
+					var explicit = node.id == subNode.id || (node.type != null && node.type == subNode.type);
+					if (hiddenTypes[subNode.type] == null || explicit || mode != 0) {
+						ifcOids.push(subNode.id);
+					}
+				}
+			});
+			projectPage.setObjectVisibility(groupNode.groupId, ifcOids, mode);
 			nodeList.forEach(function(n){
-				n.eye.attr("mode", mode);
-				if (mode == 0) {
-					n.eye.removeClass("eyeclosed").removeClass("eyehalfopen").addClass("eyeopen");
-				} else if (mode == 1) {
-					n.eye.removeClass("eyeopen").removeClass("eyeclosed").addClass("eyehalfopen");
-				} else if (mode == 2) {
-					n.eye.removeClass("eyehalfopen").removeClass("eyeopen").addClass("eyeclosed");
+				var explicit = node.id == n.id || (node.type != null && node.type == n.type);
+				if (hiddenTypes[n.type] == null || explicit || mode != 0) {
+					n.eye.attr("mode", mode);
+					if (mode == 0) {
+						n.eye.removeClass("eyeclosed").removeClass("eyehalfopen").addClass("eyeopen");
+					} else if (mode == 1) {
+						n.eye.removeClass("eyeopen").removeClass("eyeclosed").addClass("eyehalfopen");
+					} else if (mode == 2) {
+						n.eye.removeClass("eyehalfopen").removeClass("eyeopen").addClass("eyeclosed");
+					}
 				}
 			});
 		}
-	}
+	};
 	
 	this.createEye = function(node, mode){
 		var eye = $("<div>");

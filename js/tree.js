@@ -60,12 +60,12 @@ Node.prototype.init = function(id, title){
 	this.ul.hide();
 	this.li.append(this.ul);
 
-	this.a.click(this.linkClick);
+	this.a.click(this.linkClick.bind(this));
 };
 
 Node.prototype.linkClick = function(){
 	if (this.onClick != null) {
-		this.onClick(o);
+		this.onClick(this);
 		this.toggle();
 		this.select();
 	}

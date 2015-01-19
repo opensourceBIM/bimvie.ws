@@ -19,12 +19,12 @@ function Types(containerDiv, projectPage, projects, models, main) {
 	
 	this.toggleEye = function(type, mode){
 		for (var roid in models) {
-			(function(roid){
-				var model = models[roid];
-				model.getAllOfType(type, true, function(object){
-					projectPage.setObjectVisibility(roid, object.oid, mode);
-				});
-			})(roid);
+			var model = models[roid];
+			var oids = [];
+			model.getAllOfType(type, true, function(object){
+				oids.push(object.oid);
+			});
+			projectPage.setObjectVisibility(roid, oids, mode);
 		}
 	};
 	
@@ -76,17 +76,21 @@ function Types(containerDiv, projectPage, projects, models, main) {
 	this.loadRevision = function(project, roid, types, objectsToHide){
 		containerDiv.find(".modelLoader").hide();
 		if (roid != -1 && project.nrSubProjects == 0) {
-			for (var type in types) {
-				var state = types[type];
-				if (othis.types[type] == null) {
-					othis.types[type] = {visible: 0, transparent: 0, total: 0};
+			var model = projectPage.models[roid];
+			for (var oid in model.objects) {
+				var object = model.objects[oid];
+				if (object.isA("IfcProduct")) {
+					var type = object.getType();
+					if (othis.types[type] == null) {
+						othis.types[type] = {visible: 0, transparent: 0, total: 0};
+					}
+					if (object.trans.mode == 0) {
+						othis.types[type].visible = othis.types[type].visible + 1;
+					} else if (object.trans.mode == 1) {
+						othis.types[type].transparent = othis.types[type].transparent + 1;
+					}
+					othis.types[type].total = othis.types[type].total + 1;
 				}
-				if (state.mode == 0) {
-					othis.types[type].visible = othis.types[type].visible + state.count;
-				} else if (state.mode == 1) {
-					othis.types[type].transparent = othis.types[type].transparent + state.count;
-				}
-				othis.types[type].total = othis.types[type].total + state.count;
 			}
 			if (Object.keys(othis.types).length == 0) {
 				containerDiv.find("table tbody").append("<tr><td>No types</td></tr>");
@@ -94,7 +98,8 @@ function Types(containerDiv, projectPage, projects, models, main) {
 				containerDiv.find("table tbody tr").remove();
 				for (var key in othis.types) {
 					var tr = $("<tr>");
-					var count = othis.types[key].total;
+					var state = othis.types[key];
+					var count = state.total;
 					tr.attr("type", key);
 					var td = $("<td>" + stripIfc(key) + "</td>");
 					tr.append(td);
@@ -102,11 +107,7 @@ function Types(containerDiv, projectPage, projects, models, main) {
 					
 					var eye = $("<div>");
 					eye.addClass("eye");
-					var mode = 0;
-					var state = types[key];
-					if (state != null) {
-						mode = state.mode;
-					}
+					var mode = state.visible == state.total ? 0 : 2;
 					if (mode == 0) {
 						eye.addClass("eyeopen");
 					} else if (mode == 1) {

@@ -149,11 +149,12 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 			othis.addExtendedDataSchema(serviceDescriptor.readExtendedData, function(data){
 				othis.readExtendedDataOid = data.oid;
 				td1.append(main.createExtendedDataSchemaLink(data));
+				othis.canAdd();
 			}, function(){
 				tr1.addClass("error");
 				td1.append("<br/>Error adding extended data schema");
 			});
-		});
+		}, false, false, false);
 	}
 	if (serviceDescriptor.writeExtendedData != null) {
 		var tr2 = $("<tr><td>Write Extended Data</td></tr>");
@@ -167,22 +168,12 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 			othis.addExtendedDataSchema(serviceDescriptor.writeExtendedData, function(data){
 				othis.writeExtendedData = data.oid;
 				td2.append(main.createExtendedDataSchemaLink(data));
+				othis.canAdd();
 			}, function(){
 				tr1.addClass("error");
 				td2.append("<br/>Error adding extended data schema");
 			});
-
-//			tr2.addClass("error");
-//			td2.append(serviceDescriptor.writeExtendedData);
-//			td2.append("<br/>");
-//			var addEds2 = $("<a>Add extended data schema</a>");
-//			td2.append(addEds2);
-//			addEds2.click(function(){
-//				main.showServerSettings(function(){
-//					this.showAddExtendedDataSchema({name: serviceDescriptor.writeExtendedData, namespace: serviceDescriptor.writeExtendedData});
-//				});
-//			});
-		});
+		}, false, false, false);
 	}
 	
 	this.addExtendedDataSchema = function(namespaceurl, callback, errorCallback){
@@ -193,7 +184,10 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 			url: namespaceurl,
 			type: "TXT"
 		};
-		Global.bimServerApi.call("ServiceInterface", "addExtendedDataSchema", {extendedDataSchema: extendedDataSchema}, callback, errorCallback);
+		Global.bimServerApi.call("ServiceInterface", "addExtendedDataSchema", {extendedDataSchema: extendedDataSchema}, function(oid){
+			extendedDataSchema.oid = oid
+			callback(extendedDataSchema);
+		}, errorCallback);
 	};
 	
 	this.addProfileDescriptor = function(profileDescriptor) {
