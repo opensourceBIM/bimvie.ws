@@ -1,6 +1,3 @@
-[submodule "js/bimsurfer"]
-	path = js/bimsurfer
-	url = https://github.com/opensourceBIM/BIMsurfer.git
 [submodule "/js/bimsurfer"]
 	path = /js/bimsurfer
 	url = https://github.com/opensourceBIM/BIMsurfer.git
