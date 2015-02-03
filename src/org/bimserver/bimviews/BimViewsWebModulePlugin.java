@@ -26,7 +26,7 @@ public class BimViewsWebModulePlugin extends AbstractWebModulePlugin {
 
 	@Override
 	public String getVersion() {
-		return "1.3.10";
+		return "1.3.11";
 	}
 
 	@Override
@@ -37,5 +37,10 @@ public class BimViewsWebModulePlugin extends AbstractWebModulePlugin {
 	@Override
 	public String getDefaultContextPath() {
 		return "/bimviews";
+	}
+
+	@Override
+	public String getIdentifier() {
+		return "bimviews";
 	}
 }
