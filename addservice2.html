@@ -90,9 +90,9 @@ function AddService2(main, project, serviceDescriptor, isLocal) {
 			targetElement.append("<option value=\"[SELECT_A_PROJECT]\" selected=\"selected\">[Select a project]</option>");
 			data.forEach(function(project){
 				var option = $("<option value=\"" + project.oid + "\">" + project.name + "</option>");
-//				if (project.oid == othis.project.oid) {
-//					option.attr("selected", "selected");
-//				}
+				if (project.oid == othis.project.oid) {
+					option.attr("selected", "selected");
+				}
 				targetElement.append(option);
 			});
 		});
