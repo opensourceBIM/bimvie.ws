@@ -145,7 +145,7 @@ function Revision(main, revision) {
 			othis.current.close();
 		}
 		$(".revision .browser").load(Global.baseDir + "browser.html", function(){
-			othis.current = new Browser($(this), othis.revision);
+			othis.current = new Browser($(this), othis.project, othis.revision);
 			if (callback != null) {
 				callback.call(othis.current);
 			} else {

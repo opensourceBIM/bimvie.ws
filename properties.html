@@ -25,6 +25,7 @@ function Properties(containerDiv, projectPage, models, main, oid) {
 		containerDiv.find("table tbody").append("<tr class=\"noprop\"><td>No properties</td></tr>");
 		var model = models[groupId];
 		model.get(id, function(product){
+			othis.product = product;
 			if (product.oid == id) {
 //				var tr = $("<tr class=\"active\"></tr>");
 //				tr.append("<td>Type</td><td><b>" + stripIfc(product.__type) + "</b></td>");
@@ -118,5 +119,12 @@ function Properties(containerDiv, projectPage, models, main, oid) {
 	if (othis.selectedId != null && othis.selectedId != -1) {
 		othis.selected(othis.selectedId);
 	}
+	
+	containerDiv.find(".properties").dblclick(function(){
+		var tr = $("<tr class=\"guid\"></tr>");
+		tr.append("<td colspan=\"2\">" + othis.product.getGlobalId() + "</td>");
+		containerDiv.find(".table tbody").find(".guid").remove();
+		containerDiv.find(".table tbody").append(tr);
+	});
 }
 </script>

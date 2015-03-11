@@ -68,7 +68,7 @@ function AddExtendedData(containerDiv, revision, successFunction) {
 						fileId: data.result.fileId
 					}
 				}, function(){
-					containerDiv.find(".addextendeddata").parent().modal("hide").remove();
+					containerDiv.find(".addextendeddata").parent().modal("hide");
 					if (successFunction != null) {
 						successFunction();
 					}

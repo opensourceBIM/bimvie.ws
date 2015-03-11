@@ -1,4 +1,3 @@
-
 a {
 	cursor: pointer;
 }
@@ -51,6 +50,23 @@ table .header {
 .threedviewTabs .btn.active, .threedviewTabs .btn:active {
 	webkit-box-shadow: none;
 	box-shadow: none;
+}
+
+.threedview .visualization .panel-body {
+	margin-left: 10px;
+}
+
+.threedview .visualization label {
+}
+
+.threedview .visualization {
+	top: 130px;
+	text-align: left;
+	right: 20px;
+	opacity: 0.6;
+	z-index: 5000;
+	margin: 10px;
+	position: fixed;
 }
 
 .threedviewTabs label {
