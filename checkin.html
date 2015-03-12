@@ -126,6 +126,10 @@ function Checkin(containerDiv, project, successFunction) {
 	var fileselected = false;
 
 	this.progressHandler = function(topicId, state) {
+		// This filter should be done by bimserverapi.js
+		if (topicId != currentCheckinId) {
+			return;
+		}
 		var oldStage = othis.stage;
 		othis.stage = state.stage;
 		if (state.state == "AS_ERROR") {
@@ -288,8 +292,7 @@ function Checkin(containerDiv, project, successFunction) {
 				deserializerOid: containerDiv.find(".deserializerName").val(),
 				comment: containerDiv.find(".comment").val(),
 				merge: containerDiv.find(".merge").is(':checked'),
-				poid: othis.project.oid,
-				sync: false
+				poid: othis.project.oid
 			};
 			othis.hideUpload();
 			containerDiv.find(".uploadStatus").html("Uploading file...");
