@@ -274,6 +274,9 @@ function ThreeDView(containerDiv, projectPage) {
 			
 			// This might be needed when the geometryloader comes up with more objects than requested...
 			geometryLoader.objectAddedListeners.push(function(oid){
+				models[uniqueRoids[0]].get(oid, function(object){
+					o.updateVisibility(object);
+				});
 				o.loadedOids[oid] = true;
 			});
 			geometryLoader.progressListeners.push(function(state){
@@ -346,6 +349,7 @@ function ThreeDView(containerDiv, projectPage) {
 								model.getByGuids(guids, function(object){
 									var change = map[object.getGlobalId()];
 									objects.push(object);
+									object.trans.mode = 0;
 									if (checked) {
 										object.trans.colorOverride = change.effect.color;
 									} else {
