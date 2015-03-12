@@ -323,7 +323,7 @@ function Main(address, user) {
 		};
 		div.load(Global.baseDir + "download.html", function(){
 			new Download($(this), params);
-		}).modal({keyboard:true});
+		}).modal("show");
 	};
 
 	this.showDownloadRevisionsPopup = function(roids) {
@@ -335,7 +335,7 @@ function Main(address, user) {
 		};
 		div.load(Global.baseDir + "download.html", function(){
 			new Download($(this), params);
-		}).modal({keyboard:true});
+		}).modal({keyboard:true, show: true});
 	};
 
 	this.addMenuDivider = function(mainTitle){

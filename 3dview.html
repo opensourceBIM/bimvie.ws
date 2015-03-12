@@ -4,6 +4,12 @@
 			<span class="badge">3</span><span class="text"> Waiting...</span>
 		</div>
 	</div>
+	<div class="panel panel-default visualization ih">
+		<div class="panel-heading">
+			<h3 class="panel-title">Visualization options</h3>
+		</div>
+		<div class="panel-body"></div>
+	</div>
 	<div id="viewport"></div>
 </div>
 <script>
@@ -39,58 +45,197 @@ function ThreeDView(containerDiv, projectPage) {
 		
 	};
 	
-	this.objectVisibilityChanged = function(objects, oldModes){
+	this.setAlternativeColor = function(object, color){
+		o.updateVisibility(object);
+	};
+	
+	this.unsetAlternativeColor = function(object){
+		var threeDObject = o.viewer.scene.findNode(object.oid);
+		if (threeDObject != null) {
+			var matrix = threeDObject.nodes[0];
+			var geometryNode = matrix.nodes[0];
+			if (geometryNode.coreId != null && ("" + geometryNode.coreId).endsWith("_Visualization")) {
+				// This is a complex-material object which had been modified, return it to the old state
+				if (geometryNode._core.arrays.colors != null) {
+					matrix.removeNode(geometryNode);
+					
+					var newGeometry = {
+						type: "geometry",
+						coreId: geometryNode.getCoreId().replace("_Visualization", "")
+					}
+					
+					matrix.addNode(newGeometry);
+				}
+			} else {
+				o.setObjectColor(object);
+			}
+		}
+	};
+	
+	this.setObjectColor = function(object){
+		var threeDObject = o.viewer.scene.findNode(object.oid);
+		var mode = object.trans.mode;
+		if (threeDObject != null) {
+			var matrix = threeDObject.nodes[0];
+			var geometryNode = matrix.nodes[0];
+			var material = BIMSURFER.Constants.materials[object.getType()];
+			// Hack to get the roof to be red.....
+			if (object.getType() == "IfcSlab") {
+				if (object.getPredefinedType() == "ROOF") {
+					material = BIMSURFER.Constants.materials["IfcRoof"];
+				}
+			}
+			
+			var color = {r: material.r, g: material.g, b: material.b, a: material.a};
+
+			if (mode == 0) {
+				threeDObject.findParentByType("enable").setEnabled(true);
+			} else if (mode == 1) {
+				threeDObject.findParentByType("enable").setEnabled(true);
+				color.a = 0.5;
+				color.r = 0.5;
+				color.g = 0.5;
+				color.b = 0.5;
+				if (o.selectedId == object.oid) {
+					threeDObject.getNode("highlight").set("alpha", 0.5);
+				}
+			} else if (mode == 2) {
+				threeDObject.findParentByType("enable").setEnabled(false);
+			}
+			
+			o.changeColorOfObject(object, color);
+		}
+	};
+	
+	this.changeColorOfObject = function(object, color){
+		var threeDObject = o.viewer.scene.findNode(object.oid);
+		if (threeDObject != null) {
+			var matrix = threeDObject.nodes[0];
+			var geometryNode = matrix.nodes[0];
+			if (geometryNode._core.arrays.colors != null) {
+				var groupId = threeDObject.findParentByType("translate").data.groupId;
+				
+				var geometry = {
+					type: "geometry",
+					primitive: "triangles"
+				};
+		
+				geometry.coreId = geometryNode.getCoreId() + "_Visualization";
+				geometry.indices = geometryNode._core.arrays.indices;
+				geometry.positions = geometryNode._core.arrays.positions;
+				geometry.normals = geometryNode._core.arrays.normals;
+				
+				geometry.colors = [];
+				for (var i=0; i<geometryNode._core.arrays.colors.length; i+=4) {
+					geometry.colors[i] = color.r;
+					geometry.colors[i+1] = color.g;
+					geometry.colors[i+2] = color.b;
+					geometry.colors[i+3] = color.a;
+				}
+				
+				var library = o.viewer.scene.findNode("library-" + groupId);
+				library.add("node", geometry);
+				
+				var newGeometry = {
+					type: "geometry",
+					coreId: geometryNode.getCoreId() + "_Visualization"
+				}
+				
+				matrix.removeNode(geometryNode);
+				matrix.addNode(newGeometry);
+			} else {
+				threeDObject.findParentByType("flags").set("flags", {transparent: color.a < 1});
+				threeDObject.parent.set("alpha", color.a);
+				threeDObject.parent.set("baseColor", {r: color.r, g: color.g, b: color.b});
+			}
+		} else {
+			console.log("not found");
+		}
+	};
+	
+	this.updateVisibility = function(object) {
+		var threeDObject = o.viewer.scene.findNode(object.oid);
+		var mode = object.trans.mode;
+		if (threeDObject != null) {
+			var matrix = threeDObject.nodes[0];
+			var geometryNode = matrix.nodes[0];
+			if (mode == 0) {
+				threeDObject.findParentByType("enable").setEnabled(true);
+				if (geometryNode._core.arrays.colors != null) {
+					if (object.trans.colorOverride != null) {
+						o.changeColorOfObject(object, object.trans.colorOverride);
+					} else {
+						if (geometryNode.coreId != null && ("" + geometryNode.coreId).endsWith("_Visualization")) {
+							// This is a complex-material object which had been modified, return it to the old state
+							if (geometryNode._core.arrays.colors != null) {
+								matrix.removeNode(geometryNode);
+								
+								var newGeometry = {
+									type: "geometry",
+									coreId: geometryNode.getCoreId().replace("_Visualization", "")
+								}
+								
+								matrix.addNode(newGeometry);
+							}
+						}
+					}
+				} else {
+					if (object.trans.colorOverride != null) {
+						o.changeColorOfObject(object, object.trans.colorOverride);
+					} else {
+						var material = BIMSURFER.Constants.materials[object.getType()];
+						// Hack to get the roof to be red.....
+						if (object.getType() == "IfcSlab") {
+							if (object.getPredefinedType() == "ROOF") {
+								material = BIMSURFER.Constants.materials["IfcRoof"];
+							}
+						}
+						if (material == null) {
+							material = BIMSURFER.Constants.materials.DEFAULT;
+						}
+						
+						var color = {r: material.r, g: material.g, b: material.b, a: material.a};
+						o.changeColorOfObject(object, color);
+					}
+				}
+			} else if (mode == 1) {
+				threeDObject.findParentByType("enable").setEnabled(true);
+				var color = {};
+				color.a = 0.5;
+				color.r = 0.5;
+				color.g = 0.5;
+				color.b = 0.5;
+				if (o.selectedId == object.oid) {
+					threeDObject.getNode("highlight").set("alpha", 0.5);
+				}
+				o.changeColorOfObject(object, color);
+			} else if (mode == 2) {
+				threeDObject.findParentByType("enable").setEnabled(false);
+			}
+		}
+	};
+	
+	this.objectVisibilityChanged = function(objects){
 		// todo use groupid
 		
 		var uniqueRoids = [];
 		
-		if (Array.isArray(objects) && Array.isArray(oldModes)) {
-		} else {
+		if (!Array.isArray(objects)) {
 			objects = [objects];
-			oldModes = [oldModes];
 		}
 
 		var oidsNotLoaded = [];
 
 		for (var i=0; i<objects.length; i++) {
 			var object = objects[i];
-			var oldMode = oldModes[i];
 			
 			if (i == 0) {
 				// TODO actually do something useful here
 				uniqueRoids.push(object.model.roid);
 			}
 			
-			var threeDObject = o.viewer.scene.findNode(object.oid);
-			if (threeDObject != null) {
-				var material = BIMSURFER.Constants.materials[object.getType()];
-				// Hack to get the roof to be red.....
-				if (object.getType() == "IfcSlab") {
-					if (object.getPredefinedType() == "ROOF") {
-						material = BIMSURFER.Constants.materials["IfcRoof"];
-					}
-				}
-				var mode = object.trans.mode;
-				if (mode == 0) {
-					threeDObject.parent.parent.setEnabled(true);
-					threeDObject.parent.parent.parent.set("flags", {transparent: material.a < 1});
-					threeDObject.parent.set("alpha", material.a);
-					threeDObject.parent.set("baseColor", material);
-				} else if (mode == 1) {
-					threeDObject.parent.parent.setEnabled(true);
-					threeDObject.parent.parent.parent.set("flags", {transparent: true});
-					threeDObject.parent.set("alpha", 0.5);
-					threeDObject.parent.set("baseColor", {r: 0.5, g: 0.5, b: 0.5});
-					if (o.selectedId == object.oid) {
-						threeDObject.getNode("highlight").set("alpha", 0.5);
-					}
-				} else if (mode == 2) {
-					threeDObject.parent.parent.setEnabled(false);
-					threeDObject.parent.parent.parent.set("flags", {transparent: material.a < 1});
-					threeDObject.parent.set("alpha", material.a);
-					threeDObject.parent.set("baseColor", material);
-				}
-			}
+			o.updateVisibility(object);
+			
 			if (o.loadedOids[object.oid] == null) {
 				if (object.isA("IfcProduct")) {
 					// Assuming sync return here because of preloading!!
@@ -102,7 +247,6 @@ function ThreeDView(containerDiv, projectPage) {
 				}
 			}
 		}
-		
 		if (oidsNotLoaded.length > 0) {
 			var models = {};
 			uniqueRoids.forEach(function(roid){
@@ -133,6 +277,9 @@ function ThreeDView(containerDiv, projectPage) {
 			
 			// This might be needed when the geometryloader comes up with more objects than requested...
 			geometryLoader.objectAddedListeners.push(function(oid){
+				models[uniqueRoids[0]].get(oid, function(object){
+					o.updateVisibility(object);
+				});
 				o.loadedOids[oid] = true;
 			});
 			geometryLoader.progressListeners.push(function(state){
@@ -179,6 +326,51 @@ function ThreeDView(containerDiv, projectPage) {
 	};
 	
 	this.loadRevision = function(project, roid, types){
+		Global.bimServerApi.call("Bimsie1ServiceInterface", "getExtendedDataSchemaByNamespace", {namespace: "http://bimserver.org/3dvisualizationeffects"}, function(schema){
+			Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllExtendedDataOfRevision", {roid: roid}, function(list){
+				list.forEach(function(extendedData){
+					if (extendedData.schemaId == schema.oid) {
+						Global.bimServerApi.call("ServiceInterface", "getFile", {fileId: extendedData.fileId}, function(file){
+							var data = atob(file.data);
+							var vis = JSON.parse(data);
+							var div = $("<div class=\"checkbox\">");
+							var label = $("<label></label>");
+							div.append(label);
+							var checkbox = $("<input type=\"checkbox\"/>");
+							checkbox.change(function(){
+								var checked = $(this).is(":checked");
+								var guids = [];
+								var map = {};
+								vis.changes.forEach(function(change){
+									guids = guids.concat(change.selector.guids);
+									change.selector.guids.forEach(function(guid){
+										map[guid] = change;
+									});
+								});
+								var model = projectPage.models[roid];
+								var objects = [];
+								model.getByGuids(guids, function(object){
+									var change = map[object.getGlobalId()];
+									objects.push(object);
+									object.trans.mode = 0;
+									if (checked) {
+										object.trans.colorOverride = change.effect.color;
+									} else {
+										object.trans.colorOverride = null;
+									}
+								}).done(function(){
+									o.objectVisibilityChanged(objects);
+								});
+							});
+							label.append(checkbox);
+							label.append(vis.name);
+							containerDiv.find(".visualization").show();
+							containerDiv.find(".visualization .panel-body").append(div);
+						});
+					}
+				});
+			});
+		});
 	};
 	
 	this.close = function(){
