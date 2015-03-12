@@ -107,7 +107,9 @@ function Classifications(containerDiv, projectPage, projects, models, main) {
 						relAssociatesClassification.getRelatingClassification(function(relatingClassification){
 							if (relatingClassification != null) {
 								tr.append("<td>" + relatingClassification.getName() + "</td>");
-								tr.attr("title", relatingClassification.getItemReference() + (relatingClassification.getLocation() == null ? "" : (" / " + relatingClassification.getLocation())));
+								if (project.schema == "ifc2x3tc1") {
+									tr.attr("title", relatingClassification.getItemReference() + (relatingClassification.getLocation() == null ? "" : (" / " + relatingClassification.getLocation())));
+								}
 		
 								var eye = $("<div>");
 								eye.addClass("eye");
