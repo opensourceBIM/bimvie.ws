@@ -190,6 +190,9 @@ function ThreeDView(containerDiv, projectPage) {
 								material = BIMSURFER.Constants.materials["IfcRoof"];
 							}
 						}
+						if (material == null) {
+							material = BIMSURFER.Constants.materials.DEFAULT;
+						}
 						
 						var color = {r: material.r, g: material.g, b: material.b, a: material.a};
 						o.changeColorOfObject(object, color);
