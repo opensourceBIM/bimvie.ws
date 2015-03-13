@@ -32,6 +32,12 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		if ((project.nrSubProjects == 0 && roid == -1) || project.lastRevisionId == -1) {
 			eye.css('visibility', 'hidden');
 		}
+		node.click(function(){
+			node.select();
+			Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: node.project.oid}, function(project){
+				projectPage.loadDetails(project);
+			});
+		});
 		node.setIcon("folder");
 		node.type = "Project";
 		node.project = project;
@@ -437,7 +443,7 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 	});
 	dropdown.find(".btnAddService").click(function(){
 		dropdown.hide();
-		main.showAddService(othis.project);
+		main.showAddService(othis.selectedNode.project);
 	});
 	dropdown.find(".btnCheckin").click(function(){
 		dropdown.hide();

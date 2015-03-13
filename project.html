@@ -308,7 +308,7 @@ function Project(containerDiv, main, project) {
 							$(".classificationWrapper").load("classifications.html", function(){
 								othis.classifications = new Classifications($(this), othis, othis.projects, othis.models, main);
 	
-								othis.loadDetails();
+								othis.loadDetails(othis.project);
 								othis.projects.forEach(function(project){
 									othis.changeRevision(project, project.lastRevisionId);
 								});
@@ -375,10 +375,15 @@ function Project(containerDiv, main, project) {
 	};
 	
 	this.loadDetails = function(project){
-		containerDiv.find(".rightCol").load("rightpanel.html", function(){
-			new RightPanel($(this), main, othis.project, othis).show();
-			containerDiv.find(".rightCol > .details").show();
-		});
+		if (othis.rightPanel != null) {
+			othis.rightPanel.reloadProject(project.oid);
+		} else {
+			containerDiv.find(".rightCol").load("rightpanel.html", function(){
+				othis.rightPanel = new RightPanel($(this), main, project, othis);
+				othis.rightPanel.show();
+				containerDiv.find(".rightCol > .details").show();
+			});
+		}
 	};
 	
 	this.share = function(poid, roid) {

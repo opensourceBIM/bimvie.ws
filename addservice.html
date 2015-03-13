@@ -1,4 +1,5 @@
 <div class="addservice">
+	<h1>Add Service</h1>
 	<h3>Add remote service<small class="loadedFrom"></small></h3>
 	<div class="well well-sm noremoteservices">
 		No remote services
@@ -45,6 +46,7 @@ function AddService(main, project) {
 
 	this.show = function(){
 		pushHistory({page: "AddService", poid: project.oid}, "Add Service");
+		$(".addservice h1").html("Add Service to " + project.name);
 	};
 	
 	this.proceedWithServiceDescriptor = function(serviceDescriptor, isLocal) {

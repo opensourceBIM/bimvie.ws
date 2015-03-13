@@ -66,6 +66,7 @@ Node.prototype.init = function(id, title){
 Node.prototype.linkClick = function(){
 	if (this.onClick != null) {
 		this.onClick(this);
+	} else {
 		this.toggle();
 		this.select();
 	}
