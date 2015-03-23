@@ -29,7 +29,7 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		parentNode.add(node);
 		var dropdown = othis.createDropDown(node);
 		var eye = othis.createEye(node, 2);
-		if ((project.nrSubProjects == 0 && roid == -1) || project.lastRevisionId == -1) {
+		if (roid == -1 || project.lastRevisionId == -1) {
 			eye.css('visibility', 'hidden');
 		}
 		node.click(function(){
