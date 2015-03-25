@@ -94,8 +94,12 @@ function TabChanger2(navElement, mainContainer) {
 					}
 				});
 			} else {
+				othis.current = page;
 				contentElement.append(page);
 				contentElement.show();
+				if (callback != null) {
+					callback.call(othis.current);
+				}
 			}
 		} else {
 			othis.current = constructorFunction.call(contentElement);

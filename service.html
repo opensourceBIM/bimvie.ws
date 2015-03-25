@@ -1,4 +1,5 @@
 <div class="service">
+	<a class="backToServicesList">back</a>
 	<h1>Service</h1>
 	<table class="table pluginTable">
 		<thead></thead>
@@ -41,7 +42,7 @@
 	</div>
 </div>
 <script>
-function Service(main, service) {
+function Service(main, service, projectPage) {
 	var othis = this;
 	othis.service = service;
 
@@ -156,6 +157,10 @@ function Service(main, service) {
 	
 	this.close = function() {
 	};
+	
+	$(".service .backToServicesList").click(function(){
+		projectPage.loadServices();
+	});
 
 	$(".service .technicalDetailsLink").click(function(){
 		$(".service .technicalDetails").show();

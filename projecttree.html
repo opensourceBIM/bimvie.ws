@@ -32,6 +32,7 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		if (roid == -1 || project.lastRevisionId == -1) {
 			eye.css('visibility', 'hidden');
 		}
+		eye.toggle(projectPage.threeDAspectVisible.get());
 		node.click(function(){
 			node.select();
 			Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: node.project.oid}, function(project){
@@ -65,6 +66,10 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 			node.doneLoading();
 			node.open();
 		}
+	};
+	
+	this.setShowEyes = function(show) {
+		containerDiv.find(".eye").toggle(show);
 	};
 	
 	this.loadRevision = function(project, roid, types) {
@@ -304,6 +309,7 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 			var mode = parseInt(eye.attr("mode"));
 			othis.toggleEye(node, (mode + 1) % 3);
 		});
+		eye.toggle(projectPage.threeDAspectVisible.get());
 		node.eye = eye;
 		node.addButton(eye);
 		return eye;
@@ -439,6 +445,7 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 	projectPage.modelAddedListeners.register(othis.addRevision);
 	projectPage.modelLoadedListeners.register(othis.loadRevision);
 	projectPage.modelUnloadedListeners.register(othis.unloadRevision);
+	projectPage.threeDAspectVisible.register(othis.setShowEyes);
 
 	var dropdown = containerDiv.find(".dropdown");
 	dropdown.find(".btnDownload").click(function(){
@@ -449,7 +456,9 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 	});
 	dropdown.find(".btnAddService").click(function(){
 		dropdown.hide();
-		main.showAddService(othis.selectedNode.project);
+		main.showAddService(othis.selectedNode.project, null, function(){
+			projectPage.rightPanel.loadServices();
+		});
 	});
 	dropdown.find(".btnCheckin").click(function(){
 		dropdown.hide();

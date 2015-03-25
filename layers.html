@@ -122,6 +122,7 @@ function Layers(containerDiv, projectPage, projects, models, main) {
 							eye.attr("mode", 0);
 						}
 					}
+					eye.toggle(projectPage.threeDAspectVisible.get());
 					eye.attr("oid", presentationLayerAssignment.oid);
 					eye.click(function(){
 						var eye = $(this);
@@ -148,7 +149,12 @@ function Layers(containerDiv, projectPage, projects, models, main) {
 	
 	containerDiv.find(".btnLoad").click(projectPage.loadModel);
 	
+	this.setShowEyes = function(show) {
+		containerDiv.find(".eye").toggle(show);
+	};
+	
 	projectPage.objectVisibilityListeners.register(othis.objectVisibilityChanged);
+	projectPage.threeDAspectVisible.register(othis.setShowEyes);
 	projectPage.modelLoadedListeners.register(othis.loadRevision);
 	projectPage.modelUnloadedListeners.register(othis.unloadRevision);
 };

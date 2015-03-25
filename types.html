@@ -117,6 +117,7 @@ function Types(containerDiv, projectPage, projects, models, main) {
 					}
 					eye.attr("type", key);
 					eye.attr("mode", mode);
+					eye.toggle(projectPage.threeDAspectVisible.get());
 					eye.click(function(){
 						var eye = $(this);
 						var mode = parseInt(eye.attr("mode"));
@@ -134,10 +135,15 @@ function Types(containerDiv, projectPage, projects, models, main) {
 		
 	};
 	
+	this.setShowEyes = function(show){
+		containerDiv.find(".eye").toggle(show);
+	};
+	
 	containerDiv.find(".btnLoad").click(projectPage.loadModel);
 	
 	projectPage.objectVisibilityListeners.register(othis.objectVisibilityChanged);
 	projectPage.modelLoadedListeners.register(othis.loadRevision);
 	projectPage.modelUnloadedListeners.register(othis.unloadRevision);
+	projectPage.threeDAspectVisible.register(othis.setShowEyes);
 };
 </script>

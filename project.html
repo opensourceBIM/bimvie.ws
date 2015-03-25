@@ -41,6 +41,7 @@ function Project(containerDiv, main, project) {
 	var othis = this;
 	othis.loaded = {}; // poid -> roid
 	othis.models = {};
+	othis.threeDAspectVisible = new Variable(false);
 	othis.selectListeners = new EventRegistry();
 	othis.unselectListeners = new EventRegistry();
 	othis.objectVisibilityListeners = new EventRegistry();
@@ -318,20 +319,6 @@ function Project(containerDiv, main, project) {
 						});
 					});
 				});
-			});
-		});
-	};
-	
-	this.load3DView = function(){
-		containerDiv.find(".rightCol > .details").hide();
-		containerDiv.find(".rightCol > .rightpanel").show();
-		containerDiv.find(".rightCol > .rightpanel").load("rightpanel.html", function(){
-			othis.rightPanel = new RightPanel($(this), main, othis.project, othis);
-			othis.rightPanel.selectListeners.push(othis.selected);
-			othis.rightPanel.unselectListeners.push(othis.unselected);
-
-			othis.projects.forEach(function(project){
-				othis.changeRevision(project, project.lastRevisionId);
 			});
 		});
 	};

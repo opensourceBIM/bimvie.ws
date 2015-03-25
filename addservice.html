@@ -41,7 +41,7 @@
 	</form>
 </div>
 <script>
-function AddService(main, project) {
+function AddService(main, project, longCallBack) {
 	var othis = this;
 
 	this.show = function(){
@@ -50,7 +50,7 @@ function AddService(main, project) {
 	};
 	
 	this.proceedWithServiceDescriptor = function(serviceDescriptor, isLocal) {
-		main.showAddService2(project, serviceDescriptor, isLocal);
+		main.showAddService2(project, serviceDescriptor, isLocal, null, longCallBack);
 	};
 	
 	this.addButtonClick = function(event) {

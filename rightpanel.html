@@ -71,17 +71,19 @@
 					</table>
 				</div>
 				<div class="tab-pane services initialhide">
-					<div class="well well-sm noservices">No services</div>
-					<table class="servicesTable initialhide table table-striped table-hover">
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th>Profile</th>
-								<th>Actions</th>
-							</tr>
-						</thead>
-						<tbody></tbody>
-					</table>
+					<div class="serviceList">
+						<div class="well well-sm noservices">No services</div>
+						<table class="servicesTable initialhide table table-striped table-hover">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Profile</th>
+									<th>Actions</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+					</div>
 				</div>
 				<div class="tab-pane modelCheckers initialhide">
 					<div class="well well-sm buttonBar">
@@ -197,6 +199,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	};
 	
 	this.showThreeD = function(callback){
+		projectPage.threeDAspectVisible.set(true);
 		if (o.threeDView != null) {
 			othis.tabChanger.changeTab($(".button3d"), o.threeDView, $(".3dview"), function(){
 				o.threeDView.show();
@@ -205,6 +208,9 @@ function RightPanel(containerDiv, main, project, projectPage) {
 			othis.tabChanger.changeTab($(".button3d"), "3dview.html", $(".3dview"), function(){
 				pushHistory({page: "Project", poid: othis.project.oid, tab: "3dview"}, "Project");
 				o.threeDView = new ThreeDView($(this), projectPage);
+				o.threeDView.close = function(){
+					projectPage.threeDAspectVisible.set(false);
+				};
 				return o.threeDView;
 			}, function(){
 				o.threeDView.show();
@@ -447,8 +453,11 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		if (!$(event.target).is("a, button, span.caret")) {
 			var service = $(this).parents("tr").andSelf().data("service");
 			event.preventDefault();
-			containerDiv.find(".services").load(Global.baseDir + "service.html", function(){
-				new Service(main, service);
+			var div = $("<div class=\"serviceDetail\">");
+			containerDiv.find(".serviceList").hide();
+			containerDiv.find(".services").append(div);
+			div.load(Global.baseDir + "service.html", function(){
+				new Service(main, service, othis);
 			});
 		}
 	};
@@ -458,6 +467,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	};
 	
 	this.showService = function(callback) {
+		containerDiv.find(".serviceList").hide();
 		othis.tabChanger.changeTab($(".servicesLink"), $(".services"), function(){
 			pushHistory({page: "Project", poid: othis.project.oid, tab: "services"}, "Project");
 			return new Service(main, service);
@@ -540,7 +550,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	};
 	
 	this.loadRevisions = function(callback) {
-		othis.tabChanger.changeTab($(".revisionsLink"), null, $(".revisions"), function(){
+		othis.tabChanger.changeTab($(".revisionsLink"), null, containerDiv.find(".revisions"), function(){
 			Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllRevisionsOfProject", {poid: othis.project.oid}, function(data){
 				containerDiv.find(".revisionsTable tbody tr").remove();
 				data.forEach(function(revision){
@@ -593,6 +603,8 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	};
 
 	this.loadServices = function(callback) {
+		containerDiv.find(".serviceList").show()
+		containerDiv.find(".serviceDetail").hide()
 		containerDiv.find(".noservices").show();
 		containerDiv.find(".servicesTable").hide();
 		othis.tabChanger.changeTab($(".servicesLink"), null, $(".services"), function(){
@@ -847,9 +859,6 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	containerDiv.find(".addUserToProjectDiv button").click(othis.addUserToProject);
 	
 	containerDiv.find(".addUserLink").click(othis.addUserLinkClick);
-	containerDiv.find(".3dLink a").click(function(){
-		projectPage.load3DView();
-	});
 	
 	containerDiv.find(".checkinButton").click(othis.showCheckinPopup);
 	containerDiv.find(".addServiceButton").click(othis.addServiceClick);

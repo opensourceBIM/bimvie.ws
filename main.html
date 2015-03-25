@@ -177,9 +177,9 @@ function Main(address, user) {
 		}, callback);
 	};
 
-	this.showAddService = function(project, callback) {
+	this.showAddService = function(project, callback, longCallBack) {
 		othis.pageChanger.changePage($(".projectsLink"), "addservice.html", function(){
-			return new AddService(othis, project);
+			return new AddService(othis, project, longCallBack);
 		}, callback);
 	};
 	
@@ -189,9 +189,9 @@ function Main(address, user) {
 		}, callback);
 	};
 
-	this.showAddService2 = function(project, serviceDescriptor, isLocal, callback) {
+	this.showAddService2 = function(project, serviceDescriptor, isLocal, callback, longCallBack) {
 		othis.pageChanger.changePage($(".projectsLink"), "addservice2.html", function(){
-			return new AddService2(othis, project, serviceDescriptor, isLocal);
+			return new AddService2(othis, project, serviceDescriptor, isLocal, longCallBack);
 		}, callback);
 	};
 
