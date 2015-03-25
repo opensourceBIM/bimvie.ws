@@ -15,7 +15,7 @@
 	</div>
 </div>
 <script>
-	function ServerSettings(main) {
+	function ServerSettings(main, loadHistory) {
 		var othis = this;
 
 		this.show = function(){
@@ -114,23 +114,25 @@
 			return "ServerSettings";
 		};
 
-		var history = History.getState().data;
-		if (history.subpage == "BasicServerSettings") {
-			othis.showBasicServerSettings();
-		} else if (history.subpage == "Migrations") {
-			othis.showMigrations();
-		} else if (history.subpage == "Plugins") {
-			othis.showPlugins();
-		} else if (history.subpage == "WebModules") {
-			othis.showWebModules();
-		} else if (history.subpage == "ModelCheckers") {
-			othis.showModelCheckers();
-		} else if (history.subpage == "ExtendedDataSchemas") {
-			othis.showExtendedDataSchemas();
-		} else if (history.subpage == "ExtendedDataSchema") {
-			othis.showExtendedDataSchema(history.edsid);
-		} else {
-			othis.showBasicServerSettings();
+		if (loadHistory) {
+			var history = History.getState().data;
+			if (history.subpage == "BasicServerSettings") {
+				othis.showBasicServerSettings();
+			} else if (history.subpage == "Migrations") {
+				othis.showMigrations();
+			} else if (history.subpage == "Plugins") {
+				othis.showPlugins();
+			} else if (history.subpage == "WebModules") {
+				othis.showWebModules();
+			} else if (history.subpage == "ModelCheckers") {
+				othis.showModelCheckers();
+			} else if (history.subpage == "ExtendedDataSchemas") {
+				othis.showExtendedDataSchemas();
+			} else if (history.subpage == "ExtendedDataSchema") {
+				othis.showExtendedDataSchema(history.edsid);
+			} else {
+				othis.showBasicServerSettings();
+			}
 		}
 
 		$(".serversettings .basicServerSettingsLink").click(function(){othis.showBasicServerSettings(null, true)});

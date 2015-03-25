@@ -2,7 +2,7 @@
 	<div class="panel panel-default">
 		<div class="panel-heading btn-group threedviewTabs" style="padding: 0px; width: 100%" data-toggle="buttons">
 			<label class="btn btn-default button3d active"> <input type="radio" name="options" id="option2" autocomplete="off" checked="checked"/>3D</label>
-			<label class="btn btn-default detailsLink"><input type="radio" name="options" id="option2" autocomplete="off">Details</label>
+			<label class="btn btn-default detailsLink"><input type="radio" name="options" id="option2" autocomplete="off">Project</label>
 			<label class="btn btn-default subprojectsLink"><input type="radio" name="options" id="option2" autocomplete="off">Subprojects</label>
 			<label class="btn btn-default revisionsLink"><input type="radio" name="options" id="option2" autocomplete="off">Revisions</label>
 			<label class="btn btn-default checkoutsLink"><input type="radio" name="options" id="option2" autocomplete="off">Checkouts</label>
@@ -77,6 +77,7 @@
 							<tr>
 								<th>Name</th>
 								<th>Profile</th>
+								<th>Actions</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
@@ -196,14 +197,19 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	};
 	
 	this.showThreeD = function(callback){
-		var threeDView = null;
-		othis.tabChanger.changeTab($(".button3d"), "3dview.html", $(".3dview"), function(){
-			pushHistory({page: "Project", poid: othis.project.oid, tab: "3dview"}, "Project");
-			threeDView = new ThreeDView($(this), projectPage);
-			return threeDView;
-		}, function(){
-			threeDView.show();
-		});
+		if (o.threeDView != null) {
+			othis.tabChanger.changeTab($(".button3d"), o.threeDView, $(".3dview"), function(){
+				o.threeDView.show();
+			});
+		} else {
+			othis.tabChanger.changeTab($(".button3d"), "3dview.html", $(".3dview"), function(){
+				pushHistory({page: "Project", poid: othis.project.oid, tab: "3dview"}, "Project");
+				o.threeDView = new ThreeDView($(this), projectPage);
+				return o.threeDView;
+			}, function(){
+				o.threeDView.show();
+			});
+		}
 	};
 	
 	containerDiv.find(".button3d").click(function(){
@@ -406,13 +412,6 @@ function RightPanel(containerDiv, main, project, projectPage) {
 //				});
 //				actions.find("ul").append(shareLi);
 				
-				if (Settings.get3DViewerUrl != null) {
-					var viewLi = $("<li><a>View in 3D</a></li>");
-					viewLi.find("a").click(function(){
-						window.open(Settings.get3DViewerUrl(Global.bimServerApi, revision.oid), '_blank');
-					});
-					actions.find("ul").append(viewLi);
-				}
 			});
 		});
 		
@@ -478,6 +477,15 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		alert("Triggering service "  + service);
 	};
 	
+	this.deleteServiceClick = function(){
+		Global.bimServerApi.call("ServiceInterface", "removeServiceFromProject", {
+			poid: othis.project.oid,
+			serviceOid: $(this).parents("tr").data("service").oid
+		}, function(){
+			othis.loadServices();
+		});
+	};
+	
 	this.addService = function(service) {
 		containerDiv.find(".noservices").hide();
 		containerDiv.find(".servicesTable").show();
@@ -488,15 +496,18 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		loadService(td);
 		tr.append(td);
 		tr.append("<td>" + service.profileName + "</td>");
-//		var dropdowntd = newSplitDropDownTd("Trigger", othis.triggerService); 
-//		tr.append(dropdowntd);
+		var deleteTd = $("<td>");
+		var deleteLink = $("<a>delete</a>");
+		deleteLink.click(othis.deleteServiceClick);
+		deleteTd.append(deleteLink);
+		tr.append(deleteTd);
 		containerDiv.find(".servicesTable tbody").append(tr);
 	};
 	
 	this.removeModelChecker = function(){
 		Global.bimServerApi.call("ServiceInterface", "removeModelCheckerFromProject", {
 			poid: othis.project.oid,
-			modelCheckerOid: $(this).parent().parent().data("modelchecker").oid
+			modelCheckerId: $(this).parents("tr").data("modelchecker").oid
 		}, function(){
 			othis.loadModelCheckers();
 		});
@@ -582,10 +593,14 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	};
 
 	this.loadServices = function(callback) {
+		containerDiv.find(".noservices").show();
+		containerDiv.find(".servicesTable").hide();
 		othis.tabChanger.changeTab($(".servicesLink"), null, $(".services"), function(){
 			Global.bimServerApi.call("ServiceInterface", "getAllServicesOfProject", {poid: othis.project.oid}, function(data){
 				containerDiv.find(".servicesTable tr.service").remove();
 				data.forEach(function(service){
+					containerDiv.find(".noservices").hide();
+					containerDiv.find(".servicesTable").show();
 					othis.addService(service);
 				});
 			});
@@ -844,7 +859,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	
 	this.newRevisionOnSpecificProjectHandler = function(poid, roid){
 		Global.bimServerApi.call("Bimsie1ServiceInterface", "getRevision", {roid: roid}, function(data){
-//			othis.reloadProject(data.projectId);
+			othis.reloadProject(data.projectId);
 			othis.addRevision(data);
 		});
 	};

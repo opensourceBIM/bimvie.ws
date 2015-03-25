@@ -38,6 +38,12 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 				projectPage.loadDetails(project);
 			});
 		});
+		
+		var history = History.getState().data;
+		if (history.poid == project.oid || othis.project.oid == project.oid) {
+			node.select();
+		}
+		
 		node.setIcon("folder");
 		node.type = "Project";
 		node.project = project;

@@ -77,19 +77,26 @@ function TabChanger2(navElement, mainContainer) {
 				othis.current.close();
 			}
 		}
+		linkElement.parent().find("label").removeClass("active");
+		linkElement.addClass("active");
 		mainContainer.find("> div").hide();
 		if (page != null) {
-			contentElement.load(page, function(response, status, xhr) {
-				if (status == "error") {
-					console.log(response, xhr.status, xhr.statusText);
-				} else {
-					othis.current = constructorFunction.call(this);
-					contentElement.show();
-					if (callback != null) {
-						callback.call(othis.current);
+			if (typeof page == "string") {
+				contentElement.load(page, function(response, status, xhr) {
+					if (status == "error") {
+						console.log(response, xhr.status, xhr.statusText);
+					} else {
+						othis.current = constructorFunction.call(this);
+						contentElement.show();
+						if (callback != null) {
+							callback.call(othis.current);
+						}
 					}
-				}
-			});
+				});
+			} else {
+				contentElement.append(page);
+				contentElement.show();
+			}
 		} else {
 			othis.current = constructorFunction.call(contentElement);
 			contentElement.show();

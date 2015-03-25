@@ -54,7 +54,7 @@ function Project(containerDiv, main, project) {
 			othis.reloadProject(project);
 		} else {
 			othis.project = project;
-			othis.updateProject();
+			othis.updateProject(false);
 		}
 	};
 
@@ -64,7 +64,7 @@ function Project(containerDiv, main, project) {
 		}
 		Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: poid}, function(project){
 			othis.project = project;
-			othis.updateProject();
+			othis.updateProject(false);
 		});
 	};
 
@@ -246,8 +246,10 @@ function Project(containerDiv, main, project) {
 		return promise;
 	};
 
-	this.updateProject = function() {
-		pushHistory({page: "Project", poid: othis.project.oid}, "Project");
+	this.updateProject = function(pushHistory) {
+		if (pushHistory) {
+			pushHistory({page: "Project", poid: othis.project.oid}, "Project");
+		}
 
 		$(window).resize(othis.resize);
 		othis.resize();
