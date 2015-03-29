@@ -39,7 +39,7 @@
 				</div>
 				<div class="tab-pane revisions initialhide">
 					<div class="well well-sm norevisions">No revisions</div>
-					<table class="revisionsTable initialhide table table-striped table-hover">
+					<table class="revisionsTable initialhide table table-striped">
 						<thead>
 							<tr>
 								<th>Id</th>
@@ -110,10 +110,12 @@
 					</table>
 				</div>
 				<div class="tab-pane query initialhide" id="query">
-					Not implemented
+					<div class="well well-sm message"></div>
+					<div class="querycontainer"></div>
 				</div>
 				<div class="tab-pane extendeddata initialhide">
 					<div class="well well-sm message"></div>
+					<button class="btn btn-default addExtendedDataButton">Add extended data</button>
 					<div class="extendeddatacontainer"></div>
 				</div>
 				<div class="tab-pane browser initialhide" id="browser">
@@ -182,7 +184,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	o.unselectListeners = [];
 	
 	othis.tabChanger = new TabChanger2(containerDiv.find(".nav"), containerDiv.find(".content"));
-	othis.lastRevision = null;
+	othis.selectedRevision = null;
 	othis.models = {};
 	othis.selectedObjectId = -1;
 
@@ -242,10 +244,10 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	};
 
 	this.revisionClick = function(event) {
-		if (!$(event.target).is("a, button, span.caret")) {
-			main.showRevision($(this).parents("tr").andSelf().data("revision"), null, true);
-			othis.close();
-		}
+//		if (!$(event.target).is("a, button, span.caret")) {
+//			main.showRevision($(this).parents("tr").andSelf().data("revision"), null, true);
+//			othis.close();
+//		}
 	};
 
 	this.loadDetails = function(callback) {
@@ -541,11 +543,51 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	};
 	
 	this.loadExtendedData = function(callback) {
-		$(".extendeddata .message").html("Showing extended data for revision " + othis.lastRevision.id);
+		var form = $("<form class=\"form-horizontal\" role=\"form\">");
+		
+		var fg = $("<div class=\"form-group\" style=\"margin-bottom: 0\">");
+		
+		form.append(fg);
+		
+		var col = $("<label class=\"col-xs-4 control-label\" style=\"text-align: left\">");
+		col.append("Showing extended data for ");
+		fg.append(col);
+		
+		var select = $("<select class=\"form-control\">");
+		col = $("<div class=\"col-xs-4\">");
+		col.append(select);
+		fg.append(col);
+		
+		$(".extendeddata .message").html(form);
+		
+		select.change(function(){
+			Global.bimServerApi.call("Bimsie1ServiceInterface", "getRevision", {roid: $(this).val()}, function(revision){
+				othis.selectedRevision = revision;
+				othis.tabChanger.changeTab($(".extendedDataLink"), "extendeddatalist.html", $(".extendeddatacontainer"), function(){
+					pushHistory({page: "Project", poid: othis.project.oid, tab: "extendeddata"}, "Project");
+					$(".extendeddata").show();
+					return new ExtendedDataList(main, othis.selectedRevision, othis);
+				}, callback);
+			});
+		});
+		
+		Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllRevisionsOfProject", {poid: othis.project.oid}, function(data){
+			data.forEach(function(revision){
+				var option = $("<option value=\"" + revision.oid + "\">Revision " + revision.id + "</option>");
+				select.prepend(option);
+				if (revision.oid == othis.selectedRevision.oid) {
+					option.attr("selected", "selected");
+				}
+				if (revision.oid == othis.project.lastRevisionId) {
+					option.append(" (Last)");
+				}
+			});
+		});
+		
 		othis.tabChanger.changeTab($(".extendedDataLink"), "extendeddatalist.html", $(".extendeddatacontainer"), function(){
 			pushHistory({page: "Project", poid: othis.project.oid, tab: "extendeddata"}, "Project");
 			$(".extendeddata").show();
-			return new ExtendedDataList(main, othis.lastRevision, othis);
+			return new ExtendedDataList(main, othis.selectedRevision, othis);
 		}, callback);
 	};
 	
@@ -641,13 +683,16 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		main.showDownloadCheckoutPopup(revision.projectId, revision.oid);
 	};
 	
-	this.reloadProject = function(poid) {
+	this.reloadProject = function(poid, roid) {
 		if (poid == null) {
 			poid = othis.project.oid;
 		}
 		Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: poid}, function(project){
 			othis.project = project;
-			othis.updateProject();
+			Global.bimServerApi.call("Bimsie1ServiceInterface", "getRevision", {roid: roid}, function(revision){
+				othis.selectedRevision = revision;
+				othis.updateProject();
+			});
 		});
 	};
 	
@@ -688,17 +733,19 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		containerDiv.find(".revisionsLink a").html("Revisions" + (othis.project.revisions.length == 0 ? "" : (" (" + othis.project.revisions.length + ")")));
 		containerDiv.find(".servicesLink a").html("Services" + (othis.project.services.length == 0 ? "" : (" (" + othis.project.services.length + ")")));
 		if (othis.project.lastRevisionId != -1) {
-			Global.bimServerApi.call("Bimsie1ServiceInterface", "getRevision", {roid: othis.project.lastRevisionId}, function(data){
-				othis.lastRevision = data;
-				containerDiv.find(".browserLink").show();
-				containerDiv.find(".queryLink").show();
-				containerDiv.find(".extendedDataLink").show();
-				containerDiv.find(" .extendedDataLink a").html("Extended Data" + (data.extendedData.length == 0 ? "" : (" (" + data.extendedData.length + ")")));
-				othis.loadHistory();
-			});
-			Global.bimServerApi.call("ServiceInterface", "getAllCheckoutsOfProjectAndSubProjects", {poid: othis.project.oid}, function(checkouts){
-				containerDiv.find(".checkoutsLink a").html("Checkouts" + (checkouts == null || checkouts.length == 0 ? "" : (" (" + checkouts.length + ")")));
-			});
+			if (othis.selectedRevision == null) {
+				Global.bimServerApi.call("Bimsie1ServiceInterface", "getRevision", {roid: othis.project.lastRevisionId}, function(data){
+					othis.selectedRevision = data;
+					containerDiv.find(".browserLink").show();
+					containerDiv.find(".queryLink").show();
+					containerDiv.find(".extendedDataLink").show();
+					containerDiv.find(" .extendedDataLink a").html("Extended Data" + (data.extendedData.length == 0 ? "" : (" (" + data.extendedData.length + ")")));
+					othis.loadHistory();
+				});
+				Global.bimServerApi.call("ServiceInterface", "getAllCheckoutsOfProjectAndSubProjects", {poid: othis.project.oid}, function(checkouts){
+					containerDiv.find(".checkoutsLink a").html("Checkouts" + (checkouts == null || checkouts.length == 0 ? "" : (" (" + checkouts.length + ")")));
+				});
+			}
 		} else {
 			containerDiv.find(".browserLink").hide();
 			containerDiv.find(".surferLink").hide();
@@ -743,20 +790,101 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	};
 	
 	this.loadBrowser = function(callback, pushhistory) {
-		$(".browser .message").html("Showing data for revision " + othis.lastRevision.id);
+		var form = $("<form class=\"form-horizontal\" role=\"form\">");
+		
+		var fg = $("<div class=\"form-group\" style=\"margin-bottom: 0\">");
+		
+		form.append(fg);
+		
+		var col = $("<label class=\"col-xs-4 control-label\" style=\"text-align: left\">");
+		col.append("Showing data for ");
+		fg.append(col);
+		
+		var select = $("<select class=\"form-control\">");
+		col = $("<div class=\"col-xs-4\">");
+		col.append(select);
+		fg.append(col);
+		
+		$(".browser .message").html(form);
+		
+		select.change(function(){
+			Global.bimServerApi.call("Bimsie1ServiceInterface", "getRevision", {roid: $(this).val()}, function(revision){
+				othis.selectedRevision = revision;
+				othis.tabChanger.changeTab($(".browserLink"), "browser.html", $(".browsercontainer"), function(){
+					pushHistory({page: "Project", poid: othis.project.oid, tab: "browser"}, "Project");
+					$(".browser").show();
+					return new Browser($(this), othis.project, othis.selectedRevision);
+				});
+			});
+		});
+		
+		Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllRevisionsOfProject", {poid: othis.project.oid}, function(data){
+			data.forEach(function(revision){
+				var option = $("<option value=\"" + revision.oid + "\">Revision " + revision.id + "</option>");
+				select.prepend(option);
+				if (revision.oid == othis.selectedRevision.oid) {
+					option.attr("selected", "selected");
+				}
+				if (revision.oid == othis.project.lastRevisionId) {
+					option.append(" (Last)");
+				}
+			});
+		});
+
 		othis.tabChanger.changeTab($(".browserLink"), "browser.html", $(".browsercontainer"), function(){
 			if (pushhistory) {
 				pushHistory({page: "Project", poid: othis.project.oid, tab: "browser"}, "Project");
 			}
 			$(".browser").show();
-			return new Browser($(this), othis.project, othis.lastRevision);
+			return new Browser($(this), othis.project, othis.selectedRevision);
 		}, callback);
 	};
 
 	this.loadQuery = function(callback) {
-		othis.tabChanger.changeTab($(".queryLink"), "query.html", $(".query"), function(){
+		var form = $("<form class=\"form-horizontal\" role=\"form\">");
+		
+		var fg = $("<div class=\"form-group\" style=\"margin-bottom: 0\">");
+		
+		form.append(fg);
+		
+		var col = $("<label class=\"col-xs-4 control-label\" style=\"text-align: left\">");
+		col.append("Querying ");
+		fg.append(col);
+		
+		var select = $("<select class=\"form-control\">");
+		col = $("<div class=\"col-xs-4\">");
+		col.append(select);
+		fg.append(col);
+		
+		$(".query .message").html(form);
+		
+		select.change(function(){
+			Global.bimServerApi.call("Bimsie1ServiceInterface", "getRevision", {roid: $(this).val()}, function(revision){
+				othis.selectedRevision = revision;
+				othis.tabChanger.changeTab($(".queryLink"), "query.html", $(".query"), function(){
+					pushHistory({page: "Project", poid: othis.project.oid, tab: "query"}, "Project");
+					return new Query($(this), main, othis.project.oid, othis.selectedRevision.oid);
+				}, callback);
+			});
+		});
+		
+		Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllRevisionsOfProject", {poid: othis.project.oid}, function(data){
+			data.forEach(function(revision){
+				var option = $("<option value=\"" + revision.oid + "\">Revision " + revision.id + "</option>");
+				select.prepend(option);
+				if (revision.oid == othis.selectedRevision.oid) {
+					option.attr("selected", "selected");
+				}
+				if (revision.oid == othis.project.lastRevisionId) {
+					option.append(" (Last)");
+				}
+			});
+		});
+		
+		othis.tabChanger.changeTab($(".queryLink"), "query.html", $(".query .querycontainer"), function(){
 			pushHistory({page: "Project", poid: othis.project.oid, tab: "query"}, "Project");
-			return new Query($(this), main, othis.project.oid, othis.lastRevision.oid);
+			$(".query").show();
+			return new Query($(this), main, othis.project.oid, othis.selectedRevision.oid);
 		}, callback);
 	};
 
@@ -783,13 +911,6 @@ function RightPanel(containerDiv, main, project, projectPage) {
 
 	this.addSubProjectClick = function(event) {
 		main.showAddProject(null, othis.project, true);
-	};
-
-	this.loadSurfer = function(callback) {
-		othis.tabChanger.changeTab($(".surferLink"), "surfer.html", $(".surfer"), function(){
-			pushHistory({page: "Project", poid: othis.project.oid, tab: "surfer"}, "Project");
-			return new Surfer(othis.lastRevision);
-		}, callback);
 	};
 	
 	this.addUserLinkClick = function() {
@@ -853,7 +974,6 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		this.loadFromHistory();
 	}, true);});
 	containerDiv.find(".usersLink").click(function(){othis.loadUsers(null, true);});
-	containerDiv.find(".surferLink").click(function(){othis.loadSurfer(null, true);});
 	containerDiv.find(".logLink").click(function(){othis.loadLog(null, true);});
 
 	containerDiv.find(".addUserToProjectDiv button").click(othis.addUserToProject);
@@ -877,5 +997,16 @@ function RightPanel(containerDiv, main, project, projectPage) {
 			othis.reloadProject(data.projectId);
 		});
 	};
+	
+	this.addExtendedDataButtonClick = function(){
+		var div = $("<div class=\"modal fade\">");
+		$(document.body).append(div);
+		div.load(Global.baseDir + "addextendeddata.html", function(){
+			new AddExtendedData($(this), othis.selectedRevision, function(){
+				othis.loadExtendedData();
+			});
+		}).modal({keyboard:true});
+	};
+	containerDiv.find(".addExtendedDataButton").click(othis.addExtendedDataButtonClick);
 }
 </script>

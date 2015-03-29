@@ -19,10 +19,6 @@
 		</thead>
 		<tbody></tbody>
 	</table>
-<!--<div class="linkspacer">
-		<a class="load3dButton initialhide">Show object in 3D</a>
-	</div>
--->
 	<div id="3dviewport" class="3dviewport initialhide">
 		<canvas id='3dview' class="3dview" width="940" height='500'>
 	  		<p>This application requires a browser that supports the<a href='http://www.w3.org/html/wg/html5/'>HTML5</a>&lt;canvas&gt; feature.</p>
@@ -43,7 +39,7 @@ function Browser(containerDiv, project, revision) {
 	var othis = this;
 	othis.revision = revision;
 	othis.project = project;
-
+	
 	this.loadObject = function(poid, oid) {
 		othis.loadProject(poid, function(){
 			othis.oid = oid;

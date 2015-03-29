@@ -365,7 +365,7 @@ function Project(containerDiv, main, project) {
 	
 	this.loadDetails = function(project){
 		if (othis.rightPanel != null) {
-			othis.rightPanel.reloadProject(project.oid);
+			othis.rightPanel.reloadProject(project.oid, project.lastRevisionId);
 		} else {
 			containerDiv.find(".rightCol").load("rightpanel.html", function(){
 				othis.rightPanel = new RightPanel($(this), main, project, othis);
