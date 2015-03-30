@@ -456,7 +456,7 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 	});
 	dropdown.find(".btnAddService").click(function(){
 		dropdown.hide();
-		main.showAddService(othis.selectedNode.project, null, function(){
+		projectPage.rightPanel.showAddService(othis.selectedNode.project, null, function(){
 			projectPage.rightPanel.loadServices();
 		});
 	});

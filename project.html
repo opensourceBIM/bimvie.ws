@@ -322,7 +322,7 @@ function Project(containerDiv, main, project) {
 			});
 		});
 	};
-	
+
 	this.loadProjectTree = function(){
 		if (othis.sidespan != null) {
 			othis.sidespan.hide();
@@ -369,8 +369,16 @@ function Project(containerDiv, main, project) {
 		} else {
 			containerDiv.find(".rightCol").load("rightpanel.html", function(){
 				othis.rightPanel = new RightPanel($(this), main, project, othis);
-				othis.rightPanel.show();
-				containerDiv.find(".rightCol > .details").show();
+				if (project.lastRevisionId != -1) {
+					Global.bimServerApi.call("Bimsie1ServiceInterface", "getRevision", {roid: project.lastRevisionId}, function(data){
+						othis.rightPanel.selectedRevision = data;
+						othis.rightPanel.show();
+						containerDiv.find(".rightCol > .details").show();
+					});
+				} else {
+					othis.rightPanel.show();
+					containerDiv.find(".rightCol > .details").show();
+				}
 			});
 		}
 	};

@@ -71,6 +71,8 @@
 					</table>
 				</div>
 				<div class="tab-pane services initialhide">
+					<div class="details ih">
+					</div>
 					<div class="serviceList">
 						<div class="well well-sm noservices">No services</div>
 						<table class="servicesTable initialhide table table-striped table-hover">
@@ -639,7 +641,20 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		}, callback);
 	};
 
+	this.showAddService = function(){
+		othis.loadServices(function(){
+			$(".services .serviceList").hide();
+			$(".services .details").show();
+			$(".services .details").load("addservice.html", function(){
+				return new AddService(othis, othis.project, function(){
+					othis.loadServices();
+				});
+			});
+		});
+	};
+
 	this.loadServices = function(callback) {
+		$(".services .details").hide();
 		containerDiv.find(".serviceList").show()
 		containerDiv.find(".serviceDetail").hide()
 		containerDiv.find(".noservices").show();
@@ -727,20 +742,15 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		containerDiv.find("h1").html(othis.project.name);
 		containerDiv.find(".revisionsLink a").html("Revisions" + (othis.project.revisions.length == 0 ? "" : (" (" + othis.project.revisions.length + ")")));
 		containerDiv.find(".servicesLink a").html("Services" + (othis.project.services.length == 0 ? "" : (" (" + othis.project.services.length + ")")));
-		if (othis.project.lastRevisionId != -1) {
-			if (othis.selectedRevision == null) {
-				Global.bimServerApi.call("Bimsie1ServiceInterface", "getRevision", {roid: othis.project.lastRevisionId}, function(data){
-					othis.selectedRevision = data;
-					containerDiv.find(".browserLink").show();
-					containerDiv.find(".queryLink").show();
-					containerDiv.find(".extendedDataLink").show();
-					containerDiv.find(" .extendedDataLink a").html("Extended Data" + (data.extendedData.length == 0 ? "" : (" (" + data.extendedData.length + ")")));
-					othis.loadHistory();
-				});
-				Global.bimServerApi.call("ServiceInterface", "getAllCheckoutsOfProjectAndSubProjects", {poid: othis.project.oid}, function(checkouts){
-					containerDiv.find(".checkoutsLink a").html("Checkouts" + (checkouts == null || checkouts.length == 0 ? "" : (" (" + checkouts.length + ")")));
-				});
-			}
+		if (othis.selectedRevision != null) {
+			containerDiv.find(".browserLink").show();
+			containerDiv.find(".queryLink").show();
+			containerDiv.find(".extendedDataLink").show();
+			containerDiv.find(" .extendedDataLink a").html("Extended Data" + (othis.selectedRevision.extendedData.length == 0 ? "" : (" (" + othis.selectedRevision.extendedData.length + ")")));
+			othis.loadHistory();
+			Global.bimServerApi.call("ServiceInterface", "getAllCheckoutsOfProjectAndSubProjects", {poid: othis.project.oid}, function(checkouts){
+				containerDiv.find(".checkoutsLink a").html("Checkouts" + (checkouts == null || checkouts.length == 0 ? "" : (" (" + checkouts.length + ")")));
+			});
 		} else {
 			containerDiv.find(".browserLink").hide();
 			containerDiv.find(".surferLink").hide();
@@ -1005,6 +1015,11 @@ function RightPanel(containerDiv, main, project, projectPage) {
 			});
 		}).modal({keyboard:true});
 	};
+	
+	projectPage.modelAddedListeners.register(function(project, roid){
+		othis.reloadProject(project.oid, roid);
+	});
+	
 	containerDiv.find(".addExtendedDataButton").click(othis.addExtendedDataButtonClick);
 }
 </script>
