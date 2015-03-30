@@ -114,8 +114,17 @@
 					<div class="querycontainer"></div>
 				</div>
 				<div class="tab-pane extendeddata initialhide">
-					<div class="well well-sm message"></div>
-					<button class="btn btn-default addExtendedDataButton">Add extended data</button>
+					<div class="well well-sm message">
+						<form class="form-horizontal" role="form">
+							<div class="form-group" style="margin-bottom: 0">
+								<label class="col-xs-4 control-label" style="text-align: left">Showing extended data for</label>
+								<div class="col-xs-4">
+									<select class="form-control"></select>
+								</div>
+								<button class="btn btn-default addExtendedDataButton">Add extended data</button>
+							</div>
+						</form>
+					</div>
 					<div class="extendeddatacontainer"></div>
 				</div>
 				<div class="tab-pane browser initialhide" id="browser">
@@ -543,22 +552,8 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	};
 	
 	this.loadExtendedData = function(callback) {
-		var form = $("<form class=\"form-horizontal\" role=\"form\">");
-		
-		var fg = $("<div class=\"form-group\" style=\"margin-bottom: 0\">");
-		
-		form.append(fg);
-		
-		var col = $("<label class=\"col-xs-4 control-label\" style=\"text-align: left\">");
-		col.append("Showing extended data for ");
-		fg.append(col);
-		
-		var select = $("<select class=\"form-control\">");
-		col = $("<div class=\"col-xs-4\">");
-		col.append(select);
-		fg.append(col);
-		
-		$(".extendeddata .message").html(form);
+		var select = $(".extendeddata select");
+		select.find("option").remove();
 		
 		select.change(function(){
 			Global.bimServerApi.call("Bimsie1ServiceInterface", "getRevision", {roid: $(this).val()}, function(revision){
@@ -813,7 +808,9 @@ function RightPanel(containerDiv, main, project, projectPage) {
 				othis.tabChanger.changeTab($(".browserLink"), "browser.html", $(".browsercontainer"), function(){
 					pushHistory({page: "Project", poid: othis.project.oid, tab: "browser"}, "Project");
 					$(".browser").show();
-					return new Browser($(this), othis.project, othis.selectedRevision);
+					var browser = new Browser($(this), othis.project, othis.selectedRevision);
+					browser.loadFromHistory();
+					return browser;
 				});
 			});
 		});
@@ -988,17 +985,18 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	
 	this.newRevisionOnSpecificProjectHandler = function(poid, roid){
 		Global.bimServerApi.call("Bimsie1ServiceInterface", "getRevision", {roid: roid}, function(data){
-			othis.reloadProject(data.projectId);
+			//othis.reloadProject(data.projectId, roid);
 			othis.addRevision(data);
 		});
 	};
 	this.newExtendedDataOnRevisionHandler = function(roid, edid){
 		Global.bimServerApi.call("Bimsie1ServiceInterface", "getExtendedData", {oid: edid}, function(data){
-			othis.reloadProject(data.projectId);
+			//othis.reloadProject(data.projectId, roid);
 		});
 	};
 	
-	this.addExtendedDataButtonClick = function(){
+	this.addExtendedDataButtonClick = function(event){
+		event.preventDefault();
 		var div = $("<div class=\"modal fade\">");
 		$(document.body).append(div);
 		div.load(Global.baseDir + "addextendeddata.html", function(){

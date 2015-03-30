@@ -166,7 +166,7 @@ function AddService2(main, project, serviceDescriptor, isLocal, longCallBack) {
 			td2.append(main.createExtendedDataSchemaLink(data));
 		}, function(){
 			othis.addExtendedDataSchema(serviceDescriptor.writeExtendedData, function(data){
-				othis.writeExtendedData = data.oid;
+				othis.writeExtendedDataOid = data.oid;
 				td2.append(main.createExtendedDataSchemaLink(data));
 				othis.canAdd();
 			}, function(){
@@ -272,12 +272,16 @@ function AddService2(main, project, serviceDescriptor, isLocal, longCallBack) {
 			};
 			if (isLocal) {
 				Global.bimServerApi.call("ServiceInterface", "addLocalServiceToProject", {poid: othis.project.oid, sService: service, internalServiceOid: profileDescriptor.identifier}, function(data){
-					longCallBack();
+					if (longCallBack != null) {
+						longCallBack();
+					}
 				});
 			} else {
 				service.notificationProtocol = "JSON";
 				Global.bimServerApi.call("ServiceInterface", "addServiceToProject", {poid: othis.project.oid, sService: service}, function(data){
-					longCallBack();
+					if (longCallBack != null) {
+						longCallBack();
+					}
 				});
 			}
 		}
