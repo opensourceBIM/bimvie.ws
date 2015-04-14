@@ -699,10 +699,14 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		}
 		Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: poid}, function(project){
 			othis.project = project;
-			Global.bimServerApi.call("Bimsie1ServiceInterface", "getRevision", {roid: roid}, function(revision){
-				othis.selectedRevision = revision;
+			if (roid != -1) {
+				Global.bimServerApi.call("Bimsie1ServiceInterface", "getRevision", {roid: roid}, function(revision){
+					othis.selectedRevision = revision;
+					othis.updateProject();
+				});
+			} else {
 				othis.updateProject();
-			});
+			}
 		});
 	};
 	
