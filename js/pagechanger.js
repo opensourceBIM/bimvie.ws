@@ -106,6 +106,9 @@ function TabChanger2(navElement, mainContainer) {
 			}
 		} else {
 			othis.current = constructorFunction.call(contentElement);
+			if (callback != null) {
+				callback.call(othis.current);
+			}
 			contentElement.show();
 		}
 		othis.currentContentElement = contentElement;

@@ -646,7 +646,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 			$(".services .serviceList").hide();
 			$(".services .details").show();
 			$(".services .details").load("addservice.html", function(){
-				return new AddService(othis, othis.project, function(){
+				return new AddService(main, othis.project, function(){
 					othis.loadServices();
 				});
 			});

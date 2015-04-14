@@ -51,7 +51,7 @@ function AddService(main, project, longCallBack) {
 	
 	this.proceedWithServiceDescriptor = function(serviceDescriptor, isLocal) {
 		$(".addservice").load("addservice2.html", function(){
-			return new AddService2(othis, project, serviceDescriptor, isLocal, longCallBack);
+			return new AddService2(main, project, serviceDescriptor, isLocal, longCallBack);
 		});
 	};
 	
