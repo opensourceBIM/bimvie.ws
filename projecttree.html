@@ -59,7 +59,12 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		if (project.nrSubProjects == 0) {
 			if (roid != -1) {
 				node.onLoad(function(){
-					return othis.loadProjectTree(project, roid, node, types);
+					console.time("projectTreeLoad");
+					var promise = othis.loadProjectTree(project, roid, node, types);
+					promise.done(function(){
+						console.timeEnd("projectTreeLoad");
+					});
+					return promise;
 				});
 			}
 		} else {
@@ -409,7 +414,6 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 	this.loadProjectTree = function(project, roid, node, types){
 		var promise = new Promise();
 		node.setLoading();
-		node.ul.remove();
 		var model = models[roid];
 		if (model != null) {
 			projectPage.preloadModel(project, roid).done(function(){

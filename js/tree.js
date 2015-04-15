@@ -36,29 +36,35 @@ function Tree(selector) {
 
 function Node() {};
 
-Node.prototype.init = function(id, title){
-	this.id = id;
-	this.title = title;
-	this.isOpen = false;
-	this.parent = null;
-	this.children = [];
-	this.sort = false;
-	this.onLoadListeners;
+var x = $("<li class=\"treenode\"><div class=\"treeicon\"></div><div class=\"treepreicon\"></div><div class=\"treelabel\"><a></a></div><ul style=\"display: none\"></ul></li>");
 
-	this.li = $("<li class=\"treenode\">");
-	this.li.attr("nodeid", id);
-	this.div = $("<div class=\"treelabel\">");
-	this.a = $("<a>" + title + "</a>");
-	this.img = $("<div class=\"treeicon\"/>");
-	this.img.click(this.toggle.bind(this));
-	this.li.append(this.img);
-	this.icon = $("<div class=\"treepreicon\">");
-	this.li.append(this.icon);
-	this.div.append(this.a);
-	this.li.append(this.div);
-	this.ul = $("<ul>");
-	this.ul.hide();
-	this.li.append(this.ul);
+Node.prototype.init = function(id, title){
+	this.isOpen = false;
+	this.id = id;
+
+	this.li = x.clone();
+	this.li.find(".treenode").attr("nodeid", id);
+	this.li.find("a").html(title);
+	this.li.find(".treeicon").click(this.toggle.bind(this));
+	this.img = this.li.find(".treeicon");
+	this.a = this.li.find(".treelabel a");
+	this.icon = this.li.find(".treepreicon");
+	this.ul = this.li.find("ul");
+	
+//	this.li = $("<li class=\"treenode\">");
+//	this.li.attr("nodeid", id);
+//	this.div = $("<div class=\"treelabel\">");
+//	this.a = $("<a>" + title + "</a>");
+//	this.img = $("<div class=\"treeicon\"/>");
+//	this.img.click(this.toggle.bind(this));
+//	this.li.append(this.img);
+//	this.icon = $("<div class=\"treepreicon\">");
+//	this.li.append(this.icon);
+//	this.div.append(this.a);
+//	this.li.append(this.div);
+//	this.ul = $("<ul>");
+//	this.ul.hide();
+//	this.li.append(this.ul);
 
 	this.a.click(this.linkClick.bind(this));
 };
@@ -84,6 +90,10 @@ Node.prototype.add = function(node){
 	node.tree = this.tree;
 	node.tree.idToNodeMap[node.id] = node;
 
+	if (this.children == null) {
+		this.children = [];
+	}
+	
 	if (this.sort) {
 		var found = false;
 		for (var i=0; i<this.children.length; i++) {
@@ -138,7 +148,7 @@ Node.prototype.open = function(){
 		this.onLoadListeners.clear();
 	}
 	this.ul.show();
-	if (this.children.length > 0) {
+	if (this.children != null && this.children.length > 0) {
 		this.img.removeClass("treenodeclosed");
 		this.img.addClass("treenodeopen");
 	}
@@ -148,7 +158,7 @@ Node.prototype.open = function(){
 Node.prototype.close = function(){
 	this.isOpen = false;
 	this.ul.hide();
-	if (this.children.length > 0) {
+	if (this.children != null && this.children.length > 0) {
 		this.img.removeClass("treenodeopen");
 		this.img.addClass("treenodeclosed");
 	}
@@ -194,7 +204,7 @@ Node.prototype.setLoading = function(){
 
 Node.prototype.doneLoading = function(){
 	this.img.removeClass("loading");
-	if (this.children.length > 0) {
+	if (this.children != null && this.children.length > 0) {
 		if (this.isOpen) {
 			this.img.addClass("treenodeopen");
 		} else {
@@ -246,20 +256,24 @@ Node.prototype.list = function(){
 
 Node.prototype.internalList = function(result){
 	result.push(this);
-	this.children.forEach(function(subNode){
-		subNode.internalList(result);
-	});
+	if (this.children != null) {
+		this.children.forEach(function(subNode){
+			subNode.internalList(result);
+		});
+	}
 };
 
 Node.prototype.internalListFilterByType = function(result, type){
 	if (this.type == type) {
 		result.push(this);
 	}
-	this.children.forEach(function(subNode){
-		subNode.internalListFilterByType(result, type);
-	});
+	if (this.children != null) {
+		this.children.forEach(function(subNode){
+			subNode.internalListFilterByType(result, type);
+		});
+	}
 };
 
 Node.prototype.addButton = function(button){
-	this.div.after(button);
+	this.li.find(".treelabel").after(button);
 };
