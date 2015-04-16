@@ -437,9 +437,11 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 			if (node.roid != -1) {
 				list.push(node.roid);
 			}
-			node.children.forEach(function(child){
-				othis.gatherRoidList(child, list);
-			});
+			if (node.children) {
+				node.children.forEach(function(child){
+					othis.gatherRoidList(child, list);
+				});
+			}
 		}
 	};
 	

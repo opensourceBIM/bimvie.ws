@@ -41,6 +41,7 @@ var x = $("<li class=\"treenode\"><div class=\"treeicon\"></div><div class=\"tre
 Node.prototype.init = function(id, title){
 	this.isOpen = false;
 	this.id = id;
+	this.title = title;
 
 	this.li = x.clone();
 	this.li.find(".treenode").attr("nodeid", id);
