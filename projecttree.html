@@ -30,7 +30,7 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		var dropdown = othis.createDropDown(node);
 		var eye = othis.createEye(node, 2);
 		if (roid == -1 || project.lastRevisionId == -1) {
-			eye.css('visibility', 'hidden');
+			eye.css("visibility", "hidden");
 		}
 		eye.toggle(projectPage.threeDAspectVisible.get());
 		node.click(function(){
@@ -366,29 +366,32 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 			newNode.setIcon("ball");
 		}
 		newNode.click(othis.treeItemClick);
-		newNode.setLoading();
 		newNode.hint(object.getType());
 		var state = types[object.getType()];
 		othis.createEye(newNode, state == null ? 2 : state.mode);
 		tree.add(newNode);
 		if (object.getType() == "IfcBuildingStorey") {
-			var createdTypes = {};
-			object.getContainsElements(function(relReferencedInSpatialStructure){
-				relReferencedInSpatialStructure.getRelatedElements(function(relatedElement){
-					othis.processRelatedElement(newNode, relatedElement, createdTypes, types);
-				}).done(function(){
-					object.getIsDecomposedBy(function(isDecomposedBy){
-						if (isDecomposedBy != null) {
-							isDecomposedBy.getRelatedObjects(function(relatedObject){
-								othis.processRelatedElement(newNode, relatedObject, createdTypes, types);
+			newNode.onLoad(function(){
+				var promise = new Promise();
+				setTimeout(function(){
+					var createdTypes = {};
+					object.getContainsElements(function(relReferencedInSpatialStructure){
+						relReferencedInSpatialStructure.getRelatedElements(function(relatedElement){
+							othis.processRelatedElement(newNode, relatedElement, createdTypes, types);
+						}).done(function(){
+							object.getIsDecomposedBy(function(isDecomposedBy){
+								if (isDecomposedBy != null) {
+									isDecomposedBy.getRelatedObjects(function(relatedObject){
+										othis.processRelatedElement(newNode, relatedObject, createdTypes, types);
+									});
+								}
 							});
-						}
+						});
 					}).done(function(){
-						newNode.doneLoading();
+						promise.fire();
 					});
-				});
-			}).done(function(){
-				newNode.doneLoading();
+				}, 50);
+				return promise;
 			});
 		} else {
 			object.getIsDecomposedBy(function(isDecomposedBy){
@@ -413,7 +416,6 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 	
 	this.loadProjectTree = function(project, roid, node, types){
 		var promise = new Promise();
-		node.setLoading();
 		var model = models[roid];
 		if (model != null) {
 			projectPage.preloadModel(project, roid).done(function(){
@@ -426,7 +428,6 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 				});
 			});
 		} else {
-			node.doneLoading();
 			promise.fire();
 		}
 		return promise;

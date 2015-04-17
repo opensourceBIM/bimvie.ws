@@ -36,7 +36,7 @@ function Tree(selector) {
 
 function Node() {};
 
-var x = $("<li class=\"treenode\"><div class=\"treeicon\"></div><div class=\"treepreicon\"></div><div class=\"treelabel\"><a></a></div><ul style=\"display: none\"></ul></li>");
+var x = $("<li class=\"treenode\"><div class=\"treeicon\"></div><div class=\"treepreicon\"></div><div class=\"treelabel\"><a></a></div></li>");
 
 Node.prototype.init = function(id, title){
 	this.isOpen = false;
@@ -50,7 +50,6 @@ Node.prototype.init = function(id, title){
 	this.img = this.li.find(".treeicon");
 	this.a = this.li.find(".treelabel a");
 	this.icon = this.li.find(".treepreicon");
-	this.ul = this.li.find("ul");
 	
 //	this.li = $("<li class=\"treenode\">");
 //	this.li.attr("nodeid", id);
@@ -94,7 +93,9 @@ Node.prototype.add = function(node){
 	if (this.children == null) {
 		this.children = [];
 	}
-	
+	if (this.ul == null) {
+		this.ul = $("<ul>");
+	}
 	if (this.sort) {
 		var found = false;
 		for (var i=0; i<this.children.length; i++) {
@@ -141,24 +142,40 @@ Node.prototype.click = function(click){
 
 Node.prototype.open = function(){
 	var promise = new Promise();
+	this.setLoading();
 	this.isOpen = true;
-	if (this.onLoadListeners != null) {
+	if (this.onLoadListeners != null && this.onLoadListeners.size() > 0) {
 		this.onLoadListeners.trigger(function(listener){
 			promise.chain(listener());
 		});
 		this.onLoadListeners.clear();
+	} else {
+		promise.fire();
 	}
-	this.ul.show();
-	if (this.children != null && this.children.length > 0) {
-		this.img.removeClass("treenodeclosed");
-		this.img.addClass("treenodeopen");
-	}
+	var o = this;
+	promise.done(function(){
+		if (o.ul != null) {
+			if (o.li.find("ul").length == 0) {
+				o.li.append(o.ul);
+			} else {
+				o.ul.show();
+			}
+		}
+		if (o.children != null && o.children.length > 0) {
+			o.img.removeClass("treenodeclosed");
+			o.img.addClass("treenodeopen");
+		} else {
+			o.doneLoading();
+		}
+	});
 	return promise;
 };
 
 Node.prototype.close = function(){
 	this.isOpen = false;
-	this.ul.hide();
+	if (this.ul != null) {
+		this.ul.hide();
+	}
 	if (this.children != null && this.children.length > 0) {
 		this.img.removeClass("treenodeopen");
 		this.img.addClass("treenodeclosed");

@@ -320,6 +320,10 @@ function EventRegistry() {
 		}
 	};
 	
+	this.size = function(){
+		return o.registry.length;
+	};
+	
 	this.trigger = function(callback){
 		o.registry.forEach(callback);
 	};
