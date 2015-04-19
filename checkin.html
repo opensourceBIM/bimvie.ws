@@ -218,7 +218,7 @@ function Checkin(containerDiv, project, successFunction) {
         	fileselected = true;
         	var path = null;
 			$.each(data.files, function (index, file) {
-				path = file.name;
+				path = file.name; 
 		    });
 		    var lastIndex = path.lastIndexOf(".");
 		    if (lastIndex != -1) {
