@@ -196,11 +196,7 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		}
 	};
 
-	this.selected = function(origin, groupId, id){
-		if (othis.selectedId == id) {
-			return;
-		}
-		othis.selectedId = id;
+	this.select = function(origin, id){
 		var treeNode = othis.tree.find(id);
 		if (treeNode != null) {
 			treeNode.openRecursive();
@@ -210,10 +206,45 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 				// Somehow scrollTo messes up the selection of the selected object in WebGL, probably some browser drawing issue
 				setTimeout(function(){
 					$(".sidespanWrapper").scrollTo(treeNode.li);
-				}, 0);
+				}, 1);
 			}
+			return true;
 		} else {
-			console.log("Cannot find " + id);
+			return false;
+		}
+	};
+	
+	this.selected = function(origin, groupId, id){
+		if (othis.selectedId == id) {
+			return;
+		}
+		othis.selectedId = id;
+		othis.select(id);
+		var treeNode = othis.tree.find(id);
+		if (othis.select(origin, id)) {
+			
+		} else {
+			// Maybe this object has not yet been loaded in the tree, but is available in the model
+			var model = models[groupId];
+			model.get(id, function(object){
+				// Now we will have to see to which parent structure this object belongs...
+				object.getContainedInStructure(function(struc){
+					struc.getRelatingStructure(function(relatingStructure){
+						if (relatingStructure.getType() == "IfcBuildingStorey") {
+							var buildingStructureNode = othis.tree.find(relatingStructure.oid);
+							if (buildingStructureNode == null) {
+								console.log("IfcBuildingStorey not found in tree");
+							} else {
+								othis.loadBuildingStorey(buildingStructureNode, relatingStructure, []).done(function(){
+									if (!othis.select(origin, id)) {
+										console.log("Still not found");
+									}
+								});
+							}
+						}
+					});
+				});
+			});
 		}
 	};
 
@@ -345,6 +376,27 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		othis.buildDecomposedTree(relatedElement, typeNode, types);
 	};
 	
+	this.loadBuildingStorey = function(newNode, object, types){
+		var promise = new Promise();
+		var createdTypes = {};
+		object.getContainsElements(function(relReferencedInSpatialStructure){
+			relReferencedInSpatialStructure.getRelatedElements(function(relatedElement){
+				othis.processRelatedElement(newNode, relatedElement, createdTypes, types);
+			}).done(function(){
+				object.getIsDecomposedBy(function(isDecomposedBy){
+					if (isDecomposedBy != null) {
+						isDecomposedBy.getRelatedObjects(function(relatedObject){
+							othis.processRelatedElement(newNode, relatedObject, createdTypes, types);
+						});
+					}
+				});
+			});
+		}).done(function(){
+			promise.fire();
+		});
+		return promise;
+	};
+	
 	this.buildDecomposedTree = function(object, tree, types) {
 		var name = null;
 		if (object.getLongName != null) {
@@ -378,20 +430,7 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 			newNode.onLoad(function(){
 				var promise = new Promise();
 				setTimeout(function(){
-					var createdTypes = {};
-					object.getContainsElements(function(relReferencedInSpatialStructure){
-						relReferencedInSpatialStructure.getRelatedElements(function(relatedElement){
-							othis.processRelatedElement(newNode, relatedElement, createdTypes, types);
-						}).done(function(){
-							object.getIsDecomposedBy(function(isDecomposedBy){
-								if (isDecomposedBy != null) {
-									isDecomposedBy.getRelatedObjects(function(relatedObject){
-										othis.processRelatedElement(newNode, relatedObject, createdTypes, types);
-									});
-								}
-							});
-						});
-					}).done(function(){
+					othis.loadBuildingStorey(newNode, object, types).done(function(){
 						promise.fire();
 					});
 				}, 50);
