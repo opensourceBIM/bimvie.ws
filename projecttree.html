@@ -248,24 +248,28 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 			projectPage.selected(othis, groupNode.groupId, treeNode.id);
 		}
 	};
-	
+
 	this.toggleEye = function(node, mode){
-		var projectNodes = node.listFilterByType("Project");
-		if (projectNodes.length == 0) {
-			othis.internalToggleEye(node, mode);
-		} else {
-			projectNodes.forEach(function(projectNode){
-				if (projectNode.roid != -1) {
-					if (!projectPage.models[projectNode.roid].isPreloaded) {
-						othis.loadRevision(projectNode.project, projectNode.roid, []).done(function(){
-							othis.internalToggleEye(projectNode, mode);
-						});
-					} else {
-						othis.internalToggleEye(projectNode, mode);
-					}
+		setTimeout(function(){
+			node.loadRecursively().done(function(){
+				var projectNodes = node.listFilterByType("Project");
+				if (projectNodes.length == 0) {
+					othis.internalToggleEye(node, mode);
+				} else {
+					projectNodes.forEach(function(projectNode){
+						if (projectNode.roid != -1) {
+							if (!projectPage.models[projectNode.roid].isPreloaded) {
+								othis.loadRevision(projectNode.project, projectNode.roid, []).done(function(){
+									othis.internalToggleEye(projectNode, mode);
+								});
+							} else {
+								othis.internalToggleEye(projectNode, mode);
+							}
+						}
+					});
 				}
 			});
-		}
+		}, 50);
 	};
 	
 	this.internalToggleEye = function(node, mode) {

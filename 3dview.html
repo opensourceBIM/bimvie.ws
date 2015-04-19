@@ -241,7 +241,9 @@ function ThreeDView(containerDiv, projectPage) {
 					// Assuming sync return here because of preloading!!
 					object.getRepresentation(function(representation){
 						if (representation != null) {
-							oidsNotLoaded.push(object.oid);
+							if (Settings.getDefaultHiddenTypes()[object.getType()] == null || object.trans.mode == 0) {
+								oidsNotLoaded.push(object.oid);
+							}
 						}
 					});
 				}
