@@ -87,7 +87,7 @@
 				    		if (Settings.useBimSurfer()) {
 				    			jsToLoad = jsToLoad.concat([
 				    	   		    baseJsDir + "bimsurfer/api/BIMSURFER.js?_v=" + Global.version, 
-				    	   		    baseJsDir + "bimsurfer/lib/scenejs-4.0/scenejs.js?_v=" + Global.version, 
+				    	   		    baseJsDir + "bimsurfer/lib/scenejs/scenejs.js?_v=" + Global.version, 
 				    	   		    baseJsDir + "bimsurfer/api/SceneJS.js?_v=" + Global.version, 
 				    	   		    baseJsDir + "bimsurfer/api/Constants.js?_v=" + Global.version, 
 				    	   		    baseJsDir + "bimsurfer/api/ProgressLoader.js?_v=" + Global.version, 
@@ -118,6 +118,8 @@
 				    			$.ajaxSetup({
 				    				cache: true
 				    			});
+
+				    			SceneJS.configure({ pluginPath: baseJsDir + "bimsurfer/lib/scenejs/plugins" });
 				    			
 				    			var jQueryLoad = $.fn.load;
 				    			$.fn.load = function(url, params, callback) {
@@ -159,6 +161,7 @@
 				    					errorFunction(address);
 				    				});
 				    			};
+				    			
 				    			
 				    			function load() {
 				    				$(".sidespan").empty();

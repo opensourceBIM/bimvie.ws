@@ -150,6 +150,7 @@ function Project(containerDiv, main, project) {
 	};
 	
 	this.preloadModel = function(project, roid){
+		console.time("preloadModel");
 		var countingPromise = new CountingPromise();
 		var promise = new Promise();
 		var model = othis.models[roid];
@@ -201,6 +202,9 @@ function Project(containerDiv, main, project) {
 				    	type: "IfcProductRepresentation"
 				    },
 				    {
+				    	type: "IfcPresentationLayerWithStyle"
+				    },
+				    {
 				    	type: "IfcProduct",
 				    	includeAllSubTypes: true
 				    },
@@ -232,6 +236,7 @@ function Project(containerDiv, main, project) {
 			
 			model.query(preLoadQuery, function(loaded){
 			}).done(function(){
+				console.timeEnd("preloadModel");
 				Global.notifier.setInfo("Loading model data...", -1);
 				setTimeout(function(){
 					model.isPreloaded = true;

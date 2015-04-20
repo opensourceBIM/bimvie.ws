@@ -30,7 +30,7 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		var dropdown = othis.createDropDown(node);
 		var eye = othis.createEye(node, 2);
 		if (roid == -1 || project.lastRevisionId == -1) {
-			eye.css("visibility", "hidden");
+			eye.hide();
 		}
 		eye.toggle(projectPage.threeDAspectVisible.get());
 		node.click(function(){
@@ -437,23 +437,26 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 				return promise;
 			});
 		} else {
-			object.getIsDecomposedBy(function(isDecomposedBy){
-				isDecomposedBy.getRelatedObjects(function(relatedObject){
-					othis.buildDecomposedTree(relatedObject, newNode, types);
-				}).done(function(){
-					newNode.doneLoading();
-				});
-			}).done(function(){
-				// klopt niet...
-				newNode.doneLoading();
-			});
-			if (object.getContainsElements != null) {
-				object.getContainsElements(function(containedElement){
-					containedElement.getRelatedElements(function(relatedElement){
-						othis.buildDecomposedTree(relatedElement, newNode, types);
+			newNode.onLoad(function(){
+				var promise = new Promise();
+				setTimeout(function(){
+					object.getIsDecomposedBy(function(isDecomposedBy){
+						isDecomposedBy.getRelatedObjects(function(relatedObject){
+							othis.buildDecomposedTree(relatedObject, newNode, types);
+						});
+					}).done(function(){
+						if (object.getContainsElements != null) {
+							object.getContainsElements(function(containedElement){
+								containedElement.getRelatedElements(function(relatedElement){
+									othis.buildDecomposedTree(relatedElement, newNode, types);
+								});
+							});
+						}
+						promise.fire();
 					});
-				});
-			}
+				}, 50);
+				return promise;
+			});
 		}
 	}
 	
@@ -462,7 +465,7 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		var model = models[roid];
 		if (model != null) {
 			projectPage.preloadModel(project, roid).done(function(){
-				model.getAllOfType("IfcProject", true, function(project){
+				model.getAllOfType("IfcProject", false, function(project){
 					othis.buildDecomposedTree(project, node, types);
 				}).done(function(){
 					promise.fire();

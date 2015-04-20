@@ -1,4 +1,6 @@
 <div class="threedview">
+	<button class="btn btnScreenShot">Screenshot</button>
+	<img class="screenshot" style="width: 300px"/>
 	<div class="progressbars">
 		<div class="waiting">
 			<span class="badge">3</span><span class="text"> Waiting...</span>
@@ -304,7 +306,7 @@ function ThreeDView(containerDiv, projectPage) {
 			clickSelect.activate();
 			clickSelect.events.register('select', o.nodeSelected);
 			clickSelect.events.register('unselect', o.nodeUnselected);
-		});
+		}, {useCapture: true});
 	};
 
 	this.resize = function(){
@@ -396,6 +398,13 @@ function ThreeDView(containerDiv, projectPage) {
 
 	$("#viewport").on("contextmenu", function(e){
 		e.preventDefault();
+	});
+	
+	$(".btnScreenShot").click(function(){
+		o.viewer.capture().done(function(test){
+			console.log(test);
+			$(".screenshot").attr("src", test.src);
+		});
 	});
 }
 </script>

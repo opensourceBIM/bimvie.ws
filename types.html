@@ -74,11 +74,13 @@ function Types(containerDiv, projectPage, projects, models, main) {
 	};
 	
 	this.loadRevision = function(project, roid, types, objectsToHide){
+		console.time("Types.loadRevision");
 		containerDiv.find(".modelLoader").hide();
 		if (roid != -1 && project.nrSubProjects == 0) {
 			var model = projectPage.models[roid];
-			for (var oid in model.objects) {
-				var object = model.objects[oid];
+			var t = 0;
+			model.getAllOfType("IfcProduct", true, function(object){
+				t++;
 				if (object.isA("IfcProduct")) {
 					var type = object.getType();
 					if (othis.types[type] == null) {
@@ -91,7 +93,8 @@ function Types(containerDiv, projectPage, projects, models, main) {
 					}
 					othis.types[type].total = othis.types[type].total + 1;
 				}
-			}
+			});
+			console.log(t);
 			if (Object.keys(othis.types).length == 0) {
 				containerDiv.find("table tbody").append("<tr><td>No types</td></tr>");
 			} else {
@@ -129,6 +132,7 @@ function Types(containerDiv, projectPage, projects, models, main) {
 				}				
 			}
 		}
+		console.timeEnd("Types.loadRevision");
 	};
 	
 	othis.unloadRevision = function(poid, roid) {
