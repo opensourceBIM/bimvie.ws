@@ -21,7 +21,7 @@ function Types(containerDiv, projectPage, projects, models, main) {
 		for (var roid in models) {
 			var model = models[roid];
 			var oids = [];
-			model.getAllOfType(type, true, function(object){
+			model.getAllOfType(type, false, function(object){
 				oids.push(object.oid);
 			});
 			projectPage.setObjectVisibility(roid, oids, mode);
