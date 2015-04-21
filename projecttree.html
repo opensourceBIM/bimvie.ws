@@ -16,7 +16,7 @@
 	</div>
 </div>
 <script>
-function ProjectTree(containerDiv, projectPage, project, models, main, selectedId) {
+function ProjectTree(containerDiv, projectPage, project, models, options, selectedId) {
 	var othis = this;
 	othis.project = project;
 	othis.selectedId = selectedId;
@@ -41,7 +41,7 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		});
 		
 		var history = History.getState().data;
-		if (history.poid == project.oid || othis.project.oid == project.oid) {
+		if (othis.project != null && (history.poid == project.oid || othis.project.oid == project.oid)) {
 			node.select();
 		}
 		
@@ -53,9 +53,11 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		node.sort = true;
 		node.poid = project.oid;
 		node.hint("Project");
-		if ($.cookie(main.user.oid + "showdeleteditems") != "true" && project.state == "DELETED") {
+		
+		//		if (main != null && main.user != null && ($.cookie(main.user.oid + "showdeleteditems") != "true" && project.state == "DELETED"))
+		if (options != null && options.hideDeleted == true && project.state == "DELETED") {
 			node.hide();
-		}		
+		}
 		if (project.nrSubProjects == 0) {
 			if (roid != -1) {
 				node.onLoad(function(){
@@ -80,25 +82,8 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 	this.loadRevision = function(project, roid, types) {
 		var promise = new Promise();
 		var node = othis.tree.find(project.oid);
-//		node.click(function(node){
-//			main.showProject(node.id, null, null);
-//		});
 		
-		
-		if (roid == -1) {
-//			dropdown.on("shown.bs.popover", function () {
-//				containerDiv.find(".popover").offset({top: dropdown.offset().top - 5, left: dropdown.offset().left + 34});
-//				containerDiv.find(".popover").width("200px");
-//			})
-//			dropdown.popover("show");
-		}
-		
-//		if (project.oid == othis.project.oid) {
-//			node.select();
-//		}
-
 		if (project.nrSubProjects == 0) {
-//			othis.loadProjectTree(project, roid, node, types);
 			promise.chain(node.open());
 		} else {
 			node.doneLoading();
@@ -106,11 +91,6 @@ function ProjectTree(containerDiv, projectPage, project, models, main, selectedI
 		}
 		if ($.cookie(main.user.oid + "showdeleteditems") != "true" && project.state == "DELETED") {
 			node.hide();
-		} else {
-//			if (project.parentId == othis.project.oid) {
-//				nrSubprojects++;
-//				containerDiv.find(".subprojectsLink a").html("Sub Projects" + (othis.project.subProjects.length == 0 ? "" : (" (" + nrSubprojects + ")")));
-//			}
 		}
 		return promise;
 	};
