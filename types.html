@@ -10,7 +10,7 @@
 	</table>
 </div>
 <script>
-function Types(containerDiv, projectPage, projects, models) {
+function Types(containerDiv, parent) {
 	var othis = this;
 	
 	othis.types = {};
@@ -18,13 +18,13 @@ function Types(containerDiv, projectPage, projects, models) {
 	this.close = function(){};
 	
 	this.toggleEye = function(type, mode){
-		for (var roid in models) {
-			var model = models[roid];
+		for (var roid in parent.models) {
+			var model = parent.models[roid];
 			var oids = [];
 			model.getAllOfType(type, false, function(object){
 				oids.push(object.oid);
 			});
-			projectPage.setObjectVisibility(roid, oids, mode);
+			parent.setObjectVisibility(roid, oids, mode);
 		}
 	};
 	
@@ -76,8 +76,8 @@ function Types(containerDiv, projectPage, projects, models) {
 	this.loadRevision = function(project, roid, types, objectsToHide){
 		console.time("Types.loadRevision");
 		containerDiv.find(".modelLoader").hide();
-		if (roid != -1 && project.nrSubProjects == 0) {
-			var model = projectPage.models[roid];
+		if (roid != -1 && project.nrSubProjects == 0 || project.subProjects.length == 0) {
+			var model = parent.models[roid];
 			var t = 0;
 			model.getAllOfType("IfcProduct", true, function(object){
 				t++;
@@ -94,7 +94,6 @@ function Types(containerDiv, projectPage, projects, models) {
 					othis.types[type].total = othis.types[type].total + 1;
 				}
 			});
-			console.log(t);
 			if (Object.keys(othis.types).length == 0) {
 				containerDiv.find("table tbody").append("<tr><td>No types</td></tr>");
 			} else {
@@ -120,7 +119,7 @@ function Types(containerDiv, projectPage, projects, models) {
 					}
 					eye.attr("type", key);
 					eye.attr("mode", mode);
-					eye.toggle(projectPage.threeDAspectVisible.get());
+					eye.toggle(parent.threeDAspectVisible.get());
 					eye.click(function(){
 						var eye = $(this);
 						var mode = parseInt(eye.attr("mode"));
@@ -143,11 +142,11 @@ function Types(containerDiv, projectPage, projects, models) {
 		containerDiv.find(".eye").toggle(show);
 	};
 	
-	containerDiv.find(".btnLoad").click(projectPage.loadModel);
+	containerDiv.find(".btnLoad").click(parent.loadModel);
 	
-	projectPage.objectVisibilityListeners.register(othis.objectVisibilityChanged);
-	projectPage.modelLoadedListeners.register(othis.loadRevision);
-	projectPage.modelUnloadedListeners.register(othis.unloadRevision);
-	projectPage.threeDAspectVisible.register(othis.setShowEyes);
+	parent.objectVisibilityListeners.register(othis.objectVisibilityChanged);
+	parent.modelLoadedListeners.register(othis.loadRevision);
+	parent.modelUnloadedListeners.register(othis.unloadRevision);
+	parent.threeDAspectVisible.register(othis.setShowEyes);
 };
 </script>

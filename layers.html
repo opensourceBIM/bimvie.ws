@@ -10,7 +10,7 @@
 	</table>
 </div>
 <script>
-function Layers(containerDiv, projectPage, projects, models) {
+function Layers(containerDiv, parent) {
 	var othis = this;
 	
 	othis.layers = {};
@@ -19,10 +19,10 @@ function Layers(containerDiv, projectPage, projects, models) {
 	this.close = function(){};
 	
 	this.toggleEye = function(oid, mode){
-		for (var roid in models) {
-			var model = models[roid];
+		for (var roid in parent.models) {
+			var model = parent.models[roid];
 			var objects = othis.layers[oid].objects;
-			projectPage.setObjectVisibility(roid, Object.keys(objects).map(Number), mode);
+			parent.setObjectVisibility(roid, Object.keys(objects).map(Number), mode);
 		}
 	};
 	
@@ -74,7 +74,7 @@ function Layers(containerDiv, projectPage, projects, models) {
 	this.loadRevision = function(project, roid, types, objectsToHide){
 		containerDiv.find(".modelLoader").hide();
 		if (project.lastRevisionId != -1 && project.nrSubProjects == 0) {
-			var model = models[roid];
+			var model = parent.models[roid];
 			containerDiv.find("table tbody tr").remove();
 			
 			model.getAllOfType("IfcProduct", true, function(product){
@@ -122,7 +122,7 @@ function Layers(containerDiv, projectPage, projects, models) {
 							eye.attr("mode", 0);
 						}
 					}
-					eye.toggle(projectPage.threeDAspectVisible.get());
+					eye.toggle(parent.threeDAspectVisible.get());
 					eye.attr("oid", presentationLayerAssignment.oid);
 					eye.click(function(){
 						var eye = $(this);
@@ -147,15 +147,15 @@ function Layers(containerDiv, projectPage, projects, models) {
 		
 	};
 	
-	containerDiv.find(".btnLoad").click(projectPage.loadModel);
+	containerDiv.find(".btnLoad").click(parent.loadModel);
 	
 	this.setShowEyes = function(show) {
 		containerDiv.find(".eye").toggle(show);
 	};
 	
-	projectPage.objectVisibilityListeners.register(othis.objectVisibilityChanged);
-	projectPage.threeDAspectVisible.register(othis.setShowEyes);
-	projectPage.modelLoadedListeners.register(othis.loadRevision);
-	projectPage.modelUnloadedListeners.register(othis.unloadRevision);
+	parent.objectVisibilityListeners.register(othis.objectVisibilityChanged);
+	parent.threeDAspectVisible.register(othis.setShowEyes);
+	parent.modelLoadedListeners.register(othis.loadRevision);
+	parent.modelUnloadedListeners.register(othis.unloadRevision);
 };
 </script>

@@ -16,14 +16,29 @@
 	</div>
 </div>
 <script>
-function ProjectTree(containerDiv, projectPage, project, models, options, selectedId) {
+function ProjectTree(containerDiv, parent, project, options, selectedId) {
 	var othis = this;
 	othis.project = project;
 	othis.selectedId = selectedId;
 	othis.selectedNode = null;
-	
+
+	this.load = function(){
+		var promise = new Promise();
+		othis.tree = new Tree(containerDiv.find(".tree"));
+		othis.tree.selectionListeners.push(function(node){
+			parent.selectedObjectId = node.id;
+		});
+		var lastParent = -1;
+		var nrSubprojects = 0;
+		promise.fire();
+		return promise;
+	};
+
 	this.addRevision = function(project, roid, types){
 		var parentNode = othis.tree.find(project.parentId);
+		if (parentNode == null) {
+			parentNode = othis.tree.find(-1);
+		}
 		var node = Object.create(Node.prototype);
 		node.init(project.oid, project.name);
 		parentNode.add(node);
@@ -32,11 +47,11 @@ function ProjectTree(containerDiv, projectPage, project, models, options, select
 		if (roid == -1 || project.lastRevisionId == -1) {
 			eye.hide();
 		}
-		eye.toggle(projectPage.threeDAspectVisible.get());
+		eye.toggle(parent.threeDAspectVisible.get());
 		node.click(function(){
 			node.select();
 			Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: node.project.oid}, function(project){
-				projectPage.loadDetails(project);
+				parent.loadDetails(project);
 			});
 		});
 		
@@ -58,7 +73,8 @@ function ProjectTree(containerDiv, projectPage, project, models, options, select
 		if (options != null && options.hideDeleted == true && project.state == "DELETED") {
 			node.hide();
 		}
-		if (project.nrSubProjects == 0) {
+		console.log(project);
+		if (project.nrSubProjects == 0 || (project.subProjects != null && project.subProjects.length == 0)) {
 			if (roid != -1) {
 				node.onLoad(function(){
 					console.time("projectTreeLoad");
@@ -89,7 +105,7 @@ function ProjectTree(containerDiv, projectPage, project, models, options, select
 			node.doneLoading();
 			promise.chain(node.open());
 		}
-		if ($.cookie(main.user.oid + "showdeleteditems") != "true" && project.state == "DELETED") {
+		if (options != null && options.hideDeleted == true && project.state == "DELETED") {
 			node.hide();
 		}
 		return promise;
@@ -100,15 +116,6 @@ function ProjectTree(containerDiv, projectPage, project, models, options, select
 		if (node != null) {
 			node.remove();
 		}
-	};
-	
-	this.init = function(){
-		othis.tree = new Tree(containerDiv.find(".tree"));
-		othis.tree.selectionListeners.push(function(node){
-			projectPage.selectedObjectId = node.id;
-		});
-		var lastParent = -1;
-		var nrSubprojects = 0;
 	};
 	
 	this.close = function(){};
@@ -137,7 +144,7 @@ function ProjectTree(containerDiv, projectPage, project, models, options, select
 					li.find("a").click(function(){
 						dropdown.hide();
 						var a = $(this);
-						projectPage.changeRevision(a.data("project"), a.attr("roid"));
+						parent.changeRevision(a.data("project"), a.attr("roid"));
 					});
 					dropdown.find(".revisions").append(li);
 				});
@@ -205,7 +212,7 @@ function ProjectTree(containerDiv, projectPage, project, models, options, select
 			
 		} else {
 			// Maybe this object has not yet been loaded in the tree, but is available in the model
-			var model = models[groupId];
+			var model = parent.models[groupId];
 			model.get(id, function(object){
 				// Now we will have to see to which parent structure this object belongs...
 				object.getContainedInStructure(function(struc){
@@ -256,7 +263,7 @@ function ProjectTree(containerDiv, projectPage, project, models, options, select
 	this.treeItemClick = function(treeNode) {
 		if (typeof treeNode.id === "number" && treeNode.type.startsWith("Ifc")) {
 			var groupNode = treeNode.findFirstParentWithAttr("groupId");
-			projectPage.selected(othis, groupNode.groupId, treeNode.id);
+			parent.selected(othis, groupNode.groupId, treeNode.id);
 		}
 	};
 
@@ -269,7 +276,7 @@ function ProjectTree(containerDiv, projectPage, project, models, options, select
 				} else {
 					projectNodes.forEach(function(projectNode){
 						if (projectNode.roid != -1) {
-							if (!projectPage.models[projectNode.roid].isPreloaded) {
+							if (!parent.models[projectNode.roid].isPreloaded) {
 								othis.loadRevision(projectNode.project, projectNode.roid, []).done(function(){
 									othis.internalToggleEye(projectNode, mode);
 								});
@@ -297,7 +304,7 @@ function ProjectTree(containerDiv, projectPage, project, models, options, select
 					}
 				}
 			});
-			projectPage.setObjectVisibility(groupNode.groupId, ifcOids, mode);
+			parent.setObjectVisibility(groupNode.groupId, ifcOids, mode);
 			nodeList.forEach(function(n){
 				var explicit = node.id == n.id || (node.type != null && node.type == n.type);
 				if (hiddenTypes[n.type] == null || explicit || mode != 0) {
@@ -329,7 +336,7 @@ function ProjectTree(containerDiv, projectPage, project, models, options, select
 			var mode = parseInt(eye.attr("mode"));
 			othis.toggleEye(node, (mode + 1) % 3);
 		});
-		eye.toggle(projectPage.threeDAspectVisible.get());
+		eye.toggle(parent.threeDAspectVisible.get());
 		node.eye = eye;
 		node.addButton(eye);
 		return eye;
@@ -442,9 +449,9 @@ function ProjectTree(containerDiv, projectPage, project, models, options, select
 	
 	this.loadProjectTree = function(project, roid, node, types){
 		var promise = new Promise();
-		var model = models[roid];
+		var model = parent.models[roid];
 		if (model != null) {
-			projectPage.preloadModel(project, roid).done(function(){
+			parent.preloadModel(project, roid).done(function(){
 				model.getAllOfType("IfcProject", false, function(project){
 					othis.buildDecomposedTree(project, node, types);
 				}).done(function(){
@@ -472,13 +479,13 @@ function ProjectTree(containerDiv, projectPage, project, models, options, select
 		}
 	};
 	
-	projectPage.selectListeners.register(othis.selected);
-	projectPage.unselectListeners.register(othis.unselected);
-	projectPage.objectVisibilityListeners.register(othis.objectVisibilityChanged);
-	projectPage.modelAddedListeners.register(othis.addRevision);
-	projectPage.modelLoadedListeners.register(othis.loadRevision);
-	projectPage.modelUnloadedListeners.register(othis.unloadRevision);
-	projectPage.threeDAspectVisible.register(othis.setShowEyes);
+	parent.selectListeners.register(othis.selected);
+	parent.unselectListeners.register(othis.unselected);
+	parent.objectVisibilityListeners.register(othis.objectVisibilityChanged);
+	parent.modelAddedListeners.register(othis.addRevision);
+	parent.modelLoadedListeners.register(othis.loadRevision);
+	parent.modelUnloadedListeners.register(othis.unloadRevision);
+	parent.threeDAspectVisible.register(othis.setShowEyes);
 
 	var dropdown = containerDiv.find(".dropdown");
 	dropdown.find(".btnDownload").click(function(){
@@ -489,8 +496,8 @@ function ProjectTree(containerDiv, projectPage, project, models, options, select
 	});
 	dropdown.find(".btnAddService").click(function(){
 		dropdown.hide();
-		projectPage.rightPanel.showAddService(othis.selectedNode.project, null, function(){
-			projectPage.rightPanel.loadServices();
+		parent.rightPanel.showAddService(othis.selectedNode.project, null, function(){
+			parent.rightPanel.loadServices();
 		});
 	});
 	dropdown.find(".btnCheckin").click(function(){
@@ -498,7 +505,7 @@ function ProjectTree(containerDiv, projectPage, project, models, options, select
 		Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: othis.selectedNode.poid}, function(project){
 			main.showCheckinPopup(project, function(){
 				Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectSmallByPoid", {poid: othis.selectedNode.poid}, function(projectSmall){
-					projectPage.changeRevision(projectSmall, projectSmall.lastRevisionId);
+					parent.changeRevision(projectSmall, projectSmall.lastRevisionId);
 				});
 			});
 		});
@@ -513,7 +520,5 @@ function ProjectTree(containerDiv, projectPage, project, models, options, select
 	$(window).click(function(){
 		dropdown.hide();
 	});
-	
-	othis.init();
 }
 </script>

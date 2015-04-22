@@ -10,7 +10,7 @@
 	</table>
 </div>
 <script>
-function Properties(containerDiv, projectPage, models, oid) {
+function Properties(containerDiv, parent, oid) {
 	var othis = this;
 	othis.selectedId = oid;
 	
@@ -23,7 +23,7 @@ function Properties(containerDiv, projectPage, models, oid) {
 		othis.selectedId = id;
 		containerDiv.find("table tbody tr").remove();
 		containerDiv.find("table tbody").append("<tr class=\"noprop\"><td>No properties</td></tr>");
-		var model = models[groupId];
+		var model = parent.models[groupId];
 		model.get(id, function(product){
 			othis.product = product;
 			if (product.oid == id) {
@@ -109,12 +109,12 @@ function Properties(containerDiv, projectPage, models, oid) {
 	
 	this.unloadRevision = function(){};
 
-	projectPage.selectListeners.register(othis.selected);
-	projectPage.unselectListeners.register(othis.unselected);
-	projectPage.modelLoadedListeners.register(othis.loadRevision);
-	projectPage.modelUnloadedListeners.register(othis.unloadRevision);
+	parent.selectListeners.register(othis.selected);
+	parent.unselectListeners.register(othis.unselected);
+	parent.modelLoadedListeners.register(othis.loadRevision);
+	parent.modelUnloadedListeners.register(othis.unloadRevision);
 
-	containerDiv.find(".btnLoad").click(projectPage.loadModel);
+	containerDiv.find(".btnLoad").click(parent.loadModel);
 
 	if (othis.selectedId != null && othis.selectedId != -1) {
 		othis.selected(othis.selectedId);

@@ -10,7 +10,7 @@
 	</table>
 </div>
 <script>
-function Classifications(containerDiv, projectPage, projects, models) {
+function Classifications(containerDiv, parent) {
 	var othis = this;
 
 	othis.objectToClassification = {};
@@ -27,14 +27,14 @@ function Classifications(containerDiv, projectPage, projects, models) {
 	};
 	
 	this.toggleEye = function(oid, mode){
-		for (var roid in models) {
-			var model = models[roid];
+		for (var roid in parent.models) {
+			var model = parent.models[roid];
 			model.get([oid], function(relAssociateClassification){
 				var oids = [];
 				relAssociateClassification.getRelatedObjects(function(object){
 					oids.push(object.oid);
 				});
-				projectPage.setObjectVisibility(roid, oids, mode);
+				parent.setObjectVisibility(roid, oids, mode);
 			});
 		}
 	};
@@ -79,7 +79,7 @@ function Classifications(containerDiv, projectPage, projects, models) {
 	this.loadRevision = function(project, roid, types){
 		containerDiv.find(".modelLoader").hide();
 		if (project.lastRevisionId != -1 && project.nrSubProjects == 0) {
-			var model = models[roid];
+			var model = parent.models[roid];
 			model.getAllOfType("IfcRelAssociatesClassification", true, function(relAssociatesClassification){
 				var tr = $("<tr>");
 				tr.attr("oid", relAssociatesClassification.oid);
@@ -126,7 +126,7 @@ function Classifications(containerDiv, projectPage, projects, models) {
 								} else {
 									eye.attr("mode", 0);
 								}
-								eye.toggle(projectPage.threeDAspectVisible.get());
+								eye.toggle(parent.threeDAspectVisible.get());
 								eye.attr("oid", relAssociatesClassification.oid);
 								eye.click(function(){
 									var eye = $(this);
@@ -148,15 +148,15 @@ function Classifications(containerDiv, projectPage, projects, models) {
 		}
 	};
 	
-	containerDiv.find(".btnLoad").click(projectPage.loadModel);
+	containerDiv.find(".btnLoad").click(parent.loadModel);
 
 	this.setShowEyes = function(show) {
 		containerDiv.find(".eye").toggle(show);
 	};
 	
-	projectPage.threeDAspectVisible.register(othis.setShowEyes);
-	projectPage.modelLoadedListeners.register(othis.loadRevision);
-	projectPage.modelUnloadedListeners.register(othis.unloadRevision);
-	projectPage.objectVisibilityListeners.register(othis.objectVisibilityChanged);
+	parent.threeDAspectVisible.register(othis.setShowEyes);
+	parent.modelLoadedListeners.register(othis.loadRevision);
+	parent.modelUnloadedListeners.register(othis.unloadRevision);
+	parent.objectVisibilityListeners.register(othis.objectVisibilityChanged);
 }
 </script>

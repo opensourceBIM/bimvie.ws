@@ -108,12 +108,14 @@ function ExtendedData(main, extendedData, parent) {
 	};
 	
 	Global.bimServerApi.call("ServiceInterface", "getFile", {fileId: extendedData.fileId}, function(file){
-		var data = atob(file.data);
+		var data = UTF8ArrToStr(base64DecToArr(file.data));
 		$(".size").html(GetHumanSize(data.length));
 		Global.bimServerApi.call("Bimsie1ServiceInterface", "getExtendedDataSchemaById", {oid: extendedData.schemaId}, function(schema){
 			if (schema.namespace == "http://www.buildingsmart-tech.org/specifications/bcf-releases") {
 				othis.showBcf(schema, extendedData, data);
 			} else if (schema.namespace == "geometrymatching") {
+				othis.showCsv(schema, extendedData, data);
+			} else if (schema.namespace == "http://www.buildingsmart-tech.org/specifications/excelcsv") {
 				othis.showCsv(schema, extendedData, data);
 			} else if (schema.namespace == "http://www.elassticbim.eu/simulation") {
 				othis.showCsv(schema, extendedData, data);

@@ -20,6 +20,21 @@ function ThreeDView(containerDiv, projectPage) {
 	o.selectedId = -1;
 	o.loadedOids = {};
 	
+	this.load = function(){
+		var promise = new Promise();
+		o.viewer = new BIMSURFER.Viewer(Global.bimServerApi, 'viewport');
+		o.resize();
+		$(window).resize(o.resize);
+		o.viewer.loadScene(function(){
+			var clickSelect = o.viewer.getControl("BIMSURFER.Control.ClickSelect");
+			clickSelect.activate();
+			clickSelect.events.register('select', o.nodeSelected);
+			clickSelect.events.register('unselect', o.nodeUnselected);
+			promise.fire();
+		}, {useCapture: true});
+		return promise;
+	};
+	
 	this.nodeSelected = function(groupId, node){
 		projectPage.selected(o, groupId, node.id);
 		o.selectedId = node.id;
@@ -295,18 +310,6 @@ function ThreeDView(containerDiv, projectPage) {
 			});
 			o.viewer.loadGeometry(geometryLoader);
 		}
-	};
-	
-	this.show = function(){
-		o.viewer = new BIMSURFER.Viewer(Global.bimServerApi, 'viewport');
-		o.resize();
-		$(window).resize(o.resize);
-		o.viewer.loadScene(function(){
-			var clickSelect = o.viewer.getControl("BIMSURFER.Control.ClickSelect");
-			clickSelect.activate();
-			clickSelect.events.register('select', o.nodeSelected);
-			clickSelect.events.register('unselect', o.nodeUnselected);
-		}, {useCapture: true});
 	};
 
 	this.resize = function(){

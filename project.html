@@ -305,16 +305,17 @@ function Project(containerDiv, main, project) {
 			});
 
 			$(".propertiesWrapper").load("properties.html", function(){
-				othis.properties = new Properties($(this), othis, othis.models, main, othis.selectedObjectId);
+				othis.properties = new Properties($(this), othis, othis.selectedObjectId);
 				$(".projectTreeWrapper").load("projecttree.html", function(){
-					othis.projecttree = new ProjectTree($(this), othis, othis.project, othis.models, main, othis.rightpanel, othis.selectedObjectId);
+					othis.projecttree = new ProjectTree($(this), othis, othis.project, {}, othis.selectedObjectId);
+					othis.projecttree.load();
 					othis.sidespan = othis.projecttree;
 					$(".typesWrapper").load("types.html", function(){
-						othis.types = new Types($(this), othis, othis.projects, othis.models, main, othis.rightpanel);
+						othis.types = new Types($(this), othis, main, othis.rightpanel);
 						$(".layersWrapper").load("layers.html", function(){
-							othis.layers = new Layers($(this), othis, othis.projects, othis.models, main, othis.rightpanel);
+							othis.layers = new Layers($(this), othis, main, othis.rightpanel);
 							$(".classificationWrapper").load("classifications.html", function(){
-								othis.classifications = new Classifications($(this), othis, othis.projects, othis.models, main);
+								othis.classifications = new Classifications($(this), othis, main);
 	
 								othis.loadDetails(othis.project);
 								othis.projects.forEach(function(project){

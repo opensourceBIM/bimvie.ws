@@ -274,3 +274,45 @@ function formatLogState(state) {
 		return "Done";
 	}
 }
+
+function load(element, url, constructor) {
+	var promise = new Promise();
+	element.load(url, function(){
+		var res = constructor.call(element);
+		if (res instanceof Promise) {
+			promise.chain(res);
+		} else {
+			promise.fire();
+		}
+	});
+	return promise;
+}
+
+function Tab(tabs, label) {
+	var o = this;
+
+	this.setActive = function(){
+		tabs.tabsDiv.find("label").removeClass("active");
+		label.addClass("active");
+		tabs.contentDiv.load(o.page, o.callback);
+	};
+	
+	label.find("input").change(function(){
+		o.setActive();
+	});
+}
+
+function Tabs(tabsDiv, contentDiv) {
+	var o = this;
+	o.tabsDiv = tabsDiv;
+	o.contentDiv = contentDiv;
+	
+	this.addTab = function(label, page, callback){
+		var label = $("<label class=\"btn btn-default button2d\"> <input type=\"radio\" name=\"options\" id=\"option1\" autocomplete=\"off\" />" + label + "</label>");
+		var tab = new Tab(o, label);
+		tab.page = page;
+		tab.callback = callback;
+		tabsDiv.append(label);
+		return tab;
+	};
+}
