@@ -294,6 +294,8 @@ function Tab(tabs, label) {
 	this.setActive = function(){
 		tabs.tabsDiv.find("label").removeClass("active");
 		label.addClass("active");
+		label.find("input").attr("selected", "selected");
+		console.log(label);
 		tabs.contentDiv.load(o.page, o.callback);
 	};
 	
@@ -307,8 +309,8 @@ function Tabs(tabsDiv, contentDiv) {
 	o.tabsDiv = tabsDiv;
 	o.contentDiv = contentDiv;
 	
-	this.addTab = function(label, page, callback){
-		var label = $("<label class=\"btn btn-default button2d\"> <input type=\"radio\" name=\"options\" id=\"option1\" autocomplete=\"off\" />" + label + "</label>");
+	this.addTab = function(title, page, callback){
+		var label = $("<label class=\"btn btn-default\"> <input type=\"radio\" name=\"options\" id=\"" + title + "\" autocomplete=\"off\" />" + title + "</label>");
 		var tab = new Tab(o, label);
 		tab.page = page;
 		tab.callback = callback;
