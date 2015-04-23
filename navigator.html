@@ -1,0 +1,109 @@
+<div class="navigator">
+	<div class="panel panel-default">
+		<div class="panel-heading btn-group projectTabs" data-toggle="buttons" style="padding: 0; width: 100%">
+			<label class="btnProjectTree btn btn-default active">
+				<input checked="checked" type="radio" name="options"/> Tree
+			</label>
+			<label class="btnTypes btn btn-default">
+				<input type="radio" name="options"/> Types
+			</label>
+			<label class="btnLayers btn btn-default">
+				<input type="radio" name="options"/> Layers
+			</label>
+			<label class="btnClassifications btn btn-default">
+				<input type="radio" name="options"/> Classifications
+			</label>
+			<label class="btnProperties btn btn-default">
+				<input type="radio" name="options"/> Properties
+			</label>
+		</div>
+		<div class="panel-body sidespanWrapper">
+			<div class="sidespan">
+				<div class="projectTreeWrapper"></div>
+				<div class="propertiesWrapper ih"></div>
+				<div class="classificationWrapper ih"></div>
+				<div class="typesWrapper ih"></div>
+				<div class="layersWrapper ih"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+function Navigator(containerDiv, parent) {
+	var o = this;
+
+	this.load = function(){
+		var promise = new Promise();
+		promise.chain(load(containerDiv.find(".projectTreeWrapper"), "projecttree.html", function(){
+			o.projecttree = new ProjectTree($(this), parent, {}, o.selectedObjectId);
+			o.sidespan = o.projecttree;
+			return o.projecttree.load();
+		}));
+		promise.chain(load(containerDiv.find(".typesWrapper"), "types.html", function(){
+			o.types = new Types($(this), parent);
+		}));
+		promise.chain(load(containerDiv.find(".layersWrapper"), "layers.html", function(){
+			o.layers = new Layers($(this), parent);
+		}));
+		promise.chain(load(containerDiv.find(".classificationWrapper"), "classifications.html", function(){
+			o.classifications = new Classifications($(this), parent);
+		}));
+		promise.chain(load(containerDiv.find(".propertiesWrapper"), "properties.html", function(){
+			o.properties = new Properties($(this), parent, o.selectedObjectId);
+		}));
+		
+		return promise;
+	};
+	
+	this.resize = function(){
+		var height = ($(window).height() - $(".navbar").outerHeight() - containerDiv.find(".col-md-4 .panel-heading").outerHeight() - 57);
+		containerDiv.find(".sidespanWrapper").height(height + "px");
+	};
+
+	this.showProjectTree = function(){
+		if (o.sidespan != null) {
+			o.sidespan.hide();
+		}
+		o.sidespan = o.projecttree;
+		o.sidespan.show();
+	};
+
+	this.showProperties = function(){
+		if (o.sidespan != null) {
+			o.sidespan.hide();
+		}
+		o.sidespan = o.properties;
+		o.sidespan.show();
+	};
+
+	this.showTypes = function(){
+		if (o.sidespan != null) {
+			o.sidespan.hide();
+		}
+		o.sidespan = o.types;
+		o.sidespan.show();
+	};
+	
+	this.showLayers = function(){
+		if (o.sidespan != null) {
+			o.sidespan.hide();
+		}
+		o.sidespan = o.layers;
+		o.sidespan.show();
+	};
+	
+	this.showClassifications = function(){
+		if (o.sidespan != null) {
+			o.sidespan.hide();
+		}
+		o.sidespan = o.classifications;
+		o.sidespan.show();
+	};
+	
+	containerDiv.find(".btnProjectTree").click(o.showProjectTree);
+	containerDiv.find(".btnProperties").click(o.showProperties);
+	containerDiv.find(".btnTypes").click(o.showTypes);
+	containerDiv.find(".btnLayers").click(o.showLayers);
+	containerDiv.find(".btnClassifications").click(o.showClassifications);
+}
+</script>

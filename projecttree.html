@@ -1,15 +1,10 @@
 <div class="projecttree">
 	<div class="dropdown">
 		<ul id="dropdown" class="dropdown-menu treeDropDown" role="menu">
-			<li><a class="addSubProject">Add sub project</a></li>
-			<li><a class="btnAddService">Add service</a></li>
-			<li class="divider"></li>
 			<li class="dropdown-submenu revisionsLi">
 				<a>Revisions</a>
 				<ul class="revisions dropdown-menu"></ul>
 			</li>
-			<li><a class="btnDownload"><i class="glyphicon glyphicon-cloud-download"></i> Download...</a></li>
-			<li><a class="btnCheckin"><i class="glyphicon glyphicon-cloud-upload"></i> Checkin...</a></li>
 		</ul>
 	</div>
 	<div class="tree">
@@ -479,6 +474,22 @@ function ProjectTree(containerDiv, parent, project, options, selectedId) {
 		}
 	};
 	
+	this.addMenuItem = function(title, click){
+		var li = $("<li></li>");
+		var a = $("<a>" + title + "</a>");
+		a.click(function(){
+			containerDiv.find(".treeDropDown").hide();
+			click();
+		});
+		li.append(a);
+		containerDiv.find(".treeDropDown").append(li);
+		return li;
+	};
+	
+	this.addMenuDivider = function(){
+		containerDiv.find(".treeDropDown").append("<li class=\"divider\"></li>");		
+	};
+	
 	parent.selectListeners.register(othis.selected);
 	parent.unselectListeners.register(othis.unselected);
 	parent.objectVisibilityListeners.register(othis.objectVisibilityChanged);
@@ -488,34 +499,34 @@ function ProjectTree(containerDiv, parent, project, options, selectedId) {
 	parent.threeDAspectVisible.register(othis.setShowEyes);
 
 	var dropdown = containerDiv.find(".dropdown");
-	dropdown.find(".btnDownload").click(function(){
-		dropdown.hide();
-		var list = [];
-		othis.gatherRoidList(othis.selectedNode, list);
-		main.showDownloadRevisionsPopup(list);
-	});
-	dropdown.find(".btnAddService").click(function(){
-		dropdown.hide();
-		parent.rightPanel.showAddService(othis.selectedNode.project, null, function(){
-			parent.rightPanel.loadServices();
-		});
-	});
-	dropdown.find(".btnCheckin").click(function(){
-		dropdown.hide();
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: othis.selectedNode.poid}, function(project){
-			main.showCheckinPopup(project, function(){
-				Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectSmallByPoid", {poid: othis.selectedNode.poid}, function(projectSmall){
-					parent.changeRevision(projectSmall, projectSmall.lastRevisionId);
-				});
-			});
-		});
-	});
-	dropdown.find(".addSubProject").click(function(){
-		dropdown.hide();
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: othis.selectedNode.poid}, function(project){
-			main.showAddProject(null, project);
-		});
-	});
+//	dropdown.find(".btnDownload").click(function(){
+//		dropdown.hide();
+//		var list = [];
+//		othis.gatherRoidList(othis.selectedNode, list);
+//		main.showDownloadRevisionsPopup(list);
+//	});
+//	dropdown.find(".btnAddService").click(function(){
+//		dropdown.hide();
+//		parent.rightPanel.showAddService(othis.selectedNode.project, null, function(){
+//			parent.rightPanel.loadServices();
+//		});
+//	});
+//	dropdown.find(".btnCheckin").click(function(){
+//		dropdown.hide();
+//		Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: othis.selectedNode.poid}, function(project){
+//			main.showCheckinPopup(project, function(){
+//				Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectSmallByPoid", {poid: othis.selectedNode.poid}, function(projectSmall){
+//					parent.changeRevision(projectSmall, projectSmall.lastRevisionId);
+//				});
+//			});
+//		});
+//	});
+//	dropdown.find(".addSubProject").click(function(){
+//		dropdown.hide();
+//		Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: othis.selectedNode.poid}, function(project){
+//			main.showAddProject(null, project);
+//		});
+//	});
 	
 	$(window).click(function(){
 		dropdown.hide();

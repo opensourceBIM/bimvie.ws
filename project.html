@@ -1,34 +1,6 @@
 <div class="project">
 	<div class="row">
-		<div class="col-md-4">
-			<div class="panel panel-default">
-				<div class="panel-heading btn-group projectTabs" data-toggle="buttons" style="padding: 0; width: 100%">
-					<label class="btnProjectTree btn btn-default active">
-						<input checked="checked" type="radio" name="options"/> Tree
-					</label>
-					<label class="btnTypes btn btn-default">
-						<input type="radio" name="options"/> Types
-					</label>
-					<label class="btnLayers btn btn-default">
-						<input type="radio" name="options"/> Layers
-					</label>
-					<label class="btnClassifications btn btn-default">
-						<input type="radio" name="options"/> Classifications
-					</label>
-					<label class="btnProperties btn btn-default">
-						<input type="radio" name="options"/> Properties
-					</label>
-				</div>
-				<div class="panel-body sidespanWrapper">
-					<div class="sidespan">
-						<div class="projectTreeWrapper"></div>
-						<div class="propertiesWrapper ih"></div>
-						<div class="classificationWrapper ih"></div>
-						<div class="typesWrapper ih"></div>
-						<div class="layersWrapper ih"></div>
-					</div>
-				</div>
-			</div>
+		<div class="col-md-4 navigatorWrapper">
 		</div>
 		<div class="col-md-8 rightCol">
 			<div class="rightpanel ih">
@@ -113,7 +85,8 @@ function Project(containerDiv, main, project) {
 	};
 	
 	this.resize = function(){
-		containerDiv.find(".sidespanWrapper").height(($(window).height() - $(".navbar").outerHeight() - containerDiv.find(".col-md-4 .panel-heading").outerHeight() - 57) + "px");
+		othis.navigator.resize();
+//		containerDiv.find(".sidespanWrapper").height(($(window).height() - $(".navbar").outerHeight() - containerDiv.find(".col-md-4 .panel-heading").outerHeight() - 57) + "px");
 	};
 	
 	this.changeRevision = function(project, roid){
@@ -258,7 +231,6 @@ function Project(containerDiv, main, project) {
 		}
 
 		$(window).resize(othis.resize);
-		othis.resize();
 		
 		othis.projects = [];
 		Global.bimServerApi.call("ServiceInterface", "getAllRelatedProjects", {poid: othis.project.oid}, function(list){
@@ -304,71 +276,45 @@ function Project(containerDiv, main, project) {
 				});
 			});
 
-			$(".propertiesWrapper").load("properties.html", function(){
-				othis.properties = new Properties($(this), othis, othis.selectedObjectId);
-				$(".projectTreeWrapper").load("projecttree.html", function(){
-					othis.projecttree = new ProjectTree($(this), othis, othis.project, {}, othis.selectedObjectId);
-					othis.projecttree.load();
-					othis.sidespan = othis.projecttree;
-					$(".typesWrapper").load("types.html", function(){
-						othis.types = new Types($(this), othis, main, othis.rightpanel);
-						$(".layersWrapper").load("layers.html", function(){
-							othis.layers = new Layers($(this), othis, main, othis.rightpanel);
-							$(".classificationWrapper").load("classifications.html", function(){
-								othis.classifications = new Classifications($(this), othis, main);
-	
-								othis.loadDetails(othis.project);
-								othis.projects.forEach(function(project){
-									othis.changeRevision(project, project.lastRevisionId);
+			containerDiv.find(".navigatorWrapper").load("navigator.html", function(){
+				othis.navigator = new Navigator($(this), othis);
+				othis.navigator.load().done(function(){
+					othis.navigator.projecttree.addMenuDivider();
+					othis.navigator.projecttree.addMenuItem("Add sub project", function(){
+						Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: othis.navigator.projecttree.selectedNode.poid}, function(project){
+							main.showAddProject(null, project);
+						});
+					});
+					othis.navigator.projecttree.addMenuItem("Add service", function(){
+						othis.rightPanel.showAddService(othis.navigator.projecttree.selectedNode.project, null, function(){
+							othis.rightPanel.loadServices();
+						});
+					});
+					othis.navigator.projecttree.addMenuItem("Checkin...", function(){
+						Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: othis.navigator.projecttree.selectedNode.poid}, function(project){
+							main.showCheckinPopup(project, function(){
+								Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectSmallByPoid", {poid: othis.navigator.projecttree.selectedNode.poid}, function(projectSmall){
+									othis.changeRevision(projectSmall, projectSmall.lastRevisionId);
 								});
 							});
 						});
+					}).find("a").prepend("<i class=\"glyphicon glyphicon-cloud-upload\"></i> ");
+					othis.navigator.projecttree.addMenuItem("Download...", function(){
+						var list = [];
+						othis.navigator.projecttree.gatherRoidList(othis.navigator.projecttree.selectedNode, list);
+						main.showDownloadRevisionsPopup(list);
+					}).find("a").prepend("<i class=\"glyphicon glyphicon-cloud-download\"></i> ");
+					
+					othis.resize();
+					othis.loadDetails(othis.project);
+					othis.projects.forEach(function(project){
+						othis.changeRevision(project, project.lastRevisionId);
 					});
 				});
 			});
 		});
 	};
 
-	this.loadProjectTree = function(){
-		if (othis.sidespan != null) {
-			othis.sidespan.hide();
-		}
-		othis.sidespan = othis.projecttree;
-		othis.sidespan.show();
-	};
-
-	this.showProperties = function(){
-		if (othis.sidespan != null) {
-			othis.sidespan.hide();
-		}
-		othis.sidespan = othis.properties;
-		othis.sidespan.show();
-	};
-
-	this.showTypes = function(){
-		if (othis.sidespan != null) {
-			othis.sidespan.hide();
-		}
-		othis.sidespan = othis.types;
-		othis.sidespan.show();
-	};
-	
-	this.showLayers = function(){
-		if (othis.sidespan != null) {
-			othis.sidespan.hide();
-		}
-		othis.sidespan = othis.layers;
-		othis.sidespan.show();
-	};
-	
-	this.showClassifications = function(){
-		if (othis.sidespan != null) {
-			othis.sidespan.hide();
-		}
-		othis.sidespan = othis.classifications;
-		othis.sidespan.show();
-	};
-	
 	this.loadDetails = function(project){
 		if (othis.rightPanel != null) {
 			othis.rightPanel.reloadProject(project.oid, project.lastRevisionId);
@@ -396,18 +342,5 @@ function Project(containerDiv, main, project) {
 			new Share(poid, roid);
 		}).modal({keyboard:true});
 	};
-
-//	othis.menuItems.push(main.addMenuDivider("Project"));
-//	othis.menuItems.push(main.addMenuHeader("Project", "This project"));
-
-//	othis.menuItems.push(main.addMenuItem("Project", "Share", function(){
-//		othis.share(othis.project.oid, othis.project.lastRevisionId);
-//	}));
-	
-	containerDiv.find(".btnProjectTree").click(othis.loadProjectTree);
-	containerDiv.find(".btnProperties").click(othis.showProperties);
-	containerDiv.find(".btnTypes").click(othis.showTypes);
-	containerDiv.find(".btnLayers").click(othis.showLayers);
-	containerDiv.find(".btnClassifications").click(othis.showClassifications);
 }
 </script>
