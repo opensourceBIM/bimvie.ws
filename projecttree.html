@@ -11,9 +11,8 @@
 	</div>
 </div>
 <script>
-function ProjectTree(containerDiv, parent, project, options, selectedId) {
+function ProjectTree(containerDiv, parent, options, selectedId) {
 	var othis = this;
-	othis.project = project;
 	othis.selectedId = selectedId;
 	othis.selectedNode = null;
 
@@ -39,10 +38,10 @@ function ProjectTree(containerDiv, parent, project, options, selectedId) {
 		parentNode.add(node);
 		var dropdown = othis.createDropDown(node);
 		var eye = othis.createEye(node, 2);
+		eye.toggle(parent.threeDAspectVisible.get());
 		if (roid == -1 || project.lastRevisionId == -1) {
 			eye.hide();
 		}
-		eye.toggle(parent.threeDAspectVisible.get());
 		node.click(function(){
 			node.select();
 			Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: node.project.oid}, function(project){
@@ -68,7 +67,6 @@ function ProjectTree(containerDiv, parent, project, options, selectedId) {
 		if (options != null && options.hideDeleted == true && project.state == "DELETED") {
 			node.hide();
 		}
-		console.log(project);
 		if (project.nrSubProjects == 0 || (project.subProjects != null && project.subProjects.length == 0)) {
 			if (roid != -1) {
 				node.onLoad(function(){
@@ -87,7 +85,18 @@ function ProjectTree(containerDiv, parent, project, options, selectedId) {
 	};
 	
 	this.setShowEyes = function(show) {
-		containerDiv.find(".eye").toggle(show);
+		containerDiv.find(".eye").each(function(index, eye){
+			if (!show) {
+				$(eye).hide();
+			} else {
+				var node = $(eye).data("node");
+				if (node.project != null) {
+					if (node.project.lastRevisionId != -1) {
+						$(eye).show();
+					}
+				}
+			}
+		});
 	};
 	
 	this.loadRevision = function(project, roid, types) {
@@ -95,7 +104,7 @@ function ProjectTree(containerDiv, parent, project, options, selectedId) {
 		var node = othis.tree.find(project.oid);
 		
 		if (project.nrSubProjects == 0) {
-			promise.chain(node.open());
+//			promise.chain(node.open());
 		} else {
 			node.doneLoading();
 			promise.chain(node.open());
@@ -332,6 +341,7 @@ function ProjectTree(containerDiv, parent, project, options, selectedId) {
 			othis.toggleEye(node, (mode + 1) % 3);
 		});
 		eye.toggle(parent.threeDAspectVisible.get());
+		eye.data("node", node);
 		node.eye = eye;
 		node.addButton(eye);
 		return eye;
@@ -478,7 +488,7 @@ function ProjectTree(containerDiv, parent, project, options, selectedId) {
 		var li = $("<li></li>");
 		var a = $("<a>" + title + "</a>");
 		a.click(function(){
-			containerDiv.find(".treeDropDown").hide();
+			containerDiv.find(".dropdown").hide();
 			click();
 		});
 		li.append(a);
@@ -499,34 +509,6 @@ function ProjectTree(containerDiv, parent, project, options, selectedId) {
 	parent.threeDAspectVisible.register(othis.setShowEyes);
 
 	var dropdown = containerDiv.find(".dropdown");
-//	dropdown.find(".btnDownload").click(function(){
-//		dropdown.hide();
-//		var list = [];
-//		othis.gatherRoidList(othis.selectedNode, list);
-//		main.showDownloadRevisionsPopup(list);
-//	});
-//	dropdown.find(".btnAddService").click(function(){
-//		dropdown.hide();
-//		parent.rightPanel.showAddService(othis.selectedNode.project, null, function(){
-//			parent.rightPanel.loadServices();
-//		});
-//	});
-//	dropdown.find(".btnCheckin").click(function(){
-//		dropdown.hide();
-//		Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: othis.selectedNode.poid}, function(project){
-//			main.showCheckinPopup(project, function(){
-//				Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectSmallByPoid", {poid: othis.selectedNode.poid}, function(projectSmall){
-//					parent.changeRevision(projectSmall, projectSmall.lastRevisionId);
-//				});
-//			});
-//		});
-//	});
-//	dropdown.find(".addSubProject").click(function(){
-//		dropdown.hide();
-//		Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: othis.selectedNode.poid}, function(project){
-//			main.showAddProject(null, project);
-//		});
-//	});
 	
 	$(window).click(function(){
 		dropdown.hide();

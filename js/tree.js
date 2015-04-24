@@ -155,7 +155,9 @@ Node.prototype.createDom = function(){
 			this.parent.ul.append(this.li);
 		}
 		
-		this.img.addClass("treenodeclosed");
+		if (false) {
+			this.img.addClass("treenodeclosed");
+		}
 	}
 };
 

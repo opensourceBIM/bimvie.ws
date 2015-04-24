@@ -56,7 +56,7 @@ function Navigator(containerDiv, parent) {
 	};
 	
 	this.resize = function(){
-		var height = ($(window).height() - $(".navbar").outerHeight() - containerDiv.find(".col-md-4 .panel-heading").outerHeight() - 57);
+		var height = ($(window).height() - $(".navbar").outerHeight() - containerDiv.find(".navigator .panel-heading").outerHeight() - 57);
 		containerDiv.find(".sidespanWrapper").height(height + "px");
 	};
 

@@ -15,7 +15,7 @@
 	<div id="viewport"></div>
 </div>
 <script>
-function ThreeDView(containerDiv, projectPage) {
+function ThreeDView(containerDiv, parent) {
 	var o = this;
 	o.selectedId = -1;
 	o.loadedOids = {};
@@ -36,12 +36,12 @@ function ThreeDView(containerDiv, projectPage) {
 	};
 	
 	this.nodeSelected = function(groupId, node){
-		projectPage.selected(o, groupId, node.id);
+		parent.selected(o, groupId, node.id);
 		o.selectedId = node.id;
 	};
 	
 	this.nodeUnselected = function(groupId, node){
-		projectPage.unselected(o, groupId, node.id);
+		parent.unselected(o, groupId, node.id);
 		o.selectedId = -1;
 	};
 	
@@ -269,7 +269,7 @@ function ThreeDView(containerDiv, projectPage) {
 		if (oidsNotLoaded.length > 0) {
 			var models = {};
 			uniqueRoids.forEach(function(roid){
-				models[roid] = projectPage.models[roid];
+				models[roid] = parent.models[roid];
 			});
 			var geometryLoader = new GeometryLoader(Global.bimServerApi, models, o.viewer);
 
@@ -355,7 +355,7 @@ function ThreeDView(containerDiv, projectPage) {
 											map[guid] = change;
 										});
 									});
-									var model = projectPage.models[roid];
+									var model = parent.models[roid];
 									var objects = [];
 									model.getByGuids(guids, function(object){
 										var change = map[object.getGlobalId()];
@@ -384,20 +384,20 @@ function ThreeDView(containerDiv, projectPage) {
 	
 	this.close = function(){
 		console.log("close");
-//		projectPage.selectListeners.unregister(o.selected);
-//		projectPage.unselectListeners.unregister(o.unselected);
-//		projectPage.objectVisibilityListeners.unregister(o.objectVisibilityChanged);
-//		projectPage.modelLoadedListeners.unregister(o.loadRevision);
-//		projectPage.modelUnloadedListeners.unregister(o.unloadRevision);
+//		parent.selectListeners.unregister(o.selected);
+//		parent.unselectListeners.unregister(o.unselected);
+//		parent.objectVisibilityListeners.unregister(o.objectVisibilityChanged);
+//		parent.modelLoadedListeners.unregister(o.loadRevision);
+//		parent.modelUnloadedListeners.unregister(o.unloadRevision);
 	};
 	
 	containerDiv.find(".waiting").hide();
 	
-	projectPage.selectListeners.register(o.selected);
-	projectPage.unselectListeners.register(o.unselected);
-	projectPage.objectVisibilityListeners.register(o.objectVisibilityChanged);
-	projectPage.modelLoadedListeners.register(o.loadRevision);
-	projectPage.modelUnloadedListeners.register(o.unloadRevision);
+	parent.selectListeners.register(o.selected);
+	parent.unselectListeners.register(o.unselected);
+	parent.objectVisibilityListeners.register(o.objectVisibilityChanged);
+	parent.modelLoadedListeners.register(o.loadRevision);
+	parent.modelUnloadedListeners.register(o.unloadRevision);
 
 	$("#viewport").on("contextmenu", function(e){
 		e.preventDefault();

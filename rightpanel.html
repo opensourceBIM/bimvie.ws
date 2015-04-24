@@ -215,7 +215,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		projectPage.threeDAspectVisible.set(true);
 		if (o.threeDView != null) {
 			othis.tabChanger.changeTab($(".button3d"), o.threeDView, $(".3dview"), function(){
-				o.threeDView.show();
+				o.threeDView.load();
 			});
 		} else {
 			othis.tabChanger.changeTab($(".button3d"), "3dview.html", $(".3dview"), function(){
