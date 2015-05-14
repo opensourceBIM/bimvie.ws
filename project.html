@@ -279,7 +279,6 @@ function Project(containerDiv, main, project) {
 			containerDiv.find(".navigatorWrapper").load("navigator.html", function(){
 				othis.navigator = new Navigator($(this), othis);
 				othis.navigator.load().done(function(){
-					othis.navigator.projecttree.addMenuDivider();
 					othis.navigator.projecttree.addMenuItem("Add sub project", function(){
 						Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: othis.navigator.projecttree.selectedNode.poid}, function(project){
 							main.showAddProject(null, project);
