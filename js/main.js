@@ -290,13 +290,11 @@ function load(element, url, constructor) {
 
 function Tab(tabs, label) {
 	var o = this;
+	o.label = label;
+	o.tabs = tabs;
 
 	this.setActive = function(){
-		tabs.tabsDiv.find("label").removeClass("active");
-		label.addClass("active");
-		label.find("input").attr("selected", "selected");
-		console.log(label);
-		tabs.contentDiv.load(o.page, o.callback);
+		o.tabs.contentDiv.load(o.page, o.callback);
 	};
 	
 	label.find("input").change(function(){
@@ -308,13 +306,19 @@ function Tabs(tabsDiv, contentDiv) {
 	var o = this;
 	o.tabsDiv = tabsDiv;
 	o.contentDiv = contentDiv;
-	
+	o.tabs = [];
+
 	this.addTab = function(title, page, callback){
 		var label = $("<label class=\"btn btn-default\"> <input type=\"radio\" name=\"options\" id=\"" + title + "\" autocomplete=\"off\" />" + title + "</label>");
 		var tab = new Tab(o, label);
 		tab.page = page;
 		tab.callback = callback;
 		tabsDiv.append(label);
+		o.tabs.push(tab);
+		if (o.tabs.length == 1) {
+			tab.label.addClass("active");
+//			o.label.find("input").attr("checked", "checked");
+		}
 		return tab;
 	};
 }
