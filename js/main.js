@@ -308,12 +308,25 @@ function Tabs(tabsDiv, contentDiv) {
 	o.contentDiv = contentDiv;
 	o.tabs = [];
 
-	this.addTab = function(title, page, callback){
+	this.addTab = function(title, page, callback, startSortAt) {
 		var label = $("<label class=\"btn btn-default\"> <input type=\"radio\" name=\"options\" id=\"" + title + "\" autocomplete=\"off\" />" + title + "</label>");
 		var tab = new Tab(o, label);
 		tab.page = page;
 		tab.callback = callback;
-		tabsDiv.append(label);
+		var added = false;
+		tabsDiv.find("label").each(function(index){
+			if (index >= startSortAt) {
+				var lbl = $(this).text();
+				if (lbl.localeCompare(title) < 0) {
+					$(this).before(label);
+					added = true;
+					return false;
+				}
+			}
+		});
+		if (!added) {
+			tabsDiv.append(label);
+		}
 		o.tabs.push(tab);
 		if (o.tabs.length == 1) {
 			tab.label.addClass("active");

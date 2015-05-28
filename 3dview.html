@@ -23,8 +23,8 @@ function ThreeDView(containerDiv, parent) {
 	this.load = function(){
 		var promise = new Promise();
 		o.viewer = new BIMSURFER.Viewer(Global.bimServerApi, 'viewport');
-		o.resize();
 		$(window).resize(o.resize);
+		o.resize();
 		o.viewer.loadScene(function(){
 			var clickSelect = o.viewer.getControl("BIMSURFER.Control.ClickSelect");
 			clickSelect.activate();
@@ -306,6 +306,7 @@ function ThreeDView(containerDiv, parent) {
 					for (var i=0; i<oidsNotLoaded.length; i++) {
 						o.loadedOids[oidsNotLoaded[i]] = true;
 					}
+					o.resize();
 				}
 			});
 			o.viewer.loadGeometry(geometryLoader);
@@ -313,8 +314,10 @@ function ThreeDView(containerDiv, parent) {
 	};
 
 	this.resize = function(){
-		$("#viewport").width(containerDiv.parents("panel-body").first().width() + "px");
-		$("#viewport").height(($(window).height() - $(".navbar").outerHeight() - $(".rightpanel .panel-heading").outerHeight() - 98) + "px");
+		var width = Math.round($(window).width() / 3 * 2 - 59);
+		var height = ($(window).height() - $(".navbar").outerHeight() - $(".navbar-header").outerHeight() - $(".right .panel-heading").outerHeight() - 80);
+		$("div#viewport").width(width + "px");
+		$("div#viewport").height(height + "px");
 		o.viewer.resize($('div#viewport').width(), $('div#viewport').height());
 	};
 	
