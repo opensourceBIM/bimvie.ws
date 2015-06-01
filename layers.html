@@ -75,7 +75,7 @@ function Layers(containerDiv, parent) {
 		containerDiv.find(".modelLoader").hide();
 		if (project.lastRevisionId != -1 && project.nrSubProjects == 0) {
 			var model = parent.models[roid];
-			containerDiv.find("table tbody tr").remove();
+//			containerDiv.find("table tbody tr").remove();
 			
 			model.getAllOfType("IfcProduct", true, function(product){
 				othis.objectToLayer[product.oid] = [];

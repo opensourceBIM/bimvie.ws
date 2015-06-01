@@ -57,7 +57,7 @@ function Navigator(containerDiv, parent) {
 	
 	this.resize = function(){
 		var width = $(window).width() / 3 - 50;
-		var height = ($(window).height() - $(".navbar").outerHeight() - $(".navbar-header").outerHeight() - containerDiv.find(".navigator .panel-heading").outerHeight() - 81);
+		var height = ($(window).height() - $(".navbar").outerHeight() - $(".navbar-header").outerHeight() - containerDiv.find(".navigator .panel-heading").outerHeight());
 		containerDiv.find(".sidespanWrapper").width(width + "px");
 		containerDiv.find(".sidespanWrapper").height(height + "px");
 	};
@@ -108,6 +108,6 @@ function Navigator(containerDiv, parent) {
 	containerDiv.find(".btnLayers").click(o.showLayers);
 	containerDiv.find(".btnClassifications").click(o.showClassifications);
 	
-	$(window).resize(o.resize);
+//	$(window).resize(o.resize);
 }
 </script>

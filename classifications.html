@@ -83,9 +83,9 @@ function Classifications(containerDiv, parent) {
 			model.getAllOfType("IfcRelAssociatesClassification", true, function(relAssociatesClassification){
 				var tr = $("<tr>");
 				tr.attr("oid", relAssociatesClassification.oid);
-				tr.append("<td>" + relAssociatesClassification.getName() + "</td>");
-				var td = $("<td>");
-				tr.append(td);
+//				tr.append("<td>" + relAssociatesClassification.getName() + "</td>");
+//				var td = $("<td>");
+//				tr.append(td);
 
 				othis.classifications[relAssociatesClassification.oid] = {visible: 0, total: 0, transparent: 0};
 				relAssociatesClassification.getRelatedObjects(function(object){

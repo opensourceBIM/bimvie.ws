@@ -124,104 +124,108 @@ function Project(containerDiv, main, project) {
 	
 	this.preloadModel = function(project, roid){
 		console.time("preloadModel");
+		console.log("preloadModel", project, roid);
 		var countingPromise = new CountingPromise();
 		var promise = new Promise();
 		var model = othis.models[roid];
-		if (model.isPreloaded) {
-			promise.fire();
-			return promise;
+		if (model == null) {
+			console.log("no model", othis.models);
 		} else {
-			var preLoadQuery = {
-				defines: {
-					Representation: {
-						field: "Representation"
-					},
-					ContainsElementsDefine: {
-						field: "ContainsElements",
-						include: {
-							field: "RelatedElements",
-							include: [
-								"IsDecomposedByDefine",
-								"ContainsElementsDefine",
-								"Representation"
-							]
+			if (model.isPreloaded) {
+				promise.fire();
+				return promise;
+			} else {
+				var preLoadQuery = {
+					defines: {
+						Representation: {
+							field: "Representation"
+						},
+						ContainsElementsDefine: {
+							field: "ContainsElements",
+							include: {
+								field: "RelatedElements",
+								include: [
+									"IsDecomposedByDefine",
+									"ContainsElementsDefine",
+									"Representation"
+								]
+							}
+						},
+						IsDecomposedByDefine: {
+							field: "IsDecomposedBy",
+							include: {
+								field: "RelatedObjects",
+								include: [
+									"IsDecomposedByDefine",
+									"ContainsElementsDefine",
+									"Representation"
+								]
+							}
 						}
 					},
-					IsDecomposedByDefine: {
-						field: "IsDecomposedBy",
-						include: {
-							field: "RelatedObjects",
+					queries: [
+					    {
+							type: "IfcProject",
 							include: [
 								"IsDecomposedByDefine",
-								"ContainsElementsDefine",
-								"Representation"
+								"ContainsElementsDefine"
 							]
-						}
-					}
-				},
-				queries: [
-				    {
-						type: "IfcProject",
-						include: [
-							"IsDecomposedByDefine",
-							"ContainsElementsDefine"
-						]
-				    },
-				    {
-				    	type: "IfcRepresentation",
-				    	includeAllSubtypes: true
-				    },
-				    {
-				    	type: "IfcProductRepresentation"
-				    },
-				    {
-				    	type: "IfcPresentationLayerWithStyle"
-				    },
-				    {
-				    	type: "IfcProduct",
-				    	includeAllSubTypes: true
-				    },
-				    {
-				    	type: "IfcProductDefinitionShape"
-				    },
-				    {
-				    	type: "IfcPresentationLayerAssignment"
-				    },
-				    {
-				    	type: "IfcRelAssociatesClassification",
-				    	include: [
-				    		{
-				    			field: "RelatedObjects"
-				    		},
-				    		{
-				    			field: "RelatingClassification"
-				    		}
-				    	]
-				    },
-				    {
-				    	type: "IfcSIUnit"
-				    },
-				    {
-				    	type: "IfcPresentationLayerAssignment"
-				    }
-				]
-			};
-			
-			model.query(preLoadQuery, function(loaded){
-			}).done(function(){
-				console.timeEnd("preloadModel");
-				Global.notifier.setInfo("Loading model data...", -1);
-				setTimeout(function(){
-					model.isPreloaded = true;
-					othis.modelLoadedListeners.trigger(function(modelLoadedListener){
-						modelLoadedListener(project, roid);
-					});
-					Global.notifier.setSuccess("Model data successfully loaded");
-					promise.fire();
-				}, 0);
-			});
+					    },
+					    {
+					    	type: "IfcRepresentation",
+					    	includeAllSubtypes: true
+					    },
+					    {
+					    	type: "IfcProductRepresentation"
+					    },
+					    {
+					    	type: "IfcPresentationLayerWithStyle"
+					    },
+					    {
+					    	type: "IfcProduct",
+					    	includeAllSubTypes: true
+					    },
+					    {
+					    	type: "IfcProductDefinitionShape"
+					    },
+					    {
+					    	type: "IfcPresentationLayerAssignment"
+					    },
+					    {
+					    	type: "IfcRelAssociatesClassification",
+					    	include: [
+					    		{
+					    			field: "RelatedObjects"
+					    		},
+					    		{
+					    			field: "RelatingClassification"
+					    		}
+					    	]
+					    },
+					    {
+					    	type: "IfcSIUnit"
+					    },
+					    {
+					    	type: "IfcPresentationLayerAssignment"
+					    }
+					]
+				};
+				
+				model.query(preLoadQuery, function(loaded){
+				}).done(function(){
+					console.timeEnd("preloadModel");
+					Global.notifier.setInfo("Loading model data...", -1);
+					setTimeout(function(){
+						model.isPreloaded = true;
+						othis.modelLoadedListeners.trigger(function(modelLoadedListener){
+							modelLoadedListener(project, roid);
+						});
+						Global.notifier.setSuccess("Model data successfully loaded");
+						promise.fire();
+					}, 0);
+				});
+			}			
 		}
-
 		return promise;
 	};
 
