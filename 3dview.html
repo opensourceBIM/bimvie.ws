@@ -36,8 +36,8 @@ function ThreeDView(containerDiv, parent) {
 	};
 	
 	this.nodeSelected = function(groupId, node){
-		parent.selected(o, groupId, node.id);
 		o.selectedId = node.id;
+		parent.selected(o, groupId, node.id);
 	};
 	
 	this.nodeUnselected = function(groupId, node){
