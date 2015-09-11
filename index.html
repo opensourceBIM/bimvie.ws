@@ -120,7 +120,9 @@
 				    				cache: true
 				    			});
 
-				    			SceneJS.configure({ pluginPath: baseJsDir + "bimsurfer/lib/scenejs/plugins" });
+				    			if (Settings.useBimSurfer()) {
+					    			SceneJS.configure({ pluginPath: baseJsDir + "bimsurfer/lib/scenejs/plugins" });
+				    			}
 				    			
 				    			var jQueryLoad = $.fn.load;
 				    			$.fn.load = function(url, params, callback) {
