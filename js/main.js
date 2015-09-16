@@ -334,4 +334,9 @@ function Tabs(tabsDiv, contentDiv) {
 		}
 		return tab;
 	};
+	
+	this.clear = function(){
+		o.tabs = [];
+		o.tabsDiv.find("label").remove();
+	};
 }
