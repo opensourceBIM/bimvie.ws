@@ -16,9 +16,11 @@
 						<label class="btn btn-default btnUrl"><input type="radio">URL</label>
 					</div>
 					<div class="upload">
-						<div class="form-group">
-							<label for="file">File</label>
-							<input class="fileupload" id="file" type="file" name="data"/>
+						<div class="uploadarea well">
+							<p>Drag and drop your file here, or <button class="btn btn-primary chooseFileButton">Choose File</button></p>
+							<div class="uploadMessages">
+								<span class="fileSize ih">Selected file: <span class="name"></span> (<span class="size"></span>)</span>
+							</div>
 						</div>
 						<div class="form-group">
 							<label for="deserializerName">Deserializer</label>
@@ -126,10 +128,6 @@ function Checkin(containerDiv, project, successFunction) {
 	var fileselected = false;
 
 	this.progressHandler = function(topicId, state) {
-		// This filter should be done by bimserverapi.js
-		if (topicId != currentCheckinId) {
-			return;
-		}
 		var oldStage = othis.stage;
 		othis.stage = state.stage;
 		if (state.state == "AS_ERROR") {
@@ -169,10 +167,74 @@ function Checkin(containerDiv, project, successFunction) {
 		}
 	};
 	
+	this.uploadNew = function(project){
+		window.onbeforeunload = function() {
+			return "You are uploading a model, of you close your browser/tab now, it will not continue";
+		}
+
+		containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
+		containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"progress-bar\"></div></div>");
+		
+		othis.hideUpload();
+		
+		containerDiv.find(".uploadStatus").html("Uploading...").show();
+		
+		Global.bimServerApi.checkin(project, othis.file, othis.deserializerOid, function(percentage){
+			containerDiv.find(".progressBarHolder .uploadProgressBar .progress-bar").css("width", percentage + "%");
+		}, function(checkinId){
+			window.onbeforeunload = null;
+
+			containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
+			containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"progress-bar\"></div></div>");
+			
+			Global.bimServerApi.registerProgressHandler(checkinId, othis.progressHandler, function(){
+				Global.bimServerApi.call("Bimsie1NotificationRegistryInterface", "getProgress", {
+					topicId: checkinId
+				}, function(state){
+					othis.progressHandler(checkinId, state);
+				});
+			});
+		}, function(exception){
+			window.onbeforeunload = null;
+
+			containerDiv.find(".uploadStatus").html("<div class=\"alert alert-block alert-danger\">" + exception.message + "</div>");
+			othis.showUpload();
+		});
+	};
+	
+	this.processFiles = function(files) {
+		othis.validFile = false;
+		for (var i = 0, file; file = files[i]; i++) {
+			othis.file = file;
+			
+        	var path = file.name;
+		    var lastIndex = path.lastIndexOf(".");
+		    if (lastIndex != -1) {
+			    var extension = path.substring(path.lastIndexOf(".") + 1);
+			    Global.bimServerApi.call("Bimsie1ServiceInterface", "getSuggestedDeserializerForExtension", {extension: extension, poid: project.oid}, function(data){
+			    	if (data.oid != null) {
+				    	containerDiv.find(".deserializerName").val(data.oid);
+						othis.updateSubmitButton();
+			    	}
+				});
+		    }
+			
+			var size = othis.file.size;
+			var name = othis.file.name;
+			othis.validFile = true;
+			containerDiv.find(".uploadMessages *").hide();
+			containerDiv.find(".uploadMessages .fileSize").show();
+			containerDiv.find(".uploadMessages .fileSize .name").html(name).show();
+			containerDiv.find(".uploadMessages .fileSize .size").html(bytesToSize(size)).show();
+			break;
+		}
+		othis.updateSubmitButton();
+	};
+	
 	this.updateSubmitButton = function() {
 		window.setTimeout(function(){
 			if (containerDiv.find(".btnFileUpload").hasClass("active")) {
-		        if (containerDiv.find(".deserializerName").val() != "[NONE]" && fileselected) {
+		        if (containerDiv.find(".deserializerName").val() != "[NONE]" && othis.validFile) {
 		        	containerDiv.find(".uploadButton").show();
 		        } else {
 		        	containerDiv.find(".uploadButton").hide();
@@ -187,76 +249,30 @@ function Checkin(containerDiv, project, successFunction) {
 		}, 0);
 	}
 	
+	containerDiv.find('.uploadarea, .uploadarea *').on('dragover', function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+	});
+
+	containerDiv.find('.uploadarea').on('dragbetterenter', function(e) {
+		containerDiv.find(".uploadarea").css("background-color", "#EEEEEE");
+		e.preventDefault();
+		e.stopPropagation();
+	});
+
+	containerDiv.find('.uploadarea').on("dragbetterleave", function(e) {
+		containerDiv.find(".uploadarea").removeAttr("style");
+		e.preventDefault();
+		e.stopPropagation();
+	});
+	
+	containerDiv.find('.uploadarea').on("drop", function(e) {
+		othis.processFiles(e.originalEvent.dataTransfer.files);
+		e.preventDefault();
+	});
+	
 	containerDiv.find(".deserializerName").change(othis.updateSubmitButton);
 	
-	containerDiv.find(".fileupload").fileupload({
-		dataType: "json",
-        url: Global.bimServerApi.baseUrl + '/upload',
-		replaceFileInput: false,
-		submit: function(e, data){
-			if (!shouldsend) {
-				shouldsend = false;
-		        submitdata = data;
-		        othis.updateSubmitButton();
-				if (containerDiv.find(".comment").val() == "" || containerDiv.find("#comment").val() == lastVal) {
-					var path = null;
-					$.each(data.files, function (index, file) {
-						path = file.name;
-				    });
-					if (path.indexOf("/") != -1) {
-						path = path.substr(path.lastIndexOf("/") + 1);
-					} else if (path.indexOf("\\") != -1) {
-						path = path.substr(path.lastIndexOf("\\") + 1);
-					}
-					containerDiv.find(".comment").val(path);
-					lastVal = path;
-				}
-		        return false;
-			}
-        },
-        change: function(e, data) {
-        	fileselected = true;
-        	var path = null;
-			$.each(data.files, function (index, file) {
-				path = file.name; 
-		    });
-		    var lastIndex = path.lastIndexOf(".");
-		    if (lastIndex != -1) {
-			    var extension = path.substring(path.lastIndexOf(".") + 1);
-			    Global.bimServerApi.call("Bimsie1ServiceInterface", "getSuggestedDeserializerForExtension", {extension: extension, poid: project.oid}, function(data){
-			    	if (data.oid != null) {
-				    	containerDiv.find(".deserializerName").val(data.oid);
-			    	}
-					othis.updateSubmitButton();
-				});
-		    }
-        },
-		progress: function(e, data) {
-			containerDiv.find(".uploadProgressBar .progress-bar").css("width", parseInt(data.loaded / data.total * 100, 10) + "%");
-		},
-		done: function(e, data) {
-			if (data.result.exception == null) {
-				currentCheckinId = data.result.checkinid;
-				containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
-				containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"progress-bar\"></div></div>");
-				Global.bimServerApi.registerProgressHandler(currentCheckinId, othis.progressHandler, function(){
-					Global.bimServerApi.call("Bimsie1NotificationRegistryInterface", "getProgress", {
-						topicId: currentCheckinId
-					}, function(state){
-						othis.progressHandler(currentCheckinId, state);
-					});
-				});
-			} else {
-				containerDiv.find(".uploadStatus").html("<div class=\"alert alert-block alert-danger\">" + data.result.exception.message + "</div>");
-				othis.showUpload();
-			}
-		},
-		fail: function(e, data) {
-			containerDiv.find(".uploadStatus").html("Error: " + data.textStatus);
-			othis.showUpload();
-		}
-    });
-
 	containerDiv.find(".uploadButton").click(function(event){
 		if (containerDiv.find(".checkinurl").is(":visible")) {
 			othis.hideUpload();
@@ -288,20 +304,8 @@ function Checkin(containerDiv, project, successFunction) {
 				containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"progress-bar\"></div></div>");
 			});
 		} else {
-			shouldsend = true;
-			submitdata.formData = {
-				token: Global.bimServerApi.token,
-				deserializerOid: containerDiv.find(".deserializerName").val(),
-				comment: containerDiv.find(".comment").val(),
-				merge: containerDiv.find(".merge").is(':checked'),
-				poid: othis.project.oid
-			};
-			othis.hideUpload();
-			containerDiv.find(".uploadStatus").html("Uploading file...");
-			containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
-			containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"progress-bar\"></div></div>");
-			containerDiv.find(".fileupload").fileupload('send', submitdata);
-			shouldsend = false;
+			othis.deserializerOid = containerDiv.find(".deserializerName").val();
+			othis.uploadNew(othis.project);
 			event.preventDefault();
 		}
 	});
@@ -331,6 +335,10 @@ function Checkin(containerDiv, project, successFunction) {
 		containerDiv.find(".uploadButton").html("Checkin new revision");
 		othis.updateSubmitButton();
 	});
+	
+	containerDiv.find(".chooseFileButton").click(function() {
+		$(".file").trigger("click");
+	});
 
 	containerDiv.find(".deserializerNameUrl").change(othis.updateSubmitButton);
 	containerDiv.find(".urlinput").keyup(othis.updateSubmitButton);
@@ -349,6 +357,14 @@ function Checkin(containerDiv, project, successFunction) {
 		}, 0);
 	});
 
+	$(".file").remove();
+	var fileInput = $("<input type=\"file\" class=\"file\"/>");
+	$("body").append(fileInput);
+
+	$(".file").change(function(e){
+		othis.processFiles(e.target.files)
+	});
+	
 	containerDiv.find(".uploadButton").hide();
 	if (othis.project.subProjects.length != 0) {
 		containerDiv.find(".uploadlink").show();
