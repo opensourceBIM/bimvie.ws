@@ -472,3 +472,7 @@ div.right {
 .uploadarea {
 	margin-bottom: 0;
 }
+
+.file {
+	display: none;
+}
