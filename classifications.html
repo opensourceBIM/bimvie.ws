@@ -76,7 +76,7 @@ function Classifications(containerDiv, parent) {
 		
 	};
 	
-	this.loadRevision = function(project, roid, types){
+	this.loadRevision = function(project, roid){
 		containerDiv.find(".modelLoader").hide();
 		if (project.lastRevisionId != -1 && project.nrSubProjects == 0) {
 			var model = parent.models[roid];

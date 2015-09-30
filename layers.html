@@ -71,7 +71,7 @@ function Layers(containerDiv, parent) {
 		}
 	};
 	
-	this.loadRevision = function(project, roid, types, objectsToHide){
+	this.loadRevision = function(project, roid){
 		containerDiv.find(".modelLoader").hide();
 		if (project.lastRevisionId != -1 && project.nrSubProjects == 0) {
 			var model = parent.models[roid];

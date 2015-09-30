@@ -335,7 +335,7 @@ function ThreeDView(containerDiv, parent) {
 		}
 	};
 	
-	this.loadRevision = function(project, roid, types){
+	this.loadRevision = function(project, roid){
 		Global.bimServerApi.callWithNoIndication("Bimsie1ServiceInterface", "getExtendedDataSchemaByNamespace", {namespace: "http://bimserver.org/3dvisualizationeffects"}, function(schema){
 			if (schema != null) {
 				Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllExtendedDataOfRevision", {roid: roid}, function(list){
