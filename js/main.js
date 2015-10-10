@@ -276,7 +276,7 @@ function formatLogState(state) {
 }
 
 function load(element, url, constructor) {
-	var promise = new Promise();
+	var promise = new window.BimServerApiPromise();
 	element.load(url, function(){
 		var res = constructor.call(element);
 		if (res instanceof Promise) {

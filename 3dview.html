@@ -21,7 +21,7 @@ function ThreeDView(containerDiv, parent) {
 	o.loadedOids = {};
 	
 	this.load = function(){
-		var promise = new Promise();
+		var promise = new window.BimServerApiPromise();
 		o.viewer = new BIMSURFER.Viewer(Global.bimServerApi, 'viewport');
 		$(window).resize(o.resize);
 		o.resize();

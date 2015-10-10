@@ -17,7 +17,7 @@ function ProjectTree(containerDiv, parent, options, selectedId) {
 	othis.selectedNode = null;
 
 	this.load = function(){
-		var promise = new Promise();
+		var promise = new window.BimServerApiPromise();
 		othis.tree = new Tree(containerDiv.find(".tree"));
 		othis.tree.selectionListeners.push(function(node){
 			parent.selectedObjectId = node.id;
@@ -100,7 +100,7 @@ function ProjectTree(containerDiv, parent, options, selectedId) {
 	};
 	
 	this.loadRevision = function(project, roid, types) {
-		var promise = new Promise();
+		var promise = new window.BimServerApiPromise();
 		var node = othis.tree.find(project.oid);
 		
 		if (project.nrSubProjects == 0) {
@@ -369,7 +369,7 @@ function ProjectTree(containerDiv, parent, options, selectedId) {
 	};
 	
 	this.loadBuildingStorey = function(newNode, object, types){
-		var promise = new Promise();
+		var promise = new window.BimServerApiPromise();
 		var createdTypes = {};
 		object.getContainsElements(function(relReferencedInSpatialStructure){
 			relReferencedInSpatialStructure.getRelatedElements(function(relatedElement){
@@ -420,7 +420,7 @@ function ProjectTree(containerDiv, parent, options, selectedId) {
 		tree.add(newNode);
 		if (object.getType() == "IfcBuildingStorey") {
 			newNode.onLoad(function(){
-				var promise = new Promise();
+				var promise = new window.BimServerApiPromise();
 				setTimeout(function(){
 					othis.loadBuildingStorey(newNode, object, types).done(function(){
 						promise.fire();
@@ -430,7 +430,7 @@ function ProjectTree(containerDiv, parent, options, selectedId) {
 			});
 		} else {
 			newNode.onLoad(function(){
-				var promise = new Promise();
+				var promise = new window.BimServerApiPromise();
 				setTimeout(function(){
 					object.getIsDecomposedBy(function(isDecomposedBy){
 						isDecomposedBy.getRelatedObjects(function(relatedObject){
@@ -453,7 +453,7 @@ function ProjectTree(containerDiv, parent, options, selectedId) {
 	}
 	
 	this.loadProjectTree = function(project, roid, node, types){
-		var promise = new Promise();
+		var promise = new window.BimServerApiPromise();
 		var model = parent.models[roid];
 		if (model != null) {
 			parent.preloadModel(project, roid).done(function(){

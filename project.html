@@ -126,7 +126,7 @@ function Project(containerDiv, main, project) {
 		console.time("preloadModel");
 		console.log("preloadModel", project, roid);
 		var countingPromise = new CountingPromise();
-		var promise = new Promise();
+		var promise = new window.BimServerApiPromise();
 		var model = othis.models[roid];
 		if (model == null) {
 			console.log("no model", othis.models);
