@@ -473,6 +473,6 @@ div.right {
 	margin-bottom: 0;
 }
 
-.file {
+input[type="file"].file {
 	display: none;
 }
