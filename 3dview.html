@@ -334,8 +334,27 @@ function ThreeDView(containerDiv, parent) {
 			}
 		}
 	};
-	
+
 	this.loadRevision = function(project, roid){
+		/*
+			This checks whether there are visualization overrides, example:
+			{
+				  "name": "Test",
+				  "changes": [{
+				    "selector": {
+				      "guids": ["16DNNqzfP2thtfaOflvsKA"]
+				   	},
+				    "effect": {
+						"color": {
+						  "r": 0,
+						  "g": 1,
+						  "b": 0,
+						  "a": 1
+						}
+				   	}
+				  }]
+				}
+		*/
 		Global.bimServerApi.callWithNoIndication("Bimsie1ServiceInterface", "getExtendedDataSchemaByNamespace", {namespace: "http://bimserver.org/3dvisualizationeffects"}, function(schema){
 			if (schema != null) {
 				Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllExtendedDataOfRevision", {roid: roid}, function(list){
@@ -380,7 +399,7 @@ function ThreeDView(containerDiv, parent) {
 							});
 						}
 					});
-				});				
+				});
 			}
 		});
 	};

@@ -6,13 +6,22 @@
 					aria-hidden="true">&times;</button>
 				<h4 class="modal-title">Add extended data</h4>
 			</div>
+			<input id="file" class="form-control file" type="file" name="data"/>
 			<div class="modal-body">
 				<div class="uploads">
 					<div class="upload">
 						<div class="uploadStatus"></div>
 						<div class="progressBarHolder"></div>
 						<table class="uploadTable">
-							<tr><td><label for="file">File</label></td><td><input id="file" class="fileupload form-control" type="file" name="data"/></td></tr>
+							<tr><td><label for="file">File</label></td>
+							<td>
+								<div class="uploadarea well">
+									<p>Drag and drop your file here, or <button class="btn btn-primary chooseFileButton">Choose File</button></p>
+									<div class="uploadMessages">
+										<span class="fileSize ih">Selected file: <span class="name"></span> (<span class="size"></span>)</span>
+									</div>
+								</div>
+							</td></tr>
 							<tr><td><label for="schemaSelect">Schema</label></td><td><select id="schemaSelect" class="schemaSelect form-control"></select></td></tr>
 							<tr><td><label for="title">Title</label></td><td><input type="text" id="title" class="title form-control"/></td></tr>
 						</table>
@@ -37,71 +46,36 @@ function AddExtendedData(containerDiv, revision, successFunction) {
 	var currentCheckinId = null;
 	var fileselected = false;
 
-	containerDiv.find(".fileupload").fileupload({
-		dataType: "json",
-        url: Global.bimServerApi.baseUrl + '/upload',
-		replaceFileInput: false,
-		submit: function(e, data){
-			if (!shouldsend) {
-				shouldsend = false;
-		        submitdata = data;
-		        othis.updateSubmitButton();
-		        return false;
-			}
-        },
-        change: function(e, data) {
-        	fileselected = true;
-        },
-		progress: function(e, data) {
-			containerDiv.find(".uploadProgressBar .bar").css("width", parseInt(data.loaded / data.total * 100, 10) + "%");
-		},
-		done: function(e, data) {
-			if (data.result.exception == null) {
-				currentCheckinId = data.result.checkinid;
-				containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
-				Global.bimServerApi.call("Bimsie1ServiceInterface", "addExtendedDataToRevision", {
-					roid: revision.oid,
-					extendedData: {
-						__type: "SExtendedData",
-						title: $(".addextendeddata .title").val(),
-						schemaId: $(".addextendeddata .schemaSelect").val(),
-						fileId: data.result.fileId
-					}
-				}, function(){
-					containerDiv.find(".addextendeddata").parent().modal("hide");
-					if (successFunction != null) {
-						successFunction();
-					}
-				});
-			} else {
-				containerDiv.find(".uploadStatus").html("<div class=\"alert alert-block alert-danger\">" + data.result.exception.message + "</div>");
-				othis.showUpload();
-			}
-		},
-		fail: function(e, data) {
-			containerDiv.find(".uploadStatus").html("Error: " + data.textStatus);
-			othis.showUpload();
-		}
-    });
-
 	containerDiv.find(".uploadButton").click(function(event){
 		if ($(".addextendeddata .schemaSelect").val() == null) {
 			Global.notifier.setError("No schema selected");
 			return;
 		}
-		shouldsend = true;
-		submitdata.formData = {
-			action: "file",
-			token: Global.bimServerApi.token
-		};
+
 		othis.hideUpload();
 		containerDiv.find(".uploadStatus").html("Uploading file...");
-		containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
-		containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"bar\"></div></div>");
-		containerDiv.find(".fileupload").fileupload('send', submitdata);
-		shouldsend = false;
+
 		event.preventDefault();
 	});
+
+	this.processFiles = function(files) {
+		othis.validFile = false;
+		for (var i = 0, file; file = files[i]; i++) {
+			othis.file = file;
+			
+			fileselected = true;
+			
+			var size = othis.file.size;
+			var name = othis.file.name;
+			othis.validFile = true;
+			containerDiv.find(".uploadMessages *").hide();
+			containerDiv.find(".uploadMessages .fileSize").show();
+			containerDiv.find(".uploadMessages .fileSize .name").html(name).show();
+			containerDiv.find(".uploadMessages .fileSize .size").html(bytesToSize(size)).show();
+			break;
+		}
+		othis.updateSubmitButton();
+	};
 
 	this.updateSubmitButton = function() {
         if (fileselected) {
@@ -124,6 +98,27 @@ function AddExtendedData(containerDiv, revision, successFunction) {
 		containerDiv.find(".uploadButton").show();
 	};
 	
+	this.uploadNew = function(project){
+		window.onbeforeunload = function() {
+			return "You are uploading a model, of you close your browser/tab now, it will not continue";
+		}
+
+		othis.hideUpload();
+		
+		containerDiv.find(".uploadStatus").html("Uploading...").show();
+		
+		Global.bimServerApi.addExtendedData(revision.oid, othis.file, function(checkinId){
+			window.onbeforeunload = null;
+
+			containerDiv.find(".uploadStatus").html("<div class=\"alert alert-block alert-info\">Done</div>");
+		}, function(exception){
+			window.onbeforeunload = null;
+
+			containerDiv.find(".uploadStatus").html("<div class=\"alert alert-block alert-danger\">" + exception.message + "</div>");
+			othis.showUpload();
+		});
+	};
+
 	containerDiv.find(".uploadButton").hide();
 	
 	Global.bimServerApi.call("ServiceInterface", "getAllExtendedDataSchemas", {}, function(schemas){
@@ -132,6 +127,19 @@ function AddExtendedData(containerDiv, revision, successFunction) {
 			option.val(schema.oid);
 			$(".schemaSelect").append(option);
 		});
+	});
+	
+	$(".file").change(function(e){
+		othis.processFiles(e.target.files)
+	});
+	
+	containerDiv.find(".chooseFileButton").click(function() {
+		$(".file").trigger("click");
+	});
+	
+	containerDiv.find(".uploadButton").click(function(event){
+		othis.uploadNew(othis.project);
+		event.preventDefault();
 	});
 }
 </script>
