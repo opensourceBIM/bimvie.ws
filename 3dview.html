@@ -336,24 +336,30 @@ function ThreeDView(containerDiv, parent) {
 	};
 
 	this.loadRevision = function(project, roid){
+		window.setInterval(function(){
+			o.updateVisualisationOverride(roid);
+		}, 5000);
+	};
+
+	this.updateVisualisationOverride = function(roid){
 		/*
-			This checks whether there are visualization overrides, example:
-			{
-				  "name": "Test",
-				  "changes": [{
-				    "selector": {
-				      "guids": ["16DNNqzfP2thtfaOflvsKA"]
-				   	},
-				    "effect": {
-						"color": {
-						  "r": 0,
-						  "g": 1,
-						  "b": 0,
-						  "a": 1
-						}
-				   	}
-				  }]
-				}
+		This checks whether there are visualization overrides, example:
+		{
+			  "name": "Test",
+			  "changes": [{
+			    "selector": {
+			      "guids": ["16DNNqzfP2thtfaOflvsKA"]
+			   	},
+			    "effect": {
+					"color": {
+					  "r": 0,
+					  "g": 1,
+					  "b": 0,
+					  "a": 1
+					}
+			   	}
+			  }]
+			}
 		*/
 		Global.bimServerApi.callWithNoIndication("Bimsie1ServiceInterface", "getExtendedDataSchemaByNamespace", {namespace: "http://bimserver.org/3dvisualizationeffects"}, function(schema){
 			if (schema != null) {
@@ -374,8 +380,8 @@ function ThreeDView(containerDiv, parent) {
 							var label = $("<label></label>");
 							div.append(label);
 							var checkbox = $("<input type=\"checkbox\"/>");
-							checkbox.change(function(){
-								var checked = $(this).is(":checked");
+							
+							var change = function(checked){
 								var guids = [];
 								var map = {};
 								vis.changes.forEach(function(change){
@@ -398,10 +404,18 @@ function ThreeDView(containerDiv, parent) {
 								}).done(function(){
 									o.objectVisibilityChanged(objects);
 								});
+							};
+							
+							checkbox.change(function(){
+								var checked = $(this).is(":checked");
+								change(checked);
 							});
+							checkbox.attr("checked", "checked");
+							change(true);
 							label.append(checkbox);
 							label.append(vis.name);
 							containerDiv.find(".visualization").show();
+							containerDiv.find(".visualization .panel-body div").remove();
 							containerDiv.find(".visualization .panel-body").append(div);
 						});
 					}
