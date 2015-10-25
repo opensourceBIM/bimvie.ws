@@ -357,48 +357,54 @@ function ThreeDView(containerDiv, parent) {
 		*/
 		Global.bimServerApi.callWithNoIndication("Bimsie1ServiceInterface", "getExtendedDataSchemaByNamespace", {namespace: "http://bimserver.org/3dvisualizationeffects"}, function(schema){
 			if (schema != null) {
+				var lastExtendedData = null;
 				Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllExtendedDataOfRevision", {roid: roid}, function(list){
 					list.forEach(function(extendedData){
 						if (extendedData.schemaId == schema.oid) {
-							Global.bimServerApi.call("ServiceInterface", "getFile", {fileId: extendedData.fileId}, function(file){
-								var data = atob(file.data);
-								var vis = JSON.parse(data);
-								var div = $("<div class=\"checkbox\">");
-								var label = $("<label></label>");
-								div.append(label);
-								var checkbox = $("<input type=\"checkbox\"/>");
-								checkbox.change(function(){
-									var checked = $(this).is(":checked");
-									var guids = [];
-									var map = {};
-									vis.changes.forEach(function(change){
-										guids = guids.concat(change.selector.guids);
-										change.selector.guids.forEach(function(guid){
-											map[guid] = change;
-										});
-									});
-									var model = parent.models[roid];
-									var objects = [];
-									model.getByGuids(guids, function(object){
-										var change = map[object.getGlobalId()];
-										objects.push(object);
-										object.trans.mode = 0;
-										if (checked) {
-											object.trans.colorOverride = change.effect.color;
-										} else {
-											object.trans.colorOverride = null;
-										}
-									}).done(function(){
-										o.objectVisibilityChanged(objects);
-									});
-								});
-								label.append(checkbox);
-								label.append(vis.name);
-								containerDiv.find(".visualization").show();
-								containerDiv.find(".visualization .panel-body").append(div);
-							});
+							if (lastExtendedData == null || extendedData.added > lastExtendedData.added) {
+								lastExtendedData = extendedData;
+							}
 						}
 					});
+					if (lastExtendedData != null) {
+						Global.bimServerApi.call("ServiceInterface", "getFile", {fileId: lastExtendedData.fileId}, function(file){
+							var data = atob(file.data);
+							var vis = JSON.parse(data);
+							var div = $("<div class=\"checkbox\">");
+							var label = $("<label></label>");
+							div.append(label);
+							var checkbox = $("<input type=\"checkbox\"/>");
+							checkbox.change(function(){
+								var checked = $(this).is(":checked");
+								var guids = [];
+								var map = {};
+								vis.changes.forEach(function(change){
+									guids = guids.concat(change.selector.guids);
+									change.selector.guids.forEach(function(guid){
+										map[guid] = change;
+									});
+								});
+								var model = parent.models[roid];
+								var objects = [];
+								model.getByGuids(guids, function(object){
+									var change = map[object.getGlobalId()];
+									objects.push(object);
+									object.trans.mode = 0;
+									if (checked) {
+										object.trans.colorOverride = change.effect.color;
+									} else {
+										object.trans.colorOverride = null;
+									}
+								}).done(function(){
+									o.objectVisibilityChanged(objects);
+								});
+							});
+							label.append(checkbox);
+							label.append(vis.name);
+							containerDiv.find(".visualization").show();
+							containerDiv.find(".visualization .panel-body").append(div);
+						});
+					}
 				});
 			}
 		});
