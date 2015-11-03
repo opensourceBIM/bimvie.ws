@@ -550,7 +550,7 @@ LazyLoad.js([
 			ConsoleSettings.getServiceInterfaces(othis, function(serviceInterfaces){
 				$(".innerMethodList").empty();
 				serviceInterfaces.forEach(function(serviceInterface, index){
-					var headerLi = $("<li class=\"list-group-item header\"><h3>" + serviceInterface.simpleName + "</h3></li>");
+					var headerLi = $("<li class=\"list-group-item header\"><h4>" + serviceInterface.simpleName + "</h4></li>");
 					$(".innerMethodList").append(headerLi);
 					serviceInterface.methods.forEach(function(serviceMethod){
 						var a = $("<a class=\"list-group-item\">" + serviceMethod.name + "</a>");
