@@ -85,6 +85,7 @@ function Download(containerDiv, data) {
 				if (serializer.oid == defaultSerializer.oid) {
 					option.attr("selected", "selected");
 				}
+				option.attr("streaming", serializer.streaming);
 				containerDiv.find(".revisionsdownloadcheckoutselect").append(option);
 			});
 			othis.checkRevisionsCheckoutButton();
@@ -222,26 +223,19 @@ function Download(containerDiv, data) {
 			});
 		}
 		
-		if (data.downloadType == "query") {
-			Global.bimServerApi.call("Bimsie1ServiceInterface", "downloadQuery", data, function(data){
-				containerDiv.find(".downloadStatus").html("Preparing download...");
-				othis.laid = parseInt(data);
-				Global.bimServerApi.registerProgressHandler(othis.laid, othis.progressHandler, afterRegistration);
-			}, function(){
-				othis.afterDownload();
-				containerDiv.find(".downloadStatus").addClass("alert-danger").html(exception.message);
-			});
-		} else if (data.downloadType == "checkout") {
-			Global.bimServerApi.call("Bimsie1ServiceInterface", "checkout", data, function(data){
-				containerDiv.find(".downloadStatus").html("Preparing checkout...");
-				othis.laid = parseInt(data);
-				Global.bimServerApi.registerProgressHandler(othis.laid, othis.progressHandler, afterRegistration);
-			}, function(){
-				othis.afterDownload();
-				containerDiv.find(".downloadStatus").addClass("alert-danger").html(exception.message);
-			});
-		} else if (data.downloadType == "downloadRevisions") {
-			Global.bimServerApi.call("Bimsie1ServiceInterface", "downloadRevisions", data, function(data){
+		if (data.streaming) {
+			if (data.downloadType == "downloadRevisions") {
+				var query = {
+					queries: [{
+						type: "Object",
+						includeAllSubTypes: true
+					}]
+				};
+				data.query = JSON.stringify(query);
+			} else {
+				console.log("Unimplemented for streaming", data.downloadType);
+			}
+			Global.bimServerApi.call("Bimsie1ServiceInterface", "downloadByNewJsonQuery", data, function(data){
 				containerDiv.find(".downloadStatus").html("Preparing download...");
 				othis.laid = parseInt(data);
 				Global.bimServerApi.registerProgressHandler(othis.laid, othis.progressHandler, afterRegistration);
@@ -250,7 +244,7 @@ function Download(containerDiv, data) {
 				containerDiv.find(".downloadStatus").addClass("alert-danger").html(exception.message);
 			});
 		} else {
-			Global.bimServerApi.call("Bimsie1ServiceInterface", "download", data, function(data){
+			Global.bimServerApi.call("Bimsie1ServiceInterface", data.downloadType, data, function(data){
 				containerDiv.find(".downloadStatus").html("Preparing download...");
 				othis.laid = parseInt(data);
 				Global.bimServerApi.registerProgressHandler(othis.laid, othis.progressHandler, afterRegistration);
@@ -278,6 +272,7 @@ function Download(containerDiv, data) {
 			containerDiv.find(".downloadStatus").addClass("alert-danger").html("Select a serializer").show();
 		} else {
 			othis.data.serializerOid = containerDiv.find(".revisionsdownloadcheckoutselect").val();
+			othis.data.streaming = containerDiv.find(".revisionsdownloadcheckoutselect option:selected").attr("streaming") === "true";
 			othis.data.showOwn = true;
 			othis.data.sync = false;
 			othis.data.zip = containerDiv.find(".downloadCheckoutZip").is(":checked");

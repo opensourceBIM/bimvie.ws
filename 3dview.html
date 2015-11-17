@@ -18,6 +18,8 @@
 function ThreeDView(containerDiv, parent) {
 	var o = this;
 	o.selectedId = -1;
+	
+	// IfcProduct.oid -> GeometryInfo.oid
 	o.loadedOids = {};
 	
 	this.load = function(){
@@ -233,6 +235,7 @@ function ThreeDView(containerDiv, parent) {
 	};
 	
 	this.objectVisibilityChanged = function(objects){
+		console.log(objects);
 		// todo use groupid
 		
 		var uniqueRoids = [];
@@ -243,9 +246,10 @@ function ThreeDView(containerDiv, parent) {
 
 		var oidsNotLoaded = [];
 
+		var count = 0;
+		
 		for (var i=0; i<objects.length; i++) {
 			var object = objects[i];
-			
 			if (i == 0) {
 				// TODO actually do something useful here
 				uniqueRoids.push(object.model.roid);
@@ -259,14 +263,15 @@ function ThreeDView(containerDiv, parent) {
 					object.getRepresentation(function(representation){
 						if (representation != null) {
 							if (Settings.getDefaultHiddenTypes()[object.getType()] == null || object.trans.mode == 0) {
-								oidsNotLoaded.push(object.oid);
+								oidsNotLoaded[object.object._rgeometry] = object.oid;
+								count++;
 							}
 						}
 					});
 				}
 			}
 		}
-		if (oidsNotLoaded.length > 0) {
+		if (count > 0) {
 			var models = {};
 			uniqueRoids.forEach(function(roid){
 				models[roid] = parent.models[roid];
@@ -301,14 +306,14 @@ function ThreeDView(containerDiv, parent) {
 				});
 				o.loadedOids[oid] = true;
 			});
-			geometryLoader.progressListeners.push(function(state){
-				if (state == "done") {
-					for (var i=0; i<oidsNotLoaded.length; i++) {
-						o.loadedOids[oidsNotLoaded[i]] = true;
-					}
-					o.resize();
-				}
-			});
+//			geometryLoader.progressListeners.push(function(state){
+//				if (state == "done") {
+//					for (var i=0; i<oidsNotLoaded.length; i++) {
+//						o.loadedOids[oidsNotLoaded[i]] = true;
+//					}
+//					o.resize();
+//				}
+//			});
 			o.viewer.loadGeometry(geometryLoader);
 		}
 	};
@@ -336,9 +341,9 @@ function ThreeDView(containerDiv, parent) {
 	};
 
 	this.loadRevision = function(project, roid){
-		window.setInterval(function(){
+		Global.bimServerApi.registerNewExtendedDataOnRevisionHandler(roid, function(){
 			o.updateVisualisationOverride(roid);
-		}, 5000);
+		}, function(){});
 	};
 
 	this.updateVisualisationOverride = function(roid){

@@ -1,0 +1,81 @@
+<div class="query2">
+	<form>
+		<div class="form-group">
+			<select class="form-control">
+				<option>Select a query or create your own</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<textarea class="form-control" rows="20"></textarea>
+		</div>
+		<div class="form-group">
+			<button class="btn btn-primary queryBtn">Set selection to query</button>
+		</div>
+	</form>
+</div>
+<script>
+function Query2(cd, parent) {
+	var o = this;
+	o.roids = [];
+	
+	var queries = {
+		AllWalls: {
+			type: "IfcWall",
+			includeAllSubtypes: true,
+			include: {
+				field: "Representation"
+			}
+		}
+	};
+	
+	for (var queryKey in queries) {
+	    if (queries.hasOwnProperty(queryKey)) {
+	    	var option = $("<option>" + queryKey + "</option>");
+	    	cd.find("select").append(option);
+	    }
+	}
+	
+	this.show = function(){
+		cd.show();
+	};
+	
+	this.hide = function(){
+		cd.hide();
+	};
+	
+	cd.find("select").change(function(){
+		cd.find("textarea").val(JSON.stringify(queries[cd.find("select").val()], null, "  "));
+	});
+	
+	this.addRevision = function(project, roid, types){
+		o.roids.push(roid);
+	};
+	
+	this.loadRevision = function(project, roid, types) {
+	};
+	
+	this.unloadRevision = function(poid, roid) {
+	};
+	
+	cd.find(".queryBtn").click(function(e){
+		e.preventDefault();
+		o.roids.forEach(function(roid){
+			var model = parent.models[roid];
+			if (model != null) {
+				model.reset();
+				var oids = [];
+				model.queryNew(JSON.parse(cd.find("textarea").val()), function(loaded){
+					oids.push(loaded.oid);
+					loaded.trans.mode = 1;
+				}).done(function(){
+					parent.setObjectVisibility(roid, oids, 1);
+				});
+			}
+		});
+	});
+	
+	parent.modelAddedListeners.register(o.addRevision);
+	parent.modelLoadedListeners.register(o.loadRevision);
+	parent.modelUnloadedListeners.register(o.unloadRevision);
+}
+</script>
