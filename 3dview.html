@@ -258,18 +258,17 @@ function ThreeDView(containerDiv, parent) {
 			
 			if (o.loadedOids[object.oid] == null) {
 				if (object.isA("IfcProduct")) {
-					// Assuming sync return here because of preloading!!
-					object.getRepresentation(function(representation){
-						if (representation != null) {
-							if (Settings.getDefaultHiddenTypes()[object.getType()] == null || object.trans.mode == 0) {
-								oidsNotLoaded[object.object._rgeometry] = object.oid;
-								count++;
-							}
+					console.log(object);
+					if (object.object._rRepresentation != -1 && object.object._rRepresentation != null) {
+						if (Settings.getDefaultHiddenTypes()[object.getType()] == null || object.trans.mode == 0) {
+							oidsNotLoaded[object.object._rgeometry] = object.oid;
+							count++;
 						}
-					});
+					}
 				}
 			}
 		}
+		console.log(oidsNotLoaded);
 		if (count > 0) {
 			var models = {};
 			uniqueRoids.forEach(function(roid){
@@ -342,7 +341,9 @@ function ThreeDView(containerDiv, parent) {
 	this.loadRevision = function(project, roid){
 		Global.bimServerApi.registerNewExtendedDataOnRevisionHandler(roid, function(){
 			o.updateVisualisationOverride(roid);
-		}, function(){});
+		}, function(){
+			o.updateVisualisationOverride(roid);
+		});
 	};
 
 	this.updateVisualisationOverride = function(roid){

@@ -19,42 +19,48 @@ function Query2(cd, parent) {
 	o.roids = [];
 	
 	var queries = {
+		AllObjects: {
+			type: "IfcProduct",
+			includeAllSubtypes: true
+		},
 		AllWalls: {
+			type: "IfcWall",
+			includeAllSubtypes: true
+		},
+		AllWallsIncludingWindowsAndDoors: {
 			type: "IfcWall",
 			includeAllSubtypes: true,
 			include: {
-				field: "Representation"
+				field: "HasOpenings",
+				include: {
+					field: "RelatedOpeningElement",
+					include: {
+						field: "HasFillings",
+						include: {
+							field: "RelatedBuildingElement"
+						}
+					}
+				}
 			}
 		},
 		AllWallsAndSlabs: {
 			types: ["IfcWall", "IfcSlab"],
-			includeAllSubtypes: true,
-			include: {
-				field: "Representation"
-			}
+			includeAllSubtypes: true
 		},
 		SpecificWallsByGuid: {
 			type: "IfcWall",
 			includeAllSubtypes: true,
-			guids: ["2udBPbKibCZ8zbfpJmtDTM", "2V1MCFZRf1GA2ZyRufjYwX", "2oOoWKmmfChQTLCBzuB3$b"],
-			include: {
-				field: "Representation"
-			}
+			guids: ["2udBPbKibCZ8zbfpJmtDTM", "2V1MCFZRf1GA2ZyRufjYwX", "2oOoWKmmfChQTLCBzuB3$b"]
 		},
 		SpecificBuildingStoreyIncContains: {
 			type: "IfcBuildingStorey",
-			guids: ["25SMdCQszBi9al8gnrh8LV"],
-			includes: [{
-				field: "Representation"
-			}, {
+			guid: "25SMdCQszBi9al8gnrh8LV",
+			include: {
 				field: "ContainsElements",
 				include: {
-					field: "RelatedElements",
-					include: {
-						field: "Representation"
-					}
+					field: "RelatedElements"
 				}
-			}]
+			}
 		}
 	};
 	
@@ -97,8 +103,10 @@ function Query2(cd, parent) {
 				model.reset();
 				var oids = [];
 				model.queryNew(JSON.parse(cd.find("textarea").val()), function(loaded){
-					oids.push(loaded.oid);
-					loaded.trans.mode = 0;
+					if (loaded.getType() != "IfcOpeningElement") {
+						oids.push(loaded.oid);
+						loaded.trans.mode = 0;
+					}
 				}).done(function(){
 					parent.setObjectVisibility(roid, oids, 0);
 				});
