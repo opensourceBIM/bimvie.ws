@@ -25,6 +25,36 @@ function Query2(cd, parent) {
 			include: {
 				field: "Representation"
 			}
+		},
+		AllWallsAndSlabs: {
+			types: ["IfcWall", "IfcSlab"],
+			includeAllSubtypes: true,
+			include: {
+				field: "Representation"
+			}
+		},
+		SpecificWallsByGuid: {
+			type: "IfcWall",
+			includeAllSubtypes: true,
+			guids: ["2udBPbKibCZ8zbfpJmtDTM", "2V1MCFZRf1GA2ZyRufjYwX", "2oOoWKmmfChQTLCBzuB3$b"],
+			include: {
+				field: "Representation"
+			}
+		},
+		SpecificBuildingStoreyIncContains: {
+			type: "IfcBuildingStorey",
+			guids: ["25SMdCQszBi9al8gnrh8LV"],
+			includes: [{
+				field: "Representation"
+			}, {
+				field: "ContainsElements",
+				include: {
+					field: "RelatedElements",
+					include: {
+						field: "Representation"
+					}
+				}
+			}]
 		}
 	};
 	
@@ -44,7 +74,9 @@ function Query2(cd, parent) {
 	};
 	
 	cd.find("select").change(function(){
-		cd.find("textarea").val(JSON.stringify(queries[cd.find("select").val()], null, "  "));
+		var query = queries[cd.find("select").val()];
+		var json = JSON.stringify(query, null, "  ");
+		cd.find("textarea").val(json);
 	});
 	
 	this.addRevision = function(project, roid, types){
@@ -66,9 +98,9 @@ function Query2(cd, parent) {
 				var oids = [];
 				model.queryNew(JSON.parse(cd.find("textarea").val()), function(loaded){
 					oids.push(loaded.oid);
-					loaded.trans.mode = 1;
+					loaded.trans.mode = 0;
 				}).done(function(){
-					parent.setObjectVisibility(roid, oids, 1);
+					parent.setObjectVisibility(roid, oids, 0);
 				});
 			}
 		});

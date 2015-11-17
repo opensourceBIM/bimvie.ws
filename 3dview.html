@@ -39,11 +39,11 @@ function ThreeDView(containerDiv, parent) {
 	
 	this.nodeSelected = function(groupId, node){
 		o.selectedId = node.id;
-		parent.selected(o, groupId, node.id);
+		parent.selected(o, groupId, node.oid);
 	};
 	
 	this.nodeUnselected = function(groupId, node){
-		parent.unselected(o, groupId, node.id);
+		parent.unselected(o, groupId, node.oid);
 		o.selectedId = -1;
 	};
 	
@@ -235,7 +235,6 @@ function ThreeDView(containerDiv, parent) {
 	};
 	
 	this.objectVisibilityChanged = function(objects){
-		console.log(objects);
 		// todo use groupid
 		
 		var uniqueRoids = [];
@@ -430,7 +429,7 @@ function ThreeDView(containerDiv, parent) {
 	};
 	
 	this.close = function(){
-		console.log("close");
+//		console.log("close");
 //		parent.selectListeners.unregister(o.selected);
 //		parent.unselectListeners.unregister(o.unselected);
 //		parent.objectVisibilityListeners.unregister(o.objectVisibilityChanged);
@@ -452,7 +451,6 @@ function ThreeDView(containerDiv, parent) {
 	
 	$(".btnScreenShot").click(function(){
 		o.viewer.capture().done(function(test){
-			console.log(test);
 			$(".screenshot").attr("src", test.src);
 		});
 	});
