@@ -173,63 +173,68 @@ function ThreeDView(containerDiv, parent) {
 	};
 	
 	this.updateVisibility = function(object) {
-		var threeDObject = o.viewer.scene.findNode(object.oid);
+		if (object.gid == null) {
+			return;
+		}
+		var threeDObject = o.viewer.scene.findNode(object.gid);
 		var mode = object.trans.mode;
 		if (threeDObject != null) {
 			var matrix = threeDObject.nodes[0];
 			var geometryNode = matrix.nodes[0];
-			if (mode == 0) {
-				threeDObject.findParentByType("enable").setEnabled(true);
-				if (geometryNode._core.arrays.colors != null) {
-					if (object.trans.colorOverride != null) {
-						o.changeColorOfObject(object, object.trans.colorOverride);
-					} else {
-						if (geometryNode.coreId != null && ("" + geometryNode.coreId).endsWith("_Visualization")) {
-							// This is a complex-material object which had been modified, return it to the old state
-							if (geometryNode._core.arrays.colors != null) {
-								matrix.removeNode(geometryNode);
-								
-								var newGeometry = {
-									type: "geometry",
-									coreId: geometryNode.getCoreId().replace("_Visualization", "")
+			if (geometryNode != null) {
+				if (mode == 0) {
+					threeDObject.findParentByType("enable").setEnabled(true);
+					if (geometryNode._core.arrays.colors != null) {
+						if (object.trans.colorOverride != null) {
+							o.changeColorOfObject(object, object.trans.colorOverride);
+						} else {
+							if (geometryNode.coreId != null && ("" + geometryNode.coreId).endsWith("_Visualization")) {
+								// This is a complex-material object which had been modified, return it to the old state
+								if (geometryNode._core.arrays.colors != null) {
+									matrix.removeNode(geometryNode);
+									
+									var newGeometry = {
+										type: "geometry",
+										coreId: geometryNode.getCoreId().replace("_Visualization", "")
+									}
+									
+									matrix.addNode(newGeometry);
 								}
-								
-								matrix.addNode(newGeometry);
 							}
 						}
-					}
-				} else {
-					if (object.trans.colorOverride != null) {
-						o.changeColorOfObject(object, object.trans.colorOverride);
 					} else {
-						var material = BIMSURFER.Constants.materials[object.getType()];
-						// Hack to get the roof to be red.....
-						if (object.getType() == "IfcSlab") {
-							if (object.getPredefinedType() == "ROOF") {
-								material = BIMSURFER.Constants.materials["IfcRoof"];
+						if (object.trans.colorOverride != null) {
+							o.changeColorOfObject(object, object.trans.colorOverride);
+						} else {
+							var material = BIMSURFER.Constants.materials[object.getType()];
+							// Hack to get the roof to be red.....
+							if (object.getType() == "IfcSlab") {
+								if (object.getPredefinedType() == "ROOF") {
+									material = BIMSURFER.Constants.materials["IfcRoof"];
+								}
 							}
+							if (material == null) {
+								material = BIMSURFER.Constants.materials.DEFAULT;
+							}
+							
+							var color = {r: material.r, g: material.g, b: material.b, a: material.a};
+							o.changeColorOfObject(object, color);
 						}
-						if (material == null) {
-							material = BIMSURFER.Constants.materials.DEFAULT;
-						}
-						
-						var color = {r: material.r, g: material.g, b: material.b, a: material.a};
-						o.changeColorOfObject(object, color);
 					}
+				} else if (mode == 1) {
+					threeDObject.findParentByType("enable").setEnabled(true);
+					var color = {};
+					color.a = 0.5;
+					color.r = 0.5;
+					color.g = 0.5;
+					color.b = 0.5;
+					if (o.selectedId == object.oid) {
+						threeDObject.getNode("highlight").set("alpha", 0.5);
+					}
+					o.changeColorOfObject(object, color);
+				} else if (mode == 2) {
+					threeDObject.findParentByType("enable").setEnabled(false);
 				}
-			} else if (mode == 1) {
-				threeDObject.findParentByType("enable").setEnabled(true);
-				var color = {};
-				color.a = 0.5;
-				color.r = 0.5;
-				color.g = 0.5;
-				color.b = 0.5;
-				if (o.selectedId == object.oid) {
-					threeDObject.getNode("highlight").set("alpha", 0.5);
-				}
-				o.changeColorOfObject(object, color);
-			} else if (mode == 2) {
-				threeDObject.findParentByType("enable").setEnabled(false);
 			}
 		}
 	};
@@ -258,7 +263,6 @@ function ThreeDView(containerDiv, parent) {
 			
 			if (o.loadedOids[object.oid] == null) {
 				if (object.isA("IfcProduct")) {
-					console.log(object);
 					if (object.object._rRepresentation != -1 && object.object._rRepresentation != null) {
 						if (Settings.getDefaultHiddenTypes()[object.getType()] == null || object.trans.mode == 0) {
 							oidsNotLoaded[object.object._rgeometry] = object.oid;
@@ -268,7 +272,6 @@ function ThreeDView(containerDiv, parent) {
 				}
 			}
 		}
-		console.log(oidsNotLoaded);
 		if (count > 0) {
 			var models = {};
 			uniqueRoids.forEach(function(roid){
@@ -439,7 +442,7 @@ function ThreeDView(containerDiv, parent) {
 	};
 	
 	containerDiv.find(".waiting").hide();
-	
+
 	parent.selectListeners.register(o.selected);
 	parent.unselectListeners.register(o.unselected);
 	parent.objectVisibilityListeners.register(o.objectVisibilityChanged);

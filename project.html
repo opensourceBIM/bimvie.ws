@@ -13,6 +13,7 @@ function Project(containerDiv, main, project) {
 	var othis = this;
 	othis.loaded = {}; // poid -> roid
 	othis.models = {};
+	
 	othis.threeDAspectVisible = new Variable(false);
 	othis.selectListeners = new EventRegistry();
 	othis.unselectListeners = new EventRegistry();
@@ -87,6 +88,14 @@ function Project(containerDiv, main, project) {
 	this.resize = function(){
 		othis.navigator.resize();
 //		containerDiv.find(".sidespanWrapper").height(($(window).height() - $(".navbar").outerHeight() - containerDiv.find(".col-md-4 .panel-heading").outerHeight() - 57) + "px");
+	};
+	
+	this.unloadRevision = function(project){
+		if (othis.loaded[project.oid] != null) {
+			othis.modelUnloadedListeners.trigger(function(modelUnloadedListener){
+				modelUnloadedListener(project.oid, othis.loaded[project.oid]);
+			});
+		}
 	};
 	
 	this.changeRevision = function(project, roid){

@@ -9,7 +9,9 @@
 			<textarea class="form-control" rows="20"></textarea>
 		</div>
 		<div class="form-group">
-			<button class="btn btn-primary queryBtn">Set selection to query</button>
+			<button class="btn btn-primary querySetBtn">Query Set</button>
+			<button class="btn btn-primary queryAddBtn">Query Add</button>
+			<button class="btn btn-primary downloadBtn">Download</button>
 		</div>
 	</form>
 </div>
@@ -27,6 +29,36 @@ function Query2(cd, parent) {
 			type: "IfcWall",
 			includeAllSubtypes: true
 		},
+		AllWallsIncludingDecomposition: {
+			defines: {
+				Units: {
+					inputType: "IfcProject",
+					field: "UnitsInContext",
+					include: {
+						field: "Units"
+					}
+				},
+				ContainedInStructure: {
+					field: "ContainedInStructure",
+					include: {
+						field: "RelatingStructure",
+						include: "Decomposes"
+					}
+				},
+				Decomposes: {
+					field: "Decomposes",
+					include: {
+						field: "RelatingObject",
+						includes: ["Decomposes", "Units"]
+					}
+				}
+			},
+			query: {
+				type: "IfcWall",
+				includeAllSubtypes: true,
+				include: "ContainedInStructure"
+			}
+		},
 		AllWallsIncludingWindowsAndDoors: {
 			type: "IfcWall",
 			includeAllSubtypes: true,
@@ -38,6 +70,23 @@ function Query2(cd, parent) {
 						field: "HasFillings",
 						include: {
 							field: "RelatedBuildingElement"
+						}
+					}
+				}
+			}
+		},
+		AllWallsIncludingWindows: {
+			type: "IfcWall",
+			includeAllSubtypes: true,
+			include: {
+				field: "HasOpenings",
+				include: {
+					field: "RelatedOpeningElement",
+					include: {
+						field: "HasFillings",
+						include: {
+							field: "RelatedBuildingElement",
+							type: "IfcWindow"
 						}
 					}
 				}
@@ -60,6 +109,41 @@ function Query2(cd, parent) {
 				include: {
 					field: "RelatedElements"
 				}
+			}
+		},
+		ExternalWalls: {
+			type: "IfcWall",
+			includeAllSubtypes: true,
+			properties: {
+				IsExternal: true
+			}
+		},
+		ThermalTransmittance: {
+			type: "IfcWall",
+			includeAllSubtypes: true,
+			properties: {
+				ThermalTransmittance: {
+					comparator: ">",
+					value: 0.2
+				}
+			}
+		},
+		IfcPresentationLayerAssignment: {
+			type: "IfcPresentationLayerAssignment",
+			name: "Räume",
+			include: {
+				field: "AssignedItems"
+			}
+		},
+		ObjectInBoundingBox: {
+			type: "IfcFurnishingElement",
+			inBoundingBox: {
+				x: 0,
+				y: 0,
+				z: 0,
+				width: 5,
+				height: 5,
+				depth: 5
 			}
 		}
 	};
@@ -95,7 +179,7 @@ function Query2(cd, parent) {
 	this.unloadRevision = function(poid, roid) {
 	};
 	
-	cd.find(".queryBtn").click(function(e){
+	cd.find(".queryAddBtn").click(function(e){
 		e.preventDefault();
 		o.roids.forEach(function(roid){
 			var model = parent.models[roid];
@@ -113,7 +197,45 @@ function Query2(cd, parent) {
 			}
 		});
 	});
+
+	cd.find(".downloadBtn").click(function(e){
+		e.preventDefault();
+		var div = $("<div class=\"modal fade\">");
+		$(document.body).append(div);
+		var params = {
+			downloadType: "downloadByNewJsonQuery",
+			allowCheckouts: false,
+			query: cd.find("textarea").val(),
+			roids: o.roids
+		};
+		div.load(Global.baseDir + "download.html", function(){
+			new Download($(this), params);
+		}).modal("show");
+	});
 	
+	cd.find(".querySetBtn").click(function(e){
+		e.preventDefault();
+		o.roids.forEach(function(roid){
+			var model = parent.models[roid];
+			var oids = [];
+			for (var oid in model.objects) {
+				oids.push(oid);
+			}
+			parent.setObjectVisibility(roid, oids, 2);
+			if (model != null) {
+				model.reset();
+				var oids = [];
+				model.queryNew(JSON.parse(cd.find("textarea").val()), function(loaded){
+					if (loaded.getType() != "IfcOpeningElement") {
+						oids.push(loaded.oid);
+					}
+				}).done(function(){
+					parent.setObjectVisibility(roid, oids, 0);
+				});
+			}
+		});
+	});
+
 	parent.modelAddedListeners.register(o.addRevision);
 	parent.modelLoadedListeners.register(o.loadRevision);
 	parent.modelUnloadedListeners.register(o.unloadRevision);
