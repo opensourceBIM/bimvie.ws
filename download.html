@@ -226,10 +226,9 @@ function Download(containerDiv, data) {
 		if (data.streaming) {
 			if (data.downloadType == "downloadRevisions") {
 				var query = {
-					queries: [{
-						type: "Object",
-						includeAllSubTypes: true
-					}]
+					type: "Object",
+					includeAllSubTypes: true,
+					includeAllFields: true
 				};
 				data.query = JSON.stringify(query);
 			} else if (data.downloadType == "downloadByNewJsonQuery") {
