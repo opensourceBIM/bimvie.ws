@@ -69,7 +69,7 @@ function ThreeDView(containerDiv, parent) {
 	};
 	
 	this.unsetAlternativeColor = function(object){
-		var threeDObject = o.viewer.scene.findNode(object.oid);
+		var threeDObject = o.viewer.scene.findNode(object.gid);
 		if (threeDObject != null) {
 			var matrix = threeDObject.nodes[0];
 			var geometryNode = matrix.nodes[0];
@@ -92,7 +92,7 @@ function ThreeDView(containerDiv, parent) {
 	};
 	
 	this.setObjectColor = function(object){
-		var threeDObject = o.viewer.scene.findNode(object.oid);
+		var threeDObject = o.viewer.scene.findNode(object.gid);
 		var mode = object.trans.mode;
 		if (threeDObject != null) {
 			var matrix = threeDObject.nodes[0];
@@ -127,7 +127,7 @@ function ThreeDView(containerDiv, parent) {
 	};
 	
 	this.changeColorOfObject = function(object, color){
-		var threeDObject = o.viewer.scene.findNode(object.oid);
+		var threeDObject = o.viewer.scene.findNode(object.gid);
 		if (threeDObject != null) {
 			var matrix = threeDObject.nodes[0];
 			var geometryNode = matrix.nodes[0];
@@ -418,8 +418,6 @@ function ThreeDView(containerDiv, parent) {
 								var checked = $(this).is(":checked");
 								change(checked);
 							});
-							checkbox.attr("checked", "checked");
-							change(true);
 							label.append(checkbox);
 							label.append(vis.name);
 							containerDiv.find(".visualization").show();

@@ -27,6 +27,10 @@
 			<tbody></tbody>
 		</table>
 	</div>
+	<div class="json ih">
+		<h2></h2>
+		<pre class="content"></pre>
+	</div>
 	<div class="html ih">
 		<h2></h2>
 		<div class="content"></div>
@@ -50,6 +54,7 @@ function ExtendedData(main, extendedData, parent) {
 	tr.append(schemaTd);
 	$(".extendeddata table.detailsTable tbody").append(tr);
 	$(".extendeddata table.detailsTable tbody").append("<tr><td>Size</td><td class=\"size\"></td></tr>");
+	$(".extendeddata table.detailsTable tbody").append("<tr><td>Mime type</td><td class=\"mime\"></td></tr>");
 	var downloadLink = $("<a>Download</a>");
 	var td = $("<td>");
 	td.append(downloadLink);
@@ -103,6 +108,12 @@ function ExtendedData(main, extendedData, parent) {
 		$(".html .content").html(data);
 		$(".html").show();
 	}
+
+	this.showJson = function(schema, extendedData, data){
+		$(".json h2").html(extendedData.title + " (JSON)");
+		$(".json .content").html(JSON.stringify(JSON.parse(data), null, "  "));
+		$(".json").show();
+	}
 	
 	this.showCsv = function(schema, extendedData, data){
 		$(".csv h2").html(extendedData.title + " (CSV)");
@@ -120,11 +131,14 @@ function ExtendedData(main, extendedData, parent) {
 	Global.bimServerApi.call("ServiceInterface", "getFile", {fileId: extendedData.fileId}, function(file){
 		var data = UTF8ArrToStr(base64DecToArr(file.data));
 		$(".size").html(GetHumanSize(data.length));
+		$(".mime").html(file.mime);
 		Global.bimServerApi.call("Bimsie1ServiceInterface", "getExtendedDataSchemaById", {oid: extendedData.schemaId}, function(schema){
 			if (file.mime == "text/csv") {
 				othis.showCsv(schema, extendedData, data);
 			} else if (file.mime == "text/html") {
 				othis.showHtml(schema, extendedData, data);
+			} else if (file.mime == "application/json") {
+				othis.showJson(schema, extendedData, data);
 			} else if (schema.namespace == "http://extend.bimserver.org/validationreport") {
 				othis.showValidationReport(schema, extendedData, data);
 			} else if (schema.namespace == "http://www.buildingsmart-tech.org/specifications/bcf-releases") {

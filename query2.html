@@ -22,114 +22,148 @@ function Query2(cd, parent) {
 	
 	var queries = {
 		AllObjects: {
-			type: "IfcProduct",
-			includeAllSubtypes: true
+			IfcProduct: {}
 		},
 		AllWalls: {
-			type: "IfcWall",
-			includeAllSubtypes: true
+			IfcWall: {}
 		},
 		AllWallsIncludingDecomposition: {
-			type: "IfcWall",
-			includeAllSubtypes: true,
-			includes: ["validifc:ContainedInStructure", "validifc:OwnerHistory", "validifc:Representation", "validifc:ObjectPlacement"]
+			IfcWall: {
+				includes: ["validifc:ContainedInStructure", "validifc:OwnerHistory", "validifc:Representation", "validifc:ObjectPlacement"]
+			}
 		},
 		AllWallsIncludingWindowsAndDoors: {
-			type: "IfcWall",
-			includeAllSubtypes: true,
-			include: {
-				type: "IfcWall",
-				field: "HasOpenings",
-				include: {
-					type: "IfcRelVoidsElement",
-					field: "RelatedOpeningElement",
-					include: {
-						type: "IfcOpeningElement",
-						field: "HasFillings",
-						include: {
-							type: "IfcRelFillsElement",
-							field: "RelatedBuildingElement"
+			IfcWall: {
+				HasOpenings: {
+					RelatedOpeningElement: {
+						"IfcOpeningElement.HasFillings": {
+							RelatedBuildingElement: {
+								
+							}
 						}
 					}
 				}
 			}
 		},
 		AllWallsIncludingWindows: {
-			type: "IfcWall",
-			includeAllSubtypes: true,
-			include: {
-				type: "IfcWall",
-				field: "HasOpenings",
-				include: {
-					type: "IfcRelVoidsElement",
-					field: "RelatedOpeningElement",
-					include: {
-						type: "IfcOpeningElement",
-						field: "HasFillings",
-						include: {
-							type: "IfcRelFillsElement",
-							field: "RelatedBuildingElement",
-							outputType: "IfcWindow"
+			IfcWall: {
+				HasOpenings: {
+					RelatedOpeningElement: {
+						"IfcOpeningElement.HasFillings": {
+							RelatedBuildingElement: {
+								IfcWindow: {
+									
+								}
+							}
 						}
 					}
 				}
 			}
 		},
 		AllWallsAndSlabs: {
-			types: ["IfcWall", "IfcSlab"],
-			includeAllSubtypes: true
+			types: ["IfcWall", "IfcSlab"]
 		},
 		SpecificWallsByGuid: {
-			type: "IfcWall",
-			includeAllSubtypes: true,
-			guids: ["2udBPbKibCZ8zbfpJmtDTM", "2V1MCFZRf1GA2ZyRufjYwX", "2oOoWKmmfChQTLCBzuB3$b"]
+			IfcWall: {
+				where: {
+					guids: ["2udBPbKibCZ8zbfpJmtDTM", "2V1MCFZRf1GA2ZyRufjYwX", "2oOoWKmmfChQTLCBzuB3$b"]
+				}
+			}
 		},
 		SpecificBuildingStoreyIncContains: {
-			type: "IfcBuildingStorey",
-			guid: "25SMdCQszBi9al8gnrh8LV",
-			include: {
-				type: "IfcBuildingStorey",
-				field: "ContainsElements",
-				include: {
-					type: "IfcRelContainedInSpatialStructure",
-					field: "RelatedElements"
+			IfcBuildingStorey: {
+				where: {
+					guid: "25SMdCQszBi9al8gnrh8LV"
+				},
+				ContainsElements: {
+					RelatedElements: {
+						
+					}
+				}
+			}
+		},
+		SpecificBuildingStoreyIncContainsExcludeSelf: {
+			IfcBuildingStorey: {
+				include: false,
+				where: {
+					guid: "25SMdCQszBi9al8gnrh8LV"
+				},
+				ContainsElements: {
+					include: false,
+					RelatedElements: {
+					}
 				}
 			}
 		},
 		ExternalWalls: {
-			type: "IfcWall",
-			includeAllSubtypes: true,
-			properties: {
-				IsExternal: true
-			}
-		},
-		ThermalTransmittance: {
-			type: "IfcWall",
-			includeAllSubtypes: true,
-			properties: {
-				ThermalTransmittance: {
-					comparator: ">",
-					value: 0.2
+			IfcWall: {
+				where: {
+					properties: {
+						IsExternal: true
+					}
 				}
 			}
 		},
+		ThermalTransmittance: {
+			IfcWall: {
+				where: {
+					properties: {
+						ThermalTransmittance: {
+							comparator: ">",
+							value: 0.2
+						}
+					}
+				}				
+			}
+		},
 		IfcPresentationLayerAssignment: {
-			type: "IfcPresentationLayerAssignment",
-			name: "Räume",
-			include: {
-				type: "IfcPresentationLayerAssignment",
-				field: "AssignedItems"
+			IfcPresentationLayerAssignment: {
+				where: {
+					name: "Räume",
+				},
+				AssignedItems: {}
 			}
 		},
 		ObjectInBoundingBox: {
-			type: "IfcFurnishingElement",
-			inBoundingBox: {
-				x: 0,
-				y: 0,
-				z: 0,
-				width: 5,
-				height: 5,
-				depth: 5
+			IfcFurnishingElement: {
+				where: {
+					inBoundingBox: {
+						x: 0,
+						y: 0,
+						z: 0,
+						width: 5,
+						height: 5,
+						depth: 5
+					}
+				}
+			}
+		},
+		Classification: {
+			IfcClassificationReference: {
+				where: {
+					field: {
+						Name: "Büroarbeit"
+					}
+				},
+				incoming: {
+					outfield: "RelatingClassification",
+					type: "IfcRelAssociatesClassification",
+					follow: "RelatedObjects"
+				}
+			}
+		},
+		Test: {
+			type: "IfcWall",
+			where: {
+				and: [{
+					field: {
+						Name: "Büroarbeit"
+					}
+				}, {
+					property: {
+						ThermalTransmittance: 0.2
+					}
+				}]
 			}
 		}
 	};
