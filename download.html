@@ -248,7 +248,7 @@ function Download(containerDiv, data) {
 				containerDiv.find(".downloadStatus").html("Preparing download...");
 				othis.laid = parseInt(data);
 				Global.bimServerApi.registerProgressHandler(othis.laid, othis.progressHandler, afterRegistration);
-			}, function(){
+			}, function(exception){
 				othis.afterDownload();
 				containerDiv.find(".downloadStatus").addClass("alert-danger").html(exception.message);
 			});

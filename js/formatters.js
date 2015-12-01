@@ -1,5 +1,6 @@
 var SizePrefixes = ' KMGTPEZYXWVU';
 function GetHumanSize(size) {
+	console.log(size);
   if(size <= 0) return '0';
   var t2 = Math.min(Math.round(Math.log(size)/Math.log(1024)), 12);
   return (Math.round(size * 100 / Math.pow(1024, t2)) / 100) +

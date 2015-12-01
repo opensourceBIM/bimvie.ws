@@ -130,7 +130,7 @@ function ExtendedData(main, extendedData, parent) {
 	
 	Global.bimServerApi.call("ServiceInterface", "getFile", {fileId: extendedData.fileId}, function(file){
 		var data = UTF8ArrToStr(base64DecToArr(file.data));
-		$(".size").html(GetHumanSize(data.length));
+		$(".size").html(getHumanSize(data.length));
 		$(".mime").html(file.mime);
 		Global.bimServerApi.call("Bimsie1ServiceInterface", "getExtendedDataSchemaById", {oid: extendedData.schemaId}, function(schema){
 			if (file.mime == "text/csv") {
