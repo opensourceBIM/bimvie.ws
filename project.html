@@ -147,13 +147,16 @@ function Project(containerDiv, main, project) {
 				var preLoadQuery = {
 					defines: {
 						Representation: {
+							type: "IfcProduct",
 							field: "Representation"
 						},
 						ContainsElementsDefine: {
+							type: "IfcSpatialStructureElement",
 							field: "ContainsElements",
 							include: {
+								type: "IfcRelContainedInSpatialStructure",
 								field: "RelatedElements",
-								include: [
+								includes: [
 									"IsDecomposedByDefine",
 									"ContainsElementsDefine",
 									"Representation"
@@ -161,10 +164,12 @@ function Project(containerDiv, main, project) {
 							}
 						},
 						IsDecomposedByDefine: {
+							type: "IfcObjectDefinition",
 							field: "IsDecomposedBy",
 							include: {
+								type: "IfcRelDecomposes",
 								field: "RelatedObjects",
-								include: [
+								includes: [
 									"IsDecomposedByDefine",
 									"ContainsElementsDefine",
 									"Representation"
@@ -175,7 +180,7 @@ function Project(containerDiv, main, project) {
 					queries: [
 					    {
 							type: "IfcProject",
-							include: [
+							includes: [
 								"IsDecomposedByDefine",
 								"ContainsElementsDefine"
 							]
@@ -192,7 +197,7 @@ function Project(containerDiv, main, project) {
 					    },
 					    {
 					    	type: "IfcProduct",
-					    	includeAllSubTypes: true
+					    	includeAllSubtypes: true
 					    },
 					    {
 					    	type: "IfcProductDefinitionShape"
@@ -202,11 +207,13 @@ function Project(containerDiv, main, project) {
 					    },
 					    {
 					    	type: "IfcRelAssociatesClassification",
-					    	include: [
+					    	includes: [
 					    		{
+					    			type: "IfcRelAssociatesClassification",
 					    			field: "RelatedObjects"
 					    		},
 					    		{
+					    			type: "IfcRelAssociatesClassification",
 					    			field: "RelatingClassification"
 					    		}
 					    	]
@@ -220,7 +227,7 @@ function Project(containerDiv, main, project) {
 					]
 				};
 				
-				model.query(preLoadQuery, function(loaded){
+				model.queryNew(preLoadQuery, function(loaded){
 				}).done(function(){
 					console.timeEnd("preloadModel");
 					Global.notifier.setInfo("Loading model data...", -1);

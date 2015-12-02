@@ -226,8 +226,8 @@ function Download(containerDiv, data) {
 		if (data.streaming) {
 			if (data.downloadType == "downloadRevisions") {
 				var query = {
-					type: "Object",
-					includeAllSubTypes: true,
+					type: "IfcProduct",
+					includeAllSubtypes: true,
 					includeAllFields: true
 				};
 				data.query = JSON.stringify(query);

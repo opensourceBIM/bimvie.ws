@@ -265,8 +265,10 @@ function ThreeDView(containerDiv, parent) {
 				if (object.isA("IfcProduct")) {
 					if (object.object._rRepresentation != -1 && object.object._rRepresentation != null) {
 						if (Settings.getDefaultHiddenTypes()[object.getType()] == null || object.trans.mode == 0) {
-							oidsNotLoaded[object.object._rgeometry] = object.oid;
-							count++;
+							if (object.object._rgeometry != null) {
+								oidsNotLoaded[object.object._rgeometry] = object.oid;
+								count++;
+							}
 						}
 					}
 				}
@@ -298,6 +300,7 @@ function ThreeDView(containerDiv, parent) {
 					progressbar.css("width", progress + "%");
 				}
 			});
+			
 			geometryLoader.setLoadOids(uniqueRoids, oidsNotLoaded);
 			
 			// This might be needed when the geometryloader comes up with more objects than requested...

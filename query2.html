@@ -203,12 +203,9 @@ function Query2(cd, parent) {
 		e.preventDefault();
 		o.roids.forEach(function(roid){
 			var model = parent.models[roid];
-			var oids = [];
+			var oldOids = {};
 			for (var oid in model.objects) {
-				oids.push(oid);
-			}
-			if (oids.length > 0) {
-				parent.setObjectVisibility(roid, oids, 2);
+				oldOids[oid] = true;
 			}
 			if (model != null) {
 				model.reset();
@@ -216,8 +213,16 @@ function Query2(cd, parent) {
 				model.queryNew(JSON.parse(cd.find("textarea").val()), function(loaded){
 					if (loaded.getType() != "IfcOpeningElement") {
 						oids.push(loaded.oid);
+						delete oldOids[loaded.oid];
 					}
 				}).done(function(){
+					var oldOidsAr = [];
+					for (var oid in oldOids) {
+						oldOidsAr.push(oid);
+					}
+					if (oldOidsAr.length > 0) {
+						parent.setObjectVisibility(roid, oldOidsAr, 2);
+					}
 					parent.setObjectVisibility(roid, oids, 0);
 				});
 			}

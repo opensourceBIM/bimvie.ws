@@ -155,7 +155,7 @@ function Checkin(containerDiv, project, successFunction) {
 				if (!othis.progressDoneHandled) {
 					othis.progressDoneHandled = true;
 					containerDiv.find(".checkin").parent().modal("hide");
-					Global.bimServerApi.callWithNoIndication("ServiceInterface", "cleanupLongAction", {actionId: topicId}, function(){
+					Global.bimServerApi.callWithNoIndication("ServiceInterface", "cleanupLongAction", {topicId: topicId}, function(){
 					}).done(function(){
 						// This also automatically unregisters the progress handler, so we only have to tell bimserverapi that it's unregistered
 						Global.bimServerApi.unregister(othis.progressHandler);
@@ -179,26 +179,18 @@ function Checkin(containerDiv, project, successFunction) {
 		
 		containerDiv.find(".uploadStatus").html("Uploading...").show();
 		
-		Global.bimServerApi.checkin(project, othis.file, othis.deserializerOid, function(percentage){
-			containerDiv.find(".progressBarHolder .uploadProgressBar .progress-bar").css("width", percentage + "%");
-		}, function(checkinId){
+		Global.bimServerApi.initiateCheckin(project, othis.deserializerOid, function(topicId){
 			window.onbeforeunload = null;
 
 			containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
 			containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"progress-bar\"></div></div>");
 			
-			Global.bimServerApi.registerProgressHandler(checkinId, othis.progressHandler, function(){
-				Global.bimServerApi.call("Bimsie1NotificationRegistryInterface", "getProgress", {
-					topicId: checkinId
-				}, function(state){
-					othis.progressHandler(checkinId, state);
-				});
+			Global.bimServerApi.registerProgressHandler(topicId, othis.progressHandler);
+			
+			Global.bimServerApi.checkin(topicId, project, containerDiv.find(".comment").val(), othis.file, othis.deserializerOid, function(percentage){
+				containerDiv.find(".progressBarHolder .uploadProgressBar .progress-bar").css("width", percentage + "%");
+			}, function(){
 			});
-		}, function(exception){
-			window.onbeforeunload = null;
-
-			containerDiv.find(".uploadStatus").html("<div class=\"alert alert-block alert-danger\">" + exception.message + "</div>");
-			othis.showUpload();
 		});
 	};
 	
