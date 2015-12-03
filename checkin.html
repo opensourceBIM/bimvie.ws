@@ -189,7 +189,6 @@ function Checkin(containerDiv, project, successFunction) {
 			
 			Global.bimServerApi.checkin(topicId, project, containerDiv.find(".comment").val(), othis.file, othis.deserializerOid, function(percentage){
 				containerDiv.find(".progressBarHolder .uploadProgressBar .progress-bar").css("width", percentage + "%");
-			}, function(){
 			});
 		});
 	};
@@ -284,13 +283,7 @@ function Checkin(containerDiv, project, successFunction) {
 				containerDiv.find(".uploadStatus").html("Uploading file...");
 				containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
 				containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"progress-bar\"></div></div>");
-				Global.bimServerApi.registerProgressHandler(currentCheckinId, othis.progressHandler, function(){
-					Global.bimServerApi.call("Bimsie1NotificationRegistryInterface", "getProgress", {
-						topicId: currentCheckinId
-					}, function(state){
-						othis.progressHandler(currentCheckinId, state);
-					});
-				});
+				Global.bimServerApi.registerProgressHandler(currentCheckinId, othis.progressHandler);
 				
 				containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
 				containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"progress-bar\"></div></div>");
