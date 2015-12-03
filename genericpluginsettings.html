@@ -58,6 +58,7 @@ function GenericPluginSettings(main, usersettings, pluginsettingsoid, configurat
 							} else if (value.__type == "SArrayType") {
 							} else if (value.__type == "SByteArrayType") {
 								if (value.value != null) {
+									input.data("base64", value.value);
 									input.parent().append("<span>Current: " + atob(value.value).length + " bytes</span>");
 								}
 							}
