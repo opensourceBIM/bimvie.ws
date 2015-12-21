@@ -198,6 +198,19 @@ function Checkin(containerDiv, project, successFunction) {
 		for (var i = 0, file; file = files[i]; i++) {
 			othis.file = file;
 			
+			if (containerDiv.find(".comment").val() == "" || containerDiv.find("#comment").val() == lastVal) {
+				var path = null;
+				path = file.name;
+				if (path.indexOf("/") != -1) {
+					path = path.substr(path.lastIndexOf("/") + 1);
+				} else if (path.indexOf("\\") != -1) {
+					path = path.substr(path.lastIndexOf("\\") + 1);
+				}
+				containerDiv.find(".comment").val(path);
+				lastVal = path;
+			}
+
+			
         	var path = file.name;
 		    var lastIndex = path.lastIndexOf(".");
 		    if (lastIndex != -1) {

@@ -484,8 +484,8 @@ function ProjectTree(containerDiv, parent, options, selectedId) {
 		}
 	};
 	
-	this.addMenuItem = function(title, click){
-		var li = $("<li></li>");
+	this.addMenuItem = function(title, cl, click){
+		var li = $("<li class=\"" + cl + "\"></li>");
 		var a = $("<a>" + title + "</a>");
 		a.click(function(){
 			containerDiv.find(".dropdown").hide();

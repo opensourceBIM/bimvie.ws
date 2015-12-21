@@ -144,89 +144,173 @@ function Project(containerDiv, main, project) {
 				promise.fire();
 				return promise;
 			} else {
-				var preLoadQuery = {
-					defines: {
-						Representation: {
-							type: "IfcProduct",
-							field: "Representation"
-						},
-						ContainsElementsDefine: {
-							type: "IfcSpatialStructureElement",
-							field: "ContainsElements",
-							include: {
-								type: "IfcRelContainedInSpatialStructure",
-								field: "RelatedElements",
-								includes: [
-									"IsDecomposedByDefine",
-									"ContainsElementsDefine",
-									"Representation"
-								]
+				if (project.schema == "ifc2x3tc1") {
+					var preLoadQuery = {
+						defines: {
+							Representation: {
+								type: "IfcProduct",
+								field: "Representation"
+							},
+							ContainsElementsDefine: {
+								type: "IfcSpatialStructureElement",
+								field: "ContainsElements",
+								include: {
+									type: "IfcRelContainedInSpatialStructure",
+									field: "RelatedElements",
+									includes: [
+										"IsDecomposedByDefine",
+										"ContainsElementsDefine",
+										"Representation"
+									]
+								}
+							},
+							IsDecomposedByDefine: {
+								type: "IfcObjectDefinition",
+								field: "IsDecomposedBy",
+								include: {
+									type: "IfcRelDecomposes",
+									field: "RelatedObjects",
+									includes: [
+										"IsDecomposedByDefine",
+										"ContainsElementsDefine",
+										"Representation"
+									]
+								}
 							}
 						},
-						IsDecomposedByDefine: {
-							type: "IfcObjectDefinition",
-							field: "IsDecomposedBy",
-							include: {
-								type: "IfcRelDecomposes",
-								field: "RelatedObjects",
+						queries: [
+						    {
+								type: "IfcProject",
 								includes: [
 									"IsDecomposedByDefine",
-									"ContainsElementsDefine",
-									"Representation"
+									"ContainsElementsDefine"
 								]
+						    },
+						    {
+						    	type: "IfcRepresentation",
+						    	includeAllSubtypes: true
+						    },
+						    {
+						    	type: "IfcProductRepresentation"
+						    },
+						    {
+						    	type: "IfcPresentationLayerWithStyle"
+						    },
+						    {
+						    	type: "IfcProduct",
+						    	includeAllSubtypes: true
+						    },
+						    {
+						    	type: "IfcProductDefinitionShape"
+						    },
+						    {
+						    	type: "IfcPresentationLayerAssignment"
+						    },
+						    {
+						    	type: "IfcRelAssociatesClassification",
+						    	includes: [
+						    		{
+						    			type: "IfcRelAssociatesClassification",
+						    			field: "RelatedObjects"
+						    		},
+						    		{
+						    			type: "IfcRelAssociatesClassification",
+						    			field: "RelatingClassification"
+						    		}
+						    	]
+						    },
+						    {
+						    	type: "IfcSIUnit"
+						    },
+						    {
+						    	type: "IfcPresentationLayerAssignment"
+						    }
+						]
+					};
+				} else {
+					var preLoadQuery = {
+						defines: {
+							Representation: {
+								type: "IfcProduct",
+								field: "Representation"
+							},
+							ContainsElementsDefine: {
+								type: "IfcSpatialStructureElement",
+								field: "ContainsElements",
+								include: {
+									type: "IfcRelContainedInSpatialStructure",
+									field: "RelatedElements",
+									includes: [
+										"IsDecomposedByDefine",
+										"ContainsElementsDefine",
+										"Representation"
+									]
+								}
+							},
+							IsDecomposedByDefine: {
+								type: "IfcObjectDefinition",
+								field: "IsDecomposedBy",
+								include: {
+									type: "IfcRelAggregates",
+									field: "RelatedObjects",
+									includes: [
+										"IsDecomposedByDefine",
+										"ContainsElementsDefine",
+										"Representation"
+									]
+								}
 							}
-						}
-					},
-					queries: [
-					    {
-							type: "IfcProject",
-							includes: [
-								"IsDecomposedByDefine",
-								"ContainsElementsDefine"
-							]
-					    },
-					    {
-					    	type: "IfcRepresentation",
-					    	includeAllSubtypes: true
-					    },
-					    {
-					    	type: "IfcProductRepresentation"
-					    },
-					    {
-					    	type: "IfcPresentationLayerWithStyle"
-					    },
-					    {
-					    	type: "IfcProduct",
-					    	includeAllSubtypes: true
-					    },
-					    {
-					    	type: "IfcProductDefinitionShape"
-					    },
-					    {
-					    	type: "IfcPresentationLayerAssignment"
-					    },
-					    {
-					    	type: "IfcRelAssociatesClassification",
-					    	includes: [
-					    		{
-					    			type: "IfcRelAssociatesClassification",
-					    			field: "RelatedObjects"
-					    		},
-					    		{
-					    			type: "IfcRelAssociatesClassification",
-					    			field: "RelatingClassification"
-					    		}
-					    	]
-					    },
-					    {
-					    	type: "IfcSIUnit"
-					    },
-					    {
-					    	type: "IfcPresentationLayerAssignment"
-					    }
-					]
-				};
-				
+						},
+						queries: [
+						    {
+								type: "IfcProject",
+								includes: [
+									"IsDecomposedByDefine",
+									"ContainsElementsDefine"
+								]
+						    },
+						    {
+						    	type: "IfcRepresentation",
+						    	includeAllSubtypes: true
+						    },
+						    {
+						    	type: "IfcProductRepresentation"
+						    },
+						    {
+						    	type: "IfcPresentationLayerWithStyle"
+						    },
+						    {
+						    	type: "IfcProduct",
+						    	includeAllSubtypes: true
+						    },
+						    {
+						    	type: "IfcProductDefinitionShape"
+						    },
+						    {
+						    	type: "IfcPresentationLayerAssignment"
+						    },
+						    {
+						    	type: "IfcRelAssociatesClassification",
+						    	includes: [
+						    		{
+						    			type: "IfcRelAssociatesClassification",
+						    			field: "RelatedObjects"
+						    		},
+						    		{
+						    			type: "IfcRelAssociatesClassification",
+						    			field: "RelatingClassification"
+						    		}
+						    	]
+						    },
+						    {
+						    	type: "IfcSIUnit"
+						    },
+						    {
+						    	type: "IfcPresentationLayerAssignment"
+						    }
+						]
+					};
+				}
 				model.queryNew(preLoadQuery, function(loaded){
 				}).done(function(){
 					console.timeEnd("preloadModel");
@@ -299,17 +383,18 @@ function Project(containerDiv, main, project) {
 			containerDiv.find(".navigatorWrapper").load("navigator.html", function(){
 				othis.navigator = new Navigator($(this), othis);
 				othis.navigator.load().done(function(){
-					othis.navigator.projecttree.addMenuItem("Add sub project", function(){
+					othis.navigator.projecttree.addMenuItem("Add sub project", "btnAddProject", function(){
 						Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: othis.navigator.projecttree.selectedNode.poid}, function(project){
 							main.showAddProject(null, project);
 						});
 					});
-					othis.navigator.projecttree.addMenuItem("Add service", function(){
+					othis.navigator.projecttree.addMenuItem("Add service", "btnAddService", function(){
 						othis.rightPanel.showAddService(othis.navigator.projecttree.selectedNode.project, null, function(){
 							othis.rightPanel.loadServices();
 						});
 					});
-					othis.navigator.projecttree.addMenuItem("Checkin...", function(){
+					othis.navigator.projecttree.addMenuDivider();
+					othis.navigator.projecttree.addMenuItem("Checkin...", "btnCheckin", function(){
 						Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: othis.navigator.projecttree.selectedNode.poid}, function(project){
 							main.showCheckinPopup(project, function(){
 								Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectSmallByPoid", {poid: othis.navigator.projecttree.selectedNode.poid}, function(projectSmall){
@@ -318,7 +403,7 @@ function Project(containerDiv, main, project) {
 							});
 						});
 					}).find("a").prepend("<i class=\"glyphicon glyphicon-cloud-upload\"></i> ");
-					othis.navigator.projecttree.addMenuItem("Download...", function(){
+					othis.navigator.projecttree.addMenuItem("Download...", "btnDownload", function(){
 						var list = [];
 						othis.navigator.projecttree.gatherRoidList(othis.navigator.projecttree.selectedNode, list);
 						main.showDownloadRevisionsPopup(list);

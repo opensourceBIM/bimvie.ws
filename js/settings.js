@@ -34,6 +34,27 @@ var Settings = {
 	        "btnListUsers"
 		];
 	},
+	getVersion: function(successCallback){
+		// Sends back the version to the successCallback, default case would be to assume BIMserver to be running on the same webserver (hence asking for the plugin.version resource)
+		// When running BIMvie.ws on a different server, replace this with a callback with a fixed version
+		// This version is usually used for the invalidation of the caching of BIMvie.ws resources
+
+		var myRequest = new XMLHttpRequest();
+		myRequest.onreadystatechange = function() {
+			if (myRequest.readyState != 4)  {
+				// We are waiting for a readyState 4 here
+				return;
+			}
+			if (myRequest.status != 200)  {
+				successCallback(new Date().getTime());
+				return;
+			} else {
+				successCallback(JSON.parse(myRequest.responseText).version);
+			}
+		};
+		myRequest.open("GET", Global.baseDir + "plugin.version", true);
+		myRequest.send();
+	},
 	usableBimServerVersion: function(version) {
 		return (version.major == 1 && version.minor == 3) || (version.major == 1 && version.minor == 4);
 	},

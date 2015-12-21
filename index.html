@@ -59,7 +59,6 @@
 			    baseCssDir + "magic-bootstrap-min.css?_v=" + Global.version
 			], function(){});
 			
-			LazyLoad.js([baseJsDir + "settings.js?_v=" + Global.version], function(){
 				var jsToLoad = [
 				        		baseJsDir + "jquery-2.1.3.min.js?_v=" + Global.version, 
 				       		    baseJsDir + "main.js?_v=" + Global.version, 
@@ -372,26 +371,17 @@
 				    			load();
 				    		}, function (err) {
 				    			console.log(err);
-				    		});			
-			});
+				    		});	
 		}
+
+		// Settings.js is never cached
+		LazyLoad.js([baseJsDir + "settings.js?_v=" + new Date().getTime()], function(){
+			Settings.getVersion(function(version){
+				Global.version = version;
+				loadResources();
+			});
+		});
 		
-		var myRequest = new XMLHttpRequest();
-		myRequest.onreadystatechange = function() {
-			if (myRequest.readyState != 4)  {
-				return;
-			}
-			if (myRequest.status != 200)  {
-				Global.version = new Date().getTime();
-				loadResources();
-				return;
-			} else {
-				Global.version = JSON.parse(myRequest.responseText).version;
-				loadResources();
-			}
-		};
-		myRequest.open("GET", Global.baseDir + "plugin.version", true);
-		myRequest.send();
 	</script>
   </body>
 </html>

@@ -1,8 +1,8 @@
 <div class="query2">
+	<div class="alert errorsDiv ih"></div>
 	<form>
 		<div class="form-group">
 			<select class="form-control">
-				<option>Select a query or create your own</option>
 			</select>
 		</div>
 		<div class="form-group">
@@ -20,7 +20,7 @@ function Query2(cd, parent) {
 	var o = this;
 	o.roids = [];
 	
-	var queries = {
+	o.queriesIfc2x3tc1 = {
 		AllObjects: {
 			type: "IfcProduct",
 			includeAllSubtypes: true
@@ -134,12 +134,119 @@ function Query2(cd, parent) {
 		}
 	};
 	
-	for (var queryKey in queries) {
-	    if (queries.hasOwnProperty(queryKey)) {
-	    	var option = $("<option>" + queryKey + "</option>");
-	    	cd.find("select").append(option);
-	    }
-	}
+	o.queriesIfc4 = {
+		AllObjects: {
+			type: "IfcProduct",
+			includeAllSubtypes: true
+		},
+		AllWalls: {
+			type: "IfcWall",
+			includeAllSubtypes: true
+		},
+		AllWallsIncludingDecomposition: {
+			type: "IfcWall",
+			includeAllSubtypes: true,
+			includes: ["ifc4stdlib:ContainedInStructure", "ifc4stdlib:OwnerHistory", "ifc4stdlib:Representation", "ifc4stdlib:ObjectPlacement"]
+		},
+		AllWallsIncludingWindowsAndDoors: {
+			type: "IfcWall",
+			includeAllSubtypes: true,
+			include: {
+				type: "IfcWall",
+				field: "HasOpenings",
+				include: {
+					type: "IfcRelVoidsElement",
+					field: "RelatedOpeningElement",
+					include: {
+						type: "IfcOpeningElement",
+						field: "HasFillings",
+						include: {
+							type: "IfcRelFillsElement",
+							field: "RelatedBuildingElement"
+						}
+					}
+				}
+			}
+		},
+		AllWallsIncludingWindows: {
+			type: "IfcWall",
+			includeAllSubtypes: true,
+			include: {
+				type: "IfcWall",
+				field: "HasOpenings",
+				include: {
+					type: "IfcRelVoidsElement",
+					field: "RelatedOpeningElement",
+					include: {
+						type: "IfcOpeningElement",
+						field: "HasFillings",
+						include: {
+							type: "IfcRelFillsElement",
+							field: "RelatedBuildingElement",
+							outputType: "IfcWindow"
+						}
+					}
+				}
+			}
+		},
+		AllWallsAndSlabs: {
+			types: ["IfcWall", "IfcSlab"],
+			includeAllSubtypes: true
+		},
+		SpecificWallsByGuid: {
+			type: "IfcWall",
+			includeAllSubtypes: true,
+			guids: ["2udBPbKibCZ8zbfpJmtDTM", "2V1MCFZRf1GA2ZyRufjYwX", "2oOoWKmmfChQTLCBzuB3$b"]
+		},
+		SpecificBuildingStoreyIncContains: {
+			type: "IfcBuildingStorey",
+			guid: "25SMdCQszBi9al8gnrh8LV",
+			include: {
+				type: "IfcBuildingStorey",
+				field: "ContainsElements",
+				include: {
+					type: "IfcRelContainedInSpatialStructure",
+					field: "RelatedElements"
+				}
+			}
+		},
+		ExternalWalls: {
+			type: "IfcWall",
+			includeAllSubtypes: true,
+			properties: {
+				IsExternal: true
+			}
+		},
+		ThermalTransmittance: {
+			type: "IfcWall",
+			includeAllSubtypes: true,
+			properties: {
+				ThermalTransmittance: {
+					comparator: ">",
+					value: 0.2
+				}
+			}
+		},
+		IfcPresentationLayerAssignment: {
+			type: "IfcPresentationLayerAssignment",
+			name: "Räume",
+			include: {
+				type: "IfcPresentationLayerAssignment",
+				field: "AssignedItems"
+			}
+		},
+		ObjectInBoundingBox: {
+			type: "IfcFurnishingElement",
+			inBoundingBox: {
+				x: 0,
+				y: 0,
+				z: 0,
+				width: 5,
+				height: 5,
+				depth: 5
+			}
+		}
+	};
 	
 	this.show = function(){
 		cd.show();
@@ -150,12 +257,25 @@ function Query2(cd, parent) {
 	};
 	
 	cd.find("select").change(function(){
-		var query = queries[cd.find("select").val()];
+		var query = o.queries[cd.find("select").val()];
 		var json = JSON.stringify(query, null, "  ");
 		cd.find("textarea").val(json);
 	});
 	
 	this.addRevision = function(project, roid, types){
+		o.schema = project.schema;
+		if (o.schema == "ifc2x3tc1") {
+			o.queries = o.queriesIfc2x3tc1;
+		} else if (o.schema == "ifc4") {
+			o.queries = o.queriesIfc4;
+		}
+		cd.find("select").append("<option>Select a query or create your own</option>");
+		for (var queryKey in o.queries) {
+		    if (o.queries.hasOwnProperty(queryKey)) {
+		    	var option = $("<option>" + queryKey + "</option>");
+		    	cd.find("select").append(option);
+		    }
+		}
 		o.roids.push(roid);
 	};
 	
@@ -165,6 +285,16 @@ function Query2(cd, parent) {
 	this.unloadRevision = function(poid, roid) {
 	};
 	
+	this.parseJson = function(){
+		try {
+			var jsonObject = JSON.parse(cd.find("textarea").val());
+			return jsonObject;
+		} catch (error) {
+			cd.find(".errorsDiv").addClass("alert-danger").html(error).show();
+		}
+		return null;
+	};
+	
 	cd.find(".queryAddBtn").click(function(e){
 		e.preventDefault();
 		o.roids.forEach(function(roid){
@@ -172,13 +302,19 @@ function Query2(cd, parent) {
 			if (model != null) {
 				model.reset();
 				var oids = [];
-				model.queryNew(JSON.parse(cd.find("textarea").val()), function(loaded){
+				var jsonObject = o.parseJson();
+				if (jsonObject == null) {
+					return;
+				}
+				model.queryNew(jsonObject, function(loaded){
 					if (loaded.getType() != "IfcOpeningElement") {
 						oids.push(loaded.oid);
 						loaded.trans.mode = 0;
 					}
 				}).done(function(){
 					parent.setObjectVisibility(roid, oids, 0);
+//				}).error(function(error){
+//					cd.find(".errorsDiv").addClass("alert-danger").html(error).show();
 				});
 			}
 		});
@@ -188,6 +324,12 @@ function Query2(cd, parent) {
 		e.preventDefault();
 		var div = $("<div class=\"modal fade\">");
 		$(document.body).append(div);
+		
+		var jsonObject = o.parseJson();
+		if (jsonObject == null) {
+			return;
+		}
+		
 		var params = {
 			downloadType: "downloadByNewJsonQuery",
 			allowCheckouts: false,
@@ -210,7 +352,11 @@ function Query2(cd, parent) {
 			if (model != null) {
 				model.reset();
 				var oids = [];
-				model.queryNew(JSON.parse(cd.find("textarea").val()), function(loaded){
+				var jsonObject = o.parseJson();
+				if (jsonObject == null) {
+					return;
+				}
+				model.queryNew(jsonObject, function(loaded){
 					if (loaded.getType() != "IfcOpeningElement") {
 						oids.push(loaded.oid);
 						delete oldOids[loaded.oid];
