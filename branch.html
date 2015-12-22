@@ -61,8 +61,8 @@ function Branch(containerDiv, main, roid) {
 				destPoid: containerDiv.find(".projectsSelect").val(),
 				comment: containerDiv.find(".comment").val(),
 				sync: true
-			}, function(longId){
-				Global.bimServerApi.call("ServiceInterface", "getLongActionState", {actionId: longId}, function(data){
+			}, function(topicId){
+				Global.bimServerApi.call("ServiceInterface", "getLongActionState", {topicId: topicId}, function(data){
 					console.log(data.state);
 				});
 			});
@@ -72,8 +72,8 @@ function Branch(containerDiv, main, roid) {
 				projectName: containerDiv.find(".projectName").val(),
 				comment: containerDiv.find(".comment").val(),
 				sync: true
-			}, function(longId){
-				Global.bimServerApi.call("ServiceInterface", "getLongActionState", {actionId: longId}, function(data){
+			}, function(topicId){
+				Global.bimServerApi.call("ServiceInterface", "getLongActionState", {topicId: topicId}, function(data){
 					console.log(data.state);
 				});
 			});
