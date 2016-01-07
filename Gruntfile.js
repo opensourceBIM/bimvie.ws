@@ -36,7 +36,7 @@ module.exports = function(grunt) {
 							expand : true,
 							src : [ "fonts/**", "img/**" ],
 							dest : "output/"
-						}
+						}]
 					}
 				},
 				zip: {
