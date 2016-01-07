@@ -24,7 +24,7 @@ module.exports = function(grunt) {
 					},
 					target : {
 						files : {
-							"output/bimviews.css" : [ "css/*.css" ]
+							"output/bimviews.min.css" : [ "css/*.css" ]
 						}
 					}
 				},
@@ -40,7 +40,7 @@ module.exports = function(grunt) {
 					}
 				},
 				zip: {
-					"output/bimviews-%VERSION%.zip": ["output/*"]
+					"output/bimviews-%VERSION%.zip": ["output/**"]
 				},
 				"github-release" : {
 					options : {
