@@ -1,7 +1,7 @@
 {
-  "name": "bimserverapi",
+  "name": "bimviews",
   "version": "%VERSION%",
-  "description": "A JavaScript API for the OpenSource BIMserver",
+  "description": "BIM Views is a JavaScript/HTML frontend to BIMserver",
   "author": {
     "name": "Ruben de Laat",
     "email": "ruben@logic-labs.nl"
@@ -10,16 +10,17 @@
   "files": [
     "js"
   ],
-  "main": "js/bimserverapi_BimServerApi.js",
+  "main": "index.html",
   "repository": {
     "type": "git",
-    "url": "https://github.com/opensourceBIM/BIMserver-JavaScript-API"
+    "url": "https://github.com/opensourceBIM/bimvie.ws"
   },
   "bugs": {
-    "url": "https://github.com/opensourceBIM/BIMserver-JavaScript-API/issues"
+    "url": "https://github.com/opensourceBIM/bimvie.ws/issues"
   },
   "keywords": [],
   "dependencies": {
+    "bimserverapi": "*",
     "xhr2": "*",
     "requirejs": "*"
   },

@@ -14,7 +14,7 @@ module.exports = function(grunt) {
 				uglify : {
 					dist : {
 						files : {
-							"output/bimviews-%VERSION%.min.js" : [ "tmp/bimviews-%VERSION%.js" ]
+							"output/js/bimviews.min.js" : [ "tmp/bimviews.js" ]
 						}
 					}
 				},
@@ -25,7 +25,7 @@ module.exports = function(grunt) {
 					},
 					target : {
 						files : {
-							"output/bimviews.min.css" : [ "css/*.css" ]
+							"output/css/bimviews.min.css" : [ "css/*.css" ]
 						}
 					}
 				},
