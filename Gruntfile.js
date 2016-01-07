@@ -3,17 +3,18 @@ module.exports = function(grunt) {
 	grunt
 			.initConfig({
 				pkg : grunt.file.readJSON("package.json"),
+				clean: ["output"],
 				concat : {
 					js : {
 						files : {
-							"output/bimviews-%VERSION%.js" : [ "js/*.js" ]
+							"tmp/bimviews-%VERSION%.js" : [ "js/*.js" ]
 						},
 					}
 				},
 				uglify : {
 					dist : {
 						files : {
-							"output/bimviews-%VERSION%.min.js" : [ "output/bimviews-%VERSION%.js" ]
+							"output/bimviews-%VERSION%.min.js" : [ "tmp/bimviews-%VERSION%.js" ]
 						}
 					}
 				},
@@ -69,7 +70,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-contrib-uglify");
 	grunt.loadNpmTasks("grunt-contrib-cssmin");
 	grunt.loadNpmTasks("grunt-contrib-copy");
+	grunt.loadNpmTasks("grunt-contrib-clean");
 	grunt.loadNpmTasks("grunt-zip");
 
-	grunt.registerTask("default", [ "concat", "uglify", "cssmin", "copy", "zip", "github-release" ]);
+	grunt.registerTask("default", [ "clean", "concat", "uglify", "cssmin", "copy", "zip", "github-release" ]);
 };
