@@ -29,7 +29,8 @@
     "grunt-contrib-nodeunit": "*",
     "grunt-contrib-uglify": "*",
     "grunt-contrib-concat": "*",
-    "grunt-contrib-cssmin": "*",
+    "grunt-contrib-css": "*",
+    "grunt-contrib-copy": "*",
     "grunt-github-releaser": "*",
     "grunt-zip": "*"
   },
