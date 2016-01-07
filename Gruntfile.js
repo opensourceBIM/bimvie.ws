@@ -37,7 +37,7 @@ module.exports = function(grunt) {
 							src : [ "fonts/**", "img/**" ],
 							dest : "output/"
 						}
-					},
+					}
 				},
 				zip: {
 					"output/bimviews-%VERSION%.zip": ["output/*"]
