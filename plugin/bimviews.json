@@ -1,0 +1,7 @@
+{
+	"identifier": "bimviews",
+	"version": "%VERSION%",
+	"description": "BIM Views is a JavaScript/HTML frontend to BIMserver",
+	"defaultName": "BIM Views",
+	"defaultContextPath": "bimviews"
+}

@@ -2,7 +2,7 @@
 <PluginDescriptor>
 	<PluginImplementation>
 		<interfaceClass>org.bimserver.plugins.web.WebModulePlugin</interfaceClass>
-		<implementationClass>org.bimserver.bimviews.BimViewsWebModulePlugin</implementationClass>
+		<implementationJson>bimviews.json</implementationJson>
 		<enabled>true</enabled>
 	</PluginImplementation>
 </PluginDescriptor>

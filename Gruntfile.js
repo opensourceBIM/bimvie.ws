@@ -35,6 +35,12 @@ module.exports = function(grunt) {
 							expand : true,
 							src : [ "fonts/**", "img/**" ],
 							dest : "output/"
+						}, {
+							src: ["*.html"],
+							dest: "output/"
+						}, {
+							src: ["plugin/**"],
+							dest: "output/"
 						}]
 					}
 				},
