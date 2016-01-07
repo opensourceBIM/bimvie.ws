@@ -1,0 +1,41 @@
+{
+  "name": "bimserverapi",
+  "version": "%VERSION%",
+  "description": "A JavaScript API for the OpenSource BIMserver",
+  "author": {
+    "name": "Ruben de Laat",
+    "email": "ruben@logic-labs.nl"
+  },
+  "scripts": {},
+  "files": [
+    "js"
+  ],
+  "main": "js/bimserverapi_BimServerApi.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensourceBIM/BIMserver-JavaScript-API"
+  },
+  "bugs": {
+    "url": "https://github.com/opensourceBIM/BIMserver-JavaScript-API/issues"
+  },
+  "keywords": [],
+  "dependencies": {
+    "xhr2": "*",
+    "requirejs": "*"
+  },
+  "devDependencies": {
+    "grunt": "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-nodeunit": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-concat": "*",
+    "grunt-github-releaser": "*",
+    "grunt-zip": "*"
+  },
+  "preferGlobal": true,
+  "private": false,
+  "analyze": true,
+  "license": "AGPL-3.0",
+  "readmeFilename": "README.md",
+  "tonicExampleFilename": "tonicExample.js"
+}
