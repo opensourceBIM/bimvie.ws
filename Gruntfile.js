@@ -31,9 +31,7 @@ module.exports = function(grunt) {
 				},
 				copy : {
 					main : {
-						files : [
-						// includes files within path and its sub-directories
-						{
+						files : [{
 							expand : true,
 							src : [ "fonts/**", "img/**" ],
 							dest : "output/"
@@ -41,7 +39,11 @@ module.exports = function(grunt) {
 					}
 				},
 				zip: {
-					"output/bimviews-%VERSION%.zip": ["output/**"]
+					"using-cwd": {
+						cwd: "output",
+						src: ["output/**"],
+						dest: "output/bimviews-%VERSION%.zip"
+					}
 				},
 				"github-release" : {
 					options : {
