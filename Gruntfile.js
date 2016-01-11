@@ -7,7 +7,7 @@ module.exports = function(grunt) {
 				concat : {
 					js : {
 						files : {
-							"tmp/bimviews.js" : [ "js/*.js", "node_modules/bimserverapi/*.js" ]
+							"tmp/bimviews.js" : [ "js/*.js", "node_modules/bimserverapi/js/*.js" ]
 						},
 					}
 				},
