@@ -4,6 +4,7 @@
 			<tr>
 				<th>Name</th>
 				<th>Description</th>
+				<th>Version</th>
 				<th>Enabled</th>
 			</tr>
 		</thead>
@@ -40,6 +41,7 @@ function Plugins(main, serversettings) {
 		tr.data("plugin", plugin);
 		tr.append("<td>" + plugin.simpleName + "</td>");
 		tr.append("<td>" + plugin.description + "</td>");
+		tr.append("<td>" + plugin.version + "</td>");
 		tr.append("<td><input type=\"checkbox\"/></td>");
 		if (plugin.enabled) {
 			tr.find("input").attr("checked", "checked");

@@ -4,7 +4,8 @@
 			<ul class="nav nav-tabs" style="width: 100%"> 
 				<li class="basicServerSettingsLink active"><a>Server Settings</a></li>
 				<li class="migrationsLink"><a>Migrations</a></li>
-				<li class="pluginsLink"><a>Plugins</a></li>
+				<li class="installedPluginBundlesLink"><a>Installed Plugin Bundles</a></li>
+				<li class="availablePluginBundlesLink"><a>Available Plugin Bundles</a></li>
 				<li class="webModulesLink"><a>Web Modules</a></li>
 				<li class="extendedDataSchemasLink"><a>Extended Data Schemas</a></li>
 				<li class="modelCheckersLink"><a>Model Checkers</a></li>
@@ -85,6 +86,18 @@
 			}, callback);
 		};
 
+		this.showInstalledPluginBundles = function(callback) {
+			othis.pageChanger.changePage($(".installedPluginBundlesLink"), "installedpluginbundles.html", function(){
+				return new InstalledPluginBundles(main, othis);
+			}, callback);
+		};
+		
+		this.showAvailablePluginBundles = function(callback) {
+			othis.pageChanger.changePage($(".availablePluginBundlesLink"), "availablepluginbundles.html", function(){
+				return new AvailablePluginBundles(main, othis);
+			}, callback);
+		};
+
 		this.showWebModules = function(callback) {
 			othis.pageChanger.changePage($(".webModulesLink"), "webmodules.html", function(){
 				pushHistory({page: "ServerSettings", subpage: "WebModules"}, "Server Settings");
@@ -121,6 +134,10 @@
 				othis.showMigrations();
 			} else if (history.subpage == "Plugins") {
 				othis.showPlugins();
+			} else if (history.subpage == "AvailablePluginBundles") {
+				othis.showAvailablePluginBundles();
+			} else if (history.subpage == "InstalledPluginBundles") {
+				othis.showInstalledPluginBundles();
 			} else if (history.subpage == "WebModules") {
 				othis.showWebModules();
 			} else if (history.subpage == "ModelCheckers") {
@@ -136,6 +153,12 @@
 
 		$(".serversettings .basicServerSettingsLink").click(function(){othis.showBasicServerSettings(null, true)});
 		$(".serversettings .migrationsLink").click(function(){othis.showMigrations(null, true)});
+		$(".serversettings .installedPluginBundlesLink").click(function(){
+			othis.showInstalledPluginBundles();
+		});
+		$(".serversettings .availablePluginBundlesLink").click(function(){
+			othis.showAvailablePluginBundles();
+		});
 		$(".serversettings .pluginsLink").click(function(){
 			pushHistory({page: "ServerSettings", subpage: "Plugins"}, "Server Settings");
 			othis.showPlugins(null, true)
