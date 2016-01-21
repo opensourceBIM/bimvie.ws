@@ -1,0 +1,76 @@
+<div class="installplugin" bundle>
+	<h3>Install Plugin Bundle <a class="helpBtn" title="Help"><span class="glyphicon glyphicon-question-sign"></span></a></h3>
+	<div class="panel panel-default helpDiv ih">
+  		<div class="panel-body">
+			<p>A plugin bundle consists of 1 or more plugins</p>
+		</div>
+	</div>
+	<h4>Plugin Bundle Information</h4>
+	<table class="table infoTable">
+		<thead></thead>
+		<tbody></tbody>
+	</table>
+	<h4>Plugins</h4>
+	<table class="table pluginsTable">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Type</th>
+				<th>Description</th>
+				<th>Enable</th>
+				<th>All users <button type="button" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">Popover on top</button></th>
+				<th>New users</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+	<button class="btn btn-primary btnInstall">Install</button>
+</div>
+<script>
+	function InstallPluginBundle(cd, pluginBundle, version) {
+		var o = this;
+
+		console.log(pluginBundle, version);
+
+		this.show = function(){};
+		this.hide = function(){};
+		
+		cd.find(".infoTable tbody").append("<tr title=\"Maven GroupID: " + version.groupId + "\"><td>Organization</td><td>" + pluginBundle.organization + "</td></tr>");
+		cd.find(".infoTable tbody").append("<tr title=\"Maven ArtifactID: " + version.artifactId + "\"><td>Name</td><td>" + pluginBundle.name + "</td></tr>");
+		cd.find(".infoTable tbody").append("<tr><td>Description</td><td>" + version.description + "</td></tr>");
+		cd.find(".infoTable tbody").append("<tr><td>Version</td><td>" + version.version + "</td></tr>");
+		
+		Global.bimServerApi.call("PluginInterface", "getPluginInformation", {
+			repository: version.repository,
+			groupId: version.groupId,
+			artifactId: version.artifactId,
+			version: version.version
+		}, function(data){
+			console.log(data);
+			data.forEach(function(plugin){
+				var tr = $("<tr>");
+				tr.append("<td>" + plugin.name + "</td>");
+				tr.append("<td>" + plugin.type + "</td>");
+				tr.append("<td>" + plugin.description + "</td>");
+				tr.append("<td><input type=\"checkbox\" checked=\"checked\"></td>");
+				tr.append("<td><input type=\"checkbox\" checked=\"checked\"></td>");
+				tr.append("<td><input type=\"checkbox\" checked=\"checked\"></td>");
+				cd.find(".pluginsTable tbody").append(tr);
+			});
+		});
+		
+		this.install = function(){
+			Global.bimServerApi.callWithFullIndication("PluginInterface", "installPlugin", {
+				repository: version.repository,
+				groupId: version.groupId,
+				artifactId: version.artifactId,
+				version: version.version
+			}, function(){
+				tr.remove();
+			});
+		};
+		cd.find(".helpBtn").click(function(){
+			cd.find(".helpDiv").toggle();
+		});
+	}
+</script>

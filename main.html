@@ -29,6 +29,8 @@
 							<li><a class="btnBasicServerSettings">Server Settings</a></li>
 							<li><a class="btnMigrations">Migrations</a></li>
 							<li><a class="btnPlugins">Plugins</a></li>
+							<li><a class="btnInstalledPluginBundles">Installed Plugin Bundles</a></li>
+							<li><a class="btnAvailablePluginBundles">Available Plugin Bundles</a></li>
 							<li><a class="btnWebModules">Web Modules</a></li>
 							<li><a class="btnExtendedDataSchemas">Extended Data Schemas</a></li>
 							<li><a class="btnModelCheckers">Model Checkers</a></li>
@@ -459,6 +461,16 @@ function Main(address, user) {
 	$(".btnPlugins").click(function(){
 		othis.showServerSettings(false, function(){
 			this.showPlugins();
+		});
+	});
+	$(".btnInstalledPluginBundles").click(function(){
+		othis.showServerSettings(false, function(){
+			this.showInstalledPluginBundles();
+		});
+	});
+	$(".btnAvailablePluginBundles").click(function(){
+		othis.showServerSettings(false, function(){
+			this.showAvailablePluginBundles();
 		});
 	});
 	$(".btnWebModules").click(function(){

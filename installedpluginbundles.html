@@ -1,0 +1,78 @@
+<div class="installedpluginbundles">
+	<h3>Installed Plugin Bundles <a class="helpBtn" title="Help"><span class="glyphicon glyphicon-question-sign"></span></a></h3>
+	<div class="panel panel-default helpDiv ih">
+  		<div class="panel-body">
+			<p>Only plugin bundles are shown that have no installed versions on this BIMserver. To update installed plugins, goto <a class="installedPluginsBtn">Installed Plugin Bundles</a>.</p>
+			<p>Plugins are discovered by connecting to a repository, you can change the repository in <a class="btnServerSettings">Server Settings</a></p>.
+		</div>
+	</div>
+	<table class="table">
+		<thead>
+			<tr><th>Organization</th><th>Name</th><th>Description</th><th>Version</th><th>Uninstall</th></tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+</div>
+<script>
+function InstalledPluginBundles(main, serverSettings, cd) {
+	var o = this;
+	
+	this.show = function(){};
+	this.hide = function(){};
+	
+	Global.bimServerApi.callWithFullIndication("PluginInterface", "getInstalledPlugins", {}, function(data){
+		cd.find("table tbody tr").remove();
+		data.forEach(function(plugin){
+			var tr = $("<tr>");
+			
+			var latest = plugin.latestVersion;
+			
+			tr.append("<td>" + plugin.organization + "</td>");
+			tr.append("<td>" + plugin.name + "</td>");
+			tr.append("<td>" + latest.description + "</td>");
+			
+			var versionTd = $("<td>");
+			var versionSelect = $("<select class=\"form-control\">");
+			versionTd.append(versionSelect);
+			plugin.availableVersions.forEach(function(version){
+				var text = version.version;
+				if (version.version == latest.version) {
+					text += " (latest)";
+				}
+				if (version.mismatch) {
+					text += " (UNTESTED)";
+				}
+				var option = $("<option val=\"" + version.version + "\">" + text + "</option>");
+				versionSelect.append(option);
+			});
+			
+			tr.data("version", plugin.latestVersion);
+			
+			tr.append(versionTd);
+
+			var uninstallTd = $("<td>");
+			var uninstallBtn = $("<button class=\"btn btn-primary\">Uninstall</button>");
+			uninstallBtn.click(function(){
+				var tr = $(this).parents("tr");
+				var version = tr.data("version");
+				Global.bimServerApi.callWithFullIndication("PluginInterface", "uninstallPlugin", {
+					repository: version.repository,
+					groupId: version.groupId,
+					artifactId: version.artifactId,
+					version: version.version
+				}, function(){
+					tr.remove();
+				});
+			});
+			uninstallTd.append(uninstallBtn);
+			tr.append(uninstallTd);
+
+			cd.find("table tbody").append(tr);
+		});
+	});
+	
+	cd.find(".helpBtn").click(function(){
+		cd.find(".helpDiv").toggle();
+	});
+}
+</script>
