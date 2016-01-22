@@ -3,6 +3,7 @@
 	<PluginImplementation>
 		<interfaceClass>org.bimserver.plugins.web.WebModulePlugin</interfaceClass>
 		<implementationJson>bimviews.json</implementationJson>
+		<description>BIMvie.ws</description>
 		<enabled>true</enabled>
 	</PluginImplementation>
 </PluginDescriptor>

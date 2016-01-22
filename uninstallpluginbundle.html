@@ -1,0 +1,28 @@
+<div class="uninstallpluginbundle">
+	<div class="alert alert-success ih">Plugin successfully uninstalled <a class="backBtn">Back to installed plugins</a></div>
+</div>
+<script>
+function UninstallPluginBundle(cd, serverSettings, pluginBundle, pluginBundleVersion) {
+	var o = this;
+	
+	this.show = function(){};
+	this.hide = function(){};
+	
+	this.uninstall = function(pluginBundleVersion){
+		Global.bimServerApi.call("PluginInterface", "uninstallPluginBundle", {
+			repository: pluginBundleVersion.repository,
+			groupId: pluginBundleVersion.groupId,
+			artifactId: pluginBundleVersion.artifactId,
+			version: pluginBundleVersion.version
+		}, function(){
+			cd.find(".alert-success").show();
+		});
+	};
+	
+	cd.find(".backBtn").click(function(){
+		serverSettings.showInstalledPluginBundles();
+	});
+	
+	o.uninstall(pluginBundleVersion);
+}
+</script>

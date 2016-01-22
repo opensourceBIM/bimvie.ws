@@ -6,7 +6,10 @@
 			<p>Plugins are discovered by connecting to a repository, you can change the repository in <a class="btnServerSettings">Server Settings</a></p>.
 		</div>
 	</div>
-	<table class="table">
+	<div class="none ih">
+		No plugins available on this repository that have not already been installed
+	</div>
+	<table class="table ih">
 		<thead>
 			<tr><th>Organization</th><th>Name</th><th>Description</th><th>Version</th><th>Install</th></tr>
 		</thead>
@@ -20,8 +23,14 @@ function AvailablePluginBundles(main, serverSettings, cd) {
 	this.show = function(){};
 	this.hide = function(){};
 	
-	Global.bimServerApi.callWithFullIndication("PluginInterface", "getAvailablePlugins", {}, function(data){
+	Global.bimServerApi.callWithFullIndication("PluginInterface", "getAvailablePluginBundles", {}, function(data){
 		cd.find("table tbody tr").remove();
+		if (data.length == 0) {
+			cd.find(".none").show();
+			cd.find("table").hide();
+		} else {
+			cd.find("table").show();
+		}
 		data.forEach(function(plugin){
 			var tr = $("<tr>");
 			
@@ -61,7 +70,7 @@ function AvailablePluginBundles(main, serverSettings, cd) {
 				var tr = $(this).parents("tr");
 				var plugin = tr.data("plugin");
 				var version = tr.data("version");
-				serverSettings.showInstallPlugin(plugin, version);
+				serverSettings.showInstallPluginBundle(plugin, version);
 			});
 			installTd.append(installBtn);
 			tr.append(installTd);

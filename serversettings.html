@@ -93,10 +93,24 @@
 			}, callback);
 		};
 
-		this.showInstallPlugin = function(plugin, version, callback) {
+		this.showInstallPluginBundle = function(pluginBundle, pluginBundleVersion, callback) {
 			othis.pageChanger.changePage($(".availablePluginBundlesLink"), "installpluginbundle.html", function(){
 				pushHistory({page: "ServerSettings", subpage: "InstallPluginBundle"}, "Server Settings");
-				return new InstallPluginBundle($(this), plugin, version);
+				return new InstallPluginBundle($(this), othis, pluginBundle, pluginBundleVersion);
+			}, callback);
+		};
+
+		this.showUpdatePluginBundle = function(pluginBundle, pluginBundleVersion, callback) {
+			othis.pageChanger.changePage($(".availablePluginBundlesLink"), "updatepluginbundle.html", function(){
+				pushHistory({page: "ServerSettings", subpage: "UpdatePluginBundle"}, "Server Settings");
+				return new UpdatePluginBundle($(this), pluginBundle, pluginBundleVersion);
+			}, callback);
+		};
+
+		this.showUninstallPluginBundle = function(pluginBundle, pluginBundleVersion, callback) {
+			othis.pageChanger.changePage($(".installedPluginBundlesLink"), "uninstallpluginbundle.html", function(){
+				pushHistory({page: "ServerSettings", subpage: "UninstallPluginBundle"}, "Server Settings");
+				return new UninstallPluginBundle($(this), othis, pluginBundle, pluginBundleVersion);
 			}, callback);
 		};
 		
