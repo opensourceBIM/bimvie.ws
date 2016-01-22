@@ -7,6 +7,13 @@
 			</div>
 		</div>
 		<div class="form-group">
+			<div class="col-lg-8">
+				<label class="checkbox"><a rel="tooltip" data-original-title="Only allow to install plugins that indicate to work with this version of BIMserver" data-placement="right">Strict plugin checking</a>
+					<input type="checkbox" class="strictPluginChecking">
+				</label>
+			</div>
+		</div>
+		<div class="form-group">
 			<label class="col-lg-2 control-label" for="siteAddress"><a rel="tooltip" data-original-title="Address where this BIMserver can primarily be found. Make sure you add a port number if the server is not running on port 80. Also include http:// or https://" data-placement="right">Site address</a></label>
 			<div class="col-lg-8">
 				<input type="text" class="form-control siteAddress" id="siteAddress" placeholder="Name">
@@ -226,6 +233,7 @@ function BasicServerSettings(main, serversettings) {
 			serverSettings.sendConfirmationEmailAfterRegistration = $(".basicserversettings .sendConfirmationEmailAfterRegistration").prop("checked");
 			serverSettings.sendEmailOnNewRevision = $(".basicserversettings .sendEmailOnNewRevision").prop("checked");
 			serverSettings.allowOnlyWhitelisted = $(".basicserversettings .allowOnlyWhitelisted").prop("checked");
+			serverSettings.pluginStrictVersionChecking = $(".basicserversettings .strictPluginChecking").prop("checked");
 			serverSettings.generateGeometryOnCheckin = $(".basicserversettings .generateGeometryCheckin").prop("checked");
 			Global.bimServerApi.callWithFullIndication("SettingsInterface", "setServerSettings", {serverSettings: serverSettings}, function(data){
 				othis.change = false;
@@ -277,6 +285,7 @@ function BasicServerSettings(main, serversettings) {
 			$(".basicserversettings .sendEmailOnNewRevision").prop("checked", data.sendEmailOnNewRevision);
 			$(".basicserversettings .allowOnlyWhitelisted").prop("checked", data.allowOnlyWhitelisted);
 			$(".basicserversettings .generateGeometryCheckin").prop("checked", data.generateGeometryOnCheckin);
+			$(".basicserversettings .strictPluginChecking").prop("checked", data.pluginStrictVersionChecking);
 			$(".basicserversettings .whiteListedDomains .whiteListedDomainDiv").remove();
 			data.whitelistedDomains.forEach(function(domain){
 				othis.addWhiteListedDomain(domain);

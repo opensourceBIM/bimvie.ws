@@ -42,7 +42,7 @@
 		cd.find(".infoTable tbody").append("<tr><td>Description</td><td>" + pluginBundleVersion.description + "</td></tr>");
 		cd.find(".infoTable tbody").append("<tr><td>Version</td><td>" + pluginBundleVersion.version + "</td></tr>");
 		
-		Global.bimServerApi.call("PluginInterface", "getPluginInformation", {
+		Global.bimServerApi.callWithFullIndication("PluginInterface", "getPluginInformation", {
 			repository: pluginBundleVersion.repository,
 			groupId: pluginBundleVersion.groupId,
 			artifactId: pluginBundleVersion.artifactId,

@@ -52,7 +52,10 @@ function Query(containerDiv, main, poid, roid) {
 	};
 	
 	this.queryEngineChange = function(){
-		othis.loadExampleKeys($(".query .queryEngineSelect").find(":selected").val());
+		var selected = $(".query .queryEngineSelect").find(":selected").val();
+		if (selected != null) {
+			othis.loadExampleKeys(selected);
+		}
 	};
 	
 	this.queryButtonClick = function(){
