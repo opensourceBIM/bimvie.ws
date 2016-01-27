@@ -101,7 +101,7 @@
 				</ul>
 			</div>
 			<div class="span10">
-				<div class="scenarioDetails initialhide">
+				<div class="scenarioDetails initialhide" id="scenarioDetails">
 					<h1 class="title"></h1>
 					<div class="pagination">
 						<ul>
@@ -261,6 +261,228 @@ LazyLoad.js([
 					}
 				]
 			}
+            ,
+            		{
+            		    name: "Get IfcSite, IfcBuilding, IfcBuildingStorey and IfcSpace and some properties, e.g. \"NetFloorArea\" of IfcSpace",
+            		    calls: [
+                            {
+                                id: "login",
+                                name: "Login",
+                                description: "First you will have to login, if you are already logged-in, you can skip this step",
+                                interface: "Bimsie1AuthInterface",
+                                method: "login"
+                            },
+                            {
+                                id: "getAllProjects",
+                                name: "Get all projects",
+                                description: "Get all projects; then you have to pick one Project Object-ID and one corresponding Revision-ID for use in next step (e.g. \"oid\": 1245185, \"lastRevisionId\": 1245187)",
+                                interface: "Bimsie1ServiceInterface",
+                                method: "getAllProjects",
+                                post: function (data, context) {
+                                    context.poid = data.oid;
+                                    context.roid = data.lastRevisionId;
+                                }
+                            },
+                            {
+                                id: "getProjectsByName",
+                                name: "Alternative: Get project by name",
+                                description: "Alternative: Get project by name; (e.g. \"B109-Architektur\"), then you have to pick one Revision-ID for use in next step, e.g. \"lastRevisionId\"",
+                                interface: "Bimsie1ServiceInterface",
+                                method: "getProjectsByName",
+                                pre: function (context, form) {
+                                    form.setFieldValue("name", "B109-Architektur");
+                                },
+                                post: function (data, context) {
+                                    context.roid = data.lastRevisionId; // e.g. "lastRevisionId": 2686979
+                                }
+                            },
+                            {
+                                id: "getAvailableClassesInRevision",
+                                name: "Get available classes in revision",
+                                description: "Check result for availability of \"IfcSite, IfcBuilding, IfcBuildingStorey and IfcSpace\" in revision",
+                                interface: "ServiceInterface",
+                                method: "getAvailableClassesInRevision",
+                                pre: function (context, form) {
+                                    form.setFieldValue("roid", context.roid);
+                                }
+                            },
+                            {
+                                id: "getDataObjectsByType_IfcSite",
+                                name: "Get available IfcSite(s)",
+                                description: "Get available IfcSite(s) in revision by using getDataObjectsByType (using packageName \"ifc2x3tc1\")",
+                                interface: "Bimsie1LowLevelInterface",
+                                method: "getDataObjectsByType",
+                                pre: function (context, form) {
+                                    form.setFieldValue("packageName", "ifc2x3tc1");
+                                    form.setFieldValue("roid", context.roid);
+                                    form.setFieldValue("className", "IfcSite");
+                                    $("#id_flat").prop("checked", true);
+                                },
+                                post: function (data, context) {
+                                    context.soid = data.oid; // e.g. "oid": 1573487
+                                }
+                            },
+                            {
+                                id: "getDataObjectsByType_IfcBuilding",
+                                name: "Get available IfcBuilding(s)",
+                                description: "Get available IfcBuilding(s) in revision by using getDataObjectsByType (using packageName \"ifc2x3tc1\") and use one building OID for the next step.",
+                                interface: "Bimsie1LowLevelInterface",
+                                method: "getDataObjectsByType",
+                                pre: function (context, form) {
+                                    form.setFieldValue("packageName", "ifc2x3tc1");
+                                    form.setFieldValue("roid", context.roid);
+                                    form.setFieldValue("className", "IfcBuilding");
+                                    $("#id_flat").prop("checked", true);
+                                },
+                                post: function (data, context) {
+                                    context.IfcBuilding_oid = data.oid; // e.g. "oid": 1573026
+                                }
+                            },
+                            {
+                                id: "getDataObjectByOid_IfcBuilding",
+                                name: "Get name and data objects of one IfcBuilding",
+                                description: "Get available objects of one IfcBuilding (by building OID), then search for \"typeName\": \"IfcRelDefinesByProperties\" and use the OID of that for the next step.<br />"
+                                           + "for later use also search for \"fieldName\": \"IsDecomposedBy\" and relating \"typeName\": \"IfcRelAggregates\" and use the OID of that for later step.",
+                                interface: "Bimsie1LowLevelInterface",
+                                method: "getDataObjectByOid",
+                                pre: function (context, form) {
+                                    form.setFieldValue("roid", context.roid);
+                                    form.setFieldValue("oid", context.IfcBuilding_oid);
+                                },
+                                post: function (data, context) {
+                                    context.IfcRelDefinesByProperties_oid = data.oid; // e.g. "oid": 2037318211
+                                    context.IfcRelAggregates_oid = data.oid; // e.g. "oid": 19792417
+                                }
+                            },
+                            {
+                                id: "getDataObjectByOid_IfcBuilding_IfcRelDefinesByProperties",
+                                name: "Get available data objects of IfcRelDefinesByProperties of one IfcBuilding",
+                                description: "Get available data objects of IfcRelDefinesByProperties, then search for \"typeName\": \"IfcPostalAddress\" and use the OID of that for the next step.",
+                                interface: "Bimsie1LowLevelInterface",
+                                method: "getDataObjectByOid",
+                                pre: function (context, form) {
+                                    form.setFieldValue("roid", context.roid);
+                                    form.setFieldValue("oid", context.ooid);
+                                },
+                                post: function (data, context) {
+                                    context.PostalAddress_oid = data.oid; // e.g. "oid": 1769951
+                                }
+                            },
+                            {
+                                id: "getDataObjectByOid_IfcPostalAddress",
+                                name: "Get IfcPostalAddress of one IfcBuilding",
+                                description: "Get available IfcPostalAddress of one IfcBuilding",
+                                interface: "Bimsie1LowLevelInterface",
+                                method: "getDataObjectByOid",
+                                pre: function (context, form) {
+                                    form.setFieldValue("roid", context.roid);
+                                    form.setFieldValue("oid", context.ooid);
+                                }
+                            },
+                            {
+                                id: "getDataObjectByOid_IfcBuilding_IfcRelAggregates",
+                                name: "Get available IfcBuildingStorey(s) of one IfcBuilding",
+                                description: "Get available IfcBuildingStorey(s) of one IfcBuilding by IfcRelAggregates, then search for \"typeName\": \"IfcBuildingStorey\" and use the OID of one IfcBuildingStorey for the next step.",
+                                interface: "Bimsie1LowLevelInterface",
+                                method: "getDataObjectByOid",
+                                pre: function (context, form) {
+                                    form.setFieldValue("roid", context.roid);
+                                    form.setFieldValue("oid", context.ooid);
+                                },
+                                post: function (data, context) {
+                                    context.IfcBuildingStorey_oid = data.oid; // e.g. "oid": 3997865
+                                }
+                            },
+                            {
+                                id: "getDataObjectByOid_IfcBuildingStorey",
+                                name: "Get name (and other data objects) of one IfcBuildingStorey",
+                                description: "Get available name (and other data objects) of one IfcBuildingStorey <br />"
+                                           + "for use in next step search for \"fieldName\": \"IsDecomposedBy\" and relating \"typeName\": \"IfcRelAggregates\" and use the OID of that for next step.",
+                                interface: "Bimsie1LowLevelInterface",
+                                method: "getDataObjectByOid",
+                                pre: function (context, form) {
+                                    form.setFieldValue("roid", context.roid);
+                                    form.setFieldValue("oid", context.IfcBuildingStorey_oid);
+                                }, // "name": "Level 1" (and other data)
+                                post: function (data, context) {
+                                    context.IfcBuildingStorey_oid = data.oid; // e.g. "oid": 3997865
+                                    context.IfcRelAggregates_oid = data.oid; // e.g. "oid": 19923489
+                                } 
+                            },
+                            {
+                                id: "getDataObjectByOid_IfcBuildingStorey_IfcRelAggregates",
+                                name: "Get available IfcSpace(s) of one IfcBuildingStorey",
+                                description: "Get available IfcSpace(s) of one IfcBuildingStorey by IfcRelAggregates, then search for \"typeName\": \"IfcSpace\" and use the OID of one IfcBuildingStorey for the next step.",
+                                interface: "Bimsie1LowLevelInterface",
+                                method: "getDataObjectByOid",
+                                pre: function (context, form) {
+                                    form.setFieldValue("roid", context.roid);
+                                    form.setFieldValue("oid", context.ooid);
+                                },
+                                post: function (data, context) {
+                                    context.IfcSpace_oid = data.oid; // e.g. "oid": 28705398, 28181110, 28770934, 28967542, 28443254 etc
+                                }
+                            },
+                            {
+                                id: "getDataObjectByOid_IfcSpace",
+                                name: "Get name (and other data objects) of one IfcSpace",
+                                description: "Get available name (and other data objects) of one IfcSpace <br />"
+                                           + "for use in next step search for \"fieldName\": \"IsDefinedBy\" and relating \"typeName\": \"IfcRelDefinesByProperties\" and use the OID(s) of that for next step.",
+                                interface: "Bimsie1LowLevelInterface",
+                                method: "getDataObjectByOid",
+                                pre: function (context, form) {
+                                    form.setFieldValue("roid", context.roid);
+                                    form.setFieldValue("oid", context.IfcBuildingStorey_oid);
+                                }, // "name": "Level 1" (and other data)
+                                post: function (data, context) {
+                                    context.IfcSpace_oid = data.oid; // e.g. "oid": 28705398
+                                    context.IfcRelDefinesByProperties_oid1 = data.oid; // e.g. "oid": 2041184835
+                                    context.IfcRelDefinesByProperties_oid2 = data.oid; // e.g. "oid": 2034827843
+                                }
+                            },
+                            {
+                                id: "getDataObjectByOid_IfcSpace_IfcRelDefinesByProperties",
+                                name: "Get available IfcRelDefinesByProperties of one IfcSpace",
+                                description: "Get available IfcRelDefinesByProperties of one IfcSpace (try all OIDs from step before...)<br />"
+                                           + "...and search for \"fieldName\": \"RelatingPropertyDefinition\" and relating \"typeName\": \"IfcElementQuantity\" and use the OID(s) of that for next step.",
+                                interface: "Bimsie1LowLevelInterface",
+                                method: "getDataObjectByOid",
+                                pre: function (context, form) {
+                                    form.setFieldValue("roid", context.roid);
+                                    form.setFieldValue("oid", context.IfcBuildingStorey_oid);
+                                }, // "name": "Level 1" (and other data)
+                                post: function (data, context) {
+                                    context.IfcSpace_IfcElementQuantity_oid = data.oid; // e.g. "oid": 20644148
+
+                                }
+                            },
+                            {
+                                id: "getDataObjectByOid_IfcSpace_IfcElementQuantity",
+                                name: "Get IfcElementQuantity of one IfcSpace",
+                                description: "Get IfcElementQuantity of one IfcSpace..)<br />"
+                                           + "...and search for \"fieldName\": \"Quantities\" and relating \"typeName\": \"IfcQuantityArea\" etc. and use the OID(s) of that for next step.",
+                                interface: "Bimsie1LowLevelInterface",
+                                method: "getDataObjectByOid",
+                                pre: function (context, form) {
+                                    form.setFieldValue("roid", context.roid);
+                                    form.setFieldValue("oid", context.IfcSpace_IfcElementQuantity_oid);
+                                }, // "name": "Level 1" (and other data)
+                                post: function (data, context) {
+                                    context.IfcSpace_IfcQuantityArea_oid = data.oid; // e.g. "oid": 22610441, 22217225
+                                }
+                            },
+                            {
+                                id: "getDataObjectByOid_IfcSpace_IfcQuantityArea",
+                                name: "Get IfcQuantityArea of one IfcSpace",
+                                description: "Get IfcQuantityArea of one IfcSpace..)<br />"
+                                           + "...and search for \"stringValue\": \"NetFloorArea\" and relating \"fieldName\": \"AreaValue\" to find the \"stringValue\": e.g. \"17.9335476103249\" [m²]<br />"
+                                           + "...and search for \"stringValue\": \"GrossFloorArea\" and relating \"fieldName\": \"AreaValue\" to find the \"stringValue\": e.g. \"17.9335476103249\" [m²]",
+                                interface: "Bimsie1LowLevelInterface",
+                                method: "getDataObjectByOid"
+                            },
+            		    ]
+            		}
+
 		];
 		
 		var token = $.cookie("autologin" + window.document.location.port);
@@ -504,7 +726,7 @@ LazyLoad.js([
 				
 				controls.append(input);
 			} else if (type.simpleName == "Boolean") {
-				var input = $("<input type=\"checkbox\" value=\"true\"/>");
+			    var input = $("<input type=\"checkbox\" id=\"id_" + fieldName + "\" value=\"true\"/>");
 				input.addClass("__field" + fieldName);
 				input.change(othis.inputChange);
 				controls.append(input);
@@ -724,6 +946,12 @@ LazyLoad.js([
 			othis.currentScenarioContext = {
 				scenario: scenario
 			};
+			
+			$("#scenarioDetails").empty();
+			$("#scenarioDetails").append('<h1 class="title"></h1>');
+			$("#scenarioDetails").append('<div class="pagination"><ul><li class="disabled backButton" id="disabledbackButton"><a>&laquo;</a></li><li class="disabled forwardButton" id="disabledforwardButton"><a>&raquo;</a></li></ul></div>');
+			$("#scenarioDetails").append('<div class="scenarioDescription well well-sm"></div><div class="scenarioMethod">');
+
 			var clone = $(".method").clone();
 			$(".scenarioDetails .scenarioMethod").append(clone.show());
 			$(".scenarioDetails .title").html(scenario.name + " Scenario");
