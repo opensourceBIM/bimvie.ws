@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.opensourcebim</groupId>
 	<artifactId>bimviews</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -97,7 +97,8 @@
 		<url>https://github.com/opensourceBIM/bimvie.ws.git</url>
 		<connection>scm:git:https://github.com/opensourceBIM/bimvie.ws.git</connection>
 		<developerConnection>scm:git:https://github.com/opensourceBIM/bimvie.ws.git</developerConnection>
-	</scm>
+	  <tag>bimviews-0.0.1</tag>
+  </scm>
 	<organization>
 		<name>OpenSource BIM</name>
 		<url>opensourcebim.org</url>
