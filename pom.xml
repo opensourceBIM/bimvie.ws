@@ -12,39 +12,17 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptor>assembly.xml</descriptor>
+					<finalName>bimviews-${pom.version}</finalName>
+				</configuration>
 				<executions>
 					<execution>
-						<id>copy-asciidoc</id>
-						<phase>generate-resources</phase>
+						<phase>package</phase>
 						<goals>
-							<goal>copy-resources</goal>
+							<goal>single</goal>
 						</goals>
-						<configuration>
-							<resources>
-								<resource>
-									<directory>output/js</directory>
-									<targetPath>js</targetPath>
-								</resource>
-								<resource>
-									<directory>output/css</directory>
-									<targetPath>css</targetPath>
-								</resource>
-								<resource>
-									<directory>output/fonts</directory>
-									<targetPath>fonts</targetPath>
-								</resource>
-								<resource>
-									<directory>output/img</directory>
-									<targetPath>img</targetPath>
-								</resource>
-								<resource>
-									<targetPath>plugin</targetPath>
-									<directory>plugin</directory>
-								</resource>
-							</resources>
-							<outputDirectory>target</outputDirectory>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
