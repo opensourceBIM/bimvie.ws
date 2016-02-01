@@ -3,7 +3,7 @@
   "groupId": "org.opensourcebim",
   "artifactId": "bimviews",
   "organization": "OpenSource BIM",
-  "version": "%VERSION%",
+  "version": "0.0.2",
   "description": "BIM Views is a JavaScript/HTML frontend to BIMserver",
   "author": {
     "name": "Ruben de Laat",
