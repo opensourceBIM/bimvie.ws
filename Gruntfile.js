@@ -67,8 +67,7 @@ module.exports = function(grunt) {
 						}
 					},
 					files : {
-						src : [ "output/bimviews-%VERSION%.zip",
-								"output/bimviews-bimserver-plugin-%VERSION%.jar" ]
+						src : [ "output/bimviews-%VERSION%.zip" ]
 					}
 				}
 			});

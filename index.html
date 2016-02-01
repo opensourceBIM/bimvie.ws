@@ -226,7 +226,7 @@
 				    				var address = getParameterByName("address");
 				    				
 				    				if (address != null) {
-				    					othis.loadBimServerApiFromAddress(address, successFunction, errorFunction);
+				    					othis.loadBimServerApiFromAddress(Global.baseDir, successFunction, errorFunction);
 				    				} else if ($.cookie("address" + window.document.location.port) != null) {
 				    					othis.loadBimServerApiFromAddress($.cookie("address" + window.document.location.port), successFunction, errorFunction);
 				    				} else if (!Settings.allowBimServerAddress()) {

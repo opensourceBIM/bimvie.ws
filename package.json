@@ -1,5 +1,8 @@
 {
   "name": "bimviews",
+  "groupId": "org.opensourcebim",
+  "artifactId": "bimviews",
+  "organization": "OpenSource BIM",
   "version": "%VERSION%",
   "description": "BIM Views is a JavaScript/HTML frontend to BIMserver",
   "author": {
@@ -21,8 +24,7 @@
   "keywords": [],
   "dependencies": {
     "bimserverapi": "*",
-    "xhr2": "*",
-    "requirejs": "*"
+    "xhr2": "*"
   },
   "devDependencies": {
     "grunt": "*",

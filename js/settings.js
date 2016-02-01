@@ -19,7 +19,7 @@ var Settings = {
 		return "BIMvie.ws";
 	},
 	useBimSurfer: function(){
-		return true;
+		return false;
 	},
 	getMenuItems: function(){
 		return [
