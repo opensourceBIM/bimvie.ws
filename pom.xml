@@ -13,18 +13,30 @@
 			<resource>
 				<directory>output/js</directory>
 				<targetPath>js</targetPath>
+				<includes>
+					<include>*.js</include>
+				</includes>
 			</resource>
 			<resource>
 				<directory>output/css</directory>
 				<targetPath>css</targetPath>
+				<includes>
+					<include>*.css</include>
+				</includes>
 			</resource>
 			<resource>
 				<directory>output/fonts</directory>
 				<targetPath>fonts</targetPath>
+				<includes>
+					<include>*</include>
+				</includes>
 			</resource>
 			<resource>
 				<directory>output/img</directory>
 				<targetPath>img</targetPath>
+				<includes>
+					<include>*</include>
+				</includes>
 			</resource>
 			<resource>
 				<targetPath>plugin</targetPath>
