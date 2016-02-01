@@ -9,41 +9,45 @@
 	</properties>
 	<description>BIMvie.ws</description>
 	<build>
-		<resources>
-			<resource>
-				<directory>output/js</directory>
-				<targetPath>js</targetPath>
-				<includes>
-					<include>*.js</include>
-				</includes>
-			</resource>
-			<resource>
-				<directory>output/css</directory>
-				<targetPath>css</targetPath>
-				<includes>
-					<include>*.css</include>
-				</includes>
-			</resource>
-			<resource>
-				<directory>output/fonts</directory>
-				<targetPath>fonts</targetPath>
-				<includes>
-					<include>*</include>
-				</includes>
-			</resource>
-			<resource>
-				<directory>output/img</directory>
-				<targetPath>img</targetPath>
-				<includes>
-					<include>*</include>
-				</includes>
-			</resource>
-			<resource>
-				<targetPath>plugin</targetPath>
-				<directory>plugin</directory>
-			</resource>
-		</resources>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-asciidoc</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<resources>
+								<resource>
+									<directory>output/js</directory>
+									<targetPath>js</targetPath>
+								</resource>
+								<resource>
+									<directory>output/css</directory>
+									<targetPath>css</targetPath>
+								</resource>
+								<resource>
+									<directory>output/fonts</directory>
+									<targetPath>fonts</targetPath>
+								</resource>
+								<resource>
+									<directory>output/img</directory>
+									<targetPath>img</targetPath>
+								</resource>
+								<resource>
+									<targetPath>plugin</targetPath>
+									<directory>plugin</directory>
+								</resource>
+							</resources>
+							<outputDirectory>target</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
@@ -110,8 +114,8 @@
 		<url>https://github.com/opensourceBIM/bimvie.ws.git</url>
 		<connection>scm:git:https://github.com/opensourceBIM/bimvie.ws.git</connection>
 		<developerConnection>scm:git:https://github.com/opensourceBIM/bimvie.ws.git</developerConnection>
-	  <tag>bimviews-0.0.2</tag>
-  </scm>
+		<tag>bimviews-0.0.2</tag>
+	</scm>
 	<organization>
 		<name>OpenSource BIM</name>
 		<url>opensourcebim.org</url>
