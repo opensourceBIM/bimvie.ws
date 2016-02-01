@@ -48,26 +48,26 @@ module.exports = function(grunt) {
 					"using-cwd": {
 						cwd: "output",
 						src: ["output/**"],
-						dest: "output/bimviews-0.0.2.zip"
+						dest: "output/bimviews-%VERSION%.zip"
 					}
 				},
 				"github-release" : {
 					options : {
 						repository : "opensourceBIM/bimvie.ws",
 						auth : {
-							user : "ruben@logic-labs.nl",
-							password : "nnayOaSDoKISuA3kPEue"
+							user : "%USERNAME%",
+							password : "%PASSWORD%"
 						},
 						release : {
-							tag_name : "0.0.2",
-							name : "BIMvie.ws 0.0.2",
+							tag_name : "%VERSION%",
+							name : "BIMvie.ws %VERSION%",
 							body : "Testing...",
 							draft : false,
 							prerelease : true
 						}
 					},
 					files : {
-						src : [ "output/bimviews-0.0.2.zip" ]
+						src : [ "output/bimviews-%VERSION%.zip" ]
 					}
 				}
 			});
