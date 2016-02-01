@@ -5,23 +5,23 @@
 	<formats>
 		<format>jar</format>
 	</formats>
-	<id>bimserverstarter-${pom.version}</id>
+	<id>bimviews-${pom.version}</id>
 	<includeBaseDirectory>false</includeBaseDirectory>
 	<fileSets>
 		<fileSet>
-			<directory>../output/css</directory>
+			<directory>../../output/css</directory>
 			<outputDirectory>/css</outputDirectory>
 		</fileSet>
 		<fileSet>
-			<directory>../output/js</directory>
+			<directory>../../output/js</directory>
 			<outputDirectory>/js</outputDirectory>
 		</fileSet>
 		<fileSet>
-			<directory>../output/fonts</directory>
+			<directory>../../output/fonts</directory>
 			<outputDirectory>/fonts</outputDirectory>
 		</fileSet>
 		<fileSet>
-			<directory>../output/img</directory>
+			<directory>../../output/img</directory>
 			<outputDirectory>/img</outputDirectory>
 		</fileSet>
 		<fileSet>
