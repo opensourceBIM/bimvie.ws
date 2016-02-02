@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html>
-  <head>
-	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-	<meta content="utf-8" http-equiv="encoding">
-	<base href="/"/>
-	<title>BIMvie.ws</title>
-  </head>
-  <body style="margin: 0; padding: 0">
-  	<div class="indexStatus statusWrapper">
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
+<base href="/" />
+<title>BIMvie.ws</title>
+</head>
+<body style="margin: 0; padding: 0">
+	<div class="indexStatus statusWrapper">
 		<div class="alert status">
 			<div class="message"></div>
 		</div>
-  	</div>
-	<div class="my-fluid-container" style="padding: 15px; padding-bottom: 0px;	margin-left: auto; margin-right: auto;">
+	</div>
+	<div class="my-fluid-container" style="padding: 15px; padding-bottom: 0px; margin-left: auto; margin-right: auto;">
 		<div class="row" style="margin-left: -15px; margin-right: -15px;">
 			<div class="indexcontainer col-md-12" style="padding-left: 20px; padding-right: 20px;">
-				<div style="text-align: center; color: #31708f; background-color: #d9edf7; border-color: #bce8f1; padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: 4px; font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; font-size: 14px; line-height: 1.42857143;">
-					Loading BIMviews...
-				</div>
+				<div
+					style="text-align: center; color: #31708f; background-color: #d9edf7; border-color: #bce8f1; padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: 4px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.42857143;">
+					Loading BIMviews...</div>
 			</div>
 		</div>
 	</div>
@@ -58,9 +58,16 @@
 			    baseCssDir + "bootstrap-vert-tabs.css?_v=" + Global.version, 
 			    baseCssDir + "magic-bootstrap-min.css?_v=" + Global.version
 			], function(){});
-			
-				var jsToLoad = [
-				       		    baseJsDir + "require.js?_v=" + Global.version, 
+				LazyLoad.js([
+				             Settings.getBimServerApiAddress() + "/bimserverapiwebsocket.js",
+				             Settings.getBimServerApiAddress() + "/bimserverclient.js",
+				             Settings.getBimServerApiAddress() + "/bimserverapipromise.js",
+				             Settings.getBimServerApiAddress() + "/ifc2x3tc1.js",
+				             Settings.getBimServerApiAddress() + "/ifc4.js",
+				             Settings.getBimServerApiAddress() + "/model.js",
+				             Settings.getBimServerApiAddress() + "/translations_en.js"
+				             ], function () {
+					var jsToLoad = [
 				        		baseJsDir + "jquery-2.1.3.min.js?_v=" + Global.version, 
 				       		    baseJsDir + "main.js?_v=" + Global.version, 
 				       		    baseJsDir + "history.js?_v=" + Global.version, 
@@ -73,7 +80,6 @@
 				       		    baseJsDir + "jquery.ui.widget.js?_v=" + Global.version, 
 				       		    baseJsDir + "String.js?_v=" + Global.version, 
 				       		    baseJsDir + "tree.js?_v=" + Global.version, 
-				       		    baseJsDir + "bimserverapibootstrap.js?_v=" + Global.version, 
 				       		    baseJsDir + "bootstrap.min.js?_v=" + Global.version, 
 				       		    baseJsDir + "Variable.js?_v=" + Global.version, 
 				       		    baseJsDir + "EventRegistry.js?_v=" + Global.version, 
@@ -89,27 +95,27 @@
 				    		
 				    		if (Settings.useBimSurfer()) {
 				    			jsToLoad = jsToLoad.concat([
-				    	   		    baseJsDir + "bimsurfer/api/BIMSURFER.js?_v=" + Global.version, 
-				    	   		    baseJsDir + "bimsurfer/lib/scenejs/scenejs.js?_v=" + Global.version, 
-				    	   		    baseJsDir + "bimsurfer/api/SceneJS.js?_v=" + Global.version, 
-				    	   		    baseJsDir + "bimsurfer/api/Constants.js?_v=" + Global.version, 
-				    	   		    baseJsDir + "bimsurfer/api/ProgressLoader.js?_v=" + Global.version, 
-				    	   		    baseJsDir + "bimsurfer/api/Types/Light.js?_v=" + Global.version, 
-				    	   		    baseJsDir + "bimsurfer/api/Types/Light/Ambient.js?_v=" + Global.version, 
-				    	   			baseJsDir + "bimsurfer/api/Types/Light/Sun.js?_v=" + Global.version, 
-				    	   			baseJsDir + "bimsurfer/api/Control.js?_v=" + Global.version, 
-				    	   			baseJsDir + "bimsurfer/api/Control/ClickSelect.js?_v=" + Global.version, 
-				    	   			baseJsDir + "bimsurfer/api/Control/LayerList.js?_v=" + Global.version, 
-				    	   			baseJsDir + "bimsurfer/api/Control/ProgressBar.js?_v=" + Global.version, 
-				    	   			baseJsDir + "bimsurfer/api/Control/PickFlyOrbit.js?_v=" + Global.version, 
-				    	   			baseJsDir + "bimsurfer/api/Control/ObjectTreeView.js?_v=" + Global.version, 
-				    	   			baseJsDir + "bimsurfer/api/Events.js?_v=" + Global.version, 
-				    	   			baseJsDir + "bimsurfer/api/StringView.js?_v=" + Global.version, 
-				    	   			baseJsDir + "bimsurfer/api/GeometryLoader.js?_v=" + Global.version, 
-				    	   			baseJsDir + "bimsurfer/api/AsyncStream.js?_v=" + Global.version, 
-				    	   			baseJsDir + "bimsurfer/api/DataInputStream.js?_v=" + Global.version, 
-				    	   			baseJsDir + "bimsurfer/api/Viewer.js?_v=" + Global.version, 
-				    	   			baseJsDir + "bimsurfer/api/Util.js?_v=" + Global.version
+				    	   		    Settings.getBimSurferApiAddress() + "api/BIMSURFER.js?_v=" + Global.version, 
+				    	   		 	Settings.getBimSurferApiAddress() + "lib/scenejs/scenejs.js?_v=" + Global.version, 
+					    	   		Settings.getBimSurferApiAddress() + "api/SceneJS.js?_v=" + Global.version, 
+					    	   		Settings.getBimSurferApiAddress() + "api/Constants.js?_v=" + Global.version, 
+					    	   		Settings.getBimSurferApiAddress() + "api/ProgressLoader.js?_v=" + Global.version, 
+					    	   		Settings.getBimSurferApiAddress() + "api/Types/Light.js?_v=" + Global.version, 
+					    	   		Settings.getBimSurferApiAddress() + "api/Types/Light/Ambient.js?_v=" + Global.version, 
+					    	   		Settings.getBimSurferApiAddress() + "api/Types/Light/Sun.js?_v=" + Global.version, 
+					    	   		Settings.getBimSurferApiAddress() + "api/Control.js?_v=" + Global.version, 
+					    	   		Settings.getBimSurferApiAddress() + "api/Control/ClickSelect.js?_v=" + Global.version, 
+					    	   		Settings.getBimSurferApiAddress() + "api/Control/LayerList.js?_v=" + Global.version, 
+					    	   		Settings.getBimSurferApiAddress() + "api/Control/ProgressBar.js?_v=" + Global.version, 
+					    	   		Settings.getBimSurferApiAddress() + "api/Control/PickFlyOrbit.js?_v=" + Global.version, 
+					    	   		Settings.getBimSurferApiAddress() + "api/Control/ObjectTreeView.js?_v=" + Global.version, 
+					    	   		Settings.getBimSurferApiAddress() + "api/Events.js?_v=" + Global.version, 
+					    	   		Settings.getBimSurferApiAddress() + "api/StringView.js?_v=" + Global.version, 
+					    	   		Settings.getBimSurferApiAddress() + "api/GeometryLoader.js?_v=" + Global.version, 
+					    	   		Settings.getBimSurferApiAddress() + "api/AsyncStream.js?_v=" + Global.version, 
+					    	   		Settings.getBimSurferApiAddress() + "api/DataInputStream.js?_v=" + Global.version, 
+					    	   		Settings.getBimSurferApiAddress() + "api/Viewer.js?_v=" + Global.version, 
+					    	   		Settings.getBimSurferApiAddress() + "api/Util.js?_v=" + Global.version
 				       			]);
 				    		}
 				    		
@@ -123,7 +129,7 @@
 				    			});
 
 				    			if (Settings.useBimSurfer()) {
-					    			SceneJS.configure({ pluginPath: baseJsDir + "bimsurfer/lib/scenejs/plugins", statusPopups: false});
+					    			SceneJS.configure({ pluginPath: Settings.getBimSurferApiAddress() + "/lib/scenejs/plugins", statusPopups: false});
 				    			}
 				    			
 				    			var jQueryLoad = $.fn.load;
@@ -147,25 +153,32 @@
 				    			});
 				    			
 				    			othis.loadBimServerApiFromAddress = function(address, successFunction, errorFunction){
-				    				loadBimServerApi(address, Global.notifier, Global.version, function(api, serverInfo){
-				    					Global.bimServerApi = api;
-				    					if (serverInfo.serverState == "NOT_SETUP") {
-				    						$(".indexcontainer").load(Global.baseDir + "setup.html", function(){
-				    							new Setup(address);
-				    						});
-				    					} else if (serverInfo.serverState == "UNDEFINED") {
-				    					} else if (serverInfo.serverState == "MIGRATION_REQUIRED") {
-				    						$(".indexcontainer").load(Global.baseDir + "migrate.html", function(){
-				    							new Migrate(address);
-				    						});
-				    					} else if (serverInfo.serverState == "MIGRATION_IMPOSSIBLE") {
-				    					} else if (serverInfo.serverState == "FATAL_ERROR") {
-				    					} else if (serverInfo.serverState == "RUNNING") {
-				    						successFunction(address);
-				    					}
-				    				}, function(){
-				    					errorFunction(address);
-				    				});
+				    				if (address.endsWith("/")) {
+				    					address = address.substring(0, address.length - 1);
+				    				}
+				    				if (BimServerClient != null) {
+				    					Global.bimServerApi = new BimServerClient(address, null);
+				    					Global.bimServerApi.init(function(api, serverInfo){
+				    						console.log(serverInfo);
+					    					if (serverInfo.serverState == "NOT_SETUP") {
+					    						$(".indexcontainer").load(Global.baseDir + "setup.html", function(){
+					    							new Setup(address);
+					    						});
+					    					} else if (serverInfo.serverState == "UNDEFINED") {
+					    					} else if (serverInfo.serverState == "MIGRATION_REQUIRED") {
+					    						$(".indexcontainer").load(Global.baseDir + "migrate.html", function(){
+					    							new Migrate(address);
+					    						});
+					    					} else if (serverInfo.serverState == "MIGRATION_IMPOSSIBLE") {
+					    					} else if (serverInfo.serverState == "FATAL_ERROR") {
+					    					} else if (serverInfo.serverState == "RUNNING") {
+					    						successFunction(address);
+					    					}
+				    					});
+				    				} else {
+				    					notifier.setError("Could not find BIMserver API");
+				    					errorCallback();
+				    				}
 				    			};
 				    			
 				    			
@@ -372,6 +385,7 @@
 				    		}, function (err) {
 				    			console.log(err);
 				    		});	
+				});
 		}
 
 		// Settings.js is never cached
@@ -383,5 +397,5 @@
 		});
 		
 	</script>
-  </body>
+</body>
 </html>

@@ -9,23 +9,29 @@
 	</properties>
 	<description>BIMvie.ws</description>
 	<build>
+		<resources>
+			<resource>
+				<directory>../../output/css</directory>
+				<targetPath>css</targetPath>
+			</resource>
+			<resource>
+				<directory>../../output/js</directory>
+				<targetPath>js</targetPath>
+			</resource>
+			<resource>
+				<directory>../../output/fonts</directory>
+				<targetPath>fonts</targetPath>
+			</resource>
+			<resource>
+				<directory>../../output/img</directory>
+				<targetPath>img</targetPath>
+			</resource>
+			<resource>
+				<directory>plugin</directory>
+				<targetPath>plugin</targetPath>
+			</resource>
+		</resources>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<descriptor>assembly.xml</descriptor>
-					<finalName>bimviews-${pom.version}</finalName>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>

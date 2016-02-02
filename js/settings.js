@@ -19,7 +19,7 @@ var Settings = {
 		return "BIMvie.ws";
 	},
 	useBimSurfer: function(){
-		return false;
+		return true;
 	},
 	getMenuItems: function(){
 		return [
@@ -67,6 +67,12 @@ var Settings = {
 	},
 	allowBimServerAddress: function() {
 		return false;
+	},
+	getBimServerApiAddress: function(){
+		return "../javascriptapi/js";
+	},
+	getBimSurferApiAddress: function(){
+		return "../bimsurfer/";
 	},
 	getDefaultHiddenTypes: function() {
 		return {"IfcOpeningElement": true, "IfcSpace": true};
