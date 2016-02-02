@@ -35,7 +35,7 @@
 				<targetPath>img</targetPath>
 			</resource>
 			<resource>
-				<directory>../../output</directory>
+				<directory>.</directory>
 				<includes>
 					<include>*.html</include>
 				</includes>
