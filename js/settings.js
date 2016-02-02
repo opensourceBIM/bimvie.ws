@@ -65,6 +65,9 @@ var Settings = {
 			callback(null);
 		});
 	},
+	useCompressedResources: function(){
+		return false;
+	},
 	allowBimServerAddress: function() {
 		return false;
 	},

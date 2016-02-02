@@ -15,7 +15,15 @@
 				<targetPath>css</targetPath>
 			</resource>
 			<resource>
+				<directory>css</directory>
+				<targetPath>css</targetPath>
+			</resource>
+			<resource>
 				<directory>../../output/js</directory>
+				<targetPath>js</targetPath>
+			</resource>
+			<resource>
+				<directory>js</directory>
 				<targetPath>js</targetPath>
 			</resource>
 			<resource>
@@ -25,6 +33,13 @@
 			<resource>
 				<directory>../../output/img</directory>
 				<targetPath>img</targetPath>
+			</resource>
+			<resource>
+				<directory>../../output</directory>
+				<includes>
+					<include>*.html</include>
+				</includes>
+				<targetPath>/</targetPath>
 			</resource>
 			<resource>
 				<directory>plugin</directory>

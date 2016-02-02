@@ -52,12 +52,17 @@
 			    document.getElementsByTagName('head')[0].appendChild(link);
 			}());
 			
-			LazyLoad.css([
-			    baseCssDir + "bootstrap.min.css?_v=" + Global.version, 
-			    baseCssDir + "main.css?_v=" + Global.version, 
-			    baseCssDir + "bootstrap-vert-tabs.css?_v=" + Global.version, 
-			    baseCssDir + "magic-bootstrap-min.css?_v=" + Global.version
-			], function(){});
+			if (Settings.useCompressedResources()) {
+				var cssToLoad = [
+	 			    baseCssDir + "bootstrap.min.css?_v=" + Global.version, 
+				    baseCssDir + "main.css?_v=" + Global.version, 
+				    baseCssDir + "bootstrap-vert-tabs.css?_v=" + Global.version, 
+				    baseCssDir + "magic-bootstrap-min.css?_v=" + Global.version
+				];
+			} else {
+				var cssToLoad = [baseCssDir + "bimviews.min.css"];
+			}
+			LazyLoad.css(cssToLoad, function(){});
 				LazyLoad.js([
 				             Settings.getBimServerApiAddress() + "/bimserverapiwebsocket.js",
 				             Settings.getBimServerApiAddress() + "/bimserverclient.js",
@@ -67,31 +72,35 @@
 				             Settings.getBimServerApiAddress() + "/model.js",
 				             Settings.getBimServerApiAddress() + "/translations_en.js"
 				             ], function () {
-					var jsToLoad = [
-				        		baseJsDir + "jquery-2.1.3.min.js?_v=" + Global.version, 
-				       		    baseJsDir + "main.js?_v=" + Global.version, 
-				       		    baseJsDir + "history.js?_v=" + Global.version, 
-				       		    baseJsDir + "history.adapter.jquery.js?_v=" + Global.version, 
-				       		    baseJsDir + "jquery.cookie.js?_v=" + Global.version, 
-				       		    baseJsDir + "jquery.numeric.js?_v=" + Global.version, 
-				       		    baseJsDir + "jquery.enterpress.js?_v=" + Global.version, 
-				       		    baseJsDir + "jquery.dragbetter.js?_v=" + Global.version, 
-				       		    baseJsDir + "base64unicode.js?_v=" + Global.version, 
-				       		    baseJsDir + "jquery.ui.widget.js?_v=" + Global.version, 
-				       		    baseJsDir + "String.js?_v=" + Global.version, 
-				       		    baseJsDir + "tree.js?_v=" + Global.version, 
-				       		    baseJsDir + "bootstrap.min.js?_v=" + Global.version, 
-				       		    baseJsDir + "Variable.js?_v=" + Global.version, 
-				       		    baseJsDir + "EventRegistry.js?_v=" + Global.version, 
-				       		    baseJsDir + "sha256.js?_v=" + Global.version, 
-				       		    baseJsDir + "utils.js?_v=" + Global.version, 
-				       		    baseJsDir + "formatters.js?_v=" + Global.version, 
-				       		    baseJsDir + "jquery.scrollTo.js?_v=" + Global.version, 
-				       		    baseJsDir + "pagechanger.js?_v=" + Global.version, 
-				       		    baseJsDir + "plugins/pluginmanager.js?_v=" + Global.version, 
-				       		    baseJsDir + "plugins/relaticsplugin.js?_v=" + Global.version,
-				       		    baseJsDir + "papaparse.min.js?_v=" + Global.version
-				    	 	];
+					if (Settings.useCompressedResources()) {
+						var jsToLoad = [baseJsDir + "bimviews.min.js"];
+					} else {
+						var jsToLoad = [
+			        		baseJsDir + "jquery-2.1.3.min.js?_v=" + Global.version, 
+			       		    baseJsDir + "main.js?_v=" + Global.version, 
+			       		    baseJsDir + "history.js?_v=" + Global.version, 
+			       		    baseJsDir + "history.adapter.jquery.js?_v=" + Global.version, 
+			       		    baseJsDir + "jquery.cookie.js?_v=" + Global.version, 
+			       		    baseJsDir + "jquery.numeric.js?_v=" + Global.version, 
+			       		    baseJsDir + "jquery.enterpress.js?_v=" + Global.version, 
+			       		    baseJsDir + "jquery.dragbetter.js?_v=" + Global.version, 
+			       		    baseJsDir + "base64unicode.js?_v=" + Global.version, 
+			       		    baseJsDir + "jquery.ui.widget.js?_v=" + Global.version, 
+			       		    baseJsDir + "String.js?_v=" + Global.version, 
+			       		    baseJsDir + "tree.js?_v=" + Global.version, 
+			       		    baseJsDir + "bootstrap.min.js?_v=" + Global.version, 
+			       		    baseJsDir + "Variable.js?_v=" + Global.version, 
+			       		    baseJsDir + "EventRegistry.js?_v=" + Global.version, 
+			       		    baseJsDir + "sha256.js?_v=" + Global.version, 
+			       		    baseJsDir + "utils.js?_v=" + Global.version, 
+			       		    baseJsDir + "formatters.js?_v=" + Global.version, 
+			       		    baseJsDir + "jquery.scrollTo.js?_v=" + Global.version, 
+			       		    baseJsDir + "pagechanger.js?_v=" + Global.version, 
+			       		    baseJsDir + "plugins/pluginmanager.js?_v=" + Global.version, 
+			       		    baseJsDir + "plugins/relaticsplugin.js?_v=" + Global.version,
+			       		    baseJsDir + "papaparse.min.js?_v=" + Global.version
+			    	 	];
+					}
 				    		
 				    		if (Settings.useBimSurfer()) {
 				    			jsToLoad = jsToLoad.concat([
