@@ -383,16 +383,17 @@ function Project(containerDiv, main, project) {
 			containerDiv.find(".navigatorWrapper").load("navigator.html", function(){
 				othis.navigator = new Navigator($(this), othis);
 				othis.navigator.load().done(function(){
+					othis.navigator.projecttree.addMenuDivider();
 					othis.navigator.projecttree.addMenuItem("Add sub project", "btnAddProject", function(){
 						Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: othis.navigator.projecttree.selectedNode.poid}, function(project){
 							main.showAddProject(null, project);
 						});
-					});
+					}).find("a").prepend("<i class=\"glyphicon glyphicon-tree-conifer\"></i> ");
 					othis.navigator.projecttree.addMenuItem("Add service", "btnAddService", function(){
 						othis.rightPanel.showAddService(othis.navigator.projecttree.selectedNode.project, null, function(){
 							othis.rightPanel.loadServices();
 						});
-					});
+					}).find("a").prepend("<i class=\"glyphicon glyphicon-cloud\"></i> ");
 					othis.navigator.projecttree.addMenuDivider();
 					othis.navigator.projecttree.addMenuItem("Checkin...", "btnCheckin", function(){
 						Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: othis.navigator.projecttree.selectedNode.poid}, function(project){
@@ -408,6 +409,36 @@ function Project(containerDiv, main, project) {
 						othis.navigator.projecttree.gatherRoidList(othis.navigator.projecttree.selectedNode, list);
 						main.showDownloadRevisionsPopup(list);
 					}).find("a").prepend("<i class=\"glyphicon glyphicon-cloud-download\"></i> ");
+
+					othis.navigator.projecttree.addMenuDivider();
+					var regenerateGeometryBtn = othis.navigator.projecttree.addMenuItem("Regenerate geometry", "btnRegenerateGeometry", function(){
+						var list = [];
+						othis.navigator.projecttree.gatherRoidList(othis.navigator.projecttree.selectedNode, list);
+						main.showDownloadRevisionsPopup(list);
+					}, function(){
+						console.log("up");
+					});
+					
+					regenerateGeometryBtn.addClass("dropdown-submenu");
+					regenerateGeometryBtn.find("a").prepend("<i class=\"glyphicon glyphicon-cloud-download\"></i> ");
+					var ul = $("<ul class=\"dropdown-menu\">");
+					regenerateGeometryBtn.append(ul);
+
+					Global.bimServerApi.call("PluginInterface", "getAllRenderEngines", {onlyEnabled: true}, function(engines){
+						engines.forEach(function(engine){
+							var li = $("<li><a>with " + engine.name + "</a></li>");
+							ul.append(li);
+							Global.bimServerApi.call("PluginInterface", "getPluginDescriptor", {oid: engine.pluginDescriptorId}, function(pluginDescriptor){
+								Global.bimServerApi.call("PluginInterface", "getPluginBundle", {oid: pluginDescriptor.pluginBundleVersionId}, function(pluginBundle){
+									if (pluginBundle.icon != null) {
+										var icon = $("<img>");
+										icon.attr("src", "data:image/png;base64," + pluginBundle.icon);
+										li.append(icon);
+									}
+								});
+							});
+						});
+					});
 					
 					othis.resize();
 					othis.loadDetails(othis.project);

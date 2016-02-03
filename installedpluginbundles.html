@@ -11,7 +11,7 @@
 	</div>
 	<table class="table ih">
 		<thead>
-			<tr><th>Organization</th><th>Name</th><th>Source</th><th>Installed Version</th><th>Description</th><th>Version</th><th>Uninstall / Update</th></tr>
+			<tr><th></th><th>Organization</th><th>Name</th><th>Installed Version</th><th>Source</th><th>Description</th><th>Version</th><th>Uninstall / Update</th></tr>
 		</thead>
 		<tbody></tbody>
 	</table>
@@ -24,7 +24,6 @@ function InstalledPluginBundles(main, serverSettings, cd) {
 	this.hide = function(){};
 	
 	Global.bimServerApi.callWithFullIndication("PluginInterface", "getInstalledPluginBundles", {}, function(data){
-		console.log(data);
 		cd.find("table tbody tr").remove();
 		if (data.length == 0) {
 			cd.find(".none").show();
@@ -32,22 +31,31 @@ function InstalledPluginBundles(main, serverSettings, cd) {
 		} else {
 			cd.find("table").show();
 		}
-		data.forEach(function(plugin){
+		data.forEach(function(pluginBundle){
 			var tr = $("<tr>");
 			
-			var installed = plugin.installedVersion;
-			var latest = plugin.latestVersion;
+			var installed = pluginBundle.installedVersion;
+			var latest = pluginBundle.latestVersion;
 			
-			tr.append("<td>" + plugin.organization + "</td>");
-			tr.append("<td>" + plugin.name + "</td>");
-			tr.append("<td>" + installed.type + "</td>");
-			tr.append("<td>" + installed.version + "</td>");
-			tr.append("<td>" + installed.description + "</td>");
+			var iconTd = $("<td class=\"icon\">");
+			var icon = $("<img style=\"width: 16px; height: 16px; display: none\">");
+			if (installed.icon != null) {
+				icon.attr("src", "data:image/png;base64," + installed.icon);
+				icon.show();
+			}
+			iconTd.append(icon);
+			tr.append(iconTd);
+			
+			tr.append("<td>" + pluginBundle.organization + "</td>");
+			tr.append("<td>" + pluginBundle.name + "</td>");
+			tr.append("<td class=\"installedVersion\">" + installed.version + "</td>");
+			tr.append("<td class=\"type\">" + installed.type + "</td>");
+			tr.append("<td class=\"description\">" + installed.description + "</td>");
 
 			var versionTd = $("<td>");
 			var versionSelect = $("<select class=\"form-control\">");
 			versionTd.append(versionSelect);
-			plugin.availableVersions.forEach(function(version){
+			pluginBundle.availableVersions.forEach(function(version){
 				var text = version.version;
 				if (installed != null && version.version == installed.version) {
 					text += " (installed)";
@@ -66,7 +74,7 @@ function InstalledPluginBundles(main, serverSettings, cd) {
 				option.data("version", version);
 			});
 			
-			tr.data("version", plugin.latestVersion);
+			tr.data("version", pluginBundle.latestVersion);
 			
 			tr.append(versionTd);
 
@@ -74,24 +82,25 @@ function InstalledPluginBundles(main, serverSettings, cd) {
 			var uninstallBtn = $("<button class=\"btn btn-primary\">Uninstall</button>");
 			uninstallBtn.click(function(){
 				var tr = $(this).parents("tr");
-				var plugin = tr.data("plugin");
+				var pluginBundle = tr.data("pluginBundle");
 				var version = tr.data("version");
-				serverSettings.showUninstallPluginBundle(plugin, version);
+				serverSettings.showUninstallPluginBundle(pluginBundle, version);
 			});
 			actionsTd.append(uninstallBtn);
 			
 			var updateBtn = $("<button class=\"btn btn-primary ih\">Update</button>");
 			updateBtn.click(function(){
 				var tr = $(this).parents("tr");
-				var plugin = tr.data("plugin");
+				var pluginBundle = tr.data("pluginBundle");
 				var version = tr.data("version");
-				serverSettings.showUpdatePluginBundle(plugin, version);
+				serverSettings.showUpdatePluginBundle(pluginBundle, version);
 			});
 			actionsTd.append(updateBtn);
 
 			versionSelect.change(function(){
 				var selected = $(this).find(":selected");
 				var version = selected.data("version");
+				o.updateRow($(this).parents("tr"), version);
 				if (version.version == installed.version) {
 					updateBtn.hide();
 					uninstallBtn.show();
@@ -106,6 +115,15 @@ function InstalledPluginBundles(main, serverSettings, cd) {
 			cd.find("table tbody").append(tr);
 		});
 	});
+	
+	this.updateRow = function(tr, version){
+		tr.find(".description").html(version.description);
+		tr.find(".type").html(version.type);
+		if (version.icon != null) {
+			tr.find(".icon img").attr("src", "data:image/png;base64," + version.icon);
+			tr.find(".icon img").show();
+		}
+	};
 	
 	cd.find(".helpBtn").click(function(){
 		cd.find(".helpDiv").toggle();

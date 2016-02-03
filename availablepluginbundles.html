@@ -14,7 +14,7 @@
 	</div>
 	<table class="table ih">
 		<thead>
-			<tr><th>Organization</th><th>Name</th><th>Description</th><th>Version</th><th>Install</th></tr>
+			<tr><th></th><th>Organization</th><th>Name</th><th>Description</th><th>Version</th><th>Install</th></tr>
 		</thead>
 		<tbody></tbody>
 	</table>
@@ -34,19 +34,26 @@ function AvailablePluginBundles(main, serverSettings, cd) {
 		} else {
 			cd.find("table").show();
 		}
-		data.forEach(function(plugin){
+		data.forEach(function(pluginBundle){
 			var tr = $("<tr>");
 			
-			var latest = plugin.latestVersion;
+			var latest = pluginBundle.latestVersion;
 			
-			tr.append("<td>" + plugin.organization + "</td>");
-			tr.append("<td>" + plugin.name + "</td>");
+			var iconTd = $("<td>");
+			if (pluginBundle.icon != null) {
+				var icon = $("<img>");
+				icon.attr("src", "data:image/png;base64," + pluginBundle.icon);
+				iconTd.append(icon);
+			}
+			tr.append(iconTd);
+			tr.append("<td>" + pluginBundle.organization + "</td>");
+			tr.append("<td>" + pluginBundle.name + "</td>");
 			tr.append("<td>" + latest.description + "</td>");
 			
 			var versionTd = $("<td>");
 			var versionSelect = $("<select class=\"form-control\">");
 			versionTd.append(versionSelect);
-			plugin.availableVersions.forEach(function(version){
+			pluginBundle.availableVersions.forEach(function(version){
 				var text = version.version;
 				if (version.version == latest.version) {
 					text += " (latest)";
@@ -62,8 +69,8 @@ function AvailablePluginBundles(main, serverSettings, cd) {
 				});
 			});
 			
-			tr.data("plugin", plugin);
-			tr.data("version", plugin.latestVersion);
+			tr.data("pluginBundle", pluginBundle);
+			tr.data("version", pluginBundle.latestVersion);
 			
 			tr.append(versionTd);
 
@@ -71,9 +78,9 @@ function AvailablePluginBundles(main, serverSettings, cd) {
 			var installBtn = $("<button class=\"btn btn-primary\">Install</button>");
 			installBtn.click(function(){
 				var tr = $(this).parents("tr");
-				var plugin = tr.data("plugin");
+				var pluginBundle = tr.data("pluginBundle");
 				var version = tr.data("version");
-				serverSettings.showInstallPluginBundle(plugin, version);
+				serverSettings.showInstallPluginBundle(pluginBundle, version);
 			});
 			installTd.append(installBtn);
 			tr.append(installTd);

@@ -484,7 +484,7 @@ function ProjectTree(containerDiv, parent, options, selectedId) {
 		}
 	};
 	
-	this.addMenuItem = function(title, cl, click){
+	this.addMenuItem = function(title, cl, click, popup){
 		var li = $("<li class=\"" + cl + "\"></li>");
 		var a = $("<a>" + title + "</a>");
 		a.click(function(){

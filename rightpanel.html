@@ -383,7 +383,9 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		revisionRow.data("revision", revision);
 		revisionRow.click(othis.revisionClick);
 
-		revisionRow.append("<td>" + revision.id + "</td>");
+		var revisionIdTd = $("<td>" + revision.id + "</td>");
+		revisionIdTd.attr("title", revision.oid);
+		revisionRow.append(revisionIdTd);
 		revisionRow.append("<td><span title=\"" + formatDateTime(new Date(revision.date)) + "\" class=\"timespan\" datetime=\"" + revision.date + "\">" + formatTimeSpan(new Date().getTime() - revision.date, false) + "</span></td>");
 		var userTd = $("<td></td>");
 		var userA = $("<a>loading...</a>");

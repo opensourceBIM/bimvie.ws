@@ -53,14 +53,14 @@
 			}());
 			
 			if (Settings.useCompressedResources()) {
+				var cssToLoad = [baseCssDir + "bimviews.min.css"];
+			} else {
 				var cssToLoad = [
 	 			    baseCssDir + "bootstrap.min.css?_v=" + Global.version, 
 				    baseCssDir + "main.css?_v=" + Global.version, 
 				    baseCssDir + "bootstrap-vert-tabs.css?_v=" + Global.version, 
 				    baseCssDir + "magic-bootstrap-min.css?_v=" + Global.version
 				];
-			} else {
-				var cssToLoad = [baseCssDir + "bimviews.min.css"];
 			}
 			LazyLoad.css(cssToLoad, function(){});
 				LazyLoad.js([
