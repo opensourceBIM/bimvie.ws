@@ -11,7 +11,7 @@
 	<build>
 		<resources>
 			<resource>
-				<directory>../output/css</directory>
+				<directory>../../output/css</directory>
 				<targetPath>css</targetPath>
 			</resource>
 			<resource>
@@ -19,7 +19,7 @@
 				<targetPath>css</targetPath>
 			</resource>
 			<resource>
-				<directory>../output/js</directory>
+				<directory>../../output/js</directory>
 				<targetPath>js</targetPath>
 			</resource>
 			<resource>
@@ -27,7 +27,7 @@
 				<targetPath>js</targetPath>
 			</resource>
 			<resource>
-				<directory>../output/fonts</directory>
+				<directory>../../output/fonts</directory>
 				<targetPath>fonts</targetPath>
 			</resource>
 			<resource>
