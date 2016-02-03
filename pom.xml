@@ -58,7 +58,7 @@
 				<artifactId>build-helper-maven-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>attach-artifacts</id>
+						<id>attach-plugin</id>
 						<phase>package</phase>
 						<goals>
 							<goal>attach-artifact</goal>
@@ -80,7 +80,7 @@
 				<artifactId>build-helper-maven-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>attach-artifacts</id>
+						<id>attach-icon</id>
 						<phase>package</phase>
 						<goals>
 							<goal>attach-artifact</goal>

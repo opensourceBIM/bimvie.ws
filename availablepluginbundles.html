@@ -40,9 +40,9 @@ function AvailablePluginBundles(main, serverSettings, cd) {
 			var latest = pluginBundle.latestVersion;
 			
 			var iconTd = $("<td>");
-			if (pluginBundle.icon != null) {
-				var icon = $("<img>");
-				icon.attr("src", "data:image/png;base64," + pluginBundle.icon);
+			if (latest.icon != null) {
+				var icon = $("<img style=\"width: 24px; height: 24px\">");
+				icon.attr("src", "data:image/png;base64," + latest.icon);
 				iconTd.append(icon);
 			}
 			tr.append(iconTd);
