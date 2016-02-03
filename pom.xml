@@ -45,8 +45,11 @@
 				<targetPath>plugin</targetPath>
 			</resource>
 			<resource>
-				<directory>build/settings.js</directory>
-				<targetPath>js/settings.js</targetPath>
+				<directory>build</directory>
+				<includes>
+					<include>settings.js</include>
+				</includes>
+				<targetPath>js</targetPath>
 			</resource>
 		</resources>
 		<plugins>
