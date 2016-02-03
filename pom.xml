@@ -39,7 +39,6 @@
 				<includes>
 					<include>*.html</include>
 				</includes>
-				<targetPath>/</targetPath>
 			</resource>
 			<resource>
 				<directory>plugin</directory>
