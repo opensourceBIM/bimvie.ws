@@ -158,6 +158,11 @@
 		</repository>
 	</distributionManagement>
 	<dependencies>
+	<dependency>
+		<groupId>org.opensourcebim</groupId>
+		<artifactId>bimsurfer</artifactId>
+		<version>0.0.2</version>
+	</dependency>
 	</dependencies>
 	<scm>
 		<url>https://github.com/opensourceBIM/bimvie.ws.git</url>
