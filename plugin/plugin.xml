@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PluginDescriptor>
-	<PluginImplementation>
-		<interfaceClass>org.bimserver.plugins.web.WebModulePlugin</interfaceClass>
-		<implementationJson>bimviews.json</implementationJson>
-		<description>BIMvie.ws</description>
-		<enabled>true</enabled>
-	</PluginImplementation>
+	<WebModulePlugin>
+		<identifier>bimviews</identifier>
+		<description>BIM Views is a JavaScript/HTML frontend to BIMserver</description>
+	</WebModulePlugin>
 </PluginDescriptor>
