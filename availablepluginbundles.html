@@ -14,7 +14,7 @@
 	</div>
 	<table class="table ih">
 		<thead>
-			<tr><th></th><th>Organization</th><th>Name</th><th>Description</th><th>Version</th><th>Install</th></tr>
+			<tr><th></th><th>Name</th><th>Organization</th><th>Description</th><th>Version</th><th>Install</th></tr>
 		</thead>
 		<tbody></tbody>
 	</table>
@@ -46,8 +46,8 @@ function AvailablePluginBundles(main, serverSettings, cd) {
 				iconTd.append(icon);
 			}
 			tr.append(iconTd);
-			tr.append("<td>" + pluginBundle.organization + "</td>");
 			tr.append("<td>" + pluginBundle.name + "</td>");
+			tr.append("<td>" + pluginBundle.organization + "</td>");
 			tr.append("<td>" + latest.description + "</td>");
 			
 			var versionTd = $("<td>");

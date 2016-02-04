@@ -103,7 +103,7 @@
 		this.showUpdatePluginBundle = function(pluginBundle, pluginBundleVersion, callback) {
 			othis.pageChanger.changePage($(".availablePluginBundlesLink"), "updatepluginbundle.html", function(){
 				pushHistory({page: "ServerSettings", subpage: "UpdatePluginBundle"}, "Server Settings");
-				return new UpdatePluginBundle($(this), pluginBundle, pluginBundleVersion);
+				return new UpdatePluginBundle($(this), othis, pluginBundle, pluginBundleVersion);
 			}, callback);
 		};
 

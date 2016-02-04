@@ -166,9 +166,8 @@
 				    					address = address.substring(0, address.length - 1);
 				    				}
 				    				if (BimServerClient != null) {
-				    					Global.bimServerApi = new BimServerClient(address, null);
+				    					Global.bimServerApi = new BimServerClient(address, Global.notifier);
 				    					Global.bimServerApi.init(function(api, serverInfo){
-				    						console.log(serverInfo);
 					    					if (serverInfo.serverState == "NOT_SETUP") {
 					    						$(".indexcontainer").load(Global.baseDir + "setup.html", function(){
 					    							new Setup(address);

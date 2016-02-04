@@ -1,10 +1,36 @@
 <div class="updatepluginbundle">
+	<h3>Update Plugin Bundle <a class="helpBtn" title="Help"><span class="glyphicon glyphicon-question-sign"></span></a></h3>
+	<div class="alert alert-success ih">
+		Plugin bundle successfully updated, <a class="btnBack">Back to installed plugins</a>
+	</div>
+	<div class="panel panel-default helpDiv ih">
+  		<div class="panel-body">
+		</div>
+	</div>
 </div>
 <script>
-function UpdatePluginBundle(cd, pluginBundle, pluginBundleVersion) {
+function UpdatePluginBundle(cd, serverSettings, pluginBundle, pluginBundleVersion) {
 	var o = this;
 	
 	this.show = function(){};
 	this.hide = function(){};
+	
+	cd.find(".helpBtn").click(function(){
+		cd.find(".helpDiv").toggle();
+	});
+	
+	cd.find(".btnBack").click(function(){
+		serverSettings.showInstalledPluginBundles();
+	});
+	
+	Global.bimServerApi.callWithFullIndication("PluginInterface", "updatePluginBundle", {
+		repository: pluginBundleVersion.repository,
+		groupId: pluginBundleVersion.groupId,
+		artifactId: pluginBundleVersion.artifactId,
+		version: pluginBundleVersion.version
+	}, function(){
+		cd.find(".alert-success").show();
+		window.scrollTo(0, 0);
+	});
 }
 </script>
