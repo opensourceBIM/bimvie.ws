@@ -54,6 +54,8 @@
 				tr.append("<td>" + o.formatPluginType(plugin.type) + "</td>");
 				tr.append("<td>" + plugin.description + "</td>");
 				
+				tr.data("identifier", plugin.identifier);
+				
 				var enableCheckbox = $("<input type=\"checkbox\" class=\"enableCheckbox\" checked=\"checked\">");
 				var allUsersCheckbox = $("<input type=\"checkbox\" class=\"allUsersCheckbox\" checked=\"checked\">");
 				var newUsersCheckbox = $("<input type=\"checkbox\" class=\"newUsersCheckbox\" checked=\"checked\">");
@@ -110,6 +112,7 @@
 				var tr = $(item);
 				plugins.push({
 					__type: "SPluginInformation",
+					identifier: tr.data("identifier"),
 					name: tr.find(".pluginName").text(),
 					enabled: tr.find(".enableCheckbox").is(":checked"),
 					installForAllUsers: tr.find(".allUsersCheckbox").is(":checked"),

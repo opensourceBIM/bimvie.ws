@@ -1,5 +1,8 @@
 <div class="genericpluginsettingslist">
-	<h3>Internal Services</h3>
+	<h3></h3>
+	<div class="well ih noPlugins">
+		No plugins of this type have been installed for the current user
+	</div>
 	<table class="table table-striped table-hover">
 		<thead>
 			<tr>
@@ -94,10 +97,15 @@ function GenericPluginSettingsList(main, usersettings, configuration) {
 		Global.bimServerApi.call("ServiceInterface", "getUserSettings", {}, function(userSettings){
 			othis.userSettings = userSettings;
 			Global.bimServerApi.call("PluginInterface", configuration.getAllMethodName, {onlyEnabled: false}, function(data){
-				$(".genericpluginsettingslist table tbody").empty();
-				data.forEach(function(plugin){
-					othis.addPlugin(plugin);
-				});
+				if (data.length == 0) {
+					$(".noPlugins").show();
+					$(".genericpluginsettingslist table").hide();
+				} else {
+					$(".genericpluginsettingslist table tbody").empty();
+					data.forEach(function(plugin){
+						othis.addPlugin(plugin);
+					});
+				}
 			});
 		});
 	};

@@ -1,15 +1,20 @@
 <div class="query">
-	<form class="form-inline">
-		<label>Query engine <select class="form-control queryEngineSelect"></select></label>
-		<div class="btn-group">
-			<a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#"> Load example <span class="caret"></span>
-			</a>
-			<ul class="dropdown-menu examplesDropdown">
-			</ul>
-		</div>
-	</form>
-	<textarea id="editor" rows="16" class="queryText form-control" style="width: 100%"></textarea>
-	<button class="btn queryButton pull-right btn-primary">Query</button>
+	<div class="noEngines well ih">
+		No query engines have been installed (for this account)
+	</div>
+	<div class="engines">
+		<form class="form-inline">
+			<label>Query engine <select class="form-control queryEngineSelect"></select></label>
+			<div class="btn-group">
+				<a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#"> Load example <span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu examplesDropdown">
+				</ul>
+			</div>
+		</form>
+		<textarea id="editor" rows="16" class="queryText form-control" style="width: 100%"></textarea>
+		<button class="btn queryButton pull-right btn-primary">Query</button>
+	</div>
 </div>
 <script>
 function Query(containerDiv, main, poid, roid) {
@@ -18,15 +23,20 @@ function Query(containerDiv, main, poid, roid) {
 	this.loadEngines = function(){
 		Global.bimServerApi.call("PluginInterface", "getDefaultQueryEngine", {}, function(defaultQueryEngine){
 			Global.bimServerApi.call("PluginInterface", "getAllQueryEngines", {onlyEnabled: true}, function(data){
-				containerDiv.find(".queryEngineSelect option").remove();
-				data.forEach(function(queryEngine){
-					var option = $("<option value=\"" + queryEngine.oid + "\">" + queryEngine.name + "</option>");
-					if (defaultQueryEngine != null && queryEngine.oid == defaultQueryEngine.oid) {
-						option.attr("selected", "selected");
-					}
-					containerDiv.find(".queryEngineSelect").append(option);
-				});
-				othis.queryEngineChange();
+				if (data.length == 0) {
+					containerDiv.find(".noEngines").show();
+					containerDiv.find(".engines").hide();
+				} else {
+					containerDiv.find(".queryEngineSelect option").remove();
+					data.forEach(function(queryEngine){
+						var option = $("<option value=\"" + queryEngine.oid + "\">" + queryEngine.name + "</option>");
+						if (defaultQueryEngine != null && queryEngine.oid == defaultQueryEngine.oid) {
+							option.attr("selected", "selected");
+						}
+						containerDiv.find(".queryEngineSelect").append(option);
+					});
+					othis.queryEngineChange();
+				}
 			});
 		});
 	};

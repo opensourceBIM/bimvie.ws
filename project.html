@@ -383,7 +383,7 @@ function Project(containerDiv, main, project) {
 			containerDiv.find(".navigatorWrapper").load("navigator.html", function(){
 				othis.navigator = new Navigator($(this), othis);
 				othis.navigator.load().done(function(){
-					othis.navigator.projecttree.addMenuDivider();
+					othis.navigator.projecttree.addMenuDivider("revisionDivider");
 					othis.navigator.projecttree.addMenuItem("Add sub project", "btnAddProject", function(){
 						Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: othis.navigator.projecttree.selectedNode.poid}, function(project){
 							main.showAddProject(null, project);
@@ -410,7 +410,7 @@ function Project(containerDiv, main, project) {
 						main.showDownloadRevisionsPopup(list);
 					}).find("a").prepend("<i class=\"glyphicon glyphicon-cloud-download\"></i> ");
 
-					othis.navigator.projecttree.addMenuDivider();
+					othis.navigator.projecttree.addMenuDivider("revisionDivider");
 					var regenerateGeometryBtn = othis.navigator.projecttree.addMenuItem("Regenerate geometry", "btnRegenerateGeometry", function(){
 						var list = [];
 						othis.navigator.projecttree.gatherRoidList(othis.navigator.projecttree.selectedNode, list);
@@ -429,11 +429,12 @@ function Project(containerDiv, main, project) {
 							var li = $("<li><a>with " + engine.name + "</a></li>");
 							ul.append(li);
 							Global.bimServerApi.call("PluginInterface", "getPluginDescriptor", {oid: engine.pluginDescriptorId}, function(pluginDescriptor){
-								Global.bimServerApi.call("PluginInterface", "getPluginBundle", {oid: pluginDescriptor.pluginBundleVersionId}, function(pluginBundle){
+								Global.bimServerApi.call("PluginInterface", "getInstalledPluginBundle", {oid: pluginDescriptor.pluginBundleVersionId}, function(pluginBundle){
 									if (pluginBundle.icon != null) {
-										var icon = $("<img>");
+										var icon = $("<img style=\"width: 16px; height: 16px\">");
 										icon.attr("src", "data:image/png;base64," + pluginBundle.icon);
-										li.append(icon);
+										li.find("a").prepend(" ");
+										li.find("a").prepend(icon);
 									}
 								});
 							});

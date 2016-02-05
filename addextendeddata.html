@@ -46,18 +46,6 @@ function AddExtendedData(containerDiv, revision, successFunction) {
 	var currentCheckinId = null;
 	var fileselected = false;
 
-	containerDiv.find(".uploadButton").click(function(event){
-		if ($(".addextendeddata .schemaSelect").val() == null) {
-			Global.notifier.setError("No schema selected");
-			return;
-		}
-
-		othis.hideUpload();
-		containerDiv.find(".uploadStatus").html("Uploading file...");
-
-		event.preventDefault();
-	});
-
 	this.processFiles = function(files) {
 		othis.validFile = false;
 		for (var i = 0, file; file = files[i]; i++) {
@@ -99,8 +87,13 @@ function AddExtendedData(containerDiv, revision, successFunction) {
 	};
 	
 	this.uploadNew = function(project){
+		if ($(".addextendeddata .schemaSelect").val() == null) {
+			Global.notifier.setError("No schema selected");
+			return;
+		}
+
 		window.onbeforeunload = function() {
-			return "You are uploading a model, of you close your browser/tab now, it will not continue";
+			return "You are uploading a model, if you close your browser/tab now, it will not continue";
 		}
 
 		othis.hideUpload();

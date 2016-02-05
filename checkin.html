@@ -169,7 +169,7 @@ function Checkin(containerDiv, project, successFunction) {
 	
 	this.uploadNew = function(project){
 		window.onbeforeunload = function() {
-			return "You are uploading a model, of you close your browser/tab now, it will not continue";
+			return "You are uploading a model, if you close your browser/tab now, it will not continue";
 		}
 
 		containerDiv.find(".progressBarHolder .uploadProgressBar").remove();

@@ -63,15 +63,19 @@
 				];
 			}
 			LazyLoad.css(cssToLoad, function(){});
-				LazyLoad.js([
-				             Settings.getBimServerApiAddress() + "/bimserverapiwebsocket.js",
-				             Settings.getBimServerApiAddress() + "/bimserverclient.js",
-				             Settings.getBimServerApiAddress() + "/bimserverapipromise.js",
-				             Settings.getBimServerApiAddress() + "/ifc2x3tc1.js",
-				             Settings.getBimServerApiAddress() + "/ifc4.js",
-				             Settings.getBimServerApiAddress() + "/model.js",
-				             Settings.getBimServerApiAddress() + "/translations_en.js"
-				             ], function () {
+				var initialJs = [];
+				if (Settings.useCompressedResources()) {
+					initialJs.push(Settings.getBimServerApiAddress() + "/bimserverapi.js");
+				} else {
+					initialJs.push(Settings.getBimServerApiAddress() + "/bimserverapiwebsocket.js");					
+					initialJs.push(Settings.getBimServerApiAddress() + "/bimserverclient.js");					
+					initialJs.push(Settings.getBimServerApiAddress() + "/bimserverapipromise.js");					
+					initialJs.push(Settings.getBimServerApiAddress() + "/ifc2x3tc1.js");					
+					initialJs.push(Settings.getBimServerApiAddress() + "/ifc4.js");					
+					initialJs.push(Settings.getBimServerApiAddress() + "/model.js");					
+					initialJs.push(Settings.getBimServerApiAddress() + "/translations_en.js");					
+				}
+				LazyLoad.js(initialJs, function () {
 					if (Settings.useCompressedResources()) {
 						var jsToLoad = [baseJsDir + "bimviews.min.js"];
 					} else {
@@ -101,32 +105,36 @@
 			       		    baseJsDir + "papaparse.min.js?_v=" + Global.version
 			    	 	];
 					}
-				    		
-				    		if (Settings.useBimSurfer()) {
-				    			jsToLoad = jsToLoad.concat([
-				    	   		    Settings.getBimSurferApiAddress() + "api/BIMSURFER.js?_v=" + Global.version, 
-				    	   		 	Settings.getBimSurferApiAddress() + "lib/scenejs/scenejs.js?_v=" + Global.version, 
-					    	   		Settings.getBimSurferApiAddress() + "api/SceneJS.js?_v=" + Global.version, 
-					    	   		Settings.getBimSurferApiAddress() + "api/Constants.js?_v=" + Global.version, 
-					    	   		Settings.getBimSurferApiAddress() + "api/ProgressLoader.js?_v=" + Global.version, 
-					    	   		Settings.getBimSurferApiAddress() + "api/Types/Light.js?_v=" + Global.version, 
-					    	   		Settings.getBimSurferApiAddress() + "api/Types/Light/Ambient.js?_v=" + Global.version, 
-					    	   		Settings.getBimSurferApiAddress() + "api/Types/Light/Sun.js?_v=" + Global.version, 
-					    	   		Settings.getBimSurferApiAddress() + "api/Control.js?_v=" + Global.version, 
-					    	   		Settings.getBimSurferApiAddress() + "api/Control/ClickSelect.js?_v=" + Global.version, 
-					    	   		Settings.getBimSurferApiAddress() + "api/Control/LayerList.js?_v=" + Global.version, 
-					    	   		Settings.getBimSurferApiAddress() + "api/Control/ProgressBar.js?_v=" + Global.version, 
-					    	   		Settings.getBimSurferApiAddress() + "api/Control/PickFlyOrbit.js?_v=" + Global.version, 
-					    	   		Settings.getBimSurferApiAddress() + "api/Control/ObjectTreeView.js?_v=" + Global.version, 
-					    	   		Settings.getBimSurferApiAddress() + "api/Events.js?_v=" + Global.version, 
-					    	   		Settings.getBimSurferApiAddress() + "api/StringView.js?_v=" + Global.version, 
-					    	   		Settings.getBimSurferApiAddress() + "api/GeometryLoader.js?_v=" + Global.version, 
-					    	   		Settings.getBimSurferApiAddress() + "api/AsyncStream.js?_v=" + Global.version, 
-					    	   		Settings.getBimSurferApiAddress() + "api/DataInputStream.js?_v=" + Global.version, 
-					    	   		Settings.getBimSurferApiAddress() + "api/Viewer.js?_v=" + Global.version, 
-					    	   		Settings.getBimSurferApiAddress() + "api/Util.js?_v=" + Global.version
-				       			]);
-				    		}
+				    
+		    		if (Settings.useBimSurfer()) {
+						if (Settings.useCompressedResources()) {
+							jsToLoad.push(Settings.getBimSurferApiAddress() + "bimsurfer.min.js");
+						} else {
+			    			jsToLoad = jsToLoad.concat([
+			    	   		    Settings.getBimSurferApiAddress() + "api/BIMSURFER.js?_v=" + Global.version, 
+			    	   		 	Settings.getBimSurferApiAddress() + "lib/scenejs/scenejs.js?_v=" + Global.version, 
+				    	   		Settings.getBimSurferApiAddress() + "api/SceneJS.js?_v=" + Global.version, 
+				    	   		Settings.getBimSurferApiAddress() + "api/Constants.js?_v=" + Global.version, 
+				    	   		Settings.getBimSurferApiAddress() + "api/ProgressLoader.js?_v=" + Global.version, 
+				    	   		Settings.getBimSurferApiAddress() + "api/Types/Light.js?_v=" + Global.version, 
+				    	   		Settings.getBimSurferApiAddress() + "api/Types/Light/Ambient.js?_v=" + Global.version, 
+				    	   		Settings.getBimSurferApiAddress() + "api/Types/Light/Sun.js?_v=" + Global.version, 
+				    	   		Settings.getBimSurferApiAddress() + "api/Control.js?_v=" + Global.version, 
+				    	   		Settings.getBimSurferApiAddress() + "api/Control/ClickSelect.js?_v=" + Global.version, 
+				    	   		Settings.getBimSurferApiAddress() + "api/Control/LayerList.js?_v=" + Global.version, 
+				    	   		Settings.getBimSurferApiAddress() + "api/Control/ProgressBar.js?_v=" + Global.version, 
+				    	   		Settings.getBimSurferApiAddress() + "api/Control/PickFlyOrbit.js?_v=" + Global.version, 
+				    	   		Settings.getBimSurferApiAddress() + "api/Control/ObjectTreeView.js?_v=" + Global.version, 
+				    	   		Settings.getBimSurferApiAddress() + "api/Events.js?_v=" + Global.version, 
+				    	   		Settings.getBimSurferApiAddress() + "api/StringView.js?_v=" + Global.version, 
+				    	   		Settings.getBimSurferApiAddress() + "api/GeometryLoader.js?_v=" + Global.version, 
+				    	   		Settings.getBimSurferApiAddress() + "api/AsyncStream.js?_v=" + Global.version, 
+				    	   		Settings.getBimSurferApiAddress() + "api/DataInputStream.js?_v=" + Global.version, 
+				    	   		Settings.getBimSurferApiAddress() + "api/Viewer.js?_v=" + Global.version, 
+				    	   		Settings.getBimSurferApiAddress() + "api/Util.js?_v=" + Global.version
+			       			]);
+						}
+		    		}
 				    		
 				    		LazyLoad.js(jsToLoad, function () {
 				    			var othis = this;

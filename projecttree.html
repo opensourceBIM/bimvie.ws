@@ -133,9 +133,13 @@ function ProjectTree(containerDiv, parent, options, selectedId) {
 			dropdown.find(".revisions li").remove();
 			if (revisions.length == 0) {
 				dropdown.find(".btnDownload").hide();
+				dropdown.find(".revisionDivider").hide();
+				dropdown.find(".btnRegenerateGeometry").hide();
 				$(".revisionsLi").hide();
 			} else {
 				dropdown.find(".btnDownload").show();
+				dropdown.find(".revisionDivider").show();
+				dropdown.find(".btnRegenerateGeometry").show();
 				$(".revisionsLi").show();
 				revisions.forEach(function(revision){
 					var li = $("<li><a>" + revision.id + " (" + revision.comment + ")</a></li>");
@@ -496,8 +500,12 @@ function ProjectTree(containerDiv, parent, options, selectedId) {
 		return li;
 	};
 	
-	this.addMenuDivider = function(){
-		containerDiv.find(".treeDropDown").append("<li class=\"divider\"></li>");		
+	this.addMenuDivider = function(className){
+		var li = $("<li class=\"divider\"></li>");
+		if (className != null) {
+			li.addClass(className);
+		}
+		containerDiv.find(".treeDropDown").append(li);		
 	};
 	
 	parent.selectListeners.register(othis.selected);
