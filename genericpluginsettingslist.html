@@ -1,5 +1,8 @@
 <div class="genericpluginsettingslist">
 	<h3></h3>
+	<div class="buttonBar">
+		<button class="btn btn-primary btnAdd">Add </button>
+	</div>
 	<div class="well ih noPlugins">
 		No plugins of this type have been installed for the current user
 	</div>
@@ -112,6 +115,11 @@ function GenericPluginSettingsList(main, usersettings, configuration) {
 	
 	this.close = function(){
 	};
+	
+	$(".btnAdd").click(function(){
+		configuration.showAddFunction(configuration);
+	});
+	
 	othis.loadPluginConfigurations();
 }
 </script>

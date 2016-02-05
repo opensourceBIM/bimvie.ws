@@ -2,6 +2,7 @@
 <PluginDescriptor>
 	<WebModulePlugin>
 		<identifier>bimviews</identifier>
+		<name>BIMvie.ws</name>
 		<description>BIM Views is a JavaScript/HTML frontend to BIMserver</description>
 	</WebModulePlugin>
 </PluginDescriptor>

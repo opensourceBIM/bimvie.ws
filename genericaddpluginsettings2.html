@@ -1,0 +1,105 @@
+<div class="genericaddpluginsettings2">
+	<h3 class="title"></h3>
+
+	<form>
+		<div class="form-group">
+			<label for="exampleInputEmail1">Plugin</label> <span class="pluginName"></span>
+		</div>
+		<div class="form-group">
+			<label for="exampleInputEmail1">Name</label> <input class="nameInp form-control"/>
+		</div>
+	</form>
+
+	<h3>Settings</h3>
+	<div class="well well-sm nosettings">No settings</div>
+	<table class="table settingsTable">
+		<tbody>
+		</tbody>
+	</table>
+	<div class="popupLoader"></div>
+	<div class="well clearfix">
+		<button class="btn btn-primary saveButton pull-right">Add</button>
+	</div>
+</div>
+<script>
+	function GenericAddPluginSettings2(cd, main, usersettings, configuration, descriptor) {
+		var othis = this;
+
+		this.close = function() {
+		};
+
+		this.show = function() {
+		};
+
+		cd.find(".pluginName").html(descriptor.name);
+		cd.find(".nameInp").val(descriptor.name);
+		
+		cd.find("h3.title").html(configuration.addTitle);
+
+		this.loadPluginObjectDefinition = function() {
+			Global.bimServerApi.call("PluginInterface", "getPluginObjectDefinition", {oid: descriptor.oid}, function(objectDefinition){
+				if (objectDefinition != null && objectDefinition.parameters != null) {
+					objectDefinition.parameters.forEach(function(parameter){
+						cd.find(".nosettings").hide();
+						var tr = $("<tr></tr>");
+						tr.append("<td></td>");
+						var link = $("<a>" + parameter.name.firstUpper() + "</a>");
+						link.tooltip({title: parameter.description});
+						tr.find("td").append(link);
+						var td = $("<td></td>");
+						tr.append(td);
+						if (parameter.type.__type == "SPrimitiveDefinition") {
+							var primitiveDefinition = parameter.type;
+							var input = null;
+							if (primitiveDefinition.type == "LONG") {
+								input = $("<input class=\"form-control\" parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
+								input.numeric({ decimal: false, negative: false });
+								td.append(input);
+							} else if (primitiveDefinition.type == "DOUBLE") {
+								input = $("<input class=\"form-control\" parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
+								input.numeric({ decimal: ".", negative: false });
+								td.append(input);
+							} else if (primitiveDefinition.type == "STRING") {
+								input = $("<input class=\"form-control\" parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
+								td.append(input);
+							} else if (primitiveDefinition.type == "BYTE_ARRAY") {
+								input = $("<input class=\"form-control\" parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"file\"/>");
+								
+								var reader = new FileReader();
+								reader.onload = function (event) {
+									var data = event.target.result;
+									var encoded = data.substr(data.indexOf(",") + 1);
+									input.data("base64", encoded);
+								};
+								input.change(function(){
+									var get = input.get(0);
+									var files = get.files;
+									if (files != null && files.length == 1) {
+										var oFile = files[0];
+										reader.readAsDataURL(oFile);
+									}
+								});
+								
+								td.append(input);
+							} else if (primitiveDefinition.type == "BOOLEAN") {
+								input = $("<input class=\"form-control\" parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"checkbox\"/>");
+								td.append(input);
+							}
+						}
+						cd.find(".settingsTable tbody").append(tr);
+					});
+					othis.loadPluginSettings();
+				}
+			});
+		};
+
+		othis.loadPluginObjectDefinition();
+
+		this.save = function(event) {
+			event.preventDefault();
+			othis.savePlugin();
+		};
+
+		cd.find(".saveButton").click(othis.save);
+	}
+</script>

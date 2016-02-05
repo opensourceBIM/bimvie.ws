@@ -43,7 +43,10 @@
 					defaultFieldName: "defaultSerializerId",
 					createUpdateObject: function(pluginConfiguration){return {serializer: pluginConfiguration}},
 					listTitle: "Serializers",
-					showDetailsFunction: othis.showSerializer
+					showDetailsFunction: othis.showSerializer,
+					addTitle: "Add serializer",
+					showAddFunction: othis.showAddSerializer,
+					getAllDescriptorsFunction: "getAllSerializerPluginDescriptors"
 				});
 			}, callback);
 		};
@@ -56,7 +59,10 @@
 					updateMethodName: "updateDeserializer",
 					createUpdateObject: function(pluginConfiguration){return {deserializer: pluginConfiguration}},
 					listTitle: "Deserializers",
-					showDetailsFunction: othis.showDeserializer
+					showDetailsFunction: othis.showDeserializer,
+					addTitle: "Add deserializer",
+					showAddFunction: othis.showAddDeserializer,
+					getAllDescriptorsFunction: "getAllDeserializerPluginDescriptors"
 				});
 			}, callback);
 		};
@@ -71,7 +77,10 @@
 					defaultFieldName: "defaultObjectIDMId",
 					createUpdateObject: function(pluginConfiguration){return {objectIDM: pluginConfiguration}},
 					listTitle: "Object IDMs",
-					showDetailsFunction: othis.showObjectIdm
+					showDetailsFunction: othis.showObjectIdm,
+					addTitle: "Add ObjectIDM",
+					showAddFunction: othis.showAddObjectIDM,
+					getAllDescriptorsFunction: "getAllObjectIDMPluginDescriptors"
 				});
 			}, callback);
 		};
@@ -86,7 +95,10 @@
 					defaultFieldName: "defaultRenderEngineId",
 					createUpdateObject: function(pluginConfiguration){return {renderEngine: pluginConfiguration}},
 					listTitle: "Render Engines",
-					showDetailsFunction: othis.showRenderEngine
+					showDetailsFunction: othis.showRenderEngine,
+					addTitle: "Add Render Engine",
+					showAddFunction: othis.showAddRenderEngine,
+					getAllDescriptorsFunction: "getAllRenderEnginePluginDescriptors"
 				});
 			}, callback);
 		};
@@ -101,7 +113,10 @@
 					defaultFieldName: "defaultQueryEngineId",
 					createUpdateObject: function(pluginConfiguration){return {queryEngine: pluginConfiguration}},
 					listTitle: "Query Engines",
-					showDetailsFunction: othis.showQueryEngine
+					showDetailsFunction: othis.showQueryEngine,
+					addTitle: "Add Query Engine",
+					showAddFunction: othis.showAddQueryEngine,
+					getAllDescriptorsFunction: "getAllQueryEnginePluginDescriptors"
 				});
 			}, callback);
 		};
@@ -116,7 +131,10 @@
 					defaultFieldName: "defaultModelMergerId",
 					createUpdateObject: function(pluginConfiguration){return {modelMerger: pluginConfiguration}},
 					listTitle: "Model Mergers",
-					showDetailsFunction: othis.showModelMerger
+					showDetailsFunction: othis.showModelMerger,
+					addTitle: "Add Model Merger",
+					showAddFunction: othis.showAddModelMerger,
+					getAllDescriptorsFunction: "getAllModelMergerPluginDescriptors"
 				});
 			}, callback);
 		};
@@ -131,7 +149,10 @@
 					defaultFieldName: "defaultModelCompareId",
 					createUpdateObject: function(pluginConfiguration){return {modelCompare: pluginConfiguration}},
 					listTitle: "Model Compares",
-					showDetailsFunction: othis.showModelCompare
+					showDetailsFunction: othis.showModelCompare,
+					addTitle: "Add Model Compare",
+					showAddFunction: othis.showAddModelCompare,
+					getAllDescriptorsFunction: "getAllModelComparePluginDescriptors"
 				});
 			}, callback);
 		};
@@ -144,7 +165,10 @@
 					updateMethodName: "updateInternalService",
 					createUpdateObject: function(pluginConfiguration){return {internalService: pluginConfiguration}},
 					listTitle: "Internal Services",
-					showDetailsFunction: othis.showInternalService
+					showDetailsFunction: othis.showInternalService,
+					addTitle: "Add Internal Service",
+					showAddFunction: othis.showAddInternalService,
+					getAllDescriptorsFunction: "getAllInternalServicePluginDescriptors"
 				});
 			}, callback);
 		};
@@ -161,6 +185,13 @@
 			}, callback);
 		};
 
+		this.showAddSerializer = function(configuration, callback) {
+			othis.pageChanger.changePage($(".serializersLink"), "genericaddpluginsettings1.html", function(){
+				pushHistory({page: "UserSettings", subpage: "Serializer"}, "User Settings");
+				return new GenericAddPluginSettings1($(this), main, othis, configuration);
+			}, callback);
+		};
+
 		this.showDeserializer = function(deserializer, callback) {
 			var oid = typeof deserializer == "number" ? deserializer : deserializer.oid;
 			othis.pageChanger.changePage($(".deserializersLink"), "genericpluginsettings.html", function(){
@@ -170,6 +201,13 @@
 					getInterface: "Bimsie1ServiceInterface",
 					getMethod: "getDeserializerById"
 				});
+			}, callback);
+		};
+
+		this.showAddDeserializer = function(configuration, callback) {
+			othis.pageChanger.changePage($(".deserializersLink"), "genericaddpluginsettings1.html", function(){
+				pushHistory({page: "UserSettings", subpage: "Deserializer"}, "User Settings");
+				return new GenericAddPluginSettings1($(this), main, othis, configuration);
 			}, callback);
 		};
 
@@ -185,6 +223,13 @@
 			}, callback);
 		};
 
+		this.showAddObjectIDM = function(configuration, callback) {
+			othis.pageChanger.changePage($(".objectIdmsLink"), "genericaddpluginsettings1.html", function(){
+				pushHistory({page: "UserSettings", subpage: "ObjectIDM"}, "User Settings");
+				return new GenericAddPluginSettings1($(this), main, othis, configuration);
+			}, callback);
+		};
+
 		this.showRenderEngine = function(renderEngine, callback) {
 			var oid = typeof renderEngine == "number" ? renderEngine : renderEngine.oid;
 			othis.pageChanger.changePage($(".renderEnginesLink"), "genericpluginsettings.html", function(){
@@ -194,6 +239,13 @@
 					getInterface: "PluginInterface",
 					getMethod: "getRenderEngineById"
 				});
+			}, callback);
+		};
+		
+		this.showAddRenderEngine = function(configuration, callback) {
+			othis.pageChanger.changePage($(".renderEnginesLink"), "genericaddpluginsettings1.html", function(){
+				pushHistory({page: "UserSettings", subpage: "RenderEngine"}, "User Settings");
+				return new GenericAddPluginSettings1($(this), main, othis, configuration);
 			}, callback);
 		};
 
@@ -209,6 +261,13 @@
 			}, callback);
 		};
 
+		this.showAddQueryEngine = function(configuration, callback) {
+			othis.pageChanger.changePage($(".queryEnginesLink"), "genericaddpluginsettings1.html", function(){
+				pushHistory({page: "UserSettings", subpage: "QueryEngine"}, "User Settings");
+				return new GenericAddPluginSettings1($(this), main, othis, configuration);
+			}, callback);
+		};
+		
 		this.showModelMerger = function(modelMerger, callback) {
 			var oid = typeof modelMerger == "number" ? modelMerger : modelMerger.oid;
 			othis.pageChanger.changePage($(".modelMergersLink"), "genericpluginsettings.html", function(){
@@ -218,6 +277,13 @@
 					getInterface: "PluginInterface",
 					getMethod: "getModelMergerById"
 				});
+			}, callback);
+		};
+
+		this.showAddModelMerger = function(configuration, callback) {
+			othis.pageChanger.changePage($(".modelMergersLink"), "genericaddpluginsettings1.html", function(){
+				pushHistory({page: "UserSettings", subpage: "ModelMerger"}, "User Settings");
+				return new GenericAddPluginSettings1($(this), main, othis, configuration);
 			}, callback);
 		};
 
@@ -233,6 +299,13 @@
 			}, callback);
 		};
 
+		this.showAddModelCompare = function(configuration, callback) {
+			othis.pageChanger.changePage($(".modelComparesLink"), "genericaddpluginsettings1.html", function(){
+				pushHistory({page: "UserSettings", subpage: "ModelCompare"}, "User Settings");
+				return new GenericAddPluginSettings1($(this), main, othis, configuration);
+			}, callback);
+		};
+		
 		this.showInternalService = function(internalService, callback) {
 			var oid = typeof internalService == "number" ? internalService : internalService.oid;
 			othis.pageChanger.changePage($(".internalServicesLink"), "genericpluginsettings.html", function(){
@@ -242,6 +315,13 @@
 					getInterface: "PluginInterface",
 					getMethod: "getInternalServiceById"
 				});
+			}, callback);
+		};
+		
+		this.showAddInternalService = function(configuration, callback) {
+			othis.pageChanger.changePage($(".internalServicesLink"), "genericaddpluginsettings1.html", function(){
+				pushHistory({page: "UserSettings", subpage: "InternalService"}, "User Settings");
+				return new GenericAddPluginSettings1($(this), main, othis, configuration);
 			}, callback);
 		};
 
