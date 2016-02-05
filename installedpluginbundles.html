@@ -93,6 +93,7 @@ function InstalledPluginBundles(main, serverSettings, cd) {
 				var tr = $(this).parents("tr");
 				var pluginBundle = tr.data("pluginBundle");
 				var version = tr.data("version");
+				console.log(version);
 				serverSettings.showUpdatePluginBundle(pluginBundle, version);
 			});
 			actionsTd.append(updateBtn);
