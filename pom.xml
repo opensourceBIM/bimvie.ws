@@ -17,6 +17,9 @@
 			<resource>
 				<directory>js</directory>
 				<targetPath>js</targetPath>
+				<excludes>
+					<exclude>settings.js</exclude>
+				</excludes>
 			</resource>
 			<resource>
 				<directory>img</directory>
