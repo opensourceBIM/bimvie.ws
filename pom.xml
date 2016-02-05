@@ -30,11 +30,11 @@
 				<targetPath>fonts</targetPath>
 			</resource>
 			<resource>
-				<directory>output/js</directory>
+				<directory>../../output/js</directory>
 				<targetPath>js</targetPath>
 			</resource>
 			<resource>
-				<directory>output/css</directory>
+				<directory>../../output/css</directory>
 				<targetPath>css</targetPath>
 			</resource>
 			<resource>
