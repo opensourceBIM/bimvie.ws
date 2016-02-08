@@ -43,11 +43,13 @@ function GenericPluginSettingsList(main, usersettings, configuration) {
 	};
 
 	this.enableDisableClick = function(event){
-		var plugin = $(this).parents("tr").data("plugin");
+		var tr = $(this).parents("tr");
+		var plugin = tr.data("plugin");
 		var link = $(this);
 		var state = $(this).parents("tr").find(".state");
 		plugin.enabled = !plugin.enabled;
 		Global.bimServerApi.callWithFullIndication("PluginInterface", configuration.updateMethodName, configuration.createUpdateObject(plugin), function(){
+			tr.data("plugin", plugin);
 			if (plugin.enabled) {
 				link.html("disable");
 				state.html("Enabled");
@@ -79,8 +81,18 @@ function GenericPluginSettingsList(main, usersettings, configuration) {
 			link.html("enable");
 		}
 		link.click(othis.enableDisableClick);
+		
+		var deleteLink = $("<a>delete</a>");
+		deleteLink.click(function(){
+			Global.bimServerApi.call("PluginInterface", "deletePluginConfiguration", {oid: plugin.oid}, function(){
+				tr.remove();
+			});
+		});
+		
 		var td = $("<td>");
 		td.append(link);
+		td.append(" ");
+		td.append(deleteLink);
 		tr.append(td);
 		tr.append("<td class=\"pluginstate\"></td>");
 		Global.bimServerApi.call("PluginInterface", "getPluginDescriptor", {oid: plugin.pluginDescriptorId}, function(pluginDescriptor){
