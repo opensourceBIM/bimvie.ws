@@ -197,7 +197,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	othis.tabChanger = new TabChanger2(containerDiv.find(".nav"), containerDiv.find(".content"));
 	othis.selectedRevision = null;
 	othis.models = {};
-	othis.selectedObjectId = -1;
+	othis.selectedObject = null;
 
 	this.select = function(groupId, id){
 		o.selectListeners.forEach(function(listener){

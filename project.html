@@ -48,9 +48,9 @@ function Project(containerDiv, main, project) {
 		});
 	};
 
-	this.selected = function(origin, groupId, id){
+	this.selected = function(origin, groupId, object){
 		othis.selectListeners.trigger(function(selectListener){
-			selectListener(origin, groupId, id);
+			selectListener(origin, groupId, object);
 		});
 	};
 	
@@ -416,7 +416,6 @@ function Project(containerDiv, main, project) {
 						othis.navigator.projecttree.gatherRoidList(othis.navigator.projecttree.selectedNode, list);
 						main.showDownloadRevisionsPopup(list);
 					}, function(){
-						console.log("up");
 					});
 					
 					regenerateGeometryBtn.addClass("dropdown-submenu");

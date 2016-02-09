@@ -11,16 +11,16 @@
 	</div>
 </div>
 <script>
-function ProjectTree(containerDiv, parent, options, selectedId) {
+function ProjectTree(containerDiv, parent, options, selected) {
 	var othis = this;
-	othis.selectedId = selectedId;
+	othis.selected = selected;
 	othis.selectedNode = null;
 
 	this.load = function(){
 		var promise = new window.BimServerApiPromise();
 		othis.tree = new Tree(containerDiv.find(".tree"));
 		othis.tree.selectionListeners.push(function(node){
-			parent.selectedObjectId = node.id;
+			parent.selectedObject = node.object;
 		});
 		var lastParent = -1;
 		var nrSubprojects = 0;
@@ -34,7 +34,7 @@ function ProjectTree(containerDiv, parent, options, selectedId) {
 			parentNode = othis.tree.find(-1);
 		}
 		var node = Object.create(Node.prototype);
-		node.init(project.oid, project.name);
+		node.init(project.oid, project.name, project);
 		parentNode.add(node);
 		var dropdown = othis.createDropDown(node);
 		var eye = othis.createEye(node, 2);
@@ -209,14 +209,14 @@ function ProjectTree(containerDiv, parent, options, selectedId) {
 		}
 	};
 	
-	this.selected = function(origin, groupId, id){
-		if (othis.selectedId == id) {
+	this.selected = function(origin, groupId, object){
+		if (othis.selected == object) {
 			return;
 		}
-		othis.selectedId = id;
-		othis.select(id);
-		var treeNode = othis.tree.find(id);
-		if (othis.select(origin, id)) {
+		othis.selected = object;
+		othis.select(object.oid);
+		var treeNode = othis.tree.find(object.oid);
+		if (othis.select(origin, object.oid)) {
 			
 		} else {
 			// Maybe this object has not yet been loaded in the tree, but is available in the model
@@ -271,7 +271,7 @@ function ProjectTree(containerDiv, parent, options, selectedId) {
 	this.treeItemClick = function(treeNode) {
 		if (typeof treeNode.id === "number" && treeNode.type.startsWith("Ifc")) {
 			var groupNode = treeNode.findFirstParentWithAttr("groupId");
-			parent.selected(othis, groupNode.groupId, treeNode.id);
+			parent.selected(othis, groupNode.groupId, treeNode.object);
 		}
 	};
 
@@ -355,7 +355,7 @@ function ProjectTree(containerDiv, parent, options, selectedId) {
 		typeNode = createdTypes[relatedElement.getType()];
 		if (typeNode == null) {
 			var typeNode = Object.create(Node.prototype);
-			typeNode.init(relatedElement.getType(), stripIfc(relatedElement.getType()));
+			typeNode.init(relatedElement.getType(), stripIfc(relatedElement.getType()), relatedElement);
 
 			typeNode.setIcon("types");
 			typeNode.type = relatedElement.getType();
@@ -409,7 +409,7 @@ function ProjectTree(containerDiv, parent, options, selectedId) {
 			name = "Unknown";
 		}
 		var newNode = Object.create(Node.prototype);
-		newNode.init(object.oid, name);
+		newNode.init(object.oid, name, object);
 		
 		newNode.type = object.getType();
 		if (object.getType() == "IfcProject" || object.getType() == "IfcSite" || object.getType() == "IfcBuilding" || object.getType() == "IfcBuildingStorey" || object.getType() == "IfcSpace") {

@@ -327,6 +327,7 @@ div#viewport {
 	height: 23px;
 	background-position: center;
 	background-repeat: no-repeat;
+	margin-right: 5px;
 }
 
 .rightCol {

@@ -39,7 +39,7 @@ function Navigator(containerDiv, parent) {
 	this.load = function(){
 		var promise = new window.BimServerApiPromise();
 		promise.chain(load(containerDiv.find(".projectTreeWrapper"), "projecttree.html", function(){
-			o.projecttree = new ProjectTree($(this), parent, {}, o.selectedObjectId);
+			o.projecttree = new ProjectTree($(this), parent, {}, o.selectedObject);
 			o.sidespan = o.projecttree;
 			return o.projecttree.load();
 		}));
@@ -53,17 +53,17 @@ function Navigator(containerDiv, parent) {
 			o.classifications = new Classifications($(this), parent);
 		}));
 		promise.chain(load(containerDiv.find(".propertiesWrapper"), "properties.html", function(){
-			o.properties = new Properties($(this), parent, o.selectedObjectId);
+			o.properties = new Properties($(this), parent, o.selectedObject);
 		}));
 		promise.chain(load(containerDiv.find(".queryWrapper"), "query2.html", function(){
-			o.query = new Query2($(this), parent, o.selectedObjectId);
+			o.query = new Query2($(this), parent, o.selectedObject);
 		}));
 		
 		return promise;
 	};
 	
 	this.resize = function(){
-		var width = $(window).width() / 3 - 50;
+		var width = $(window).width() / 3 - 41;
 		var height = ($(window).height() - $(".navbar").outerHeight() - $(".navbar-header").outerHeight() - containerDiv.find(".navigator .panel-heading").outerHeight());
 		containerDiv.find(".sidespanWrapper").width(width + "px");
 		containerDiv.find(".sidespanWrapper").height(height + "px");

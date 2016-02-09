@@ -17,7 +17,7 @@
 <script>
 function ThreeDView(containerDiv, parent) {
 	var o = this;
-	o.selectedId = -1;
+	o.selected = null;
 	
 	// IfcProduct.oid -> GeometryInfo.oid
 	o.loadedOids = {};
@@ -38,25 +38,28 @@ function ThreeDView(containerDiv, parent) {
 	};
 	
 	this.nodeSelected = function(groupId, node){
-		o.selectedId = node.id;
-		parent.selected(o, groupId, node.oid);
+		o.selected = node.data.object;
+		parent.selected(o, groupId, node.data.object);
 	};
 	
 	this.nodeUnselected = function(groupId, node){
-		parent.unselected(o, groupId, node.oid);
-		o.selectedId = -1;
+		parent.unselected(o, groupId, node.data.object);
+		o.selected = null;
 	};
 	
-	this.selected = function(origin, groupId, id){
-		if (o.selectedId == id) {
+	this.selected = function(origin, groupId, object){
+		if (o.selected == object) {
 			return;
 		}
-		o.selectedId = id;
+		o.selected = object;
+		
 		// todo use groupid		
-		var sceneJsNode = o.viewer.scene.findNode(id);
+		var sceneJsNode = o.viewer.scene.findNode(object.gid);
 		if (sceneJsNode != null) {
 			sceneJsNode.nodeId = sceneJsNode.id;
 			o.viewer.getControl("BIMSURFER.Control.ClickSelect").pick(sceneJsNode);
+		} else {
+			console.error("Not found gid", object.gid);
 		}
 	};
 	

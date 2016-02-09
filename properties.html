@@ -12,39 +12,43 @@
 <script>
 function Properties(containerDiv, parent, oid) {
 	var othis = this;
-	othis.selectedId = oid;
+	othis.selected = null;
 	
 	this.close = function(){};
+	this.loaded = false;
 	
-	this.selected = function(origin, groupId, id) {
-		if (othis.selectedId == id) {
+	this.selected = function(origin, groupId, object) {
+		if (othis.selected == object) {
 			return;
 		}
-		othis.selectedId = id;
+		othis.selected = object;
+		containerDiv.find("table tbody").hide();
 		containerDiv.find("table tbody tr").remove();
-		containerDiv.find("table tbody").append("<tr class=\"noprop\"><td>No properties</td></tr>");
-		var model = parent.models[groupId];
-		model.get(id, function(product){
-			othis.product = product;
-			if (product.oid == id) {
-//				var tr = $("<tr class=\"active\"></tr>");
-//				tr.append("<td>Type</td><td><b>" + stripIfc(product.__type) + "</b></td>");
-//				if (product.name != null) {
-//					tr.append("<td colspan=\"2\"><b>" + product.name + "</b></td>");
-//				}
-//				containerDiv.find("table tbody").append(tr);
-				product.getIsDefinedBy(function(isDefinedBy){
-					if (isDefinedBy.getType() == "IfcRelDefinesByProperties") {
-						isDefinedBy.getRelatingPropertyDefinition(function(propertySet){
-							if (propertySet.getType() == "IfcPropertySet") {
-								containerDiv.find("table tbody tr.noprop").remove();
-								othis.showPropertySet(propertySet);
-							}
-						});
-					}
-				});
+		if (object != null) {
+			containerDiv.find("table tbody").append("<tr class=\"noprop\"><td>No properties</td></tr>");
+			containerDiv.find("table tbody").append("<tr class=\"active\"><td colspan=\"2\"><b>" + object.getType() + "</b></td></tr>");
+			if (object.getName() != null) {
+				containerDiv.find("table tbody").append("<tr><td>Name</td><td>" + object.getName() + "</td></tr>");
 			}
-		});
+			if (object.getGlobalId() != null) {
+				containerDiv.find("table tbody").append("<tr><td>GUID</td><td>" + object.getGlobalId() + "</td></tr>");
+			}
+			object.getIsDefinedBy(function(isDefinedBy){
+				if (isDefinedBy.getType() == "IfcRelDefinesByProperties") {
+					isDefinedBy.getRelatingPropertyDefinition(function(propertySet){
+						if (propertySet.getType() == "IfcPropertySet") {
+							containerDiv.find("table tbody tr.noprop").remove();
+							othis.showPropertySet(propertySet);
+						}
+					});
+				}
+			});
+		} else {
+			if (this.loaded) {
+				containerDiv.find("table tbody").append("<tr class=\"noprop\"><td>No object selected</td></tr>");
+			}
+		}
+		containerDiv.find("table tbody").show();
 	};
 	
 	this.hide = function(){
@@ -55,12 +59,14 @@ function Properties(containerDiv, parent, oid) {
 		containerDiv.show();
 	};
 	
-	this.getSelectedId = function(){
-		return othis.selectedId;
+	this.getSelected = function(){
+		return othis.selected;
 	};
 	
 	this.unselected = function(groupId, id){
+		othis.selected = null;
 		containerDiv.find("table tbody tr").remove();
+		containerDiv.find("table tbody").append("<tr class=\"noprop\"><td>No object selected</td></tr>");
 	};
 	
 	this.showProperty = function (propertySet, property, headerTr){
@@ -105,6 +111,8 @@ function Properties(containerDiv, parent, oid) {
 	
 	this.loadRevision = function(){
 		containerDiv.find(".modelLoader").hide();
+		containerDiv.find("table tbody").append("<tr class=\"noprop\"><td>No object selected</td></tr>");
+		this.loaded = true;
 	};
 	
 	this.unloadRevision = function(){};
@@ -116,15 +124,8 @@ function Properties(containerDiv, parent, oid) {
 
 	containerDiv.find(".btnLoad").click(parent.loadModel);
 
-	if (othis.selectedId != null && othis.selectedId != -1) {
-		othis.selected(othis.selectedId);
+	if (othis.selected != null) {
+		othis.selected(othis.selected);
 	}
-	
-	containerDiv.find(".properties").dblclick(function(){
-		var tr = $("<tr class=\"guid\"></tr>");
-		tr.append("<td colspan=\"2\">" + othis.product.getGlobalId() + "</td>");
-		containerDiv.find(".table tbody").find(".guid").remove();
-		containerDiv.find(".table tbody").append(tr);
-	});
 }
 </script>

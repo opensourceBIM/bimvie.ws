@@ -37,10 +37,11 @@ function Tree(selector) {
 
 function Node() {};
 
-Node.prototype.init = function(id, title){
+Node.prototype.init = function(id, title, object){
 	this.isOpen = false;
 	this.id = id;
 	this.title = title;
+	this.object = object;
 };
 
 Node.prototype.linkClick = function(){
