@@ -25,7 +25,6 @@ function Properties(containerDiv, parent, oid) {
 		containerDiv.find("table tbody").hide();
 		containerDiv.find("table tbody tr").remove();
 		if (object != null) {
-			containerDiv.find("table tbody").append("<tr class=\"noprop\"><td>No properties</td></tr>");
 			containerDiv.find("table tbody").append("<tr class=\"active\"><td colspan=\"2\"><b>" + object.getType() + "</b></td></tr>");
 			if (object.getName() != null) {
 				containerDiv.find("table tbody").append("<tr><td>Name</td><td>" + object.getName() + "</td></tr>");
