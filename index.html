@@ -65,7 +65,7 @@
 			LazyLoad.css(cssToLoad, function(){});
 				var initialJs = [];
 				if (Settings.useCompressedResources()) {
-					initialJs.push(Settings.getBimServerApiAddress() + "bimserverapi.min.js");
+					initialJs.push(Settings.getBimServerApiAddress() + "bimserverapi.js");
 				} else {
 					initialJs.push(Settings.getBimServerApiAddress() + "/bimserverapiwebsocket.js");					
 					initialJs.push(Settings.getBimServerApiAddress() + "/bimserverclient.js");					
@@ -77,7 +77,7 @@
 				}
 				LazyLoad.js(initialJs, function () {
 					if (Settings.useCompressedResources()) {
-						var jsToLoad = [baseJsDir + "bimviews.min.js"];
+						var jsToLoad = [baseJsDir + "bimviews.js"];
 					} else {
 						var jsToLoad = [
 			        		baseJsDir + "jquery-2.2.0.js?_v=" + Global.version, 
