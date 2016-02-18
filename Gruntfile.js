@@ -49,7 +49,7 @@ module.exports = function(grunt) {
 					},
 					target : {
 						files : {
-							"output/css/bimviews.min.css" : [ "css/*.css" ]
+							"output/css/bimviews.min.css" : [ "css/bootstrap.min.css", "css/*.css" ]
 						}
 					}
 				},
