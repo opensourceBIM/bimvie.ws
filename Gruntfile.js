@@ -30,7 +30,8 @@ module.exports = function(grunt) {
 							        "js/EventRegistry.js", 
 							        "js/consolesettings.js", 
 							        "js/base64unicode.js", 
-							        "js/main.js"]
+							        "js/main.js",
+							        "js/plugins/*.js"]
 						},
 					}
 				},
