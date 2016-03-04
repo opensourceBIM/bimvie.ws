@@ -101,6 +101,7 @@ function InstalledPluginBundles(main, serverSettings, cd) {
 			versionSelect.change(function(){
 				var selected = $(this).find(":selected");
 				var version = selected.data("version");
+				console.log(version);
 				o.updateRow($(this).parents("tr"), version);
 				if (version.version == installed.version) {
 					updateBtn.hide();
@@ -118,6 +119,7 @@ function InstalledPluginBundles(main, serverSettings, cd) {
 	});
 	
 	this.updateRow = function(tr, version){
+		tr.data("version", version);
 		tr.find(".description").html(version.description);
 		tr.find(".type").html(version.type);
 		if (version.icon != null) {

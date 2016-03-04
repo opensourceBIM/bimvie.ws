@@ -64,9 +64,12 @@ function AvailablePluginBundles(main, serverSettings, cd) {
 				var option = $("<option val=\"" + version.version + "\">" + text + "</option>");
 				option.data("version", version);
 				versionSelect.prepend(option);
-				versionSelect.change(function(){
-					tr.data("version", $(this).data("version"));
-				});
+			});
+
+			versionSelect.change(function(){
+				var version = $(this).find(":selected").data("version");
+				console.log(version);
+				tr.data("version", version);
 			});
 			
 			tr.data("pluginBundle", pluginBundle);
