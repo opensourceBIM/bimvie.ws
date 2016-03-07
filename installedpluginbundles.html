@@ -11,7 +11,16 @@
 	</div>
 	<table class="table ih">
 		<thead>
-			<tr><th></th><th>Name</th><th>Organization</th><th>Installed Version</th><th>Source</th><th>Description</th><th>Version</th><th>Uninstall / Update</th></tr>
+			<tr>
+				<th></th>
+				<th>Name</th>
+				<th>Organization</th>
+				<th>Installed Version</th>
+				<th>Source</th>
+				<th>Description</th>
+				<th>Version</th>
+				<th>Uninstall / Update</th>
+			</tr>
 		</thead>
 		<tbody></tbody>
 	</table>
@@ -45,8 +54,11 @@ function InstalledPluginBundles(main, serverSettings, cd) {
 			}
 			iconTd.append(icon);
 			tr.append(iconTd);
+
+			var nameTd = $("<td>");
+			nameTd.append(pluginBundle.name);
 			
-			tr.append("<td>" + pluginBundle.name + "</td>");
+			tr.append(nameTd);
 			tr.append("<td>" + pluginBundle.organization + "</td>");
 			tr.append("<td class=\"installedVersion\">" + installed.version + "</td>");
 			tr.append("<td class=\"type\">" + installed.type + "</td>");
@@ -73,6 +85,9 @@ function InstalledPluginBundles(main, serverSettings, cd) {
 				}
 				option.data("version", version);
 			});
+			if (pluginBundle.availableVersions[pluginBundle.availableVersions.length-1].version != installed.version) {
+				nameTd.append(" <span class=\"label label-primary\">Update available</span>");
+			}
 			
 			tr.data("version", pluginBundle.latestVersion);
 			

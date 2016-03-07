@@ -99,12 +99,12 @@ pre.prettyprint {
 	font-weight: bold;
 }
 
-.addressLabel input {
+.console .addressLabel input {
 	margin-top: 0px;
 	margin-bottom: 0px;
 }
 
-.addressLabel {
+.console .addressLabel {
 	color: white;
 	margin-top: 5px;
 	margin-bottom: 0px;	
