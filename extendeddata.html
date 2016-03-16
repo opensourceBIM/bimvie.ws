@@ -74,11 +74,12 @@ function ExtendedData(main, extendedData, parent) {
 	this.objectClick = function(){
 		var oid = $(this).data("oid");
 		parent.loadBrowser(function(){
-			this.loadObject(oid);
+			this.loadObject(parent.project.oid, oid);
 		}, true);
 	};
 
 	this.showValidationReport = function(schema, extendedData, data){
+		console.log(data);
 		$(".validationreport h2").html(extendedData.title);
 		var json = JSON.parse(data);
 		json.items.forEach(function(item){
@@ -101,6 +102,7 @@ function ExtendedData(main, extendedData, parent) {
 				$(".validationreport table tbody").append(tr);
 			}
 		});
+		$(".validationreport").show();
 	};
 
 	this.showHtml = function(schema, extendedData, data){
