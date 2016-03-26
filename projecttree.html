@@ -221,7 +221,7 @@ function ProjectTree(containerDiv, parent, options, selected) {
 		} else {
 			// Maybe this object has not yet been loaded in the tree, but is available in the model
 			var model = parent.models[groupId];
-			model.get(id, function(object){
+			model.get(object.oid, function(object){
 				// Now we will have to see to which parent structure this object belongs...
 				object.getContainedInStructure(function(struc){
 					struc.getRelatingStructure(function(relatingStructure){
