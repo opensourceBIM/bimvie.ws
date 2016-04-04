@@ -499,12 +499,12 @@ LazyLoad.js([
 			"MetaInterface": "org_bimserver_MetaInterface",
 			"PluginInterface": "org_bimserver_PluginInterface",
 			"SettingsInterface": "org_bimserver_SettingsInterface",
-			"Bimsie1NotificationRegistryInterface": "org_buildingsmart_bimsie_Bimsie1NotificationRegistryInterface",
-			"Bimsie1RemoteServiceInterface": "org_buildingsmart_bimsie_Bimsie1RemoteServiceInterface",
-			"Bimsie1AuthInterface": "org_buildingsmart_bimsie_Bimsie1AuthInterface",
-			"Bimsie1ServiceInterface": "org_buildingsmart_bimsie_Bimsie1ServiceInterface",
-			"Bimsie1LowLevelInterface": "org_buildingsmart_bimsie_Bimsie1LowLevelInterface",
-			"Bimsie1NotificationInterface": "org_buildingsmart_bimsie_Bimsie1NotificationInterface"
+			"Bimsie1NotificationRegistryInterface": "org_buildingsmart_bimsie1_Bimsie1NotificationRegistryInterface",
+			"Bimsie1RemoteServiceInterface": "org_buildingsmart_bimsie1_Bimsie1RemoteServiceInterface",
+			"Bimsie1AuthInterface": "org_buildingsmart_bimsie1_Bimsie1AuthInterface",
+			"Bimsie1ServiceInterface": "org_buildingsmart_bimsie1_Bimsie1ServiceInterface",
+			"Bimsie1LowLevelInterface": "org_buildingsmart_bimsie1_Bimsie1LowLevelInterface",
+			"Bimsie1NotificationInterface": "org_buildingsmart_bimsie1_Bimsie1NotificationInterface"
 		};
 
 		othis.lastCall = {};
@@ -535,7 +535,6 @@ LazyLoad.js([
 					}
 				},
 				error: function(jqXHR, textStatus, errorThrown){
-					console.log(textStatus);
 					$(".output").removeClass("success").addClass("error");
 					$(".output").val(textStatus);
 				}
@@ -633,6 +632,7 @@ LazyLoad.js([
 				console.error("No constructor found for", othis.lastCall.serviceInterface.simpleName);
 			} else {
 				var interfaceObject = conthunktor(interfaceConstructor)();
+				interfaceObject.parseErrorDetails = true;
 				var inputSerializer = interfaceObject[othis.lastCall.method.name + "_serializeInput"];
 				var code = inputSerializer(new CxfApacheOrgUtil(), params);
 				return vkbeautify.xml(code);
@@ -849,6 +849,7 @@ LazyLoad.js([
 			} else if (protocol == "soap") {
 				var interfaceConstructor = global[othis.namespaceMapping[othis.lastCall.serviceInterface.simpleName]];
 				var interfaceObject = conthunktor(interfaceConstructor)();
+				interfaceObject.parseErrorDetails = true;
 				var callMethod = interfaceObject[othis.lastCall.method.name];
 				var allArguments = [];
 				allArguments.push(function(response){
@@ -863,7 +864,7 @@ LazyLoad.js([
 					}
 				});
 				allArguments.push(function(){
-					console.log(arguments);
+					console.log(allArguments);
 				});
 				var otherArgs = othis.getSoapArgs();
 				otherArgs.forEach(function(arg){
@@ -890,12 +891,11 @@ LazyLoad.js([
 				interfaceObject[othis.lastCall.method.name + "_onsuccess"] = newSuccessMethod;
 
 				var existingErrorMethod = interfaceObject[othis.lastCall.method.name + "_onerror"];
-				var newErrorMethod = function(client, responseXml){
+				var newErrorMethod = function(client){
 					$(".responsediv pre").addClass("error").removeClass("success");
 					$(".responsediv pre").removeClass("prettyprinted");
 					var oSerializer = new XMLSerializer();
-					$(".responsediv pre").text(vkbeautify.xml(oSerializer.serializeToString(responseXml)));
-					prettyPrint();
+					$(".responsediv pre").text("No valid XML response");
 					$(".responsediv").show();
 					existingErrorMethod.apply(this, arguments);
 				};
