@@ -17,17 +17,37 @@ function Properties(containerDiv, parent, oid) {
 	this.close = function(){};
 	this.loaded = false;
 	
+	this.objectClick = function(){
+		var oid = $(this).data("oid");
+		parent.rightPanel.loadBrowser(function(){
+			this.loadObject(parent.project.oid, oid);
+		}, true);
+	};
+	
 	this.selected = function(origin, groupId, object) {
 		if (othis.selected == object) {
 			return;
 		}
 		othis.selected = object;
-		containerDiv.find("table tbody").hide();
+		containerDiv.find("table").hide();
 		containerDiv.find("table tbody tr").remove();
 		if (object != null) {
 			containerDiv.find("table tbody").append("<tr class=\"active\"><td colspan=\"2\"><b>" + object.getType() + "</b></td></tr>");
 			if (object.getName() != null) {
 				containerDiv.find("table tbody").append("<tr><td>Name</td><td>" + object.getName() + "</td></tr>");
+			}
+			if (object.getDescription() != null && object.getDescription() != "") {
+				containerDiv.find("table tbody").append("<tr><td>Description</td><td>" + object.getDescription() + "</td></tr>");
+			}
+			if (object.object._rOwnerHistory != null) {
+				var a = $("<a>Owner History</a>");
+				a.data("oid", object.object._rOwnerHistory);
+				a.click(othis.objectClick);
+				var td = $("<td>");
+				td.append(a);
+				var tr = $("<tr><td>Owner History</td></tr>");
+				tr.append(td);
+				containerDiv.find("table tbody").append(tr);
 			}
 			if (object.getGlobalId() != null) {
 				containerDiv.find("table tbody").append("<tr><td>GUID</td><td>" + object.getGlobalId() + "</td></tr>");
@@ -47,7 +67,7 @@ function Properties(containerDiv, parent, oid) {
 				containerDiv.find("table tbody").append("<tr class=\"noprop\"><td>No object selected</td></tr>");
 			}
 		}
-		containerDiv.find("table tbody").show();
+		containerDiv.find("table").show();
 	};
 	
 	this.hide = function(){
