@@ -1,6 +1,6 @@
 <div class="query2">
 	<div class="alert errorsDiv ih"></div>
-	<form>
+	<form style="margin-right: 10px">
 		<div class="form-group">
 			<select class="form-control">
 			</select>
@@ -286,6 +286,7 @@ function Query2(cd, parent) {
 	};
 	
 	this.parseJson = function(){
+		cd.find(".errorsDiv").removeClass("alert-danger").html("").hide();
 		try {
 			var jsonObject = JSON.parse(cd.find("textarea").val());
 			return jsonObject;

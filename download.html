@@ -69,7 +69,7 @@ function Download(containerDiv, data) {
 		requests.push([
 			"PluginInterface", "getAllSerializersForRoids", {roids: data.roids == null ? [data.roid] : data.roids, onlyEnabled: true}
 		]);
-		if (data.downloadType != "downloadRevisions") {
+		if (data.downloadType != "downloadByNewJsonQuery") {
 			requests.push([
 				"ServiceInterface", "userHasCheckinRights", {uoid: user.oid, poid: data.poid}
 			]);

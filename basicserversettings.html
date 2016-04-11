@@ -12,6 +12,7 @@
 					<input type="checkbox" class="strictPluginChecking">
 				</label>
 			</div>
+			<button class="btn btn-default clearMavenCacheButton">Clear maven cache</button>
 		</div>
 		<div class="form-group">
 			<label class="col-lg-2 control-label" for="siteAddress"><a rel="tooltip" data-original-title="Address where this BIMserver can primarily be found. Make sure you add a port number if the server is not running on port 80. Also include http:// or https://" data-placement="right">Site address</a></label>
@@ -321,6 +322,12 @@ function BasicServerSettings(main, serversettings) {
 			alert(data + " cache files removed");
 		});
 	};
+
+	this.clearMavenCacheClick = function(event){
+		event.preventDefault();
+		Global.bimServerApi.call("PluginInterface", "clearMavenCache", {}, function(data){
+		});
+	};
 	
 	this.close = function(){
 	};
@@ -336,6 +343,7 @@ function BasicServerSettings(main, serversettings) {
 	});
 	$(".basicserversettings .allowOnlyWhitelisted").change(function(event){othis.updateWhiteListedVisible($(this).is(":checked"))});
 	$(".basicserversettings .clearCacheButton").click(othis.clearCacheClick);
+	$(".basicserversettings .clearMavenCacheButton").click(othis.clearMavenCacheClick);
 	
 	$("[rel=tooltip]").tooltip();
 	othis.loadSettings();
