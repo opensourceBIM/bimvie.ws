@@ -53,7 +53,8 @@
 							<li class="divider"></li>
 							<li><a class="logoutLink"><i></i>Logout</a></li>
 						</ul>
-					</li>						
+					</li>
+					<li><a class="btnLicense">License</a></li>
 				</ul>
 			</div>
 		</div>
@@ -78,7 +79,7 @@ function Main(address, user) {
 		Global.bimServerApi.call("AuthInterface", "getLoggedInUser", {}, function(user){
 			//$(".main .nav li").hide();
 			othis.user = user;
-			$(".nav.navbar-nav > li, .userDivider, .btnAddUser, .btnListUsers").hide();
+			$(".userDivider, .btnAddUser, .btnListUsers").hide();
 			Settings.getMenuItems().forEach(function(menuItem){
 				if (menuItem == "dashboardLink" || menuItem == "gettingStartedLink" || menuItem == "serversettingsLink") {
 					if (user.userType == "ADMIN") {
@@ -276,6 +277,12 @@ function Main(address, user) {
 	this.showGettingStarted = function(callback) {
 		othis.pageChanger.changePage($(".gettingStartedLink"), "gettingstarted.html", function(){
 			return new GettingStarted($(this), othis);
+		}, callback);
+	};
+
+	this.showLicense = function(callback) {
+		othis.pageChanger.changePage($(".btnShowLicense"), "license.html", function(){
+			return new License($(this), othis);
 		}, callback);
 	};
 
@@ -490,6 +497,10 @@ function Main(address, user) {
 	
 	$(".btnAddSubProject").click(function(){
 		showAddProject(null, parentProject);
+	});
+
+	$(".btnLicense").click(function(){
+		othis.showLicense();
 	});
 	$(".btnShow3D").click(othis.show3dView);
 	
