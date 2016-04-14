@@ -49,8 +49,7 @@ function GenericPluginSettings(main, usersettings, pluginsettingsoid, configurat
 			if (objectDefinition != null) {
 				if (objectDefinition.parameters != null) {
 					objectDefinition.parameters.forEach(function(parameter){
-						console.log(parameter);
-						var input = $(".genericpluginsettings").find("input[parameter=\"" + parameter.name + "\"]");
+						var input = $(".genericpluginsettings").find("input[identifier=\"" + parameter.identifier + "\"]");
 						var value = parameter.value;
 						if (value != null) {
 							if (value.__type == "SDoubleType" || value.__type == "SStringType" || value.__type == "SLongType") {
@@ -90,18 +89,18 @@ function GenericPluginSettings(main, usersettings, pluginsettingsoid, configurat
 						var primitiveDefinition = parameter.type;
 						var input = null;
 						if (primitiveDefinition.type == "LONG") {
-							input = $("<input class=\"form-control\" parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
+							input = $("<input class=\"form-control\" identifier=\"" + parameter.identifier + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
 							input.numeric({ decimal: false, negative: false });
 							td.append(input);
 						} else if (primitiveDefinition.type == "DOUBLE") {
-							input = $("<input class=\"form-control\" parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
+							input = $("<input class=\"form-control\" identifier=\"" + parameter.identifier + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
 							input.numeric({ decimal: ".", negative: false });
 							td.append(input);
 						} else if (primitiveDefinition.type == "STRING") {
-							input = $("<input class=\"form-control\" parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
+							input = $("<input class=\"form-control\" identifier=\"" + parameter.identifier + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
 							td.append(input);
 						} else if (primitiveDefinition.type == "BYTE_ARRAY") {
-							input = $("<input class=\"form-control\" parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"file\"/>");
+							input = $("<input class=\"form-control\" identifier=\"" + parameter.identifier + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"file\"/>");
 							
 							var reader = new FileReader();
 							reader.onload = function (event) {
@@ -120,7 +119,7 @@ function GenericPluginSettings(main, usersettings, pluginsettingsoid, configurat
 							
 							td.append(input);
 						} else if (primitiveDefinition.type == "BOOLEAN") {
-							input = $("<input class=\"form-control\" parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"checkbox\"/>");
+							input = $("<input class=\"form-control\" identifier=\"" + parameter.identifier + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"checkbox\"/>");
 							td.append(input);
 						}
 					}
@@ -136,7 +135,7 @@ function GenericPluginSettings(main, usersettings, pluginsettingsoid, configurat
 			__type: "SObjectType",
 			parameters: []
 		};
-		$(".genericpluginsettings").find("input[parameter]").each(function(){
+		$(".genericpluginsettings").find("input[identifier]").each(function(){
 			var type = null;
 			var input = $(this);
 			if ($(this).attr("dtype") == "DOUBLE") {
@@ -167,7 +166,8 @@ function GenericPluginSettings(main, usersettings, pluginsettingsoid, configurat
 			}
 			var parameter = {
 				__type: "SParameter",
-				name: $(this).attr("parameter"),
+				identifier: $(this).attr("identifier"),
+				name: $(this).attr("name"),
 				value: type
 			};
 			settings.parameters.push(parameter);
