@@ -40,6 +40,7 @@
 			Global.bimServerApi.call("PluginInterface", "getPluginObjectDefinition", {oid: descriptor.oid}, function(objectDefinition){
 				if (objectDefinition != null && objectDefinition.parameters != null) {
 					objectDefinition.parameters.forEach(function(parameter){
+						console.log(parameter.defaultValue);
 						cd.find(".nosettings").hide();
 						var tr = $("<tr></tr>");
 						tr.append("<td></td>");
@@ -52,18 +53,22 @@
 							var primitiveDefinition = parameter.type;
 							var input = null;
 							if (primitiveDefinition.type == "LONG") {
-								input = $("<input class=\"form-control\" parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
+								input = $("<input class=\"form-control\" identifier=\"" + parameter.identifier + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
+								input.val(parameter.defaultValue.value);
 								input.numeric({ decimal: false, negative: false });
 								td.append(input);
 							} else if (primitiveDefinition.type == "DOUBLE") {
-								input = $("<input class=\"form-control\" parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
+								input = $("<input class=\"form-control\" identifier=\"" + parameter.identifier + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
+								input.val(parameter.defaultValue.value);
 								input.numeric({ decimal: ".", negative: false });
 								td.append(input);
 							} else if (primitiveDefinition.type == "STRING") {
-								input = $("<input class=\"form-control\" parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
+								input = $("<input class=\"form-control\" identifier=\"" + parameter.identifier + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
+								input.val(parameter.defaultValue.value);
 								td.append(input);
 							} else if (primitiveDefinition.type == "BYTE_ARRAY") {
-								input = $("<input class=\"form-control\" parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"file\"/>");
+								input = $("<input class=\"form-control\" identifier=\"" + parameter.identifier + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"file\"/>");
+								input.val(parameter.defaultValue.value);
 								
 								var reader = new FileReader();
 								reader.onload = function (event) {
@@ -82,19 +87,86 @@
 								
 								td.append(input);
 							} else if (primitiveDefinition.type == "BOOLEAN") {
-								input = $("<input class=\"form-control\" parameter=\"" + parameter.name + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"checkbox\"/>");
+								input = $("<input class=\"form-control\" identifier=\"" + parameter.identifier + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"checkbox\"/>");
+								if (parameter.defaultValue.value) {
+									input.attr("checked", "checked");									
+								}
 								td.append(input);
 							}
 						}
 						cd.find(".settingsTable tbody").append(tr);
 					});
-					othis.loadPluginSettings();
 				}
 			});
 		};
 
 		othis.loadPluginObjectDefinition();
 
+		this.saveSettings = function(callback) {
+			var settings = {
+				__type: "SObjectType",
+				parameters: []
+			};
+			cd.find("input[identifier]").each(function(){
+				var type = null;
+				var input = $(this);
+				if ($(this).attr("dtype") == "DOUBLE") {
+					type = {
+						__type: "SDoubleType",
+						value: parseFloat($(this).val())
+					};
+				} else if ($(this).attr("dtype") == "STRING") {
+					type = {
+						__type: "SStringType",
+						value: $(this).val()
+					};
+				} else if ($(this).attr("dtype") == "INTEGER") {
+					type = {
+						__type: "SStringType",
+						value: parseInt($(this).val())
+					};
+				} else if ($(this).attr("dtype") == "BYTE_ARRAY") {
+					type = {
+						__type: "SByteArrayType",
+						value: $(this).data("base64")
+					};
+				} else if ($(this).attr("dtype") == "BOOLEAN") {
+					type = {
+						__type: "SBooleanType",
+						value: $(this).is(":checked")
+					};
+				}
+				var parameter = {
+					__type: "SParameter",
+					identifier: $(this).attr("identifier"),
+					name: $(this).attr("name"),
+					value: type
+				};
+				settings.parameters.push(parameter);
+			});
+			Global.bimServerApi.callWithFullIndication("PluginInterface", "setPluginSettings", {poid: othis.pluginSettingsId, settings: settings}, function(data){
+				if (callback != null) {
+					callback();
+				}
+			});
+		};
+		
+		this.savePlugin = function(){
+			var conf = {
+				__type: configuration.type,
+				name: cd.find(".nameInp").val(),
+				enabled: true,
+				description: descriptor.description,
+				pluginDescriptorId: descriptor.oid
+			};
+			Global.bimServerApi.call("PluginInterface", configuration.addNewCall, configuration.createUpdateObject(conf), function(oid){
+				othis.pluginSettingsId = oid;
+				othis.saveSettings(function(){
+					configuration.showListFunction();
+				});
+			});
+		};
+		
 		this.save = function(event) {
 			event.preventDefault();
 			othis.savePlugin();

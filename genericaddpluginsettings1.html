@@ -1,6 +1,6 @@
 <div class="genericaddpluginsettings1">
 	<h3 class="title"></h3>
-
+	<div class="well well-small ih noPlugins">No plugins found that provide this functionality</div>
 	<table class="table">
 		<thead>
 			<tr>
@@ -23,6 +23,13 @@
 
 		this.show = function() {
 			Global.bimServerApi.call("PluginInterface", configuration.getAllDescriptorsFunction, {}, function(descriptors){
+				if (descriptors.length == 0) {
+					cd.find(".noPlugins").show();
+					cd.find(".table").hide();
+				} else {
+					cd.find(".noPlugins").hide();
+					cd.find(".table").show();
+				}
 				descriptors.forEach(function(descriptor){
 					var tr = $("<tr>");
 					Global.bimServerApi.call("PluginInterface", "getInstalledPluginBundle", {oid: descriptor.pluginBundleVersionId}, function(pluginBundleVersion){
