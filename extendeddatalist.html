@@ -22,7 +22,7 @@
 	</div>
 </div>
 <script>
-function ExtendedDataList(main, revision, parent) {
+function ExtendedDataList(main, revision, parent, extendedData) {
 	var othis = this;
 	othis.revision = revision;
 
@@ -33,16 +33,21 @@ function ExtendedDataList(main, revision, parent) {
 		}
 	};
 	
+	this.loadExtendedDataSingle = function(extendedData){
+		$(".extendeddatalist .backButton").show();
+		$(".extendeddatalist .list").hide();
+		$(".extendeddatalist .details").show();
+		$(".extendeddatalist .details").load(Global.baseDir + "extendeddata.html", function(){
+			new ExtendedData(main, extendedData, parent);
+			pushHistory({page: "Project", poid: othis.revision.projectId, tab: "extendeddata", edid: extendedData.oid}, "Project");
+		});
+	};
+	
 	this.extendedDataClick = function(event) {
 		if (!$(event.target).is("a, button, span.caret")) {
 			event.preventDefault();
 			var extendedData = $(this).parents("tr").andSelf().data("extendeddata");
-			$(".extendeddatalist .backButton").show();
-			$(".extendeddatalist .list").hide();
-			$(".extendeddatalist .details").show();
-			$(".extendeddatalist .details").load(Global.baseDir + "extendeddata.html", function(){
-				new ExtendedData(main, extendedData, parent);
-			});
+			othis.loadExtendedDataSingle(extendedData);
 		}
 	};
 	
@@ -130,6 +135,10 @@ function ExtendedDataList(main, revision, parent) {
 	});
 	Global.bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
 	
-	othis.loadExtendedData();
+	if (extendedData != null) {
+		othis.loadExtendedDataSingle(extendedData);
+	} else {
+		othis.loadExtendedData();
+	}
 }
 </script>

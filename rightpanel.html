@@ -555,7 +555,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		containerDiv.find(".modelCheckersTable tbody").append(tr);
 	};
 	
-	this.loadExtendedData = function(callback) {
+	this.loadExtendedData = function(callback, addToHistory, edid) {
 		var select = $(".extendeddata select");
 		select.find("option").remove();
 		
@@ -584,9 +584,20 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		});
 		
 		othis.tabChanger.changeTab($(".extendedDataLink"), "extendeddatalist.html", $(".extendeddatacontainer"), function(){
-			pushHistory({page: "Project", poid: othis.project.oid, tab: "extendeddata"}, "Project");
-			$(".extendeddata").show();
-			return new ExtendedDataList(main, othis.selectedRevision, othis);
+			// TODO optional?
+			if (edid == null) {
+				if (addToHistory) {
+					pushHistory({page: "Project", poid: othis.project.oid, tab: "extendeddata"}, "Project");
+				}
+				$(".extendeddata").show();
+				return new ExtendedDataList(main, othis.selectedRevision, othis);
+			} else {
+				//pushHistory({page: "Project", poid: othis.project.oid, tab: "extendeddata", edid: edid}, "Project");
+				Global.bimServerApi.call("Bimsie1ServiceInterface", "getExtendedData", {oid: edid}, function(extendedData){
+					$(".extendeddata").show();
+					return new ExtendedDataList(main, othis.selectedRevision, othis, extendedData);
+				});
+			}
 		}, callback);
 	};
 	
@@ -779,7 +790,11 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		} else if (history.tab == "checkouts") {
 			othis.loadCheckouts();
 		} else if (history.tab == "extendeddata") {
-			othis.loadExtendedData();
+			if (history.edid != null) {
+				othis.loadExtendedData(null, false, history.edid);
+			} else {
+				othis.loadExtendedData(null, false);
+			}
 		} else if (history.tab == "services") {
 			othis.loadServices();
 		} else if (history.tab == "users") {

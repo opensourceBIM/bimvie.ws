@@ -75,7 +75,7 @@ function ExtendedData(main, extendedData, parent) {
 		var oid = $(this).data("oid");
 		parent.loadBrowser(function(){
 			this.loadObject(parent.project.oid, oid);
-		}, true);
+		}, false);
 	};
 
 	this.showValidationReport = function(schema, extendedData, data){
