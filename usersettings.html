@@ -204,7 +204,7 @@
 				pushHistory({page: "UserSettings", subpage: "Serializer", oid: oid}, "User Settings");
 				return new GenericPluginSettings(main, othis, oid, {
 					title: "Serializer",
-					getInterface: "Bimsie1ServiceInterface",
+					getInterface: "ServiceInterface",
 					getMethod: "getSerializerById"
 				});
 			}, callback);
@@ -223,7 +223,7 @@
 				pushHistory({page: "UserSettings", subpage: "Deserializer", oid: oid}, "User Settings");
 				return new GenericPluginSettings(main, othis, oid, {
 					title: "Deserializer",
-					getInterface: "Bimsie1ServiceInterface",
+					getInterface: "ServiceInterface",
 					getMethod: "getDeserializerById"
 				});
 			}, callback);
@@ -280,7 +280,7 @@
 				pushHistory({page: "UserSettings", subpage: "QueryEngine", oid: oid}, "User Settings");
 				return new GenericPluginSettings(main, othis, oid, {
 					title: "Query Engine",
-					getInterface: "Bimsie1ServiceInterface",
+					getInterface: "ServiceInterface",
 					getMethod: "getQueryEngineById"
 				});
 			}, callback);

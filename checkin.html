@@ -215,7 +215,7 @@ function Checkin(containerDiv, project, successFunction) {
 		    var lastIndex = path.lastIndexOf(".");
 		    if (lastIndex != -1) {
 			    var extension = path.substring(path.lastIndexOf(".") + 1);
-			    Global.bimServerApi.call("Bimsie1ServiceInterface", "getSuggestedDeserializerForExtension", {extension: extension, poid: project.oid}, function(data){
+			    Global.bimServerApi.call("ServiceInterface", "getSuggestedDeserializerForExtension", {extension: extension, poid: project.oid}, function(data){
 			    	if (data.oid != null) {
 				    	containerDiv.find(".deserializerName").val(data.oid);
 						othis.updateSubmitButton();
@@ -347,7 +347,7 @@ function Checkin(containerDiv, project, successFunction) {
 		    var lastIndex = path.lastIndexOf(".");
 		    if (lastIndex != -1) {
 			    var extension = path.substring(path.lastIndexOf(".") + 1);
-			    Global.bimServerApi.call("Bimsie1ServiceInterface", "getSuggestedDeserializerForExtension", {extension: extension, poid: project.oid}, function(data){
+			    Global.bimServerApi.call("ServiceInterface", "getSuggestedDeserializerForExtension", {extension: extension, poid: project.oid}, function(data){
 			    	containerDiv.find(".deserializerNameUrl").val(data.oid);
 					othis.updateSubmitButton();
 				});

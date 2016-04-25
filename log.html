@@ -88,7 +88,7 @@ function Log(containerDiv, settings, main) {
 	};
 
 	this.newChangeProgressHandler = function(topicId){
-		Global.bimServerApi.call("Bimsie1NotificationRegistryInterface", "getProgress", {topicId: topicId}, function(state){
+		Global.bimServerApi.call("NotificationRegistryInterface", "getProgress", {topicId: topicId}, function(state){
 			othis.progressHandler(topicId, state);
 			Global.bimServerApi.registerProgressHandler(topicId, othis.progressHandler);
 		});
@@ -98,7 +98,7 @@ function Log(containerDiv, settings, main) {
 		Global.bimServerApi.unregisterProgressHandler(topicId, othis.progressHandler);
 	};
 
-	Global.bimServerApi.call("Bimsie1NotificationRegistryInterface", settings.getTopicsMethod, settings.getTopicsArguments, function(topicIds){
+	Global.bimServerApi.call("NotificationRegistryInterface", settings.getTopicsMethod, settings.getTopicsArguments, function(topicIds){
 		topicIds.forEach(function(topicId){
 			othis.newChangeProgressHandler(topicId);
 		});

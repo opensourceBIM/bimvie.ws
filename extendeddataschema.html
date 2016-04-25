@@ -46,7 +46,7 @@ function ExtendedDataSchema(main, oid) {
 	this.show = function(){
 	};
 	
-	Global.bimServerApi.call("Bimsie1ServiceInterface", "getExtendedDataSchemaById", {oid: oid}, function(extendedDataSchema){
+	Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaById", {oid: oid}, function(extendedDataSchema){
 		othis.extendedDataSchema = extendedDataSchema;
 		pushHistory({page: "ServerSettings", subpage: "ExtendedDataSchema", edsid: othis.extendedDataSchema.oid}, "Server Settings - Extended Data Schema");
 		$(".extendeddataschema .inputName").val(othis.extendedDataSchema.name);

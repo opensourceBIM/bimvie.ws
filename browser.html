@@ -39,7 +39,7 @@ function Browser(containerDiv, project, revision) {
 		othis.loadProject(poid, function(){
 			othis.oid = oid;
 			pushHistoryAppend({oid: oid, poid: poid, type: false}, "Browser");
-			Global.bimServerApi.call("Bimsie1LowLevelInterface", "getDataObjectByOid", {roid: othis.revision.oid, oid: oid}, function(data){
+			Global.bimServerApi.call("LowLevelInterface", "getDataObjectByOid", {roid: othis.revision.oid, oid: oid}, function(data){
 				containerDiv.find(".breadcrumb *").remove();
 				containerDiv.find(".breadcrumb").append("<li><a class=\"breadcrumbModel\">Model</a> <span class=\"divider\"></span></li>");
 				containerDiv.find(".breadcrumb").append("<li><a class=\"breadcrumbClass\">" + data.type + "</a> <span class=\"divider\"></span></li>");
@@ -129,7 +129,7 @@ function Browser(containerDiv, project, revision) {
 		containerDiv.find(".breadcrumb").show();
 		othis.loadProject(poid, function(){
 			pushHistoryAppend({type: className, poid: poid, oid: false}, "Browser");
-			Global.bimServerApi.call("Bimsie1LowLevelInterface", "getDataObjectsByType", {roid: othis.revision.oid, packageName: othis.project.schema, className: className, flat: true, schema: othis.schema}, function(data){
+			Global.bimServerApi.call("LowLevelInterface", "getDataObjectsByType", {roid: othis.revision.oid, packageName: othis.project.schema, className: className, flat: true, schema: othis.schema}, function(data){
 				containerDiv.find(".breadcrumb *").remove();
 				containerDiv.find(".breadcrumb").append("<li><a class=\"breadcrumbModel\">Model</a> <span class=\"divider\"></span></li>");
 				containerDiv.find(".breadcrumb").append("<li class=\"active\">" + className + "</li>");
@@ -170,7 +170,7 @@ function Browser(containerDiv, project, revision) {
 	};
 
 	this.loadProject = function(poid, callback) {
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: poid}, function(project){
+		Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: poid}, function(project){
 			othis.schema = project.schema;
 			callback();
 		});

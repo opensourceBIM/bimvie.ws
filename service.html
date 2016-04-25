@@ -47,7 +47,7 @@ function Service(main, service, projectPage) {
 	othis.service = service;
 
 	this.loadProjects = function(targetElement, selectedOid) {
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllProjects", {onlyTopLevel: false, onlyActive: true}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getAllProjects", {onlyTopLevel: false, onlyActive: true}, function(data){
 			targetElement.empty();
 			targetElement.append("<option value=\"[SELECT_A_PROJECT]\">[Select a project]</option>");
 			data.forEach(function(project){
@@ -95,7 +95,7 @@ function Service(main, service, projectPage) {
 		var td1 = $("<td></td>");
 		tr1.append(td1);
 		$(".service .rightsTable tbody").append(tr1);	
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "getExtendedDataSchemaById", {naoidmespace: service.readExtendedDataId}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaById", {naoidmespace: service.readExtendedDataId}, function(data){
 			td.append(main.createExtendedDataSchemaLink(data));
 			othis.readExtendedDataOid = data.oid;
 		}, function(){
@@ -108,7 +108,7 @@ function Service(main, service, projectPage) {
 		var td2 = $("<td></td>");
 		tr2.append(td2);
 		$(".service .rightsTable tbody").append(tr2);	
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "getExtendedDataSchemaById", {oid: service.writeExtendedDataId}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaById", {oid: service.writeExtendedDataId}, function(data){
 			td2.append(main.createExtendedDataSchemaLink(data));
 			othis.writeExtendedDataOid = data.oid;
 		}, function(){

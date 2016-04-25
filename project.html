@@ -37,7 +37,7 @@ function Project(containerDiv, main, project) {
 		if (poid == null) {
 			poid = othis.project.oid;
 		}
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: poid}, function(project){
+		Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: poid}, function(project){
 			othis.project = project;
 			othis.updateProject(false);
 		});
@@ -386,7 +386,7 @@ function Project(containerDiv, main, project) {
 				othis.navigator.load().done(function(){
 					othis.navigator.projecttree.addMenuDivider("revisionDivider");
 					othis.navigator.projecttree.addMenuItem("Add sub project", "btnAddProject", function(){
-						Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: othis.navigator.projecttree.selectedNode.poid}, function(project){
+						Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: othis.navigator.projecttree.selectedNode.poid}, function(project){
 							main.showAddProject(null, project);
 						});
 					}).find("a").prepend("<i class=\"glyphicon glyphicon-tree-conifer\"></i> ");
@@ -397,9 +397,9 @@ function Project(containerDiv, main, project) {
 					}).find("a").prepend("<i class=\"glyphicon glyphicon-cloud\"></i> ");
 					othis.navigator.projecttree.addMenuDivider();
 					othis.navigator.projecttree.addMenuItem("Checkin...", "btnCheckin", function(){
-						Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: othis.navigator.projecttree.selectedNode.poid}, function(project){
+						Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: othis.navigator.projecttree.selectedNode.poid}, function(project){
 							main.showCheckinPopup(project, function(){
-								Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectSmallByPoid", {poid: othis.navigator.projecttree.selectedNode.poid}, function(projectSmall){
+								Global.bimServerApi.call("ServiceInterface", "getProjectSmallByPoid", {poid: othis.navigator.projecttree.selectedNode.poid}, function(projectSmall){
 									othis.changeRevision(projectSmall, projectSmall.lastRevisionId);
 								});
 							});
@@ -458,7 +458,7 @@ function Project(containerDiv, main, project) {
 			containerDiv.find(".rightCol").load("rightpanel.html", function(){
 				othis.rightPanel = new RightPanel($(this), main, project, othis);
 				if (project.lastRevisionId != -1) {
-					Global.bimServerApi.call("Bimsie1ServiceInterface", "getRevision", {roid: project.lastRevisionId}, function(data){
+					Global.bimServerApi.call("ServiceInterface", "getRevision", {roid: project.lastRevisionId}, function(data){
 						othis.rightPanel.selectedRevision = data;
 						othis.rightPanel.show();
 						containerDiv.find(".rightCol > .details").show();

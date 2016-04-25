@@ -188,7 +188,7 @@ function Download(containerDiv, data) {
 	
 	this.cancel = function(){
 		if (othis.topicId != null) {
-			Global.bimServerApi.call("Bimsie1ServiceInterface", "terminateLongRunningAction", {topicId: othis.topicId}, function(){
+			Global.bimServerApi.call("ServiceInterface", "terminateLongRunningAction", {topicId: othis.topicId}, function(){
 			});
 		}
 	};
@@ -216,7 +216,7 @@ function Download(containerDiv, data) {
 		containerDiv.find(".message").html("").hide();
 
 		function afterRegistration(topicId) {
-			Global.bimServerApi.call("Bimsie1NotificationRegistryInterface", "getProgress", {
+			Global.bimServerApi.call("NotificationRegistryInterface", "getProgress", {
 				topicId: othis.topicId
 			}, function(state){
 				othis.progressHandler(othis.topicId, state);
@@ -233,7 +233,7 @@ function Download(containerDiv, data) {
 			} else {
 				console.log("Unimplemented for streaming", data.downloadType);
 			}
-			Global.bimServerApi.call("Bimsie1ServiceInterface", "downloadByNewJsonQuery", data, function(data){
+			Global.bimServerApi.call("ServiceInterface", "downloadByNewJsonQuery", data, function(data){
 				containerDiv.find(".downloadStatus").html("Preparing download...");
 				othis.topicId = parseInt(data);
 				Global.bimServerApi.registerProgressHandler(othis.topicId, othis.progressHandler, afterRegistration);
@@ -242,7 +242,7 @@ function Download(containerDiv, data) {
 				containerDiv.find(".downloadStatus").addClass("alert-danger").html(exception.message);
 			});
 		} else {
-			Global.bimServerApi.call("Bimsie1ServiceInterface", data.downloadType, data, function(data){
+			Global.bimServerApi.call("ServiceInterface", data.downloadType, data, function(data){
 				containerDiv.find(".downloadStatus").html("Preparing download...");
 				othis.topicId = parseInt(data);
 				Global.bimServerApi.registerProgressHandler(othis.topicId, othis.progressHandler, afterRegistration);

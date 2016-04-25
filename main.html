@@ -117,11 +117,11 @@ function Main(address, user) {
 			} else if (history.page == "ResetPassword") {
 				othis.showResetPassword(null);
 			} else if (history.page == "AddService") {
-				Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: history.poid}, function(project){
+				Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: history.poid}, function(project){
 					othis.showAddService(project, null, true);
 				});
 			} else if (history.page == "AddService2") {
-				Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: history.poid}, function(project){
+				Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: history.poid}, function(project){
 					othis.showAddService(project, null, true);
 				});
 			} else {

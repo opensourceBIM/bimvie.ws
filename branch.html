@@ -80,7 +80,7 @@ function Branch(containerDiv, main, roid) {
 		}
 	};
 	
-	Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllProjects", {onlyTopLevel: false, onlyActive: true}, function(projects){
+	Global.bimServerApi.call("ServiceInterface", "getAllProjects", {onlyTopLevel: false, onlyActive: true}, function(projects){
 		projects.forEach(function(project){
 			var option = $("<option value=\"" + project.oid + "\">" + project.name + "</option>");
 			containerDiv.find(".projectsSelect").append(option);

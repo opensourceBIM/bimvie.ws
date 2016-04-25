@@ -53,7 +53,7 @@ function ExtendedDataList(main, revision, parent, extendedData) {
 	
 	this.newLogAction = function(uuid, logAction, serviceIdentifier, profileIdentifier, token, apiUrl){
 		if (logAction.__type == "SExtendedDataAddedToRevision") {
-			Global.bimServerApi.call("Bimsie1ServiceInterface", "getExtendedData", {oid: logAction.extendedDataId}, function(data){
+			Global.bimServerApi.call("ServiceInterface", "getExtendedData", {oid: logAction.extendedDataId}, function(data){
 				othis.addExtendedData(data);
 			});
 		}
@@ -116,7 +116,7 @@ function ExtendedDataList(main, revision, parent, extendedData) {
 	};
 	
 	this.loadExtendedData = function() {
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllExtendedDataOfRevision", {roid: revision.oid}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getAllExtendedDataOfRevision", {roid: revision.oid}, function(data){
 			$(".extendeddatalist table tbody").empty();
 			data.forEach(function(extendedData){
 				othis.addExtendedData(extendedData);

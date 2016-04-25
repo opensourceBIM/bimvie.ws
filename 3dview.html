@@ -375,10 +375,10 @@ function ThreeDView(containerDiv, parent) {
 			  }]
 			}
 		*/
-		Global.bimServerApi.callWithNoIndication("Bimsie1ServiceInterface", "getExtendedDataSchemaByNamespace", {namespace: "http://bimserver.org/3dvisualizationeffects"}, function(schema){
+		Global.bimServerApi.callWithNoIndication("ServiceInterface", "getExtendedDataSchemaByNamespace", {namespace: "http://bimserver.org/3dvisualizationeffects"}, function(schema){
 			if (schema != null) {
 				var lastExtendedData = null;
-				Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllExtendedDataOfRevision", {roid: roid}, function(list){
+				Global.bimServerApi.call("ServiceInterface", "getAllExtendedDataOfRevision", {roid: roid}, function(list){
 					list.forEach(function(extendedData){
 						if (extendedData.schemaId == schema.oid) {
 							if (lastExtendedData == null || extendedData.added > lastExtendedData.added) {

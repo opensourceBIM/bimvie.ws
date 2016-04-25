@@ -33,13 +33,13 @@ function Projects(containerDiv, main) {
 	};
 	
 	this.deleteProject = function(project){
-		Global.bimServerApi.callWithFullIndication("Bimsie1ServiceInterface", "deleteProject", {poid: project.oid}, function(){
+		Global.bimServerApi.callWithFullIndication("ServiceInterface", "deleteProject", {poid: project.oid}, function(){
 			othis.loadProjects();
 		});
 	};
 
 	this.undeleteProject = function(project){
-		Global.bimServerApi.callWithFullIndication("Bimsie1ServiceInterface", "undeleteProject", {poid: project.oid}, function(){
+		Global.bimServerApi.callWithFullIndication("ServiceInterface", "undeleteProject", {poid: project.oid}, function(){
 			othis.loadProjects();
 		});
 	};
@@ -116,7 +116,7 @@ function Projects(containerDiv, main) {
 		});
 		
 		$(".projectsTable tbody tr").remove();
-		Global.bimServerApi.callWithNoIndication("Bimsie1ServiceInterface", "getAllProjectsSmall", {}, function(data){
+		Global.bimServerApi.callWithNoIndication("ServiceInterface", "getAllProjectsSmall", {}, function(data){
 			data.forEach(function(project){
 				$(".projectsTable").show();
 				othis.addProject(project);
@@ -125,7 +125,7 @@ function Projects(containerDiv, main) {
 	};
 	
 	this.newProjectHandler = function(poid){
-		Global.bimServerApi.callWithNoIndication("Bimsie1ServiceInterface", "getProjectByPoid", {poid: poid}, function(data){
+		Global.bimServerApi.callWithNoIndication("ServiceInterface", "getProjectByPoid", {poid: poid}, function(data){
 			othis.addProject(data);
 		});
 	};

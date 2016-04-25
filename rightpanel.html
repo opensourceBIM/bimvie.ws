@@ -276,14 +276,14 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	};
 
 	this.deleteProject = function(project){
-		Global.bimServerApi.callWithFullIndication("Bimsie1ServiceInterface", "deleteProject", {poid: project.oid}, function(){
+		Global.bimServerApi.callWithFullIndication("ServiceInterface", "deleteProject", {poid: project.oid}, function(){
 			othis.loadSubProjects();
 			othis.loadProjectTree();
 		});
 	};
 	
 	this.undeleteProject = function(project){
-		Global.bimServerApi.callWithFullIndication("Bimsie1ServiceInterface", "undeleteProject", {poid: project.oid}, function(){
+		Global.bimServerApi.callWithFullIndication("ServiceInterface", "undeleteProject", {poid: project.oid}, function(){
 			othis.loadSubProjects();
 			othis.loadProjectTree();
 		});
@@ -325,7 +325,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	
 	this.loadSubProjects = function(callback) {
 		othis.tabChanger.changeTab($(".subprojectsLink"), null, $(".subprojects"), function(){
-			Global.bimServerApi.call("Bimsie1ServiceInterface", "getSubProjects", {poid: othis.project.oid}, function(data){
+			Global.bimServerApi.call("ServiceInterface", "getSubProjects", {poid: othis.project.oid}, function(data){
 				containerDiv.find(".subprojectsTable tr.project").remove();
 				containerDiv.find(".nosubprojects").show();
 				containerDiv.find(".subprojectsTable").hide();
@@ -560,7 +560,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		select.find("option").remove();
 		
 		select.change(function(){
-			Global.bimServerApi.call("Bimsie1ServiceInterface", "getRevision", {roid: $(this).val()}, function(revision){
+			Global.bimServerApi.call("ServiceInterface", "getRevision", {roid: $(this).val()}, function(revision){
 				othis.selectedRevision = revision;
 				othis.tabChanger.changeTab($(".extendedDataLink"), "extendeddatalist.html", $(".extendeddatacontainer"), function(){
 					pushHistory({page: "Project", poid: othis.project.oid, tab: "extendeddata"}, "Project");
@@ -570,7 +570,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 			});
 		});
 		
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllRevisionsOfProject", {poid: othis.project.oid}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getAllRevisionsOfProject", {poid: othis.project.oid}, function(data){
 			data.forEach(function(revision){
 				var option = $("<option value=\"" + revision.oid + "\">Revision " + revision.id + "</option>");
 				select.prepend(option);
@@ -593,7 +593,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 				return new ExtendedDataList(main, othis.selectedRevision, othis);
 			} else {
 				//pushHistory({page: "Project", poid: othis.project.oid, tab: "extendeddata", edid: edid}, "Project");
-				Global.bimServerApi.call("Bimsie1ServiceInterface", "getExtendedData", {oid: edid}, function(extendedData){
+				Global.bimServerApi.call("ServiceInterface", "getExtendedData", {oid: edid}, function(extendedData){
 					$(".extendeddata").show();
 					return new ExtendedDataList(main, othis.selectedRevision, othis, extendedData);
 				});
@@ -603,7 +603,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	
 	this.loadRevisions = function(callback) {
 		othis.tabChanger.changeTab($(".revisionsLink"), null, containerDiv.find(".revisions"), function(){
-			Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllRevisionsOfProject", {poid: othis.project.oid}, function(data){
+			Global.bimServerApi.call("ServiceInterface", "getAllRevisionsOfProject", {poid: othis.project.oid}, function(data){
 				containerDiv.find(".revisionsTable tbody tr").remove();
 				data.forEach(function(revision){
 					othis.addRevision(revision);
@@ -710,10 +710,10 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		if (poid == null) {
 			poid = othis.project.oid;
 		}
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: poid}, function(project){
+		Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: poid}, function(project){
 			othis.project = project;
 			if (roid != -1) {
-				Global.bimServerApi.call("Bimsie1ServiceInterface", "getRevision", {roid: roid}, function(revision){
+				Global.bimServerApi.call("ServiceInterface", "getRevision", {roid: roid}, function(revision){
 					othis.selectedRevision = revision;
 					othis.updateProject();
 				});
@@ -834,7 +834,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		$(".browser .message").html(form);
 		
 		select.change(function(){
-			Global.bimServerApi.call("Bimsie1ServiceInterface", "getRevision", {roid: $(this).val()}, function(revision){
+			Global.bimServerApi.call("ServiceInterface", "getRevision", {roid: $(this).val()}, function(revision){
 				othis.selectedRevision = revision;
 				othis.tabChanger.changeTab($(".browserLink"), "browser.html", $(".browsercontainer"), function(){
 					pushHistory({page: "Project", poid: othis.project.oid, tab: "browser"}, "Project");
@@ -846,7 +846,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 			});
 		});
 		
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllRevisionsOfProject", {poid: othis.project.oid}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getAllRevisionsOfProject", {poid: othis.project.oid}, function(data){
 			data.forEach(function(revision){
 				var option = $("<option value=\"" + revision.oid + "\">Revision " + revision.id + "</option>");
 				select.prepend(option);
@@ -887,7 +887,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		$(".query .message").html(form);
 		
 		select.change(function(){
-			Global.bimServerApi.call("Bimsie1ServiceInterface", "getRevision", {roid: $(this).val()}, function(revision){
+			Global.bimServerApi.call("ServiceInterface", "getRevision", {roid: $(this).val()}, function(revision){
 				othis.selectedRevision = revision;
 				othis.tabChanger.changeTab($(".queryLink"), "query.html", $(".query"), function(){
 					pushHistory({page: "Project", poid: othis.project.oid, tab: "query"}, "Project");
@@ -896,7 +896,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 			});
 		});
 		
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllRevisionsOfProject", {poid: othis.project.oid}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getAllRevisionsOfProject", {poid: othis.project.oid}, function(data){
 			data.forEach(function(revision){
 				var option = $("<option value=\"" + revision.oid + "\">Revision " + revision.id + "</option>");
 				select.prepend(option);
@@ -1015,13 +1015,13 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	containerDiv.find(".addModelCheckerButton").click(othis.addModelCheckerButtonClick);
 	
 	this.newRevisionOnSpecificProjectHandler = function(poid, roid){
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "getRevision", {roid: roid}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getRevision", {roid: roid}, function(data){
 			//othis.reloadProject(data.projectId, roid);
 			othis.addRevision(data);
 		});
 	};
 	this.newExtendedDataOnRevisionHandler = function(roid, edid){
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "getExtendedData", {oid: edid}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getExtendedData", {oid: edid}, function(data){
 			//othis.reloadProject(data.projectId, roid);
 		});
 	};

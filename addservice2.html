@@ -142,7 +142,7 @@ function AddService2(main, project, serviceDescriptor, isLocal, longCallBack) {
 		var td1 = $("<td></td>");
 		tr1.append(td1);
 		$(".addservice2 .rightsTable").append(tr1);	
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "getExtendedDataSchemaByNamespace", {namespace: serviceDescriptor.readExtendedData}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaByNamespace", {namespace: serviceDescriptor.readExtendedData}, function(data){
 			othis.readExtendedDataOid = data.oid;
 			td1.append(main.createExtendedDataSchemaLink(data));
 		}, function(){
@@ -161,7 +161,7 @@ function AddService2(main, project, serviceDescriptor, isLocal, longCallBack) {
 		var td2 = $("<td></td>");
 		tr2.append(td2);
 		$(".addservice2 .rightsTable").append(tr2);	
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "getExtendedDataSchemaByNamespace", {namespace: serviceDescriptor.writeExtendedData}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaByNamespace", {namespace: serviceDescriptor.writeExtendedData}, function(data){
 			othis.writeExtendedDataOid = data.oid;
 			td2.append(main.createExtendedDataSchemaLink(data));
 		}, function(){

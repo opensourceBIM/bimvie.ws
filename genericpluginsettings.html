@@ -34,6 +34,10 @@ function GenericPluginSettings(main, usersettings, pluginsettingsoid, configurat
 		Global.bimServerApi.call("PluginInterface", "getPluginDescriptor", {oid: othis.pluginsettings.pluginDescriptorId}, function(pluginDescriptor){
 			$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Class</td><td>" + pluginDescriptor.pluginClassName + "</td></tr>");
 			$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Plugin State</td><td>" + (pluginDescriptor.enabled ? "Enabled" : "Disabled") + "</td></tr>");
+			Global.bimServerApi.call("PluginInterface", "getInstalledPluginBundle", {oid: pluginDescriptor.pluginBundleVersionId}, function(pluginBundleVersion){
+				console.log(pluginBundleVersion);				
+				$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Plugin Bundle</td><td>" + (pluginBundleVersion.groupId + "." + pluginBundleVersion.artifactId + ":" + pluginBundleVersion.version) + "</td></tr>");
+			});
 		});
 		if (configuration.title == "Internal Service") {
 			$(".genericpluginsettings .detailsTable tbody").append("<tr><td>Remote Accessible</td><td><input class=\"remoteAccessible\" type=\"checkbox\"" + (othis.pluginsettings.remoteAccessible ? " checked=\"checked\"" : "") + "/></td></tr>");

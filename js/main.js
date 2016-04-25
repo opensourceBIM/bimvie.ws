@@ -163,11 +163,11 @@ function loadUser(targetElement) {
 }
 
 function loadExtendedDataSchema(targetElement) {
-	loadGeneric(targetElement, "soid", "name", "Bimsie1ServiceInterface", "getExtendedDataSchemaById", "extendeddataschema", function(oid){return{oid: oid};});
+	loadGeneric(targetElement, "soid", "name", "ServiceInterface", "getExtendedDataSchemaById", "extendeddataschema", function(oid){return{oid: oid};});
 }
 
 function loadProject(targetElement) {
-	loadGeneric(targetElement, "poid", "name", "Bimsie1ServiceInterface", "getProjectByPoid", "project", function(oid){return{poid: oid};});
+	loadGeneric(targetElement, "poid", "name", "ServiceInterface", "getProjectByPoid", "project", function(oid){return{poid: oid};});
 }
 
 function newDropdown(title) {

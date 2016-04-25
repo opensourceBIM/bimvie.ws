@@ -44,7 +44,7 @@ function ProjectTree(containerDiv, parent, options, selected) {
 		}
 		node.click(function(){
 			node.select();
-			Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: node.project.oid}, function(project){
+			Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: node.project.oid}, function(project){
 				parent.loadDetails(project);
 			});
 		});
@@ -129,7 +129,7 @@ function ProjectTree(containerDiv, parent, options, selected) {
 		
 		var thisElement = $(this);
 		
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "getAllRevisionsOfProject", {poid: othis.selectedNode.poid}, function(revisions){
+		Global.bimServerApi.call("ServiceInterface", "getAllRevisionsOfProject", {poid: othis.selectedNode.poid}, function(revisions){
 			dropdown.find(".revisions li").remove();
 			if (revisions.length == 0) {
 				dropdown.find(".btnDownload").hide();

@@ -85,7 +85,7 @@ function Testing() {
 	$(".testing .testAllConcurrentlyButton").click(othis.testAllConcurrently);
 	
 	this.addTest("Test 1", "Create furnishing + GUID", function(doneCallback){
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "addProject", {projectName: "Test 1 - " + Math.random()}, function(project){
+		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 1 - " + Math.random()}, function(project){
 			Global.bimServerApi.createModel(project.oid, function(model){
 				model.create("IfcFurnishingElement", {}, function(furnishingElement){
 					furnishingElement.setGlobalId("blablabla");
@@ -118,7 +118,7 @@ function Testing() {
 	});
 
 	this.addTest("Test 2", "Create 10 walls, delete 1", function(doneCallback){
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "addProject", {projectName: "Test 2 - " + Math.random()}, function(project){
+		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 2 - " + Math.random()}, function(project){
 			// Stage 1: create 10 walls
 			Global.bimServerApi.createModel(project.oid, function(model){
 				for (var i=1; i<=10; i++) {
@@ -162,7 +162,7 @@ function Testing() {
 	});
 
 	this.addTest("Test 3", "Create a few objects and find it back by name", function(doneCallback){
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "addProject", {projectName: "Test 3 - " + Math.random()}, function(project){
+		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 3 - " + Math.random()}, function(project){
 			// Stage 1: create 10 windows
 			Global.bimServerApi.createModel(project.oid, function(model){
 				for (var i=1; i<=10; i++) {
@@ -193,7 +193,7 @@ function Testing() {
 	});
 
 	this.addTest("Test 4", "Unset attribute", function(doneCallback){
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "addProject", {projectName: "Test 4 - " + Math.random()}, function(project){
+		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 4 - " + Math.random()}, function(project){
 			// Stage 1: create 1 window
 			Global.bimServerApi.createModel(project.oid, function(model){
 				model.create("IfcWindow", {}, function(window){
@@ -227,7 +227,7 @@ function Testing() {
 	});
 
 	this.addTest("Test 5", "Unset reference", function(doneCallback){
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "addProject", {projectName: "Test 5 - " + Math.random()}, function(project){
+		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 5 - " + Math.random()}, function(project){
 			// Stage 1: create 1 window
 			Global.bimServerApi.createModel(project.oid, function(model){
 				model.create("IfcWindow", {}, function(window){
@@ -269,7 +269,7 @@ function Testing() {
 	});
 	
 	this.addTest("Test 6", "Setting and reading enum and integer values", function(doneCallback){
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "addProject", {projectName: "Test 6 - " + Math.random()}, function(project){
+		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 6 - " + Math.random()}, function(project){
 			var ownerHistoryOid = -1;
 			var timestamp = -1;
 			Global.bimServerApi.createModel(project.oid, function(model){
@@ -296,7 +296,7 @@ function Testing() {
 	});
 
 	this.addTest("Test 7", "Settings and reading boolean values", function(doneCallback){
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "addProject", {projectName: "Test 7 - " + Math.random()}, function(project){
+		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 7 - " + Math.random()}, function(project){
 			var ifcRectangularTrimmedSurfaceOid = -1;
 			Global.bimServerApi.createModel(project.oid, function(model){
 				model.create("IfcRectangularTrimmedSurface", {}, function(ifcRectangularTrimmedSurface){
@@ -321,7 +321,7 @@ function Testing() {
 	});
 
 	this.addTest("Test 8", "Primitive lists", function(doneCallback){
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "addProject", {projectName: "Test 8 - " + Math.random()}, function(project){
+		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 8 - " + Math.random()}, function(project){
 			var oid; 
 			Global.bimServerApi.createModel(project.oid, function(model){
 				model.create("IfcCartesianPoint", {}, function(ifcCartesianPoint){
@@ -346,8 +346,8 @@ function Testing() {
 	});
 	
 	this.addTest("Test 9", "Checkin from URL", function(doneCallback){
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "addProject", {projectName: "Test 9 - " + Math.random()}, function(project){
-			Global.bimServerApi.call("Bimsie1ServiceInterface", "getSuggestedDeserializerForExtension", {extension: "ifc"}, function(deserializer){
+		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 9 - " + Math.random()}, function(project){
+			Global.bimServerApi.call("ServiceInterface", "getSuggestedDeserializerForExtension", {extension: "ifc"}, function(deserializer){
 				Global.bimServerApi.call("ServiceInterface", "checkinFromUrl", {
 					poid: project.oid,
 					comment: "New revision from url",
@@ -357,7 +357,7 @@ function Testing() {
 					merge: false,
 					sync: true
 				}, function(checkinId){
-					Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: project.oid}, function(project){
+					Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: project.oid}, function(project){
 						Global.bimServerApi.getModel(project.oid, project.lastRevisionId, project.schema, false, function(model){
 							model.size(function(size){
 								if (size == 49664) {
@@ -374,8 +374,8 @@ function Testing() {
 	});
 	
 	this.addTest("Test 10", "Checkin from URL and load", function(doneCallback){
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "addProject", {projectName: "Test 10 - " + Math.random()}, function(project){
-			Global.bimServerApi.call("Bimsie1ServiceInterface", "getSuggestedDeserializerForExtension", {extension: "ifc"}, function(deserializer){
+		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Test 10 - " + Math.random()}, function(project){
+			Global.bimServerApi.call("ServiceInterface", "getSuggestedDeserializerForExtension", {extension: "ifc"}, function(deserializer){
 				Global.bimServerApi.call("ServiceInterface", "checkinFromUrl", {
 					poid: project.oid,
 					comment: "New revision from url",
@@ -385,7 +385,7 @@ function Testing() {
 					merge: false,
 					sync: true
 				}, function(checkinId){
-					Global.bimServerApi.call("Bimsie1ServiceInterface", "getProjectByPoid", {poid: project.oid}, function(project){
+					Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: project.oid}, function(project){
 						Global.bimServerApi.getModel(project.oid, project.lastRevisionId, project.schema, false, function(model){
 							model.load(false, function(){
 								doneCallback("SUCCESS");
@@ -398,25 +398,25 @@ function Testing() {
 	});
 
 	$(".lazyProjectStructure").click(function(){
-		Global.bimServerApi.call("Bimsie1ServiceInterface", "addProject", {projectName: "Gebouw"}, function(building){
-			Global.bimServerApi.call("Bimsie1ServiceInterface", "addProjectAsSubProject", {projectName: "Architekt", parentPoid: building.oid}, function(architekt){
-				Global.bimServerApi.call("Bimsie1ServiceInterface", "addProjectAsSubProject", {projectName: "Dakkap", parentPoid: architekt.oid}, function(dakkap){
+		Global.bimServerApi.call("ServiceInterface", "addProject", {projectName: "Gebouw"}, function(building){
+			Global.bimServerApi.call("ServiceInterface", "addProjectAsSubProject", {projectName: "Architekt", parentPoid: building.oid}, function(architekt){
+				Global.bimServerApi.call("ServiceInterface", "addProjectAsSubProject", {projectName: "Dakkap", parentPoid: architekt.oid}, function(dakkap){
 				});
-				Global.bimServerApi.call("Bimsie1ServiceInterface", "addProjectAsSubProject", {projectName: "Dakkappellen", parentPoid: architekt.oid}, function(dakkappellen){
+				Global.bimServerApi.call("ServiceInterface", "addProjectAsSubProject", {projectName: "Dakkappellen", parentPoid: architekt.oid}, function(dakkappellen){
 				});
-				Global.bimServerApi.call("Bimsie1ServiceInterface", "addProjectAsSubProject", {projectName: "Deurbellen", parentPoid: architekt.oid}, function(deurbellen){
+				Global.bimServerApi.call("ServiceInterface", "addProjectAsSubProject", {projectName: "Deurbellen", parentPoid: architekt.oid}, function(deurbellen){
 				});
-				Global.bimServerApi.call("Bimsie1ServiceInterface", "addProjectAsSubProject", {projectName: "Kalkzandsteen", parentPoid: architekt.oid}, function(kalkzandsteen){
+				Global.bimServerApi.call("ServiceInterface", "addProjectAsSubProject", {projectName: "Kalkzandsteen", parentPoid: architekt.oid}, function(kalkzandsteen){
 				});
-				Global.bimServerApi.call("Bimsie1ServiceInterface", "addProjectAsSubProject", {projectName: "Plafonds", parentPoid: architekt.oid}, function(plafonds){
+				Global.bimServerApi.call("ServiceInterface", "addProjectAsSubProject", {projectName: "Plafonds", parentPoid: architekt.oid}, function(plafonds){
 				});
-				Global.bimServerApi.call("Bimsie1ServiceInterface", "addProjectAsSubProject", {projectName: "Reclame", parentPoid: architekt.oid}, function(reclame){
+				Global.bimServerApi.call("ServiceInterface", "addProjectAsSubProject", {projectName: "Reclame", parentPoid: architekt.oid}, function(reclame){
 				});
-				Global.bimServerApi.call("Bimsie1ServiceInterface", "addProjectAsSubProject", {projectName: "Tegelwerk", parentPoid: architekt.oid}, function(tegelwerk){
+				Global.bimServerApi.call("ServiceInterface", "addProjectAsSubProject", {projectName: "Tegelwerk", parentPoid: architekt.oid}, function(tegelwerk){
 				});
-				Global.bimServerApi.call("Bimsie1ServiceInterface", "addProjectAsSubProject", {projectName: "Trapleuningen", parentPoid: architekt.oid}, function(trapleuningen){
+				Global.bimServerApi.call("ServiceInterface", "addProjectAsSubProject", {projectName: "Trapleuningen", parentPoid: architekt.oid}, function(trapleuningen){
 				});
-				Global.bimServerApi.call("Bimsie1ServiceInterface", "addProjectAsSubProject", {projectName: "Trappen", parentPoid: architekt.oid}, function(trappen){
+				Global.bimServerApi.call("ServiceInterface", "addProjectAsSubProject", {projectName: "Trappen", parentPoid: architekt.oid}, function(trappen){
 				});
 			});
 		});
