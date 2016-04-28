@@ -37,11 +37,15 @@ function ProjectTree(containerDiv, parent, options, selected) {
 		node.init(project.oid, project.name, project);
 		parentNode.add(node);
 		var dropdown = othis.createDropDown(node);
-		var eye = othis.createEye(node, 2);
-		eye.toggle(parent.threeDAspectVisible.get());
-		if (roid == -1 || project.lastRevisionId == -1) {
-			eye.hide();
-		}
+		
+		node.addToDom(function(node){
+			return othis.createEye(node)
+		});
+
+//		eye.toggle(parent.threeDAspectVisible.get());
+//		if (roid == -1 || project.lastRevisionId == -1) {
+//			eye.hide();
+//		}
 		node.click(function(){
 			node.select();
 			Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: node.project.oid}, function(project){
@@ -256,13 +260,15 @@ function ProjectTree(containerDiv, parent, options, selected) {
 			var node = othis.tree.find(object.oid);
 			if (node != null) {
 				var mode = object.trans.mode;
-				node.eye.attr("mode", mode);
-				if (mode == 0) {
-					node.eye.removeClass("eyeclosed").removeClass("eyehalfopen").addClass("eyeopen");
-				} else if (mode == 1) {
-					node.eye.removeClass("eyeopen").removeClass("eyeclosed").addClass("eyehalfopen");
-				} else if (mode == 2) {
-					node.eye.removeClass("eyehalfopen").removeClass("eyeopen").addClass("eyeclosed");
+				if (node.eye != null) {
+					node.eye.attr("mode", mode);
+					if (mode == 0) {
+						node.eye.removeClass("eyeclosed").removeClass("eyehalfopen").addClass("eyeopen");
+					} else if (mode == 1) {
+						node.eye.removeClass("eyeopen").removeClass("eyeclosed").addClass("eyehalfopen");
+					} else if (mode == 2) {
+						node.eye.removeClass("eyehalfopen").removeClass("eyeopen").addClass("eyeclosed");
+					}
 				}
 			}
 		});
@@ -276,7 +282,7 @@ function ProjectTree(containerDiv, parent, options, selected) {
 	};
 
 	this.toggleEye = function(node, mode){
-		setTimeout(function(){
+//		setTimeout(function(){
 			node.loadRecursively().done(function(){
 				var projectNodes = node.listFilterByType("Project");
 				if (projectNodes.length == 0) {
@@ -295,7 +301,7 @@ function ProjectTree(containerDiv, parent, options, selected) {
 					});
 				}
 			});
-		}, 50);
+//		}, 500);
 	};
 	
 	this.internalToggleEye = function(node, mode) {
@@ -316,22 +322,29 @@ function ProjectTree(containerDiv, parent, options, selected) {
 			nodeList.forEach(function(n){
 				var explicit = node.id == n.id || (node.type != null && node.type == n.type);
 				if (hiddenTypes[n.type] == null || explicit || mode != 0) {
-					n.eye.attr("mode", mode);
-					if (mode == 0) {
-						n.eye.removeClass("eyeclosed").removeClass("eyehalfopen").addClass("eyeopen");
-					} else if (mode == 1) {
-						n.eye.removeClass("eyeopen").removeClass("eyeclosed").addClass("eyehalfopen");
-					} else if (mode == 2) {
-						n.eye.removeClass("eyehalfopen").removeClass("eyeopen").addClass("eyeclosed");
+					if (n.eye != null) {
+						n.eye.attr("mode", mode);
+						if (mode == 0) {
+							n.eye.removeClass("eyeclosed").removeClass("eyehalfopen").addClass("eyeopen");
+						} else if (mode == 1) {
+							n.eye.removeClass("eyeopen").removeClass("eyeclosed").addClass("eyehalfopen");
+						} else if (mode == 2) {
+							n.eye.removeClass("eyehalfopen").removeClass("eyeopen").addClass("eyeclosed");
+						}
 					}
 				}
 			});
 		}
 	};
 	
-	this.createEye = function(node, mode){
+	this.createEye = function(node){
 		var eye = $("<div>");
 		eye.addClass("eye");
+		if (node.object.trans != null) {
+			var mode = node.object.trans.mode;
+		} else {
+			var mode = 2;
+		}
 		if (mode == 0) {
 			eye.addClass("eyeopen");
 		} else if (mode == 1) {
@@ -347,7 +360,6 @@ function ProjectTree(containerDiv, parent, options, selected) {
 		eye.toggle(parent.threeDAspectVisible.get());
 		eye.data("node", node);
 		node.eye = eye;
-		node.addButton(eye);
 		return eye;
 	};
 	
@@ -361,9 +373,9 @@ function ProjectTree(containerDiv, parent, options, selected) {
 			typeNode.type = relatedElement.getType();
 			
 			if (types[relatedElement.getType()] == null) {
-				othis.createEye(typeNode, 2);
+				typeNode.addToDom(function(node){return othis.createEye(node)});
 			} else {
-				othis.createEye(typeNode, types[relatedElement.getType()].mode);
+				typeNode.addToDom(function(node){return othis.createEye(node)});
 			}
 			
 			createdTypes[relatedElement.getType()] = typeNode;
@@ -420,22 +432,22 @@ function ProjectTree(containerDiv, parent, options, selected) {
 		newNode.click(othis.treeItemClick);
 		newNode.hint(object.getType());
 		var state = types[object.getType()];
-		othis.createEye(newNode, state == null ? 2 : state.mode);
+
+		newNode.addToDom(function(node){return othis.createEye(node)});
+
 		tree.add(newNode);
 		if (object.getType() == "IfcBuildingStorey") {
 			newNode.onLoad(function(){
 				var promise = new window.BimServerApiPromise();
-				setTimeout(function(){
-					othis.loadBuildingStorey(newNode, object, types).done(function(){
-						promise.fire();
-					});
-				}, 50);
+				othis.loadBuildingStorey(newNode, object, types).done(function(){
+					promise.fire();
+				});
 				return promise;
 			});
 		} else {
 			newNode.onLoad(function(){
 				var promise = new window.BimServerApiPromise();
-				setTimeout(function(){
+//				setTimeout(function(){
 					object.getIsDecomposedBy(function(isDecomposedBy){
 						isDecomposedBy.getRelatedObjects(function(relatedObject){
 							othis.buildDecomposedTree(relatedObject, newNode, types);
@@ -450,7 +462,7 @@ function ProjectTree(containerDiv, parent, options, selected) {
 						}
 						promise.fire();
 					});
-				}, 50);
+//				}, 50);
 				return promise;
 			});
 		}

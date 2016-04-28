@@ -287,8 +287,8 @@ function ThreeDView(containerDiv, parent) {
 			var progressdiv = $("<div class=\"progressdiv\">");
 			var text = $("<div class=\"text\">");
 			text.html("Loading");
-			var progress = $("<div class=\"progress progress-striped\">");
-			var progressbar = $("<div class=\"progress-bar\">");
+			var progress = $("<div class=\"progress progress-striped active\">");
+			var progressbar = $("<div class=\"progress-bar\" style=\"width: 100%\">");
 			progressdiv.append(text)
 			progressdiv.append(progress);
 			progress.append(progressbar);
@@ -296,23 +296,23 @@ function ThreeDView(containerDiv, parent) {
 			containerDiv.find(".progressbars").append(progressdiv);
 
 			geometryLoader.addProgressListener(function(progress, nrObjectsRead, totalNrObjects){
-				text.html("Loading... (" + nrObjectsRead + "/" + totalNrObjects + ")");
+				//text.html("Loading... (" + nrObjectsRead + "/" + totalNrObjects + ")");
 				if (progress == "done") {
 					progressdiv.fadeOut(800);
 				} else {
-					progressbar.css("width", progress + "%");
+					//progressbar.css("width", progress + "%");
 				}
 			});
 			
 			geometryLoader.setLoadOids(uniqueRoids, oidsNotLoaded);
 			
 			// This might be needed when the geometryloader comes up with more objects than requested...
-			geometryLoader.objectAddedListeners.push(function(oid){
-				models[uniqueRoids[0]].get(oid, function(object){
-					o.updateVisibility(object);
-				});
-				o.loadedOids[oid] = true;
-			});
+//			geometryLoader.objectAddedListeners.push(function(oid){
+//				models[uniqueRoids[0]].get(oid, function(object){
+//					o.updateVisibility(object);
+//				});
+//				o.loadedOids[oid] = true;
+//			});
 //			geometryLoader.progressListeners.push(function(state){
 //				if (state == "done") {
 //					for (var i=0; i<oidsNotLoaded.length; i++) {

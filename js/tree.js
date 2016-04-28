@@ -1,6 +1,6 @@
 function Tree(selector) {
 	var o = this;
-	
+
 	o.idToNodeMap = {};
 	o.rootNode = Object.create(Node.prototype);
 	o.rootNode.init(-1);
@@ -68,7 +68,7 @@ Node.prototype.add = function(node){
 	if (this.children == null) {
 		this.children = [];
 	}
-	this.createDom();
+//	this.createDom();
 	if (this.isOpen) {
 		node.createDom();
 	}
@@ -77,30 +77,39 @@ Node.prototype.add = function(node){
 		for (var i=0; i<this.children.length; i++) {
 			var diff = node.title.localeCompare(this.children[i].title);
 			if (diff < 0) {
-				if (i == 0) {
-					this.ul.prepend(node.li);
-				} else {
-					this.ul.children().eq(i-1).after(node.li);
-				}
+				this.children.splice(i, 0, node);
+
+//				if (i == 0) {
+//					this.ul.prepend(node.li);
+//				} else {
+//					this.ul.children().eq(i-1).after(node.li);
+//				}
 				found = true;
 				break;
 			}
 		}
 		if (!found) {
-			this.ul.append(node.li);
+			this.children.push(node);
 		}
 	} else {
-		this.ul.append(node.li);
+//		this.ul.append(node.li);
+		this.children.push(node);
 	}
-	// TODO sync order in array with dom nodes order?
-	this.children.push(node);
 	
-	if (this.isOpen) {
-		this.img.addClass("treenodeopen");
+//	if (this.isOpen) {
+//		this.img.addClass("treenodeopen");
+//	} else {
+//		this.img.addClass("treenodeclosed");
+//	}
+//	this.img.css("display: inline");
+};
+
+Node.prototype.addToDom = function(creator){
+	if (this.ul == null) {
+		this.creator = creator;
 	} else {
-		this.img.addClass("treenodeclosed");
+		this.addButton(creator(this));
 	}
-	this.img.css("display: inline");
 };
 
 Node.prototype.setIcon = function(icon){
@@ -156,8 +165,18 @@ Node.prototype.createDom = function(){
 			this.parent.ul.append(this.li);
 		}
 		
-		if (false) {
-			this.img.addClass("treenodeclosed");
+		this.img.addClass("treenodeclosed");
+		
+		if (this.creator != null) {
+			var newNode = this.creator(this);
+			this.addButton(newNode);
+		}
+		
+		var o = this;
+		if (this.children != null) {
+			this.children.forEach(function(child){
+				o.ul.append(child.li);
+			});
 		}
 	}
 };
