@@ -104,6 +104,7 @@
 		
 		function loadBimServerApi(callback) {
 			getPluginVersion(Settings.getBimServerApiAddress(), function(apiVersion){
+				console.log(apiVersion);
 				var initialJs = [];
 				if (Settings.useCompressedResources()) {
 					initialJs.push(Settings.getBimServerApiAddress() + "bimserverapi.js?_v=" + apiVersion);
@@ -116,6 +117,7 @@
 					initialJs.push(Settings.getBimServerApiAddress() + "/model.js?_v=" + apiVersion);
 					initialJs.push(Settings.getBimServerApiAddress() + "/translations_en.js?_v=" + apiVersion);
 				}
+				console.log(initialJs);
 				LazyLoad.js(initialJs, callback);
 			});
 		}
@@ -123,7 +125,7 @@
 		function loadBimViews(callback) {
 			var jsToLoad = [];
 			if (Settings.useCompressedResources()) {
-				var jsToLoad = [baseJsDir + "bimviews.js"];
+				var jsToLoad = [baseJsDir + "bimviews.js?_v=" + Global.version];
 			} else {
 				var jsToLoad = [
 	        		baseJsDir + "jquery-2.2.0.js?_v=" + Global.version, 
@@ -164,7 +166,7 @@
 			}());
 			
 			if (Settings.useCompressedResources()) {
-				var cssToLoad = [baseCssDir + "bimviews.min.css"];
+				var cssToLoad = [baseCssDir + "bimviews.min.css?_v=" + Global.version];
 			} else {
 				var cssToLoad = [
 	 			    baseCssDir + "bootstrap.min.css?_v=" + Global.version, 
