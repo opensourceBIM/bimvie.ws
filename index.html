@@ -52,11 +52,12 @@
 				}
 				if (myRequest.status != 200)  {
 					callback(new Date().getTime());
-					return;
 				} else {
 					var version = JSON.parse(myRequest.responseText).version;
 					if (version.endsWith("-SNAPSHOT")) {
 						callback(version + "-" + new Date().getTime());
+					} else {
+						callback(version);
 					}
 				}
 			};
@@ -104,7 +105,6 @@
 		
 		function loadBimServerApi(callback) {
 			getPluginVersion(Settings.getBimServerApiAddress(), function(apiVersion){
-				console.log(apiVersion);
 				var initialJs = [];
 				if (Settings.useCompressedResources()) {
 					initialJs.push(Settings.getBimServerApiAddress() + "bimserverapi.js?_v=" + apiVersion);
@@ -117,7 +117,6 @@
 					initialJs.push(Settings.getBimServerApiAddress() + "/model.js?_v=" + apiVersion);
 					initialJs.push(Settings.getBimServerApiAddress() + "/translations_en.js?_v=" + apiVersion);
 				}
-				console.log(initialJs);
 				LazyLoad.js(initialJs, callback);
 			});
 		}
