@@ -654,19 +654,31 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		}, callback);
 	};
 
-	this.showAddService = function(){
+	this.showAddService = function(oauth){
 		othis.loadServices(function(){
 			$(".services .serviceList").hide();
 			$(".services .details").show();
-			$(".services .details").load("addservice.html", function(){
-				return new AddService(main, othis.project, function(){
-					othis.loadServices();
+			if (oauth == true) {
+				$(".services .details").load("addservice3.html", function(){
+					var history = History.getState().data;
+					Global.bimServerApi.call("ServiceInterface", "getServiceDescriptor", {
+						baseUrl: decodeURIComponent(history.baseUrl),
+						serviceIdentifier: history.serviceIdentifier
+					}, function(serviceDescriptor){
+						return new AddService3(main, othis.project, serviceDescriptor, false);
+					});
 				});
-			});
-		});
+			} else {
+				$(".services .details").load("addservice.html", function(){
+					return new AddService(main, othis.project, function(){
+						othis.loadServices();
+					});
+				});
+			}
+		}, oauth == false);
 	};
 
-	this.loadServices = function(callback) {
+	this.loadServices = function(callback, pushToHistory) {
 		$(".services .details").hide();
 		containerDiv.find(".serviceList").show()
 		containerDiv.find(".serviceDetail").hide()
@@ -681,7 +693,9 @@ function RightPanel(containerDiv, main, project, projectPage) {
 					othis.addService(service);
 				});
 			});
-			pushHistory({page: "Project", poid: othis.project.oid, tab: "services"}, "Project");
+			if (pushToHistory == true) {
+				pushHistory({page: "Project", poid: othis.project.oid, tab: "services"}, "Project");
+			}
 			return $(".services");
 		}, callback);
 	};
@@ -796,7 +810,16 @@ function RightPanel(containerDiv, main, project, projectPage) {
 				othis.loadExtendedData(null, false);
 			}
 		} else if (history.tab == "services") {
-			othis.loadServices();
+			if (history.oauth != null) {
+				Global.bimServerApi.call("OAuthInterface", "setAuthorizationCode", {
+					applicationId: history.applicationId,
+					code: history.code
+				}, function(){
+					othis.showAddService(true);
+				});
+			} else {
+				othis.loadServices();
+			}
 		} else if (history.tab == "users") {
 			othis.loadUsers();
 		} else if (history.tab == "revisions") {

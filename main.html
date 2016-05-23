@@ -33,6 +33,7 @@
 							<li><a class="btnWebModules">Web Modules</a></li>
 							<li><a class="btnExtendedDataSchemas">Extended Data Schemas</a></li>
 							<li><a class="btnModelCheckers">Model Checkers</a></li>
+							<li><a class="btnOAuthServers">OAuth Server</a></li>
 							<li class="divider"></li>
 							<li role="presentation" class="dropdown-header">Server Info</li>
 							<li><a class="btnSystem">System</a></li>
@@ -492,6 +493,11 @@ function Main(address, user) {
 	$(".btnModelCheckers").click(function(){
 		othis.showServerSettings(false, function(){
 			this.showModelCheckers();
+		});
+	});
+	$(".btnOAuthServers").click(function(){
+		othis.showServerSettings(false, function(){
+			this.showOAuthServers();
 		});
 	});
 	

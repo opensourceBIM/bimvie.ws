@@ -1,0 +1,41 @@
+<div class="oauthservers">
+	<div class="alert alert-info">
+		This page shows a list of registered servers for which this BIMserver is a registered OAuth client.
+	</div>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Client ID</th>
+				<th>Client Secret</th>
+				<th>Issued at</th>
+				<th>Expires in</th>
+				<th>Registration endpoint</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+</div>
+<script>
+function OAuthServers(cd, main, serverSettings) {
+	var o = this;
+	
+	Global.bimServerApi.call("OAuthInterface", "listRegisteredServers", {}, function(list){
+		list.forEach(function(server){
+			var tr = $("<tr>");
+			tr.append("<td>" + server.clientId + "</td>");
+			tr.append("<td>" + server.clientSecret + "</td>");
+			tr.append("<td>" + server.issuedAt + "</td>");
+			tr.append("<td>" + server.expiresIn + "</td>");
+			tr.append("<td>" + server.registrationEndpoint + "</td>");
+			
+			tr.append("<td>TODO: Revoke</td>");
+			
+			cd.find("table").append(tr);
+		});
+	});
+	
+	this.show = function(){};
+	this.hide = function(){};
+}
+</script>

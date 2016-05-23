@@ -9,6 +9,7 @@
 				<li class="webModulesLink"><a>Web Modules</a></li>
 				<li class="extendedDataSchemasLink"><a>Extended Data Schemas</a></li>
 				<li class="modelCheckersLink"><a>Model Checkers</a></li>
+				<li class="oAuthServersLink"><a>OAuth Servers</a></li>
 			</ul>
 		</div>
 		<div class="tab-content col-md-10">
@@ -77,6 +78,13 @@
 			othis.pageChanger.changePage($(".migrationsLink"), "migrations.html", function(){
 				pushHistory({page: "ServerSettings", subpage: "Migrations"}, "Server Settings");
 				return new Migrations(main, othis);
+			}, callback);
+		};
+
+		this.showOAuthServers = function(callback) {
+			othis.pageChanger.changePage($(".oAuthServersLink"), "oauthservers.html", function(){
+				pushHistory({page: "ServerSettings", subpage: "OAuthServers"}, "Server Settings");
+				return new OAuthServers($(this), main, othis);
 			}, callback);
 		};
 
@@ -167,6 +175,8 @@
 				othis.showWebModules();
 			} else if (history.subpage == "ModelCheckers") {
 				othis.showModelCheckers();
+			} else if (history.subpage == "OAuthServers") {
+				othis.showOAuthServers();
 			} else if (history.subpage == "ExtendedDataSchemas") {
 				othis.showExtendedDataSchemas();
 			} else if (history.subpage == "ExtendedDataSchema") {
@@ -178,6 +188,7 @@
 
 		$(".serversettings .basicServerSettingsLink").click(function(){othis.showBasicServerSettings(null, true)});
 		$(".serversettings .migrationsLink").click(function(){othis.showMigrations(null, true)});
+		$(".serversettings .oAuthServersLink").click(function(){othis.showOAuthServers(null, true)});
 		$(".serversettings .installedPluginBundlesLink").click(function(){
 			othis.showInstalledPluginBundles(null, true);
 		});

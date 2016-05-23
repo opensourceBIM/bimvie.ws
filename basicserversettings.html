@@ -21,6 +21,24 @@
 			</div>
 		</div>
 		<div class="form-group">
+			<label class="col-lg-2 control-label" for="serverName"><a rel="tooltip" data-original-title="" data-placement="right">Server name</a></label>
+			<div class="col-lg-8">
+				<input type="text" class="form-control serverName" id="serverName" placeholder="Server Name">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-lg-2 control-label" for="serverDescription"><a rel="tooltip" data-original-title="" data-placement="right">Site description</a></label>
+			<div class="col-lg-8">
+				<input type="text" class="form-control serverDescription" id="serverDescription" placeholder="Server Description">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-lg-2 control-label" for="serverIcon"><a rel="tooltip" data-original-title="" data-placement="right">Server icon</a></label>
+			<div class="col-lg-8">
+				<input type="text" class="form-control serverIcon" id="serverIcon" placeholder="Server Icon">
+			</div>
+		</div>
+		<div class="form-group">
 			<label class="col-lg-2 control-label" for="smtpServer"><a rel="tooltip" data-original-title="SMTP server to use for sending emails" data-placement="right">SMTP server</a></label>
 			<div class="col-lg-8">
 				<input type="text" class="form-control smtpServer" id="smtpServer" placeholder="Name">
@@ -215,6 +233,9 @@ function BasicServerSettings(main, serversettings) {
 			});
 			serverSettings.serviceRepositoryUrl = $(".basicserversettings .inputRepositoryServer").val();
 			serverSettings.siteAddress = $(".basicserversettings .siteAddress").val();
+			serverSettings.name = $(".basicserversettings .serverName").val();
+			serverSettings.description = $(".basicserversettings .serverDescription").val();
+			serverSettings.icon = $(".basicserversettings .serverIcon").val();
 			serverSettings.smtpServer = $(".basicserversettings .smtpServer").val();
 			serverSettings.smtpProtocol = $(".basicserversettings .smtpProtocol").val();
 			serverSettings.smtpPort = $(".basicserversettings .smtpPort").val();
@@ -264,8 +285,12 @@ function BasicServerSettings(main, serversettings) {
 	
 	this.loadSettings = function() {
 		Global.bimServerApi.call("SettingsInterface", "getServerSettings", {}, function(data){
+			console.log(data);
 			$(".basicserversettings .inputRepositoryServer").val(data.serviceRepositoryUrl);
 			$(".basicserversettings .siteAddress").val(data.siteAddress);
+			$(".basicserversettings .serverName").val(data.name);
+			$(".basicserversettings .serverDescription").val(data.description);
+			$(".basicserversettings .serverIcon").val(data.icon);
 			$(".basicserversettings .smtpServer").val(data.smtpServer);
 			$(".basicserversettings .smtpUsername").val(data.smtpUsername);
 			$(".basicserversettings .smtpPassword").val(data.smtpPassword);
