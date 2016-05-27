@@ -187,6 +187,10 @@ div.setup form.form-horizontal label {
 	margin-bottom: 10px;
 }
 
+div.threedview {
+	padding-top: 0px;
+}
+
 .tab-pane {
 	padding-top: 10px;	
 }
@@ -351,7 +355,7 @@ div#viewport {
 	padding: 0px;
 }
 
-.threedview .panel-body, .right .panel-body {
+.threedview .panel-body, .rightCol .panel-body {
 	padding: 0;
 	margin: 0;
 }
@@ -482,4 +486,14 @@ input[type="file"].file {
 .query2 {
 	padding-left: 10px;
 	padding-top: 10px;
+}
+
+.btnResize {
+	background:rgba(255, 255, 255, 0.5);
+	right: 20px;
+	top: 50px;
+	display: inline;
+	margin-top: 5px;
+	margin-right: 5px;
+	position: absolute;
 }

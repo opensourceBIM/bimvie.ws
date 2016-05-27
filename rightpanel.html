@@ -16,7 +16,7 @@
 		</div>
 		<div class="panel-body">
 			<div class="content ih">
-				<div class="tab-pane 3dview">
+				<div class="tab-pane threedview">
 				</div>
 				<div class="tab-pane details">
 					<table class="detailsTable table">
@@ -193,6 +193,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	
 	o.selectListeners = [];
 	o.unselectListeners = [];
+	o.projectPage = projectPage;
 	
 	othis.tabChanger = new TabChanger2(containerDiv.find(".nav"), containerDiv.find(".content"));
 	othis.selectedRevision = null;
@@ -214,12 +215,12 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	this.showThreeD = function(callback){
 		projectPage.threeDAspectVisible.set(true);
 		if (o.threeDView != null) {
-			othis.tabChanger.changeTab($(".button3d"), o.threeDView, $(".3dview"), function(){
+			othis.tabChanger.changeTab($(".button3d"), o.threeDView, $(".threedview"), function(){
 				o.threeDView.load();
 			});
 		} else {
-			othis.tabChanger.changeTab($(".button3d"), "3dview.html", $(".3dview"), function(){
-				pushHistory({page: "Project", poid: othis.project.oid, tab: "3dview"}, "Project");
+			othis.tabChanger.changeTab($(".button3d"), "3dview.html", $(".threedview"), function(){
+				pushHistory({page: "Project", poid: othis.project.oid, tab: "threedview"}, "Project");
 				o.threeDView = new ThreeDView($(this), projectPage);
 				o.threeDView.close = function(){
 					projectPage.threeDAspectVisible.set(false);

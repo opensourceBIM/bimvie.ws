@@ -1,5 +1,6 @@
 <div class="threedview">
 	<button class="ih btn btnScreenShot">Screenshot</button>
+	<button class="btn btn-default glyphicon glyphicon-resize-full btnResize" title="Show &quot;full screen&quot;"></button>
 	<img class="ih screenshot" style="width: 300px"/>
 	<div class="progressbars">
 		<div class="waiting">
@@ -326,8 +327,11 @@ function ThreeDView(containerDiv, parent) {
 	};
 
 	this.resize = function(){
-		var width = Math.round($(window).width() / 3 * 2 - 59);
-		var height = ($(window).height() - $(".navbar").outerHeight() - $(".navbar-header").outerHeight() - $(".right .panel-heading").outerHeight() - 80);
+		var resizeBtn = containerDiv.find(".btnResize");
+		var fullscreen = !resizeBtn.hasClass("glyphicon-resize-full");
+		var width = Math.round($(window).width() / 3 * 2 - 29);
+		resizeBtn.css("top", fullscreen ? 10 : 50);
+		var height = ($(window).height() - $(".navbar").outerHeight() - $(".navbar-header").outerHeight() - $(".right .panel-heading").outerHeight() - 41) + (fullscreen ? 113 : 0);
 		$("div#viewport").width(width + "px");
 		$("div#viewport").height(height + "px");
 		o.viewer.resize($('div#viewport').width(), $('div#viewport').height());
@@ -436,6 +440,25 @@ function ThreeDView(containerDiv, parent) {
 		});
 	};
 	
+	this.resizeClick = function(){
+		var resizeBtn = containerDiv.find(".btnResize");
+		if (resizeBtn.hasClass("glyphicon-resize-full")) {
+			$(".navbar").hide();
+			$(".panel-heading").hide();
+//			$(".panel-default").css("border-color", "white");
+			resizeBtn.removeClass("glyphicon-resize-full").addClass("glyphicon glyphicon-resize-small");
+			resizeBtn.attr("title", "Back to normal view");
+		} else {
+			$(".navbar").show();
+			$(".panel-heading").show();
+			resizeBtn.removeClass("glyphicon-resize-small").addClass("glyphicon glyphicon-resize-full");
+//			$(".panel-default").css("border-color", "#ddd");
+			resizeBtn.attr("title", "Show \"full screen\"");
+		}
+		parent.navigator.resize();
+		o.resize();
+	};
+	
 	this.close = function(){
 //		console.log("close");
 //		parent.selectListeners.unregister(o.selected);
@@ -462,5 +485,7 @@ function ThreeDView(containerDiv, parent) {
 			$(".screenshot").attr("src", test.src);
 		});
 	});
+	
+	containerDiv.find(".btnResize").click(o.resizeClick);
 }
 </script>
