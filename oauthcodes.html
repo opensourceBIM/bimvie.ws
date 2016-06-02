@@ -1,0 +1,43 @@
+<div class="oauthcodes">
+<h3>OAuth Codes</h3>
+Codes that can be used by this user to access resources on other servers
+<table class="table outCodesTable">
+	<thead>
+		<tr>
+			<th>Application</th>
+		</tr>
+	</thead>
+	<tbody></tbody>
+</table>
+Codes that other servers can use to access resources on this server owned by the current user
+<table class="table">
+	<thead>
+		<tr>
+			<th>Application</th>
+			<th>Code</th>
+			<th>Server</th>
+		</tr>
+	</thead>
+	<tbody></tbody>
+</table>
+</div>
+<script>
+function OAuthCodes(cd) {
+	var o = this;
+	
+	Global.bimServerApi.call("OAuthInterface", "listAuthorizationCodes", {}, function(codes){
+		codes.forEach(function(code){
+			var serverId = code.oauthServerId;
+			var tr = $("<tr>");
+			Global.bimServerApi.call("OAuthInterface", "getOAuthServerById", {oid: serverId}, function(server){
+				tr.append("<td>" + server.registrationEndpoint + "</td>");
+			});
+			tr.append("<td>" + code.code + "</td>");
+			cd.find(".outCodesTable tbody").append(tr);
+		});
+	});
+	
+	this.show = function(){};
+	this.close = function(){};
+}
+</script>

@@ -3,6 +3,7 @@
 		<div class="tabbable tabs-left col-md-2">
 			<ul class="nav nav-tabs" style="width: 100%">
 				<li class="userSettingsLink active"><a>User Settings</a></li>
+				<li class="oAuthCodesLink active"><a>OAuth Codes</a></li>
 				<li class="serializersLink"><a>Serializers</a></li>
 				<li class="deserializersLink"><a>Deserializers</a></li>
 				<li class="objectIdmsLink"><a>ObjectIDMs</a></li>
@@ -30,6 +31,13 @@
 			othis.pageChanger.changePage($(".userSettingsLink"), "basicusersettings.html", function(){
 				pushHistory({page: "UserSettings", subpage: "BasicUserSettings"}, "User Settings");
 				return new BasicUserSettings($(this), main);
+			}, callback);
+		};
+
+		this.showOAuthCodes = function(callback) {
+			othis.pageChanger.changePage($(".oAuthCodesLink"), "oauthcodes.html", function(){
+				pushHistory({page: "UserSettings", subpage: "OAuthCodes"}, "User Settings");
+				return new OAuthCodes($(this), main);
 			}, callback);
 		};
 		
@@ -354,6 +362,7 @@
 		};
 		
 		$(".usersettings .userSettingsLink").click(function(){othis.showBasicUserSettings(null, true)});
+		$(".usersettings .oAuthCodesLink").click(function(){othis.showOAuthCodes(null, true)});
 		$(".usersettings .serializersLink").click(function(){othis.showSerializers(null, true)});
 		$(".usersettings .deserializersLink").click(function(){othis.showDeserializers(null, true)});
 		$(".usersettings .objectIdmsLink").click(function(){othis.showObjectIdms(null, true)});
@@ -368,6 +377,8 @@
 			othis.showSerializers();
 		} else if (history.subpage == "Serializer") {
 			othis.showSerializer(parseInt(history.oid));
+		} else if (history.subpage == "OAuthCodes") {
+			othis.showOAuthCodes();
 		} else if (history.subpage == "Deserializers") {
 			othis.showDeserializers();
 		} else if (history.subpage == "Deserializer") {

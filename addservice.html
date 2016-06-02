@@ -26,7 +26,6 @@
 			<th>Actions</th>
 		</tr>
 	</table>
-	<a class="addCustomUrlLink">Add a custom Service</a>
 	<form class="form-inline addCustomUrlForm initialhide">
 		<h3>Add custom service</h3>
 		<div class="row">
@@ -50,9 +49,15 @@ function AddService(main, project, longCallBack) {
 	};
 	
 	this.proceedWithServiceDescriptor = function(serviceDescriptor, isLocal) {
-		$(".addservice").load("addservice2.html", function(){
-			return new AddService2($(this), main, project, serviceDescriptor, isLocal, longCallBack);
-		});
+		if (isLocal) {
+			$(".addservice").load("addservice3.html", function(){
+				return new AddService3(main, project, serviceDescriptor, isLocal, longCallBack);
+			});
+		} else {
+			$(".addservice").load("addservice2.html", function(){
+				return new AddService2($(this), main, project, serviceDescriptor, isLocal, longCallBack);
+			});
+		}
 	};
 	
 	this.addButtonClick = function(event) {
@@ -119,12 +124,6 @@ function AddService(main, project, longCallBack) {
 			event.preventDefault();
 			othis.addUrlButtonClick();
 		}
-	});
-	$(".addCustomUrlLink").click(function(event){
-		event.preventDefault();
-		$(".addservice .addCustomUrlForm").show()
-		$(".addservice .addCustomUrlForm .inputUrl").focus();
-		$(".addservice .addCustomUrlLink").hide();
 	});
 	
 	othis.loadServices();
