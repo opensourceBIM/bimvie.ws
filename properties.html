@@ -62,12 +62,32 @@ function Properties(containerDiv, parent, oid) {
 					});
 				}
 			});
+			var node = parent.rightPanel.tabChanger.current.viewer.scene.findNode(object.gid);
+			console.log(node);
+			if (node != null) {
+				var geometryInfo = {
+					nrTriangles: 0,
+					nrVertices: 0
+				};
+				othis.processGeometryInfo(node, geometryInfo);
+				console.log(geometryInfo);
+			}
 		} else {
 			if (this.loaded) {
 				containerDiv.find("table tbody").append("<tr class=\"noprop\"><td>No object selected</td></tr>");
 			}
 		}
 		containerDiv.find("table").show();
+	};
+	
+	this.processGeometryInfo = function(node, geometryInfo){
+		if (node.type == "geometry") {
+			geometryInfo.nrTriangles += node._core.indexBuf.length / 3;
+			geometryInfo.nrVertices += node._core.vertexBuf.length / 3;
+		}
+		node.nodes.forEach(function(subNode){
+			othis.processGeometryInfo(subNode, geometryInfo);
+		});
 	};
 	
 	this.hide = function(){
