@@ -35,6 +35,10 @@
 		<h2></h2>
 		<div class="content"></div>
 	</div>
+	<div class="plaintext ih">
+		<h2></h2>
+		<pre class="content"></pre>
+	</div>
 </div>
 <script>
 function ExtendedData(main, extendedData, parent) {
@@ -111,6 +115,12 @@ function ExtendedData(main, extendedData, parent) {
 		$(".html").show();
 	}
 
+	this.showPlainText = function(schema, extendedData, data){
+		$(".plaintext h2").html(extendedData.title + " (Plain Text)");
+		$(".plaintext .content").html(data);
+		$(".plaintext").show();
+	}
+
 	this.showJson = function(schema, extendedData, data){
 		$(".json h2").html(extendedData.title + " (JSON)");
 		$(".json .content").html(JSON.stringify(JSON.parse(data), null, "  "));
@@ -139,6 +149,8 @@ function ExtendedData(main, extendedData, parent) {
 				othis.showCsv(schema, extendedData, data);
 			} else if (file.mime == "text/html") {
 				othis.showHtml(schema, extendedData, data);
+			} else if (file.mime == "text/plain") {
+				othis.showPlainText(schema, extendedData, data);
 			} else if (file.mime == "application/json") {
 				othis.showJson(schema, extendedData, data);
 			} else if (schema.namespace == "http://extend.bimserver.org/validationreport") {

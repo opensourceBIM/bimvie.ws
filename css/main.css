@@ -355,9 +355,17 @@ div#viewport {
 	padding: 0px;
 }
 
-.threedview .panel-body, .rightCol .panel-body {
+.rightCol .panel-body {
 	padding: 0;
 	margin: 0;
+}
+
+.tab-pane {
+	padding: 10px;
+}
+
+.tab-pane.threedview {
+	padding: 0px;
 }
 
 .table-no-top tbody tr:first-child td {
