@@ -55,9 +55,6 @@ var Settings = {
 		myRequest.open("GET", Global.baseDir + "plugin.version", true);
 		myRequest.send();
 	},
-	usableBimServerVersion: function(version) {
-		return (version.major == 1 && version.minor == 3) || (version.major == 1 && version.minor == 4);
-	},
 	getStaticServerAddress: function(callback){
 		$.getJSON("x.getbimserveraddress", function(data){
 			callback(data.address);

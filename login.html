@@ -52,13 +52,6 @@ function Login(address, username, originalUrl) {
 	
 	this.show = function(){};
 
-	Global.bimServerApi.call("AdminInterface", "getVersion", {}, function(version){
-		if (!Settings.usableBimServerVersion(version)) {
-			var versionString = version.major + "." + version.minor + "." + version.revision;
-			Global.notifier.setInfo("This version of BIMserver (" + versionString + ") has not been tested with this version of " + Settings.getTitle());
-		}
-	});
-	
 	this.login = function(address) {
 		Global.bimServerApi.login($(".username").val(), $("#inputPassword").val(), function(data){
 			if ($("#rememberMe").is(":checked")) {
