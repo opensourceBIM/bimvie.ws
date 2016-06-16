@@ -5,17 +5,18 @@ Codes that can be used by this user to access resources on other servers
 	<thead>
 		<tr>
 			<th>Application</th>
+			<th>Actions<th>
 		</tr>
 	</thead>
 	<tbody></tbody>
 </table>
 Codes that other servers can use to access resources on this server owned by the current user
-<table class="table">
+<table class="table issuedCodesTable">
 	<thead>
 		<tr>
-			<th>Application</th>
 			<th>Code</th>
-			<th>Server</th>
+			<th>Authorization</th>
+			<th>Actions<th>
 		</tr>
 	</thead>
 	<tbody></tbody>
@@ -25,17 +26,62 @@ Codes that other servers can use to access resources on this server owned by the
 function OAuthCodes(cd) {
 	var o = this;
 	
-	Global.bimServerApi.call("OAuthInterface", "listAuthorizationCodes", {}, function(codes){
-		codes.forEach(function(code){
-			var serverId = code.oauthServerId;
-			var tr = $("<tr>");
-			Global.bimServerApi.call("OAuthInterface", "getOAuthServerById", {oid: serverId}, function(server){
-				tr.append("<td>" + server.registrationEndpoint + "</td>");
-			});
-			tr.append("<td>" + code.code + "</td>");
-			cd.find(".outCodesTable tbody").append(tr);
+	this.revokeClick = function(){
+		var oid = $(this).parents("tr").attr("oid");
+		Global.bimServerApi.call("OAuthInterface", "revokeAuthorization", {oid: oid}, function(){
+			o.load();
 		});
-	});
+	};
+	
+	this.load = function(){
+		Global.bimServerApi.call("OAuthInterface", "listAuthorizationCodes", {}, function(codes){
+			cd.find(".outCodesTable tbody tr").remove();
+			codes.forEach(function(code){
+				var serverId = code.oauthServerId;
+				var tr = $("<tr>");
+				tr.attr("oid", code.oid);
+				Global.bimServerApi.call("OAuthInterface", "getOAuthServerById", {oid: serverId}, function(server){
+					tr.append("<td>" + server.registrationEndpoint + "</td>");
+				});
+				tr.append("<td>" + code.code + "</td>");
+				cd.find(".outCodesTable tbody").append(tr);
+	
+				var td = $("<td>");
+				var revokeLink = $("<a>revoke</a>");
+				revokeLink.click(o.revokeClick);
+				td.append(revokeLink);
+				tr.append(td);
+			});
+		});
+	
+		Global.bimServerApi.call("OAuthInterface", "listIssuedAuthorizationCodes", {}, function(codes){
+			cd.find(".issuedCodesTable tbody tr").remove();
+			codes.forEach(function(code){
+				var serverId = code.oauthServerId;
+				var tr = $("<tr>");
+				tr.attr("oid", code.oid);
+				tr.append("<td>" + code.code + "</td>");
+				cd.find(".issuedCodesTable tbody").append(tr);
+				
+				var authorizationTd = $("<td>");
+				tr.append(authorizationTd)
+	
+				var td = $("<td>");
+				var revokeLink = $("<a>revoke</a>");
+				revokeLink.click(o.revokeClick);
+				td.append(revokeLink);
+				tr.append(td);
+				
+				Global.bimServerApi.call("OAuthInterface", "getAuthorizationById", {oid: code.authorizationId}, function(authorization){
+					if (authorization.__type == "SSingleProjectAuthorization") {
+						authorizationTd.append("Single Project Authorization (" + authorization.projectId + ")");
+					}
+				});
+			});
+		});
+	};
+	
+	this.load();
 	
 	this.show = function(){};
 	this.close = function(){};

@@ -1,8 +1,11 @@
 <div class="oauthservers">
 	<div class="alert alert-info">
-		This page shows a list of registered servers for which this BIMserver is a registered OAuth client.
+		This table shows a list of registered servers for which this BIMserver is a registered OAuth client.
 	</div>
-	<table class="table">
+	<div class="noRemotes well ih">
+		No servers
+	</div>
+	<table class="table remote ih">
 		<thead>
 			<tr>
 				<th>Client ID</th>
@@ -15,27 +18,99 @@
 		</thead>
 		<tbody></tbody>
 	</table>
+	<div class="alert alert-info">
+		This table shows a list of servers that have been registered to access resources on this BIMserver.
+	</div>
+	<div class="noLocals well ih">
+		No servers
+	</div>
+	<table class="table local ih">
+		<thead>
+			<tr>
+				<th>Client ID</th>
+				<th>Client Name</th>
+				<th>Client Description</th>
+				<th>Client Icon</th>
+				<th>Client Secret</th>
+				<th>Issued at</th>
+				<th>Expires in</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
 </div>
 <script>
 function OAuthServers(cd, main, serverSettings) {
 	var o = this;
 	
-	Global.bimServerApi.call("OAuthInterface", "listRegisteredServers", {}, function(list){
-		list.forEach(function(server){
-			var tr = $("<tr>");
-			tr.append("<td>" + server.clientId + "</td>");
-			tr.append("<td>" + server.clientSecret + "</td>");
-			tr.append("<td>" + server.issuedAt + "</td>");
-			tr.append("<td>" + server.expiresIn + "</td>");
-			tr.append("<td>" + server.registrationEndpoint + "</td>");
-			
-			tr.append("<td>TODO: Revoke</td>");
-			
-			cd.find("table").append(tr);
+	this.load = function(){
+		Global.bimServerApi.call("OAuthInterface", "listRegisteredServers", {}, function(list){
+			cd.find("table.remote tbody tr").remove();
+			if (list.length > 0) {
+				list.forEach(function(server){
+					var tr = $("<tr>");
+					tr.append("<td>" + server.clientId + "</td>");
+					tr.append("<td>" + server.clientSecret + "</td>");
+					tr.append("<td>" + server.issuedAt + "</td>");
+					tr.append("<td>" + server.expiresIn + "</td>");
+					tr.append("<td>" + server.registrationEndpoint + "</td>");
+					
+					tr.append("<td>TODO: Revoke</td>");
+					
+					cd.find("table.remote tbody").append(tr);
+				});
+				cd.find("table.remote").show();
+				cd.find(".noRemotes").hide();
+			} else {
+				cd.find("table.remote").hide();
+				cd.find(".noRemotes").show();
+			}
 		});
-	});
+
+		Global.bimServerApi.call("OAuthInterface", "listRegisteredServersLocal", {}, function(list){
+			cd.find("table.local tbody tr").remove();
+			if (list.length > 0) {
+				list.forEach(function(server){
+					var tr = $("<tr>");
+					tr.attr("oid", server.oid);
+					tr.append("<td>" + server.clientId + "</td>");
+					tr.append("<td>" + server.clientName + "</td>");
+					tr.append("<td>" + server.clientDescription + "</td>");
+					tr.append("<td><img src=\"data:image/png;base64," + server.clientIcon + "\"/></td>");
+					tr.append("<td>" + server.clientSecret + "</td>");
+					tr.append("<td>" + formatDateTime(new Date(server.issuedAt)) + "</td>");
+					tr.append("<td>" + formatDuration(server.expiresAt - new Date()) + "</td>");
+	
+					var revokeLink = $("<a>revoke</a>");
+					var td = $("<td>");
+					td.append(revokeLink);
+					revokeLink.click(o.revokeClick);
+					tr.append(td);
+	
+					cd.find("table.local tbody").append(tr);
+				});
+				cd.find("table.local").show();
+				cd.find(".noLocals").hide();
+			} else {
+				cd.find("table.local").hide();
+				cd.find(".noLocals").show();
+			}
+		});
+	};
+	
+	this.revokeClick = function(){
+		var oid = $(this).parents("tr").attr("oid");
+		Global.bimServerApi.call("OAuthInterface", "revokeApplication", {
+			oid: oid
+		}, function(){
+			o.load();
+		});
+	};
 	
 	this.show = function(){};
 	this.hide = function(){};
+	
+	this.load();
 }
 </script>

@@ -264,7 +264,7 @@
 		    						});
 		    					} else {
 		    						$(".indexcontainer").load(Global.baseDir + "login.html", function(){
-		    							othis.current = new Login(address);
+		    							othis.current = new Login(address, null, window.location.href);
 		    						});
 		    					}
 		    				};

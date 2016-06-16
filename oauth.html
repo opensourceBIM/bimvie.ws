@@ -1,0 +1,60 @@
+<div class="oauth">
+	<h3>Authorize external application</h3>
+	<p>
+		An application wants to use your credentials.
+		<div class="well appinfo">
+			<img class="appicon"/>
+			<span class="name" style="font-weight: bold"></span>
+			<div class="description"></div>
+		</div>
+	</p>
+	<div class="singleproject ih">
+		<h3>Single Project Access</h3>
+		Select a project
+		<select class="form-control projectsSelect"></select>
+	</div>
+	<br/>
+	<button class="btn btn-primary authorizeBtn">Authorize</button>
+</div>
+<script>
+function OAuth(cd) {
+	var o = this;
+	
+	var authType = QueryString.auth_type;
+	
+	if (authType == "singleproject") {
+		cd.find(".singleproject").show();
+		
+		Global.bimServerApi.call("ServiceInterface", "getAllProjects", {
+			onlyTopLevel: true,
+			onlyActive: true
+		}, function(projects){
+			projects.forEach(function(project){
+				var option = $("<option value=\"" + project.oid + "\">" + project.name + "</option>");
+				cd.find(".projectsSelect").append(option);
+			});
+		});
+	}
+	
+	cd.find(".authorizeBtn").click(function(){
+		Global.bimServerApi.call("OAuthInterface", "authorize", {
+			oAuthServerOid: -1,
+			authorization: {
+				__type: "SSingleProjectAuthorization",
+				projectId: cd.find(".projectsSelect").val()
+			}
+		}, function(code){
+			window.location = "/oauth" + window.location.search + "&token=" + Global.bimServerApi.token + "&code=" + code;
+		});
+	});
+	
+	Global.bimServerApi.call("OAuthInterface", "getOAuthServerByClientId", {clientId: QueryString.client_id}, function(data){
+		cd.find(".appinfo img.appicon").attr("src", "data:image/png;base64," + data.clientIcon);
+		cd.find(".appinfo .name").html(data.clientName);
+		cd.find(".appinfo .description").html(data.clientDescription);
+	});
+	
+	this.show = function(){};
+	this.close = function(){};
+}
+</script>

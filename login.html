@@ -43,7 +43,7 @@
 	</div>
 </div>
 <script>
-function Login(address, username) {
+function Login(address, username, originalUrl) {
 	var othis = this;
 	
 	if (address != null && address.startsWith("http://")) {
@@ -71,9 +71,13 @@ function Login(address, username) {
 				$.cookie("address" + window.document.location.port, Global.bimServerApi.baseUrl, { path: "/"});
 			}
 			Global.bimServerApi.resolveUser(function(user){
-				$(".indexcontainer").load(Global.baseDir + "main.html", function(){
-					new Main(address, user).show(false);
-				});
+				if (originalUrl != null) {
+					window.location = originalUrl;					
+				} else {
+					$(".indexcontainer").load(Global.baseDir + "main.html", function(){
+						new Main(address, user).show(false);
+					});
+				}
 			});
 		});
 	}
