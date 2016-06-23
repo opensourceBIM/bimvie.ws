@@ -52,11 +52,15 @@ function OAuthServers(cd, main, serverSettings) {
 					var tr = $("<tr>");
 					tr.append("<td>" + server.clientId + "</td>");
 					tr.append("<td>" + server.clientSecret + "</td>");
-					tr.append("<td>" + server.issuedAt + "</td>");
-					tr.append("<td>" + server.expiresIn + "</td>");
+					tr.append("<td>" + formatDateTime(new Date(server.issuedAt)) + "</td>");
+					tr.append("<td>" + formatDuration(server.expiresAt - new Date()) + "</td>");
 					tr.append("<td>" + server.registrationEndpoint + "</td>");
 					
-					tr.append("<td>TODO: Revoke</td>");
+					var revokeLink = $("<a>revoke</a>");
+					var td = $("<td>");
+					td.append(revokeLink);
+					revokeLink.click(o.revokeClick);
+					tr.append(td);
 					
 					cd.find("table.remote tbody").append(tr);
 				});
