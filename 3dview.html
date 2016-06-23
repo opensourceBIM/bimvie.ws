@@ -1,6 +1,7 @@
 <div class="threedview">
 	<button class="ih btn btnScreenShot">Screenshot</button>
-	<button class="btn btn-default glyphicon glyphicon-resize-full btnResize" title="Show &quot;full screen&quot;"></button>
+	<button class="btn btn-default glyphicon viewbutton glyphicon-resize-full btnResize" title="Show &quot;full screen&quot;"></button>
+	<button class="btn btn-default glyphicon viewbutton glyphicon-wrench btnViewOptions" data-toggle="dropdown" title="Change between triangles/lines"></button>
 	<img class="ih screenshot" style="width: 300px"/>
 	<div class="progressbars">
 		<div class="waiting">
@@ -13,10 +14,19 @@
 		</div>
 		<div class="panel-body"></div>
 	</div>
-	<div id="viewport"></div>
+  <div id="viewport"></div>
+	<div class="dropdown viewOptions">
+	  <ul class="dropdown-menu">
+	    <li><a href="#">Action</a></li>
+	    <li><a href="#">Another action</a></li>
+	    <li><a href="#">Something else here</a></li>
+	    <li role="separator" class="divider"></li>
+	    <li><a href="#">Separated link</a></li>
+	  </ul>
+	  </div>
 </div>
 <script>
-function ThreeDView(containerDiv, parent) {
+function ThreeDView(containerDiv, parent, main) {
 	var o = this;
 	o.selected = null;
 	
@@ -283,7 +293,11 @@ function ThreeDView(containerDiv, parent) {
 			uniqueRoids.forEach(function(roid){
 				models[roid] = parent.models[roid];
 			});
-			var geometryLoader = new GeometryLoader(Global.bimServerApi, models, o.viewer);
+			var geometryType = $.cookie(main.user.oid + "geometrytype");
+			if (geometryType == null) {
+				geometryType = "triangles";
+			}
+			var geometryLoader = new GeometryLoader(Global.bimServerApi, models, o.viewer, geometryType);
 
 			var progressdiv = $("<div class=\"progressdiv\">");
 			var text = $("<div class=\"text\">");
@@ -468,6 +482,17 @@ function ThreeDView(containerDiv, parent) {
 //		parent.modelUnloadedListeners.unregister(o.unloadRevision);
 	};
 	
+	this.viewOptionsClick = function(){
+		var geometryType = $.cookie(main.user.oid + "geometrytype");
+		if (geometryType == null) {
+			geometryType = "lines";
+		}
+		$.cookie(main.user.oid + "geometrytype", geometryType == "lines" ? "triangles" : "lines");
+		alert("Reload for changes to take effect");
+
+//		containerDiv.find(".viewOptions").dropdown("toggle");
+	};
+	
 	containerDiv.find(".waiting").hide();
 
 	parent.selectListeners.register(o.selected);
@@ -487,5 +512,6 @@ function ThreeDView(containerDiv, parent) {
 	});
 	
 	containerDiv.find(".btnResize").click(o.resizeClick);
+	containerDiv.find(".btnViewOptions").click(o.viewOptionsClick);
 }
 </script>

@@ -336,10 +336,9 @@ function Main(address, user) {
 		var div = $("<div class=\"modal fade\">");
 		$(document.body).append(div);
 		var params = {
-			downloadType: "single",
+			downloadType: "downloadRevisions",
 			allowCheckouts: true,
-			poid: poid,
-			roid: roid
+			roids: [roid]
 		};
 		div.load(Global.baseDir + "download.html", function(){
 			new Download($(this), params);

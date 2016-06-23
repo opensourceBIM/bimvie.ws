@@ -221,7 +221,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		} else {
 			othis.tabChanger.changeTab($(".button3d"), "3dview.html", $(".threedview"), function(){
 				pushHistory({page: "Project", poid: othis.project.oid, tab: "threedview"}, "Project");
-				o.threeDView = new ThreeDView($(this), projectPage);
+				o.threeDView = new ThreeDView($(this), projectPage, main);
 				o.threeDView.close = function(){
 					projectPage.threeDAspectVisible.set(false);
 				};
