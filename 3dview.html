@@ -344,7 +344,7 @@ function ThreeDView(containerDiv, parent, main) {
 		var resizeBtn = containerDiv.find(".btnResize");
 		var fullscreen = !resizeBtn.hasClass("glyphicon-resize-full");
 		var width = Math.round($(window).width() / 3 * 2 - 29);
-		resizeBtn.css("top", fullscreen ? 10 : 50);
+		$(".viewbutton").css("top", fullscreen ? 10 : 50);
 		var height = ($(window).height() - $(".navbar").outerHeight() - $(".navbar-header").outerHeight() - $(".right .panel-heading").outerHeight() - 41) + (fullscreen ? 113 : 0);
 		$("div#viewport").width(width + "px");
 		$("div#viewport").height(height + "px");
@@ -459,14 +459,12 @@ function ThreeDView(containerDiv, parent, main) {
 		if (resizeBtn.hasClass("glyphicon-resize-full")) {
 			$(".navbar").hide();
 			$(".panel-heading").hide();
-//			$(".panel-default").css("border-color", "white");
-			resizeBtn.removeClass("glyphicon-resize-full").addClass("glyphicon glyphicon-resize-small");
+			resizeBtn.removeClass("glyphicon-resize-full").addClass("glyphicon-resize-small");
 			resizeBtn.attr("title", "Back to normal view");
 		} else {
 			$(".navbar").show();
 			$(".panel-heading").show();
-			resizeBtn.removeClass("glyphicon-resize-small").addClass("glyphicon glyphicon-resize-full");
-//			$(".panel-default").css("border-color", "#ddd");
+			resizeBtn.removeClass("glyphicon-resize-small").addClass("glyphicon-resize-full");
 			resizeBtn.attr("title", "Show \"full screen\"");
 		}
 		parent.navigator.resize();
