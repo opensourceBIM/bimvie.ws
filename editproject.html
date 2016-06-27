@@ -1,0 +1,70 @@
+<div class="editproject">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">Edit project details</h4>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="form-group">
+						<label for="nameInp">Name</label> <input type="text" class="form-control nameInp" id="nameInp">
+					</div>
+					<div class="form-group">
+						<label for="descriptionInp">Description</label> <textarea class="form-control descriptionInp" id="descriptionInp"></textarea>
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="lengthMeasureInput">Uniform length measure for combined download</label>
+						<select class="lengthMeasureInput form-control span6" id="lengthMeasureInput">
+							<option>meter</option>
+							<option>attometer</option>
+							<option>femtometer</option>
+							<option>picometer</option>
+							<option>nanometer</option>
+							<option>micrometer</option>
+							<option>millimeter</option>
+							<option>centimeter</option>
+							<option>decimeter</option>
+							<option>decameter</option>
+							<option>hectometer</option>
+							<option>kilometer</option>
+							<option>megameter</option>
+							<option>gigameter</option>
+							<option>terameter</option>
+							<option>petameter</option>
+							<option>exameter</option>
+						</select>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary btnSave">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	function EditProject(cd, project) {
+		var o = this;
+		
+		cd.find(".nameInp").val(project.name);
+		cd.find(".descriptionInp").val(project.description);
+		cd.find(".lengthMeasureInput").val(project.exportLengthMeasurePrefix);
+		
+		cd.find(".btnSave").click(function(){
+			project.name = cd.find(".nameInp").val();
+			project.description = cd.find(".descriptionInp").val();
+			project.exportLengthMeasurePrefix = cd.find(".lengthMeasureInput").val();
+			Global.bimServerApi.call("ServiceInterface", "updateProject", {
+				sProject: project
+			}, function(){
+				cd.modal("hide");
+				document.location.reload();
+			});
+		});
+		
+	}
+</script>

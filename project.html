@@ -385,6 +385,16 @@ function Project(containerDiv, main, project) {
 				othis.navigator = new Navigator($(this), othis);
 				othis.navigator.load().done(function(){
 					othis.navigator.projecttree.addMenuDivider("revisionDivider");
+					othis.navigator.projecttree.addMenuItem("Edit project details", "btnEditProjectDetails", function(){
+						var div = $("<div class=\"modal fade\">");
+						$(document.body).append(div);
+						Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: othis.navigator.projecttree.selectedNode.poid}, function(project){
+							div.load(Global.baseDir + "editproject.html", function(){
+								new EditProject($(this), project);
+							}).modal({keyboard:true});
+						});
+					}).find("a").prepend("<i class=\"glyphicon glyphicon-pencil\"></i> ");
+					othis.navigator.projecttree.addMenuDivider("revisionDivider");
 					othis.navigator.projecttree.addMenuItem("Add sub project", "btnAddProject", function(){
 						Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: othis.navigator.projecttree.selectedNode.poid}, function(project){
 							main.showAddProject(null, project);
