@@ -27,16 +27,6 @@
 			</thead>
 			<tbody></tbody>
 		</table>
-		<div class="linkspacer">
-			<a class="loadPrivateProfilesLink">Load private profiles</a>
-		</div>
-		<div class="well loadPrivateProfiles initialhide">
-			<div class="loadPrivateProfilesExtra"></div>
-			<form class="form-inline">
-				<label>Token <input type="text" class="privateProfilesTokenInput form-control"/></label>
-				<button class="btn btn-default loadPrivateProfilesButton">Load profiles</button>
-			</form>
-		</div>
 	</div>
 	<div class="rightsdiv initialhide">
 		<h3>Rights</h3>
@@ -109,10 +99,6 @@ function AddService3(main, project, serviceDescriptor, isLocal, longCallBack) {
 	$(".addservice3 .pluginTable").append("<tr><td>Description</td><td>" + serviceDescriptor.description + "</td></tr>");	
 	$(".addservice3 .pluginTable").append("<tr><td>Trigger</td><td>" + formatTrigger(serviceDescriptor.trigger) + "</td></tr>");
 
-	if (serviceDescriptor.tokenUrl != null) {
-		$(".loadPrivateProfilesExtra").append("<a href=\"" + serviceDescriptor.tokenUrl + "\">Click here to create/get a remote token</a>");
-	}
-	
 	if (serviceDescriptor.readRevision || serviceDescriptor.writeRevision || serviceDescriptor.readExtendedData != null || serviceDescriptor.writeExtendedData != null) {
 		$(".addservice3 .rightsTable").show();
 		$(".addservice3 .norights").hide();

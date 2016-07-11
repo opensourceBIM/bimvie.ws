@@ -21,11 +21,18 @@ function AddService2(cd, main, project, serviceDescriptor, isLocal, longCallBack
 	
 	cd.find(".btnContinue").click(function(){
 		Global.bimServerApi.call("OAuthInterface", "registerApplication", {registrationEndpoint: serviceDescriptor.registerUrl, apiUrl: serviceDescriptor.url}, function(applicationId){
-			var uri = encodeURIComponent(document.location.href + "&oauth=true&baseUrl=" + encodeURIComponent(serviceDescriptor.url) + "&serviceIdentifier=" + serviceDescriptor.identifier + "&applicationId=" + applicationId);
+			var url = new Url(document.location);
+			url.tab = "services";
+			url.oauth = "true";
+			url.baseUrl = serviceDescriptor.url;
+			url.serviceIdentifier = serviceDescriptor.identifier;
+			url.applicationId = applicationId;
+			url.page = "Project";
+			var uri = url.toString();
 			Global.bimServerApi.call("OAuthInterface", "generateForwardUrl", {
 				registrationEndpoint: serviceDescriptor.registerUrl,
 				authorizeUrl: serviceDescriptor.authorizeUrl,
-				returnUrl: uri
+				returnUrl: encodeURIComponent(uri)
 			}, function(forwardUrl){
 				document.location = forwardUrl;
 			});

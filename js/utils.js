@@ -94,3 +94,40 @@ var QueryString = function () {
 	  } 
 	  return query_string;
 	}();
+
+function Url(location) {
+	var o = this;
+	var href = location.href;
+	
+	while (href.indexOf("&") != -1) {
+		var next = href.indexOf("&", href.indexOf("&") + 1);
+		var sub = href.substring(href.indexOf("&") + 1, next);
+		if (sub.indexOf("=") != -1) {
+			var key = sub.substring(0, sub.indexOf("="));
+			var value = sub.substring(sub.indexOf("=") + 1);
+			console.log(key, value);
+			o[key] = value;
+		}
+		href = href.substring(next + 1);
+	}
+	
+	this.toString = function(){
+		var url = location.protocol + "//" + location.host + location.pathname;
+		var first = true;
+		for (var key in this) {
+		    if (this.hasOwnProperty(key)) {
+		    	var value = this[key];
+		    	if (typeof value == "string" || typeof value == "number") {
+		    		if (first) {
+		    			url = url + "?" + key + "=" + encodeURIComponent(value);
+		    		} else {
+		    			url = url + "&" + key + "=" + encodeURIComponent(value);
+		    		}
+		    		first = false;
+		    	}
+		    }
+		}
+		return url;
+//		encodeURIComponent(document.location.href + "&oauth=true&baseUrl=" + encodeURIComponent(serviceDescriptor.url) + "&serviceIdentifier=" + serviceDescriptor.identifier + "&applicationId=" + applicationId + "&tab=AddService3")
+	};
+}

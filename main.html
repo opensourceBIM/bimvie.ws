@@ -99,7 +99,12 @@ function Main(address, user) {
 			} else if (history.page == "Projects") {
 				othis.showProjects(null);
 			} else if (history.page == "Project") {
-				othis.showProject(history.poid, null);
+				othis.showProject(history.poid, function(){
+//					if (history.tab == "AddService3") {
+//						console.log(this);
+//						this.rightPanel.showAddService();
+//					}
+				});
 			} else if (history.page == "Revision") {
 				othis.showRevision(history.roid, null);
 			} else if (history.page == "User") {
@@ -125,6 +130,11 @@ function Main(address, user) {
 					othis.showAddService(project, null, true);
 				});
 			} else if (history.page == "AddService2") {
+				Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: history.poid}, function(project){
+					othis.showAddService(project, null, true);
+				});
+			} else if (history.page == "AddService3") {
+				console.log("AddService3");
 				Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: history.poid}, function(project){
 					othis.showAddService(project, null, true);
 				});
@@ -191,12 +201,6 @@ function Main(address, user) {
 		}, callback);
 	};
 
-	this.showAddService = function(project, callback, longCallBack) {
-		othis.pageChanger.changePage($(".projectsLink"), "addservice.html", function(){
-			return new AddService(othis, project, longCallBack);
-		}, callback);
-	};
-	
 	this.showAddCheckinModelChecker = function(project, callback) {
 		othis.pageChanger.changePage($(".projectsLink"), "addmodelchecker.html", function(){
 			return new AddModelChecker(othis, project);
@@ -265,6 +269,12 @@ function Main(address, user) {
 	this.showService = function(project, service, callback) {
 		this.showProject(project, function(){
 			othis.current.showService(service);
+		});
+	};
+
+	this.showAddService = function(project, service, callback) {
+		this.showProject(project, function(){
+			othis.current.rightpanel.showAddService();
 		});
 	};
 
