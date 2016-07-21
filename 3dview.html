@@ -1,18 +1,22 @@
 <div class="threedview">
-	<button class="ih btn btnScreenShot">Screenshot</button>
-	<button class="btn btn-default glyphicon viewbutton glyphicon-resize-full btnResize" title="Show &quot;full screen&quot;"></button>
-	<button class="btn btn-default glyphicon viewbutton glyphicon-wrench btnViewOptions" data-toggle="dropdown" title="Change between triangles/lines"></button>
 	<img class="ih screenshot" style="width: 300px"/>
 	<div class="progressbars">
 		<div class="waiting">
 			<span class="badge">3</span><span class="text"> Waiting...</span>
 		</div>
 	</div>
-	<div class="panel panel-default visualization ih">
-		<div class="panel-heading">
-			<h3 class="panel-title">Visualization options</h3>
+	<div class="overlay-controls">
+		<div class="buttons">
+			<button class="ih btn btnScreenShot">Screenshot</button>
+			<button class="btn btn-default glyphicon viewbutton glyphicon-resize-full btnResize" title="Show &quot;full screen&quot;"></button>
+			<button class="btn btn-default glyphicon viewbutton glyphicon-wrench btnViewOptions" data-toggle="dropdown" title="Change between triangles/lines"></button>
 		</div>
-		<div class="panel-body"></div>
+		<div class="panel panel-default visualization ih">
+			<div class="panel-heading">
+				<h3 class="panel-title">Visualization options</h3>
+			</div>
+			<div class="panel-body"></div>
+		</div>
 	</div>
   <div id="viewport"></div>
 	<div class="dropdown viewOptions">
@@ -198,7 +202,7 @@ function ThreeDView(containerDiv, parent, main) {
 			if (geometryNode != null) {
 				if (mode == 0) {
 					threeDObject.findParentByType("enable").setEnabled(true);
-					if (geometryNode._core.arrays.colors != null) {
+					if (geometryNode._core.arrays != null && geometryNode._core.arrays.colors != null) {
 						if (object.trans.colorOverride != null) {
 							o.changeColorOfObject(object, object.trans.colorOverride);
 						} else {
@@ -322,12 +326,12 @@ function ThreeDView(containerDiv, parent, main) {
 			geometryLoader.setLoadOids(uniqueRoids, oidsNotLoaded);
 			
 			// This might be needed when the geometryloader comes up with more objects than requested...
-//			geometryLoader.objectAddedListeners.push(function(oid){
+			geometryLoader.objectAddedListeners.push(function(oid){
 //				models[uniqueRoids[0]].get(oid, function(object){
 //					o.updateVisibility(object);
 //				});
-//				o.loadedOids[oid] = true;
-//			});
+				o.loadedOids[oid] = true;
+			});
 //			geometryLoader.progressListeners.push(function(state){
 //				if (state == "done") {
 //					for (var i=0; i<oidsNotLoaded.length; i++) {
@@ -344,7 +348,7 @@ function ThreeDView(containerDiv, parent, main) {
 		var resizeBtn = containerDiv.find(".btnResize");
 		var fullscreen = !resizeBtn.hasClass("glyphicon-resize-full");
 		var width = Math.round($(window).width() / 3 * 2 - 29);
-		$(".viewbutton").css("top", fullscreen ? 10 : 50);
+		$(".overlay-controls").css("top", fullscreen ? 10 : 120);
 		var height = ($(window).height() - $(".navbar").outerHeight() - $(".navbar-header").outerHeight() - $(".right .panel-heading").outerHeight() - 41) + (fullscreen ? 113 : 0);
 		$("div#viewport").width(width + "px");
 		$("div#viewport").height(height + "px");
@@ -483,7 +487,7 @@ function ThreeDView(containerDiv, parent, main) {
 	this.viewOptionsClick = function(){
 		var geometryType = $.cookie(main.user.oid + "geometrytype");
 		if (geometryType == null) {
-			geometryType = "lines";
+			geometryType = "triangles";
 		}
 		$.cookie(main.user.oid + "geometrytype", geometryType == "lines" ? "triangles" : "lines");
 		alert("Reload for changes to take effect");
