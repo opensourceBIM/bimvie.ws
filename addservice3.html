@@ -61,8 +61,7 @@
 	</div>
 </div>
 <script>
-function AddService3(main, project, serviceDescriptor, isLocal, longCallBack) {
-	console.log(serviceDescriptor);
+function AddService3(main, project, projectPage, serviceDescriptor, isLocal, longCallBack) {
 	var othis = this;
 	othis.project = project;
 	othis.serviceDescriptor = serviceDescriptor;
@@ -266,9 +265,11 @@ function AddService3(main, project, serviceDescriptor, isLocal, longCallBack) {
 			} else {
 				service.notificationProtocol = "JSON";
 				Global.bimServerApi.call("ServiceInterface", "addServiceToProject", {poid: othis.project.oid, sService: service}, function(data){
-					if (longCallBack != null) {
-						longCallBack();
-					}
+					console.log(projectPage);
+					projectPage.rightPanel.loadServices(function(){}, true);
+//					if (longCallBack != null) {
+//						longCallBack();
+//					}
 				});
 			}
 		}
@@ -276,7 +277,6 @@ function AddService3(main, project, serviceDescriptor, isLocal, longCallBack) {
 
 	this.loadPrivateProfiles = function() {
 		Global.bimServerApi.call("ServiceInterface", "getAllPrivateProfiles", {notificationsUrl: othis.serviceDescriptor.url, serviceIdentifier: othis.serviceDescriptor.identifier}, function(data){
-			console.log(data);
 			$(".addservice3 .profilesTable tbody tr.privateprofiledescriptor").remove();
 			data.forEach(function(profileDescriptor){
 				othis.addProfileDescriptor(profileDescriptor);
@@ -329,7 +329,7 @@ function AddService3(main, project, serviceDescriptor, isLocal, longCallBack) {
 	$(".addservice3 .addModelCheckerButton").click(othis.addModelCheckerButtonClick);
 
 	othis.loadPublicProfiles();
-	othis.loadPrivateProfiles();
+//	othis.loadPrivateProfiles();
 	othis.canAdd();
 }
 </script>

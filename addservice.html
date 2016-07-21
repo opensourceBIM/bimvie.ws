@@ -40,7 +40,7 @@
 	</form>
 </div>
 <script>
-function AddService(main, project, longCallBack) {
+function AddService(main, project, projectPage, longCallBack) {
 	var othis = this;
 
 	this.show = function(){
@@ -51,7 +51,7 @@ function AddService(main, project, longCallBack) {
 	this.proceedWithServiceDescriptor = function(serviceDescriptor, isLocal) {
 		if (isLocal) {
 			$(".addservice").load("addservice3.html", function(){
-				return new AddService3(main, project, serviceDescriptor, isLocal, longCallBack);
+				return new AddService3(main, project, projectPage, serviceDescriptor, isLocal, longCallBack);
 			});
 		} else {
 			$(".addservice").load("addservice2.html", function(){
