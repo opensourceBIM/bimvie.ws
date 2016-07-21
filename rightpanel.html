@@ -231,11 +231,11 @@ function RightPanel(containerDiv, main, project, projectPage) {
 			});
 		}
 	};
-	
+
 	containerDiv.find(".button3d").click(function(){
 		o.showThreeD();
 	});
-	
+
 	this.close = function () {
 		if (othis.project != null) {
 			Global.bimServerApi.unregisterNewRevisionOnSpecificProjectHandler(othis.project.oid, othis.newRevisionOnSpecificProjectHandler);
@@ -666,12 +666,12 @@ function RightPanel(containerDiv, main, project, projectPage) {
 						baseUrl: decodeURIComponent(history.baseUrl),
 						serviceIdentifier: history.serviceIdentifier
 					}, function(serviceDescriptor){
-						return new AddService3(main, othis.project, serviceDescriptor, false);
+						return new AddService3(main, othis.project, projectPage, serviceDescriptor, false);
 					});
 				});
 			} else {
 				$(".services .details").load("addservice.html", function(){
-					return new AddService(main, othis.project, function(){
+					return new AddService(main, othis.project, projectPage, function(){
 						othis.loadServices();
 					});
 				});

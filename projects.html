@@ -1,5 +1,6 @@
 <div class="projects">
-	<div class="well well-sm noprojects">There are no projects yet, click on Project | New project to create a new project</div>
+	<div class="alert alert-info" role="alert">For a demo of BIMvie.ws/BIMserver, you can now import the freely available <a href="https://github.com/openBIMstandards/DataSetSchependomlaan">Schependomlaan</a> model <a class="importClick">automatically</a>.</div>
+	<div class="well well-sm noprojects">There are no projects yet, click on <b>Project</b> | <b>New project</b> to create a new project</div>
 	<table class="projectsTable table table-hover initialhide">
 		<thead>
 			<tr>
@@ -130,6 +131,13 @@ function Projects(containerDiv, main) {
 		});
 	};
 	
+	$(".importClick").click(function(){
+		var div = $("<div class=\"modal fade\">");
+		$(document.body).append(div);
+		div.load(Global.baseDir + "import.html", function(){
+			new Import($(this));
+		}).modal({keyboard:true});
+	});
 	$(".addProjectButton").click(function(){main.showAddProject()});
 
 	othis.loadProjects();
