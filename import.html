@@ -34,22 +34,22 @@ function Import(cd) {
 	var o = this;
 
 	o.structure = {
-		"Schependomlaa4": {
+		"Schependomlaan2": {
 			"Architecture": "Design model IFC/IFC Schependomlaan.ifc",
 			"Construction": "Coordination model and subcontractors models/BIMsight Projectdata1/V_L_Constructief.ifc",
 			"Engineering": {
-				"concrete floors": "Coordination model and subcontractors models/BIMsight Projectdata1/concrete floors/ROOT-breedplaatvloeren.ifczip", 
-				"load bearing facade": "Coordination model and subcontractors models/BIMsight Projectdata1/load bearing facade/ROOT-lateien_en_geveldragers.ifczip",
-				"prefab stairs": "Coordination model and subcontractors models/BIMsight Projectdata1/prefab stairs/ROOT-prefab_trappen.ifczip",
-				"steel": "Coordination model and subcontractors models/BIMsight Projectdata1/steel/ROOT-staal.ifczip",
-				"hollow core": "Coordination model and subcontractors models/BIMsight Projectdata1/hollow core/ROOT-kanaalplaatvloer.ifczip",
-				"prefab balconies": "Coordination model and subcontractors models/BIMsight Projectdata1/prefab balconies/ROOT-prefab_balkons.ifczip",
-				"roof": "Coordination model and subcontractors models/BIMsight Projectdata1/roof/ROOT-kapconstructie_dakkapellen_platdak.ifczip",
-				"vebo": "Coordination model and subcontractors models/BIMsight Projectdata1/vebo/ROOT-Vebo.ifczip",
-				"limestone": "Coordination model and subcontractors models/BIMsight Projectdata1/limestone/ROOT-kalkzandsteen.ifczip",
-				"prefab floors": "Coordination model and subcontractors models/BIMsight Projectdata1/prefab floors/ROOT-prefab_vloer_lifttop.ifczip",
-				"stair railings": "Coordination model and subcontractors models/BIMsight Projectdata1/stair railings/ROOT-traphekken.ifczip",
-				"wooden windows": "Coordination model and subcontractors models/BIMsight Projectdata1/wooden windows/ROOT-houten kozijnen.ifczip"
+				"concrete floors": "Coordination model and subcontractors models/BIMsight Projectdata1/ROOT-breedplaatvloeren.ifczip", 
+				"load bearing facade": "Coordination model and subcontractors models/BIMsight Projectdata1/ROOT-lateien_en_geveldragers.ifczip",
+				"prefab stairs": "Coordination model and subcontractors models/BIMsight Projectdata1/ROOT-prefab_trappen.ifczip",
+				"steel": "Coordination model and subcontractors models/BIMsight Projectdata1/ROOT-staal.ifczip",
+				"hollow core": "Coordination model and subcontractors models/BIMsight Projectdata1/ROOT-kanaalplaatvloer.ifczip",
+				"prefab balconies": "Coordination model and subcontractors models/BIMsight Projectdata1/ROOT-prefab_balkons.ifczip",
+				"roof": "Coordination model and subcontractors models/BIMsight Projectdata1/ROOT-kapconstructie_dakkapellen_platdak.ifczip",
+				"vebo": "Coordination model and subcontractors models/BIMsight Projectdata1/ROOT-Vebo.ifczip",
+				"limestone": "Coordination model and subcontractors models/BIMsight Projectdata1/ROOT-kalkzandsteen.ifczip",
+				"prefab floors": "Coordination model and subcontractors models/BIMsight Projectdata1/ROOT-prefab_vloer_lifttop.ifczip",
+				"stair railings": "Coordination model and subcontractors models/BIMsight Projectdata1/ROOT-traphekken.ifczip",
+				"wooden windows": "Coordination model and subcontractors models/BIMsight Projectdata1/ROOT-houten kozijnen.ifczip"
 			},
 			"MEP": "Coordination model and subcontractors models/BIMsight Projectdata1/HB_Nutsvoorzieningen.ifc",
 			"Suppliers": {
@@ -126,35 +126,46 @@ function Import(cd) {
 			}
 		} else {
 			promise.inc();
-			list.push({project: parent, file: structure});
-			promise.dec();
+			Global.bimServerApi.call("ServiceInterface", "getSuggestedDeserializerForExtension", {extension: "ifc", poid: parent.oid}, function(deserializer){
+				list.push({project: parent, file: structure, deserializer: deserializer});
+				promise.dec();
+			});
 		}
 	}
 	
+	function checkin(list, index, item) {
+		cd.find(".message").html("Checking in: " + item.file.substring(item.file.lastIndexOf("/") + 1)).show();
+		cd.find(".progress .progress-bar").css("width", (100 * index / list.length) + "%");
+		Global.bimServerApi.call("ServiceInterface", "checkinFromUrl", {
+			poid: item.project.oid,
+			comment: "Demo Checkin",
+			deserializerOid: item.deserializer.oid,
+			fileName: item.file.substring(item.file.lastIndexOf("/") + 1),
+			url: "https://github.com/openBIMstandards/DataSetSchependomlaan/raw/master/" + encodeURIComponent(item.file),
+			merge: false,
+			sync: true
+		}, function(){
+			index++;
+			if (index < list.length) {
+				checkin(list, index, list[index]);
+			} else {
+				cd.find(".message").html("Done, you can close this window").show();
+				cd.find(".progress").hide();
+			}
+		});
+	}
+	
 	cd.find(".startBtn").click(function(){
+		cd.find(".startBtn").hide();
 		var list = [];
 		cd.find(".message").html("Creating projects...").show();
 		var promise = new BimServerApiPromise();
 		createProjects(o.structure, list, null, promise);
 		promise.done(function(){
 			cd.find(".progress").show();
-			list.forEach(function(item, index){
-				cd.find(".message").html("Checking in: " + item.file).show();
-				Global.bimServerApi.call("ServiceInterface", "getSuggestedDeserializerForExtension", {extension: "ifc", poid: item.project.oid}, function(deserializer){
-					Global.bimServerApi.call("ServiceInterface", "checkinFromUrl", {
-						poid: item.project.oid,
-						comment: "Demo Checkin",
-						deserializerOid: deserializer.oid,
-						fileName: item.file.substring(item.file.lastIndexOf("/") + 1),
-						url: "https://github.com/openBIMstandards/DataSetSchependomlaan/raw/master/" + encodeURIComponent(item.file),
-						merge: false,
-						sync: true
-					}, function(){
-						
-					});
-				});
-				cd.find(".progress .progress-bar").css("width", (100 * list.length / index) + "%");
-			});
+			var index = 0;
+			var item = list[index];
+			checkin(list, index, item);
 		})
 	});
 }
