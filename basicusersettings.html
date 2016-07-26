@@ -6,6 +6,10 @@
 				(projects, users)
 			</label>
 		</div>
+		<div class="checkbox class showImportAlertDiv">
+			<label> <input type="checkbox" class="showImportAlert"> Show import alert on projects page
+			</label>
+		</div>
 		<div class="row">
 			<div class="form-group col-lg-4">
 				<label>Service Token</label>
@@ -27,13 +31,22 @@ function BasicUserSettings(containerDiv, main) {
 		Global.notifier.setSuccess("Show deleted items settings successfully changed");
 	};
 	
+	this.showImportAlertChange = function(){
+		$.cookie(main.user.oid + "importalert", $(this).is(":checked"));
+		Global.notifier.setSuccess("Show import alert setting successfully changed");
+	};
+
 	this.show = function(){
 		Global.bimServerApi.call("ServiceInterface", "getUserByUoid", {uoid: main.user.oid}, function(user){
 			containerDiv.find(".tokenInput").val(user.token);
 		});
 		containerDiv.find(".showDeletedItems").change(othis.showDeletedItemsChange);
+		containerDiv.find(".showImportAlert").change(othis.showImportAlertChange);
 		if ($.cookie(main.user.oid + "showdeleteditems") == "true") {
 			containerDiv.find(".showDeletedItems").prop("checked", "checked");
+		}
+		if ($.cookie(main.user.oid + "importalert") == "true") {
+			containerDiv.find(".showImportAlert").prop("checked", "checked");
 		}
 	};
 	
