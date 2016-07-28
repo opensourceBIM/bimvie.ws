@@ -1,6 +1,9 @@
 <div class="projects">
-	<div class="alert alert-info" role="alert">For a demo of BIMvie.ws/BIMserver, you can now import the freely available <a href="https://github.com/openBIMstandards/DataSetSchependomlaan">Schependomlaan</a> model <a class="importClick">automatically</a>.</div>
-	<div class="well well-sm noprojects">There are no projects yet, click on <b>Project</b> | <b>New project</b> to create a new project</div>
+	<div class="alert alert-info importAlert ih" role="alert alert-dismissible">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		For a demo of BIMvie.ws/BIMserver, you can now import the freely available <a href="https://github.com/openBIMstandards/DataSetSchependomlaan">Schependomlaan</a> model <a class="importClick">automatically</a>.
+	</div>
+	<div class="well well-sm noprojects ih">There are no projects yet, click on <b>Project</b> | <b>New project</b> to create a new project</div>
 	<table class="projectsTable table table-hover initialhide">
 		<thead>
 			<tr>
@@ -122,11 +125,14 @@ function Projects(containerDiv, main) {
 				$(".projectsTable").show();
 				othis.addProject(project);
 			});
+			if (data.length == 0) {
+				$(".noprojects").show();
+			}
 		});
 	};
 	
 	this.newProjectHandler = function(poid){
-		Global.bimServerApi.callWithNoIndication("ServiceInterface", "getProjectByPoid", {poid: poid}, function(data){
+		Global.bimServerApi.callWithNoIndication("ServiceInterface", "getProjectSmallByPoid", {poid: poid}, function(data){
 			othis.addProject(data);
 		});
 	};
@@ -135,11 +141,19 @@ function Projects(containerDiv, main) {
 		var div = $("<div class=\"modal fade\">");
 		$(document.body).append(div);
 		div.load(Global.baseDir + "import.html", function(){
-			new Import($(this));
+			new Import($(this), main);
 		}).modal({keyboard:true});
 	});
 	$(".addProjectButton").click(function(){main.showAddProject()});
 
+	$(".importAlert").on('closed.bs.alert', function () {
+		$.cookie(main.user.oid + "importalert", false);
+	});
+	
+	if ($.cookie(main.user.oid + "importalert") == null || $.cookie(main.user.oid + "importalert") == "true") {
+		$(".importAlert").show();
+	}
+	
 	othis.loadProjects();
 }
 </script>

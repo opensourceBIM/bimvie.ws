@@ -149,7 +149,7 @@ function ThreeDView(containerDiv, parent, main) {
 		if (threeDObject != null) {
 			var matrix = threeDObject.nodes[0];
 			var geometryNode = matrix.nodes[0];
-			if (geometryNode._core.arrays.colors != null) {
+			if (geometryNode._core.arrays != null && geometryNode._core.arrays.colors != null) {
 				var groupId = threeDObject.findParentByType("translate").data.groupId;
 				
 				var geometry = {

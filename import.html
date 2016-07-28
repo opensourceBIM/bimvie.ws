@@ -30,7 +30,7 @@
 	</div>
 </div>
 <script>
-function Import(cd) {
+function Import(cd, main) {
 	var o = this;
 
 	o.structure = {
@@ -150,6 +150,7 @@ function Import(cd) {
 				checkin(list, index, list[index]);
 			} else {
 				cd.find(".message").html("Done, you can close this window").show();
+				$.cookie(main.user.oid + "importalert", false);
 				cd.find(".progress").hide();
 			}
 		});
