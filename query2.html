@@ -264,6 +264,12 @@ function Query2(cd, parent) {
 	
 	this.addRevision = function(project, roid, types){
 		o.schema = project.schema;
+		o.roids.push(roid);
+
+		if (o.examplesLoaded) {
+			return;
+		}
+		
 		if (o.schema == "ifc2x3tc1") {
 			o.queries = o.queriesIfc2x3tc1;
 		} else if (o.schema == "ifc4") {
@@ -276,7 +282,7 @@ function Query2(cd, parent) {
 		    	cd.find("select").append(option);
 		    }
 		}
-		o.roids.push(roid);
+		o.examplesLoaded = true;
 	};
 	
 	this.loadRevision = function(project, roid, types) {
@@ -287,11 +293,13 @@ function Query2(cd, parent) {
 	
 	this.parseJson = function(){
 		cd.find(".errorsDiv").removeClass("alert-danger").html("").hide();
+		
 		try {
 			var jsonObject = JSON.parse(cd.find("textarea").val());
 			return jsonObject;
 		} catch (error) {
 			cd.find(".errorsDiv").addClass("alert-danger").html(error).show();
+			cd.parents(".panel-body").animate({scrollTop:0},0);
 		}
 		return null;
 	};
