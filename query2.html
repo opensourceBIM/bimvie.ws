@@ -330,12 +330,21 @@ function Query2(cd, parent) {
 		if (jsonObject == null) {
 			return;
 		}
+
+		var roids = [];
+		o.roids.forEach(function(roid){
+			if (roid != -1) {
+				roids.push(roid);
+			}
+		});
+		
+		console.log(roids);
 		
 		var params = {
 			downloadType: "downloadByNewJsonQuery",
 			allowCheckouts: false,
 			query: cd.find("textarea").val(),
-			roids: o.roids
+			roids: roids
 		};
 		div.load(Global.baseDir + "download.html", function(){
 			new Download($(this), params);
@@ -345,33 +354,35 @@ function Query2(cd, parent) {
 	cd.find(".querySetBtn").click(function(e){
 		e.preventDefault();
 		o.roids.forEach(function(roid){
-			var model = parent.models[roid];
-			var oldOids = {};
-			for (var oid in model.objects) {
-				oldOids[oid] = true;
-			}
-			if (model != null) {
-				model.reset();
-				var oids = [];
-				var jsonObject = o.parseJson();
-				if (jsonObject == null) {
-					return;
+			if (roid != -1) {
+				var model = parent.models[roid];
+				var oldOids = {};
+				for (var oid in model.objects) {
+					oldOids[oid] = true;
 				}
-				model.queryNew(jsonObject, function(loaded){
-					if (loaded.getType() != "IfcOpeningElement") {
-						oids.push(loaded.oid);
-						delete oldOids[loaded.oid];
+				if (model != null) {
+					model.reset();
+					var oids = [];
+					var jsonObject = o.parseJson();
+					if (jsonObject == null) {
+						return;
 					}
-				}).done(function(){
-					var oldOidsAr = [];
-					for (var oid in oldOids) {
-						oldOidsAr.push(oid);
-					}
-					if (oldOidsAr.length > 0) {
-						parent.setObjectVisibility(roid, oldOidsAr, 2);
-					}
-					parent.setObjectVisibility(roid, oids, 0);
-				});
+					model.queryNew(jsonObject, function(loaded){
+						if (loaded.getType() != "IfcOpeningElement") {
+							oids.push(loaded.oid);
+							delete oldOids[loaded.oid];
+						}
+					}).done(function(){
+						var oldOidsAr = [];
+						for (var oid in oldOids) {
+							oldOidsAr.push(oid);
+						}
+						if (oldOidsAr.length > 0) {
+							parent.setObjectVisibility(roid, oldOidsAr, 2);
+						}
+						parent.setObjectVisibility(roid, oids, 0);
+					});
+				}				
 			}
 		});
 	});
