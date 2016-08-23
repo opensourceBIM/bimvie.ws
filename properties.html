@@ -82,8 +82,10 @@ function Properties(containerDiv, parent, oid) {
 	
 	this.processGeometryInfo = function(node, geometryInfo){
 		if (node.type == "geometry") {
-			geometryInfo.nrTriangles += node._core.indexBuf.length / 3;
-			geometryInfo.nrVertices += node._core.vertexBuf.length / 3;
+			if (node._core.indexBuf != null) {
+				geometryInfo.nrTriangles += node._core.indexBuf.length / 3;
+				geometryInfo.nrVertices += node._core.vertexBuf.length / 3;
+			}
 		}
 		node.nodes.forEach(function(subNode){
 			othis.processGeometryInfo(subNode, geometryInfo);
