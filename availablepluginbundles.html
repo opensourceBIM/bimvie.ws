@@ -6,18 +6,24 @@
 			<p><b>Repository</b> Plugins are discovered by connecting to a repository, you can change the repository in <a class="btnServerSettings">Server Settings</a></p>
 			<p><b>Strict checking</b> By default, all plugins have to explicitly indicate with which versions of BIMserver they work. Sometimes this information is not accurate and you still want to load a certain plugin. You can go to <a class="btnServerSettings">Server Settings</a> and disable "Strict plugin checking"."
 			<p><b>Untested</b> This means the version of the plugin has not been tested with this version of BIMserver</p> 
-			</p>
 		</div>
 	</div>
 	<div class="none ih">
 		No plugins available on this repository that have not already been installed
 	</div>
-	<table class="table ih">
+	<table class="table ih availableTable">
 		<thead>
 			<tr><th></th><th>Name</th><th>Organization</th><th>Description</th><th>Version</th><th>Install</th></tr>
 		</thead>
 		<tbody></tbody>
 	</table>
+	<a class="installFromUrlOrFile">Install from URL or File</a>
+	<div class="installFromUrlOrFileDiv well ih">
+		File: <input type="file" class="form-control"/><br/>
+		-- OR --<br/>
+		URL: <input type="text" class="form-control"/><br/>
+		<button class="btn btn-primary installBtn">Install</button>
+	</div>
 </div>
 <script>
 function AvailablePluginBundles(main, serverSettings, cd) {
@@ -94,6 +100,12 @@ function AvailablePluginBundles(main, serverSettings, cd) {
 	
 	cd.find(".helpBtn").click(function(){
 		cd.find(".helpDiv").toggle();
+	});
+	
+	cd.find(".installFromUrlOrFile").click(function(){
+		cd.find(".installFromUrlOrFileDiv").show();
+		cd.find(".availableTable").hide();
+		cd.find(".installFromUrlOrFile").hide();
 	});
 	
 	cd.find(".installedPluginsBtn").click(serverSettings.showInstalledPluginBundles);
