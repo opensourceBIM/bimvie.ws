@@ -43,6 +43,7 @@ function ThreeDView(containerDiv, parent, main) {
 		$(window).resize(o.resize);
 		o.resize();
 		o.viewer.loadScene(function(){
+			Global.scene = o.viewer.scene;
 			var clickSelect = o.viewer.getControl("BIMSURFER.Control.ClickSelect");
 			clickSelect.activate();
 			clickSelect.events.register('select', o.nodeSelected);
