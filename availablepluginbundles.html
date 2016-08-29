@@ -19,9 +19,9 @@
 	</table>
 	<a class="installFromUrlOrFile">Install from URL or File</a>
 	<div class="installFromUrlOrFileDiv well ih">
-		File: <input type="file" class="form-control"/><br/>
+		File: <input type="file" class="form-control fileInput"/><br/>
 		-- OR --<br/>
-		URL: <input type="text" class="form-control"/><br/>
+		URL: <input type="text" class="form-control urlInput"/><br/>
 		<button class="btn btn-primary installBtn">Install</button>
 	</div>
 </div>
@@ -110,5 +110,25 @@ function AvailablePluginBundles(main, serverSettings, cd) {
 	
 	cd.find(".installedPluginsBtn").click(serverSettings.showInstalledPluginBundles);
 	cd.find(".btnServerSettings").click(serverSettings.showBasicServerSettings);
+	
+	cd.find(".installBtn").click(function(){
+		if (cd.find(".urlInput").val() != null && cd.find(".urlInput").val() != "") {
+			Global.bimServerApi.callWithFullIndication("PluginInterface", "installPluginBundleFromUrl", {url: cd.find(".urlInput").val()}, function(){
+				
+			});
+		} else {
+			var reader  = new FileReader();
+
+			reader.addEventListener("load", function () {
+				var base64 = reader.result.substring(reader.result.indexOf(",") + 1);
+				Global.bimServerApi.callWithFullIndication("PluginInterface", "installPluginBundleFromFile", {data: base64});
+			}, false);
+
+			var file = cd.find(".fileInput").get(0).files[0];
+			if (file) {
+			    reader.readAsDataURL(file);
+			}
+		}
+	});
 }
 </script>
