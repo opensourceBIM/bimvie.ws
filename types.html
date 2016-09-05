@@ -46,7 +46,7 @@ function Types(containerDiv, parent) {
 			var oldMode = oldModes[i];
 			var item = othis.types[object.getType()];
 			if (item != null) {
-				var tr = containerDiv.find("table tbody").find("tr[type='" + object.getType() + "']");
+				var tr = item.tr;
 				if (oldMode == 0) {
 					item.visible--;
 				} else if (oldMode == 1) {
@@ -58,7 +58,7 @@ function Types(containerDiv, parent) {
 				} else if (newMode == 1) {
 					item.transparent++;
 				}
-				var eye = tr.find(".eye");
+				var eye = item.eye;
 				if (item.visible == item.total) {
 					eye.attr("mode", 0);
 					eye.removeClass("eyeclosed").removeClass("eyehalfopen").addClass("eyeopen");
@@ -126,6 +126,9 @@ function Types(containerDiv, parent) {
 						othis.toggleEye(eye.attr("type"), (mode + 1) % 3);
 					});
 					td.append(eye);
+					
+					state.eye = eye;
+					state.tr = tr;
 					
 					td.append(" <span class=\"badge\" style=\"float: right\">" + count + "</span>");
 				}				

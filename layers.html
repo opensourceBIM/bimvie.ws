@@ -56,7 +56,7 @@ function Layers(containerDiv, parent) {
 					} else if (mode == 1) {
 						othis.layers[layer.oid].transparent++;
 					}
-					var eye = containerDiv.find("table tbody").find("tr[oid='" + layer.oid + "'] .eye");
+					var eye = othis.layers[layer.oid].eye;
 					var info = othis.layers[layer.oid];
 					eye.attr("mode", mode);
 					if (info.visible == info.total) {
@@ -133,6 +133,10 @@ function Layers(containerDiv, parent) {
 					td.append(" <span class=\"badge\" style=\"float: right\">" + (info == null ? 0 : info.total) + "</span>");
 					
 					tr.append(td);
+					
+					info.tr = tr;
+					info.eye = eye;
+					
 					containerDiv.find("table tbody").append(tr);
 				}).done(function(){
 					if (containerDiv.find("table tbody tr").size() == 0) {
