@@ -304,21 +304,27 @@ function ThreeDView(containerDiv, parent, main) {
 			}
 			var geometryLoader = new GeometryLoader(Global.bimServerApi, models, o.viewer, geometryType);
 
-			var progressdiv = $("<div class=\"progressdiv\">");
-			var text = $("<div class=\"text\">");
-			text.html("Loading");
-			var progress = $("<div class=\"progress progress-striped active\">");
-			var progressbar = $("<div class=\"progress-bar\" style=\"width: 100%\">");
-			progressdiv.append(text)
-			progressdiv.append(progress);
-			progress.append(progressbar);
+			var first = true;
+			var progressdiv = null;
 			
-			containerDiv.find(".progressbars").append(progressdiv);
-
 			geometryLoader.addProgressListener(function(progress, nrObjectsRead, totalNrObjects){
+				if (first) {
+					progressdiv = $("<div class=\"progressdiv\">");
+					var text = $("<div class=\"text\">");
+					text.html("Loading");
+					var progress = $("<div class=\"progress progress-striped active\">");
+					var progressbar = $("<div class=\"progress-bar\" style=\"width: 100%\">");
+					progressdiv.append(text)
+					progressdiv.append(progress);
+					progress.append(progressbar);
+					
+					containerDiv.find(".progressbars").append(progressdiv);
+					
+					first = false;
+				}
 				//text.html("Loading... (" + nrObjectsRead + "/" + totalNrObjects + ")");
 				if (progress == "done") {
-					progressdiv.fadeOut(800);
+					progressdiv.fadeOut(400);
 				} else {
 					//progressbar.css("width", progress + "%");
 				}

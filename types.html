@@ -101,36 +101,40 @@ function Types(containerDiv, parent) {
 				for (var key in othis.types) {
 					var tr = $("<tr>");
 					var state = othis.types[key];
-					var count = state.total;
-					tr.attr("type", key);
-					var td = $("<td>" + stripIfc(key) + "</td>");
-					tr.append(td);
-					containerDiv.find("table tbody").append(tr);
-					
-					var eye = $("<div>");
-					eye.addClass("eye");
-					var mode = state.visible == state.total ? 0 : 2;
-					if (mode == 0) {
-						eye.addClass("eyeopen");
-					} else if (mode == 1) {
-						eye.addClass("eyehalfopen");
-					} else if (mode == 2) {
-						eye.addClass("eyeclosed");
+					if (state == null) {
+						console.log("Wrong state");
+					} else {
+						var count = state.total;
+						tr.attr("type", key);
+						var td = $("<td>" + stripIfc(key) + "</td>");
+						tr.append(td);
+						containerDiv.find("table tbody").append(tr);
+						
+						var eye = $("<div>");
+						eye.addClass("eye");
+						var mode = state.visible == state.total ? 0 : 2;
+						if (mode == 0) {
+							eye.addClass("eyeopen");
+						} else if (mode == 1) {
+							eye.addClass("eyehalfopen");
+						} else if (mode == 2) {
+							eye.addClass("eyeclosed");
+						}
+						eye.attr("type", key);
+						eye.attr("mode", mode);
+						eye.toggle(parent.threeDAspectVisible.get());
+						eye.click(function(){
+							var eye = $(this);
+							var mode = parseInt(eye.attr("mode"));
+							othis.toggleEye(eye.attr("type"), (mode + 1) % 3);
+						});
+						td.append(eye);
+						
+						state.eye = eye;
+						state.tr = tr;
+						
+						td.append(" <span class=\"badge\" style=\"float: right\">" + count + "</span>");
 					}
-					eye.attr("type", key);
-					eye.attr("mode", mode);
-					eye.toggle(parent.threeDAspectVisible.get());
-					eye.click(function(){
-						var eye = $(this);
-						var mode = parseInt(eye.attr("mode"));
-						othis.toggleEye(eye.attr("type"), (mode + 1) % 3);
-					});
-					td.append(eye);
-					
-					state.eye = eye;
-					state.tr = tr;
-					
-					td.append(" <span class=\"badge\" style=\"float: right\">" + count + "</span>");
 				}				
 			}
 		}
