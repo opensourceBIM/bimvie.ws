@@ -79,12 +79,15 @@ function InstalledPluginBundles(main, serverSettings, cd) {
 					text += " (UNTESTED)";
 				}
 				var option = $("<option val=\"" + version.version + "\">" + text + "</option>");
-				versionSelect.append(option);
+				versionSelect.prepend(option);
 				if (version.version == installed.version) {
 					option.attr("selected", "selected");
 				}
 				option.data("version", version);
 			});
+			
+			versionSelect.find("option").first().attr("selected", "selected");
+			
 			if (pluginBundle.availableVersions[pluginBundle.availableVersions.length-1].version != installed.version) {
 				nameTd.append(" <span class=\"label label-primary\">Update available</span>");
 			}

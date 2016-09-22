@@ -71,6 +71,8 @@ function AvailablePluginBundles(main, serverSettings, cd) {
 				option.data("version", version);
 				versionSelect.prepend(option);
 			});
+			
+			versionSelect.find("option").first().attr("selected", "selected");
 
 			versionSelect.change(function(){
 				var version = $(this).find(":selected").data("version");
