@@ -56,12 +56,12 @@ function Login(address, username, originalUrl) {
 		Global.bimServerApi.login($(".username").val(), $("#inputPassword").val(), function(data){
 			if ($("#rememberMe").is(":checked")) {
 				// Stored cookie
-				$.cookie("autologin" + window.document.location.port, Global.bimServerApi.token, { expires: 31, path: "/"});
-				$.cookie("address" + window.document.location.port, Global.bimServerApi.baseUrl, { expires: 31, path: "/"});
+				$.cookie("autologin" + window.document.location.port, Global.bimServerApi.token, { expires: 31});
+				$.cookie("address" + window.document.location.port, Global.bimServerApi.baseUrl, { expires: 31});
 			} else {
 				// Session cookie
-				$.cookie("autologin" + window.document.location.port, Global.bimServerApi.token, { path: "/"});
-				$.cookie("address" + window.document.location.port, Global.bimServerApi.baseUrl, { path: "/"});
+				$.cookie("autologin" + window.document.location.port, Global.bimServerApi.token, { });
+				$.cookie("address" + window.document.location.port, Global.bimServerApi.baseUrl, { });
 			}
 			Global.bimServerApi.resolveUser(function(user){
 				if (originalUrl != null) {
