@@ -2,7 +2,7 @@
     <div class="span7">
     	<div class="header"></div>
 		<form class="form-horizontal">
-		   	<legend>Select server</legend>
+		   	<legend>Select BIMserver</legend>
 			<div class="serverAddressDiv form-group">
 				<label class="control-label" for="inputServer">Server</label>
 				<div class="controls">
@@ -28,31 +28,12 @@ function SelectServer(address) {
 
 	$(".header").load(Global.baseDir + "header.html");
 	
-	pushHistory({page: "SelectServer"}, "Select BIMsie Server");
+	pushHistory({page: "SelectServer"}, "Select BIMServer");
 
 	this.selectServer = function(){
 		var address = $(".address").val();
 		address = stripHttps(address);
-		loadBimServerApi("http://" + address, Global.notifier, Global.version, function(serverInfo){
-			if (serverInfo.serverState == "NOT_SETUP") {
-				$(".indexcontainer").load(Global.baseDir + "setup.html", function(){
-					new Setup(address);
-				});
-			} else if (serverInfo.serverState == "UNDEFINED") {
-			} else if (serverInfo.serverState == "MIGRATION_REQUIRED") {
-				$(".indexcontainer").load(Global.baseDir + "migrate.html", function(){
-					new Migrate(address);
-				});
-			} else if (serverInfo.serverState == "MIGRATION_IMPOSSIBLE") {
-			} else if (serverInfo.serverState == "FATAL_ERROR") {
-			} else if (serverInfo.serverState == "RUNNING") {
-				$(".indexcontainer").load(Global.baseDir + "login.html", function(){
-					othis.current = new Login(address);
-				});
-			}
-		}, function(){
-			
-		});
+		document.location = document.location.origin + document.location.pathname + "?address=http://" + address;
 	};
 	
 	if ($.cookie("address" + window.document.location.port) != null) {

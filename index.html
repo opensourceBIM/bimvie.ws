@@ -103,8 +103,8 @@
     		}
 		}
 		
-		function loadBimServerApi(callback) {
-			getPluginVersion(Settings.getBimServerApiAddress(), function(apiVersion){
+		function loadBimServerApi(apiAddress, callback) {
+			getPluginVersion(apiAddress, function(apiVersion){
 				var initialJs = [];
 				if (Settings.useCompressedResources()) {
 					initialJs.push(Settings.getBimServerApiAddress() + "bimserverapi.js?_v=" + apiVersion);
@@ -178,7 +178,7 @@
 
 			var initialJs = [];
 
-			loadBimServerApi(function(){
+			loadBimServerApi(Settings.getBimServerApiAddress(), function(){
 				loadBimViews(function(){
 					loadBimSurfer(function(){
 		    			var othis = this;
