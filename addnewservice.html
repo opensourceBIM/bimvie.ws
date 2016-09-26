@@ -1,0 +1,58 @@
+<div class="addnewservice">
+	<div class="well well-sm noremoteservices">
+		No remote services
+	</div>
+	<table class="table servicesTable initialhide">
+		<thead>
+			<tr>
+				<th>Provider</th>
+				<th>Name</th>
+				<th>Description</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+</div>
+<script>
+function AddNewService(cd, main, project, projectPage, callback) {
+	var o = this;
+	o.serviceDescriptors = {};
+	
+	this.loadServices = function(){
+		Global.bimServerApi.call("NewServicesInterface", "listAllServiceDescriptors", {}, function(data){
+			$(".addnewservice .servicesTable tbody tr").remove();
+			data.forEach(function(serviceDescriptor){
+				o.serviceDescriptors[serviceDescriptor.name] = serviceDescriptor;
+				o.addServiceDescriptor($(".addnewservice .servicesTable"), serviceDescriptor);
+			});
+		});
+	}
+	
+	this.addServiceDescriptor = function(table, serviceDescriptor){
+		cd.find(".noremoteservices").hide();
+		cd.find(".servicesTable").show();
+		var tr = $("<tr>");
+		tr.attr("name", serviceDescriptor.name);
+		tr.append("<td>" + serviceDescriptor.provider + "</td>");
+		tr.append("<td>" + serviceDescriptor.name + "</td>");
+		tr.append("<td>" + serviceDescriptor.description + "</td>");
+		
+		var addButton = $("<button class=\"btn btn-primary\">Add</button>");
+		addButton.click(o.addButtonClick);
+		tr.append($("<td></td>").append(addButton));
+		
+		table.find("tbody").append(tr);
+	};
+	
+	this.addButtonClick = function(){
+		var name = $(this).parents("tr").attr("name");
+		var serviceDescriptor = o.serviceDescriptors[name];
+		load(cd, "addnewservice2.html", function(){
+			new AddNewService2($(this), project, serviceDescriptor);
+		})
+	};
+	
+	o.loadServices();
+}
+</script>

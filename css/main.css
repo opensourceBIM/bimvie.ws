@@ -511,3 +511,12 @@ input[type="file"].file {
 	margin-right: 5px;
 	float: right;
 }
+
+.panel-body .alert {
+	border-top-left-radius: 0; 
+	border-top-right-radius: 0; 
+}
+
+.button-bar-bottom {
+	margin-bottom: 10px;
+}

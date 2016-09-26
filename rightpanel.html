@@ -679,6 +679,30 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		}, oauth == false);
 	};
 
+	this.showAddService2 = function(oauth){
+		othis.loadServices(function(){
+			$(".services .serviceList").hide();
+			$(".services .details").show();
+			if (oauth == true) {
+				$(".services .details").load("addservice3.html", function(){
+					var history = History.getState().data;
+					Global.bimServerApi.call("ServiceInterface", "getServiceDescriptor", {
+						baseUrl: decodeURIComponent(history.baseUrl),
+						serviceIdentifier: history.serviceIdentifier
+					}, function(serviceDescriptor){
+						return new AddService3(main, othis.project, projectPage, serviceDescriptor, false);
+					});
+				});
+			} else {
+				$(".services .details").load("addnewservice.html", function(){
+					return new AddNewService($(this), main, othis.project, projectPage, function(){
+						othis.loadServices();
+					});
+				});
+			}
+		}, oauth == false);
+	};
+
 	this.loadServices = function(callback, pushToHistory) {
 		$(".services .details").hide();
 		containerDiv.find(".serviceList").show()
