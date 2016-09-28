@@ -86,6 +86,18 @@
 							<tbody></tbody>
 						</table>
 					</div>
+					<div class="newServiceList">
+						<div class="well well-sm noservices">No new services</div>
+						<table class="servicesTable initialhide table table-striped table-hover">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Actions</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+					</div>
 				</div>
 				<div class="tab-pane modelCheckers initialhide">
 					<div class="well well-sm buttonBar">
@@ -530,6 +542,24 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		containerDiv.find(".servicesTable tbody").append(tr);
 	};
 	
+	this.addNewService = function(service) {
+		var servicesDiv = cd.find(".newServiceList");
+		servicesDiv.find(".noservices").hide();
+		servicesDiv.find(".servicesTable").show();
+		var tr = $("<tr class=\"service\">");
+		tr.data("service", service);
+		tr.click(othis.serviceRowClick);
+		var td = $("<td soid=\"" + service.oid + "\"></td>");
+		loadService(td);
+		tr.append(td);
+		var deleteTd = $("<td>");
+		var deleteLink = $("<a>delete</a>");
+		deleteLink.click(othis.deleteServiceClick);
+		deleteTd.append(deleteLink);
+		tr.append(deleteTd);
+		servicesDiv.find(".servicesTable tbody").append(tr);
+	};
+	
 	this.removeModelChecker = function(){
 		Global.bimServerApi.call("ServiceInterface", "removeModelCheckerFromProject", {
 			poid: othis.project.oid,
@@ -716,6 +746,14 @@ function RightPanel(containerDiv, main, project, projectPage) {
 					containerDiv.find(".noservices").hide();
 					containerDiv.find(".servicesTable").show();
 					othis.addService(service);
+				});
+			});
+			Global.bimServerApi.call("ServiceInterface", "getAllNewServicesOfProject", {poid: othis.project.oid}, function(data){
+				containerDiv.find(".servicesTable tr.service").remove();
+				data.forEach(function(service){
+					containerDiv.find(".noservices").hide();
+					containerDiv.find(".servicesTable").show();
+					othis.addNewService(service);
 				});
 			});
 			if (pushToHistory == true) {

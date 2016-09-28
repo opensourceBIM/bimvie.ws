@@ -20,6 +20,24 @@
 			</table>
 		</div>
 	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">Outputs</div>
+		<div class="panel-body">
+			<div class="alert alert-info">
+				You have to select one type of output as well.
+			</div>
+			<table class="table outputsTable">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Format</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+	</div>
 	<div class="button-bar-bottom">
 		<button class="btn btn-primary pull-right btn-lg btnNext">Next</button>
 	</div>
@@ -32,9 +50,19 @@ function AddNewService2(cd, project, serviceDescriptor) {
 	cd.find("table.serviceDetails tbody").append("<tr><td>Name</td><td>" + serviceDescriptor.name + "</td></tr>");
 	cd.find("table.serviceDetails tbody").append("<tr><td>Description</td><td>" + serviceDescriptor.description + "</td></tr>");
 	
-	o.selectOutput = function(){
+	o.selectInput = function(){
 		var tr = $(this).parents("tr");
 		var input = tr.attr("input");
+		if (tr.find("select").val() != null) {
+			cd.find(".btnNext").removeAttr("disabled");
+		} else {
+			cd.find(".btnNext").attr("disabled", "disabled");
+		}
+	};
+	
+	o.selectOutput = function(){
+		var tr = $(this).parents("tr");
+		var output = tr.attr("output");
 		if (tr.find("select").val() != null) {
 			cd.find(".btnNext").removeAttr("disabled");
 		} else {
@@ -58,7 +86,7 @@ function AddNewService2(cd, project, serviceDescriptor) {
 			tr.attr("input", input);
 			var td = $("<td>");
 			var radio = $("<input type=\"radio\">");
-			radio.attr("name", "format");
+			radio.attr("name", "inputformat");
 			td.append(radio);
 			tr.append(td);
 			tr.append("<td>" + input + "</td>");
@@ -80,6 +108,28 @@ function AddNewService2(cd, project, serviceDescriptor) {
 			}
 			cd.find(".inputsTable tbody").append(tr);
 			if (index == 0) {
+				o.selectInput.apply(radio);
+				radio.attr("checked", "checked");
+			}
+			radio.change(o.selectInput);
+		});
+		
+		serviceDescriptor.outputs.forEach(function(output, index){
+			var tr = $("<tr>");
+			tr.attr("output", output);
+			var td = $("<td>");
+			var radio = $("<input type=\"radio\">");
+			radio.attr("name", "outputformat");
+			td.append(radio);
+			tr.append(td);
+			tr.append("<td>" + output + "</td>");
+			var td = $("<td>");
+			tr.append(td);
+			var select = $("<select class=\"form-control\">");
+			select.append("<option>Add as extended data to revision</option>");
+			td.append(select);
+			cd.find(".outputsTable tbody").append(tr);
+			if (index == 0) {
 				o.selectOutput.apply(radio);
 				radio.attr("checked", "checked");
 			}
@@ -88,6 +138,24 @@ function AddNewService2(cd, project, serviceDescriptor) {
 	});
 	
 	cd.find(".btnNext").click(function(){
+		Global.bimServerApi.call("ServiceInterface", "addNewServiceToProject", {
+			poid: project.oid,
+			sService: {
+				__type: "SNewService",
+				name:,
+				provider:,
+				description:,
+				url:,
+				input:,
+				oauthCode,
+				serializerId,
+				output,
+				action
+				
+			}
+		}, function(){
+			
+		});
 		load(cd, "addnewservice3.html", function(){
 			new AddNewService3($(this));
 		});
