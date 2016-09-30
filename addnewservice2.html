@@ -126,7 +126,7 @@ function AddNewService2(cd, project, serviceDescriptor) {
 			var td = $("<td>");
 			tr.append(td);
 			var select = $("<select class=\"form-control\">");
-			select.append("<option>Add as extended data to revision</option>");
+			select.append("<option value=\"EXTENDED_DATA_TO_REVISION\">Add as extended data to revision</option>");
 			td.append(select);
 			cd.find(".outputsTable tbody").append(tr);
 			if (index == 0) {
@@ -138,24 +138,37 @@ function AddNewService2(cd, project, serviceDescriptor) {
 	});
 	
 	cd.find(".btnNext").click(function(){
-		Global.bimServerApi.call("ServiceInterface", "addNewServiceToProject", {
+		var output = cd.find(".outputsTable input[checked='checked']").parents("tr").attr("output");
+		var request = {
 			poid: project.oid,
 			sService: {
 				__type: "SNewService",
-				name:,
-				provider:,
-				description:,
-				url:,
-				input:,
-				oauthCode,
-				serializerId,
-				output,
-				action
-				
+				name: serviceDescriptor.name,
+				provider: serviceDescriptor.provider,
+				description: serviceDescriptor.description,
+				url: serviceDescriptor.url,
+				input: cd.find(".inputsTable input[checked='checked']").parents("tr").attr("input"),
+				status: "NEW",
+				oauthCode: "",
+				serializerId: parseInt(cd.find(".inputsTable input[checked='checked']").parents("tr").find("select").val()),
+				output: output,
+				action: cd.find(".outputsTable input[checked='checked']").parents("tr").find("select").val()
 			}
-		}, function(){
+		};
+		Global.bimServerApi.call("ServiceInterface", "addNewServiceToProject", request, function(){
 			
 		});
+		
+		var extendedDataSchema = {
+			__type: "SExtendedDataSchema",
+			name: output,
+			namespace: output,
+			url: output,
+			type: "TXT"
+		};
+		Global.bimServerApi.call("ServiceInterface", "addExtendedDataSchema", {extendedDataSchema: extendedDataSchema}, function(oid){
+		});
+		
 		load(cd, "addnewservice3.html", function(){
 			new AddNewService3($(this));
 		});

@@ -158,6 +158,10 @@ function loadService(targetElement) {
 	loadGeneric(targetElement, "soid", "name", "ServiceInterface", "getService", "service", function(oid){return{soid: oid};});
 }
 
+function loadNewService(targetElement) {
+	loadGeneric(targetElement, "soid", "name", "ServiceInterface", "getNewService", "service", function(oid){return{soid: oid};});
+}
+
 function loadUser(targetElement) {
 	loadGeneric(targetElement, "uoid", "name", "ServiceInterface", "getUserByUoid", "user", function(oid){return{uoid: oid};});
 }

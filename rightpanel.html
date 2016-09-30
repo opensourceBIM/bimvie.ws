@@ -197,7 +197,7 @@
 	</div>
 </div>
 <script>
-function RightPanel(containerDiv, main, project, projectPage) {
+function RightPanel(cd, main, project, projectPage) {
 	var o = this;
 	var othis = this;
 
@@ -207,7 +207,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	o.unselectListeners = [];
 	o.projectPage = projectPage;
 	
-	othis.tabChanger = new TabChanger2(containerDiv.find(".nav"), containerDiv.find(".content"));
+	othis.tabChanger = new TabChanger2(cd.find(".nav"), cd.find(".content"));
 	othis.selectedRevision = null;
 	othis.models = {};
 	othis.selectedObject = null;
@@ -244,7 +244,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		}
 	};
 
-	containerDiv.find(".button3d").click(function(){
+	cd.find(".button3d").click(function(){
 		o.showThreeD();
 	});
 
@@ -329,19 +329,19 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		if ($.cookie(main.user.oid + "showdeleteditems") != "true" && subProject.state == "DELETED") {
 			subProjectRow.hide();
 		} else {
-			containerDiv.find(".nosubprojects").hide();
-			containerDiv.find(".subprojectsTable").show();
+			cd.find(".nosubprojects").hide();
+			cd.find(".subprojectsTable").show();
 		}
 
-		containerDiv.find(".subprojectsTable").append(subProjectRow);
+		cd.find(".subprojectsTable").append(subProjectRow);
 	};
 	
 	this.loadSubProjects = function(callback) {
 		othis.tabChanger.changeTab($(".subprojectsLink"), null, $(".subprojects"), function(){
 			Global.bimServerApi.call("ServiceInterface", "getSubProjects", {poid: othis.project.oid}, function(data){
-				containerDiv.find(".subprojectsTable tr.project").remove();
-				containerDiv.find(".nosubprojects").show();
-				containerDiv.find(".subprojectsTable").hide();
+				cd.find(".subprojectsTable tr.project").remove();
+				cd.find(".nosubprojects").show();
+				cd.find(".subprojectsTable").hide();
 				data.forEach(function(subProject){
 					othis.addSubProject(subProject);
 				});
@@ -374,8 +374,8 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	};
 	
 	this.addUser = function(user) {
-		containerDiv.find(".nousers").hide();
-		containerDiv.find(".usersTable").show();
+		cd.find(".nousers").hide();
+		cd.find(".usersTable").show();
 		
 		var tr = $("<tr>");
 		tr.data("user", user);
@@ -386,12 +386,12 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		} else {
 			tr.append("<td></td>");
 		}
-		containerDiv.find(".usersTable").append(tr);
+		cd.find(".usersTable").append(tr);
 	};
 	
 	this.addRevision = function(revision) {
-		containerDiv.find(".norevisions").hide();
-		containerDiv.find(".revisionsTable").show();
+		cd.find(".norevisions").hide();
+		cd.find(".revisionsTable").show();
 		var revisionRow = $("<tr>");
 		revisionRow.data("revision", revision);
 		revisionRow.click(othis.revisionClick);
@@ -436,26 +436,44 @@ function RightPanel(containerDiv, main, project, projectPage) {
 						actions.find("ul").append(li);
 					}
 				});
-				if (added == 0) {
-					var li = $("<li><a>No services configured</a></li>");
-					actions.find("ul").append(li);
-				}
 //				var shareLi = $("<li><a>Share...</a></li>");
 //				shareLi.find("a").click(function(){
 //					othis.share(revision.oid);
 //				});
 //				actions.find("ul").append(shareLi);
 				
+				Global.bimServerApi.call("ServiceInterface", "getAllNewServicesOfProject", {poid: othis.project.oid}, function(data){
+					actions.find("ul li").remove();
+					data.forEach(function(service){
+						var li = $("<li><a>Run \"" + service.name + "\"</a></li>");
+						added++;
+						li.find("a").click(function(event){
+							Global.bimServerApi.call("ServiceInterface", "triggerRevisionService", {roid: revision.oid, soid: service.oid}, function(data){
+							});
+						});
+						actions.find("ul").append(li);
+					});
+					if (added == 0) {
+						var li = $("<li><a>No services configured</a></li>");
+						actions.find("ul").append(li);
+					}
+//					var shareLi = $("<li><a>Share...</a></li>");
+//					shareLi.find("a").click(function(){
+//						othis.share(revision.oid);
+//					});
+//					actions.find("ul").append(shareLi);
+					
+				});
 			});
 		});
 		
 		revisionRow.append(actions);
-		containerDiv.find(".revisionsTable tbody").prepend(revisionRow);
+		cd.find(".revisionsTable tbody").prepend(revisionRow);
 	};
 
 	this.addCheckout = function(checkout) {
-		containerDiv.find(".nocheckouts").hide();
-		containerDiv.find(".checkoutsTable").show();
+		cd.find(".nocheckouts").hide();
+		cd.find(".checkoutsTable").show();
 		var checkoutRow = $("<tr>");
 		checkoutRow.data("checkout", checkout);
 		checkoutRow.data("revision", checkout.revision);
@@ -474,7 +492,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 
 		var actions = newSplitDropDownTd("Download", othis.downloadCheckoutClick);
 		checkoutRow.append(actions);
-		containerDiv.find(".checkoutsTable tbody").prepend(checkoutRow);
+		cd.find(".checkoutsTable tbody").prepend(checkoutRow);
 	};
 
 	this.serviceRowClick = function(event){
@@ -482,8 +500,8 @@ function RightPanel(containerDiv, main, project, projectPage) {
 			var service = $(this).parents("tr").andSelf().data("service");
 			event.preventDefault();
 			var div = $("<div class=\"serviceDetail\">");
-			containerDiv.find(".serviceList").hide();
-			containerDiv.find(".services").append(div);
+			cd.find(".serviceList").hide();
+			cd.find(".services").append(div);
 			div.load(Global.baseDir + "service.html", function(){
 				new Service(main, service, othis);
 			});
@@ -495,7 +513,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	};
 	
 	this.showService = function(callback) {
-		containerDiv.find(".serviceList").hide();
+		cd.find(".serviceList").hide();
 		othis.tabChanger.changeTab($(".servicesLink"), $(".services"), function(){
 			pushHistory({page: "Project", poid: othis.project.oid, tab: "services"}, "Project");
 			return new Service(main, service);
@@ -525,8 +543,8 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	};
 	
 	this.addService = function(service) {
-		containerDiv.find(".noservices").hide();
-		containerDiv.find(".servicesTable").show();
+		cd.find(".noservices").hide();
+		cd.find(".servicesTable").show();
 		var tr = $("<tr class=\"service\">");
 		tr.data("service", service);
 		tr.click(othis.serviceRowClick);
@@ -539,7 +557,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		deleteLink.click(othis.deleteServiceClick);
 		deleteTd.append(deleteLink);
 		tr.append(deleteTd);
-		containerDiv.find(".servicesTable tbody").append(tr);
+		cd.find(".servicesTable tbody").append(tr);
 	};
 	
 	this.addNewService = function(service) {
@@ -550,7 +568,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		tr.data("service", service);
 		tr.click(othis.serviceRowClick);
 		var td = $("<td soid=\"" + service.oid + "\"></td>");
-		loadService(td);
+		loadNewService(td);
 		tr.append(td);
 		var deleteTd = $("<td>");
 		var deleteLink = $("<a>delete</a>");
@@ -570,8 +588,8 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	};
 
 	this.addModelChecker = function(modelChecker) {
-		containerDiv.find(".nomodelcheckers").hide();
-		containerDiv.find(".modelCheckersTable").show();
+		cd.find(".nomodelcheckers").hide();
+		cd.find(".modelCheckersTable").show();
 		var tr = $("<tr class=\"modelchecker\">");
 		tr.data("modelchecker", modelChecker);
 		var td = $("<td mcoid=\"" + modelChecker.oid + "\"></td>");
@@ -583,7 +601,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		var td = $("<td></td>");
 		td.append(dropdowntd);
 		tr.append(td);
-		containerDiv.find(".modelCheckersTable tbody").append(tr);
+		cd.find(".modelCheckersTable tbody").append(tr);
 	};
 	
 	this.loadExtendedData = function(callback, addToHistory, edid) {
@@ -633,9 +651,9 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	};
 	
 	this.loadRevisions = function(callback) {
-		othis.tabChanger.changeTab($(".revisionsLink"), null, containerDiv.find(".revisions"), function(){
+		othis.tabChanger.changeTab($(".revisionsLink"), null, cd.find(".revisions"), function(){
 			Global.bimServerApi.call("ServiceInterface", "getAllRevisionsOfProject", {poid: othis.project.oid}, function(data){
-				containerDiv.find(".revisionsTable tbody tr").remove();
+				cd.find(".revisionsTable tbody tr").remove();
 				data.forEach(function(revision){
 					othis.addRevision(revision);
 				});
@@ -648,7 +666,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	this.loadCheckouts = function(callback) {
 		othis.tabChanger.changeTab($(".checkoutsLink"), null, $(".checkouts"), function(){
 			Global.bimServerApi.call("ServiceInterface", "getAllCheckoutsOfProjectAndSubProjects", {poid: othis.project.oid}, function(data){
-				containerDiv.find(".checkoutsTable tbody tr").remove();
+				cd.find(".checkoutsTable tbody tr").remove();
 				data.forEach(function(checkout){
 					othis.addCheckout(checkout);
 				});
@@ -659,9 +677,9 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	};
 
 	this.loadUsers = function(callback) {
-		othis.tabChanger.changeTab(containerDiv.find(".usersLink"), null, containerDiv.find(".users"), function(){
+		othis.tabChanger.changeTab(cd.find(".usersLink"), null, cd.find(".users"), function(){
 			Global.bimServerApi.call("ServiceInterface", "getAllAuthorizedUsersOfProject", {poid: othis.project.oid}, function(data){
-				containerDiv.find(".usersTable tbody tr").remove();
+				cd.find(".usersTable tbody tr").remove();
 				data.forEach(function(user){
 					othis.addUser(user);
 				});
@@ -669,16 +687,16 @@ function RightPanel(containerDiv, main, project, projectPage) {
 			if (main.user.userType == "ADMIN") {
 				Global.bimServerApi.call("ServiceInterface", "getAllNonAuthorizedUsersOfProject", {poid: othis.project.oid}, function(data){
 					if (data.length == 0) {
-						containerDiv.find(".noUsersMessage").html("No users available to add").show();
-						containerDiv.find(".addUserLink").hide();
-						containerDiv.find(".addUserToProjectDiv").hide();
+						cd.find(".noUsersMessage").html("No users available to add").show();
+						cd.find(".addUserLink").hide();
+						cd.find(".addUserToProjectDiv").hide();
 					} else {
-						containerDiv.find(".noUsersMessage").hide();
-						containerDiv.find(".addUserLink").show();
+						cd.find(".noUsersMessage").hide();
+						cd.find(".addUserLink").show();
 					}
 				});
 			} else {
-				containerDiv.find(".addUserLink").hide();
+				cd.find(".addUserLink").hide();
 			}
 			pushHistory({page: "Project", poid: othis.project.oid, tab: "users"}, "Project");
 			return $(".users");
@@ -735,24 +753,24 @@ function RightPanel(containerDiv, main, project, projectPage) {
 
 	this.loadServices = function(callback, pushToHistory) {
 		$(".services .details").hide();
-		containerDiv.find(".serviceList").show()
-		containerDiv.find(".serviceDetail").hide()
-		containerDiv.find(".noservices").show();
-		containerDiv.find(".servicesTable").hide();
+		cd.find(".serviceList").show()
+		cd.find(".serviceDetail").hide()
+		cd.find(".noservices").show();
+		cd.find(".servicesTable").hide();
 		othis.tabChanger.changeTab($(".servicesLink"), null, $(".services"), function(){
 			Global.bimServerApi.call("ServiceInterface", "getAllServicesOfProject", {poid: othis.project.oid}, function(data){
-				containerDiv.find(".servicesTable tr.service").remove();
+				cd.find(".servicesTable tr.service").remove();
 				data.forEach(function(service){
-					containerDiv.find(".noservices").hide();
-					containerDiv.find(".servicesTable").show();
+					cd.find(".noservices").hide();
+					cd.find(".servicesTable").show();
 					othis.addService(service);
 				});
 			});
 			Global.bimServerApi.call("ServiceInterface", "getAllNewServicesOfProject", {poid: othis.project.oid}, function(data){
-				containerDiv.find(".servicesTable tr.service").remove();
+				cd.find(".servicesTable tr.service").remove();
 				data.forEach(function(service){
-					containerDiv.find(".noservices").hide();
-					containerDiv.find(".servicesTable").show();
+					cd.find(".noservices").hide();
+					cd.find(".servicesTable").show();
 					othis.addNewService(service);
 				});
 			});
@@ -767,7 +785,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		$(".modelCheckerSelect").hide();
 		othis.tabChanger.changeTab($(".modelCheckersLink"), null, $(".modelCheckers"), function(){
 			Global.bimServerApi.call("ServiceInterface", "getAllModelCheckersOfProject", {poid: othis.project.oid}, function(data){
-				containerDiv.find(".modelCheckersTable tr.modelchecker").remove();
+				cd.find(".modelCheckersTable tr.modelchecker").remove();
 				data.forEach(function(modelChecker){
 					othis.addModelChecker(modelChecker);
 				});
@@ -824,32 +842,32 @@ function RightPanel(containerDiv, main, project, projectPage) {
 			});
 		});
 		
-		containerDiv.find(".detailsTable tbody").empty();
-		containerDiv.find(".detailsTable tbody").append("<tr><td>Name</td><td>" + othis.project.name + "</td></tr>");
-		containerDiv.find(".detailsTable tbody").append("<tr><td>Description</td><td>" + othis.project.description.replaceAll("\n", "<br/>") + "</td></tr>");
-		containerDiv.find(".detailsTable tbody").append("<tr><td>Created on</td><td>" + formatDateTime(new Date(othis.project.createdDate)) + " (by <span class=\"createdBy\"></span>)</td></tr>");
-		containerDiv.find(".createdBy").append(createUserLink(main, othis.project.createdById));
-		containerDiv.find(".detailsTable tbody").append("<tr><td>State</td><td>" + othis.project.state + "</td></tr>");
-		containerDiv.find(".detailsTable tbody").append("<tr><td>Length measure to use combined downloads</td><td>" + othis.project.exportLengthMeasurePrefix + "</td></tr>");
-		containerDiv.find(".detailsTable tbody").append("<tr><td>Schema</td><td>" + othis.project.schema + "</td></tr>");
+		cd.find(".detailsTable tbody").empty();
+		cd.find(".detailsTable tbody").append("<tr><td>Name</td><td>" + othis.project.name + "</td></tr>");
+		cd.find(".detailsTable tbody").append("<tr><td>Description</td><td>" + othis.project.description.replaceAll("\n", "<br/>") + "</td></tr>");
+		cd.find(".detailsTable tbody").append("<tr><td>Created on</td><td>" + formatDateTime(new Date(othis.project.createdDate)) + " (by <span class=\"createdBy\"></span>)</td></tr>");
+		cd.find(".createdBy").append(createUserLink(main, othis.project.createdById));
+		cd.find(".detailsTable tbody").append("<tr><td>State</td><td>" + othis.project.state + "</td></tr>");
+		cd.find(".detailsTable tbody").append("<tr><td>Length measure to use combined downloads</td><td>" + othis.project.exportLengthMeasurePrefix + "</td></tr>");
+		cd.find(".detailsTable tbody").append("<tr><td>Schema</td><td>" + othis.project.schema + "</td></tr>");
 
-		containerDiv.find("h1").html(othis.project.name);
-		containerDiv.find(".revisionsLink a").html("Revisions" + (othis.project.revisions.length == 0 ? "" : (" (" + othis.project.revisions.length + ")")));
-		containerDiv.find(".servicesLink a").html("Services" + (othis.project.services.length == 0 ? "" : (" (" + othis.project.services.length + ")")));
+		cd.find("h1").html(othis.project.name);
+		cd.find(".revisionsLink a").html("Revisions" + (othis.project.revisions.length == 0 ? "" : (" (" + othis.project.revisions.length + ")")));
+		cd.find(".servicesLink a").html("Services" + (othis.project.services.length == 0 ? "" : (" (" + othis.project.services.length + ")")));
 		if (othis.selectedRevision != null) {
-			containerDiv.find(".browserLink").show();
-			containerDiv.find(".queryLink").show();
-			containerDiv.find(".extendedDataLink").show();
-			containerDiv.find(" .extendedDataLink a").html("Extended Data" + (othis.selectedRevision.extendedData.length == 0 ? "" : (" (" + othis.selectedRevision.extendedData.length + ")")));
+			cd.find(".browserLink").show();
+			cd.find(".queryLink").show();
+			cd.find(".extendedDataLink").show();
+			cd.find(" .extendedDataLink a").html("Extended Data" + (othis.selectedRevision.extendedData.length == 0 ? "" : (" (" + othis.selectedRevision.extendedData.length + ")")));
 			othis.loadHistory();
 			Global.bimServerApi.call("ServiceInterface", "getAllCheckoutsOfProjectAndSubProjects", {poid: othis.project.oid}, function(checkouts){
-				containerDiv.find(".checkoutsLink a").html("Checkouts" + (checkouts == null || checkouts.length == 0 ? "" : (" (" + checkouts.length + ")")));
+				cd.find(".checkoutsLink a").html("Checkouts" + (checkouts == null || checkouts.length == 0 ? "" : (" (" + checkouts.length + ")")));
 			});
 		} else {
-			containerDiv.find(".browserLink").hide();
-			containerDiv.find(".surferLink").hide();
-			containerDiv.find(".queryLink").hide();
-			containerDiv.find(".extendedDataLink").hide();
+			cd.find(".browserLink").hide();
+			cd.find(".surferLink").hide();
+			cd.find(".queryLink").hide();
+			cd.find(".extendedDataLink").hide();
 			othis.loadHistory();
 		}
 	};
@@ -898,7 +916,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		} else {
 			othis.showThreeD();
 		}
-		containerDiv.find(".content").show();
+		cd.find(".content").show();
 	};
 	
 	this.loadBrowser = function(callback, pushhistory) {
@@ -1029,18 +1047,18 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	
 	this.addUserLinkClick = function() {
 		Global.bimServerApi.call("ServiceInterface", "getAllNonAuthorizedUsersOfProject", {poid: othis.project.oid}, function(data){
-			containerDiv.find(".addUserToProjectDiv select option").remove();
+			cd.find(".addUserToProjectDiv select option").remove();
 			if (data.length == 0) {
-				containerDiv.find(".noUsersMessage").html("No users available to add").show();
-				containerDiv.find(".addUserLink").hide();
-				containerDiv.find(".addUserToProjectDiv").hide();
+				cd.find(".noUsersMessage").html("No users available to add").show();
+				cd.find(".addUserLink").hide();
+				cd.find(".addUserToProjectDiv").hide();
 			} else {
 				data.forEach(function(user){
 					var option = $("<option value=\"" + user.oid + "\">" + user.name + "</option>");
-					containerDiv.find(".addUserToProjectDiv select").append(option);
+					cd.find(".addUserToProjectDiv select").append(option);
 				});
-				containerDiv.find(".addUserLink").hide();
-				containerDiv.find(".addUserToProjectDiv").show();
+				cd.find(".addUserLink").hide();
+				cd.find(".addUserToProjectDiv").show();
 			}
 		});
 	};
@@ -1048,7 +1066,7 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	this.addUserToProject = function(event){
 		event.preventDefault();
 		Global.bimServerApi.callWithFullIndication("ServiceInterface", "addUserToProject", {
-			uoid: containerDiv.find(".addUserToProjectDiv select option:selected").val(),
+			uoid: cd.find(".addUserToProjectDiv select option:selected").val(),
 			poid: othis.project.oid
 		}, function(data){
 			othis.loadUsers();
@@ -1057,48 +1075,48 @@ function RightPanel(containerDiv, main, project, projectPage) {
 	};
 	
 	this.addModelCheckerButtonClick = function(){
-		if (containerDiv.find(".modelCheckerSelect").is(":visible")) {
+		if (cd.find(".modelCheckerSelect").is(":visible")) {
 			Global.bimServerApi.call("ServiceInterface", "addModelCheckerToProject", {
 				poid: othis.project.oid,
-				modelCheckerOid: containerDiv.find(".modelCheckerSelect").val()
+				modelCheckerOid: cd.find(".modelCheckerSelect").val()
 			}, function(){
 				othis.loadModelCheckers();
 			});
 		} else {
 			Global.bimServerApi.call("ServiceInterface", "getAllModelCheckers", {}, function(modelCheckers){
-				containerDiv.find(".modelCheckerSelect option").remove();
+				cd.find(".modelCheckerSelect option").remove();
 				modelCheckers.forEach(function(modelChecker){
 					var option = $("<option value=\"" + modelChecker.oid + "\">" + modelChecker.name + "</option>");
-					containerDiv.find(".modelCheckerSelect").append(option);
+					cd.find(".modelCheckerSelect").append(option);
 				});
-				containerDiv.find(".modelCheckerSelect").show();
+				cd.find(".modelCheckerSelect").show();
 			});
 		}
 	};
 	
-	containerDiv.find(".detailsLink").click(function(){othis.loadDetails(null, true)});
-	containerDiv.find(".subprojectsLink").click(function(){othis.loadSubProjects(null, true);});
-	containerDiv.find(".revisionsLink").click(function(){othis.loadRevisions(null, true);});
-	containerDiv.find(".checkoutsLink").click(function(){othis.loadCheckouts(null, true);});
-	containerDiv.find(".servicesLink").click(function(){othis.loadServices(null, true);});
-	containerDiv.find(".modelCheckersLink").click(function(){othis.loadModelCheckers(null, true);});
-	containerDiv.find(".queryLink").click(function(){othis.loadQuery(null, true);});
-	containerDiv.find(".extendedDataLink").click(function(){othis.loadExtendedData(null, true);});
-	containerDiv.find(".browserLink").click(function(){othis.loadBrowser(function(){
+	cd.find(".detailsLink").click(function(){othis.loadDetails(null, true)});
+	cd.find(".subprojectsLink").click(function(){othis.loadSubProjects(null, true);});
+	cd.find(".revisionsLink").click(function(){othis.loadRevisions(null, true);});
+	cd.find(".checkoutsLink").click(function(){othis.loadCheckouts(null, true);});
+	cd.find(".servicesLink").click(function(){othis.loadServices(null, true);});
+	cd.find(".modelCheckersLink").click(function(){othis.loadModelCheckers(null, true);});
+	cd.find(".queryLink").click(function(){othis.loadQuery(null, true);});
+	cd.find(".extendedDataLink").click(function(){othis.loadExtendedData(null, true);});
+	cd.find(".browserLink").click(function(){othis.loadBrowser(function(){
 		this.loadFromHistory();
 	}, true);});
-	containerDiv.find(".usersLink").click(function(){othis.loadUsers(null, true);});
-	containerDiv.find(".logLink").click(function(){othis.loadLog(null, true);});
+	cd.find(".usersLink").click(function(){othis.loadUsers(null, true);});
+	cd.find(".logLink").click(function(){othis.loadLog(null, true);});
 
-	containerDiv.find(".addUserToProjectDiv button").click(othis.addUserToProject);
+	cd.find(".addUserToProjectDiv button").click(othis.addUserToProject);
 	
-	containerDiv.find(".addUserLink").click(othis.addUserLinkClick);
+	cd.find(".addUserLink").click(othis.addUserLinkClick);
 	
-	containerDiv.find(".checkinButton").click(othis.showCheckinPopup);
-	containerDiv.find(".addServiceButton").click(othis.addServiceClick);
-	containerDiv.find(".addSubProjectButton").click(othis.addSubProjectClick);
+	cd.find(".checkinButton").click(othis.showCheckinPopup);
+	cd.find(".addServiceButton").click(othis.addServiceClick);
+	cd.find(".addSubProjectButton").click(othis.addSubProjectClick);
 
-	containerDiv.find(".addModelCheckerButton").click(othis.addModelCheckerButtonClick);
+	cd.find(".addModelCheckerButton").click(othis.addModelCheckerButtonClick);
 	
 	this.newRevisionOnSpecificProjectHandler = function(poid, roid){
 		Global.bimServerApi.call("ServiceInterface", "getRevision", {roid: roid}, function(data){
@@ -1127,6 +1145,6 @@ function RightPanel(containerDiv, main, project, projectPage) {
 		othis.reloadProject(project.oid, roid);
 	});
 	
-	containerDiv.find(".addExtendedDataButton").click(othis.addExtendedDataButtonClick);
+	cd.find(".addExtendedDataButton").click(othis.addExtendedDataButtonClick);
 }
 </script>
