@@ -43,7 +43,7 @@
 	</div>
 </div>
 <script>
-function AddNewService2(cd, project, serviceDescriptor) {
+function AddNewService2(cd, project, projectPage, serviceDescriptor) {
 	var o = this;
 	
 	cd.find("table.serviceDetails tbody").append("<tr><td>Provider</td><td>" + serviceDescriptor.provider + "</td></tr>");
@@ -51,19 +51,30 @@ function AddNewService2(cd, project, serviceDescriptor) {
 	cd.find("table.serviceDetails tbody").append("<tr><td>Description</td><td>" + serviceDescriptor.description + "</td></tr>");
 	
 	o.selectInput = function(){
-		var tr = $(this).parents("tr");
-		var input = tr.attr("input");
-		if (tr.find("select").val() != null) {
-			cd.find(".btnNext").removeAttr("disabled");
-		} else {
-			cd.find(".btnNext").attr("disabled", "disabled");
-		}
+		o.updateButton();
 	};
 	
 	o.selectOutput = function(){
-		var tr = $(this).parents("tr");
-		var output = tr.attr("output");
-		if (tr.find("select").val() != null) {
+		o.updateButton();
+	};
+	
+	o.canProceed = function(){
+		if (cd.find(".inputsTable input[checked='checked']").length > 0) {
+			var serializerId = cd.find(".inputsTable input[checked='checked']").parents("tr").find("select").val();
+			if (serializerId != null) {
+				if (cd.find(".outputsTable input[checked='checked']").length > 0) {
+					var action = cd.find(".outputsTable input[checked='checked']").parents("tr").find("select").val();
+					if (action != null) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	};
+	
+	o.updateButton = function(){
+		if (o.canProceed()) {
 			cd.find(".btnNext").removeAttr("disabled");
 		} else {
 			cd.find(".btnNext").attr("disabled", "disabled");
@@ -80,7 +91,7 @@ function AddNewService2(cd, project, serviceDescriptor) {
 			}
 			map.push(mapping);
 		});
-		
+		console.log(availableLocalOutputs);
 		serviceDescriptor.inputs.forEach(function(input, index){
 			var tr = $("<tr>");
 			tr.attr("input", input);
@@ -111,7 +122,6 @@ function AddNewService2(cd, project, serviceDescriptor) {
 				o.selectInput.apply(radio);
 				radio.attr("checked", "checked");
 			}
-			radio.change(o.selectInput);
 		});
 		
 		serviceDescriptor.outputs.forEach(function(output, index){
@@ -133,8 +143,9 @@ function AddNewService2(cd, project, serviceDescriptor) {
 				o.selectOutput.apply(radio);
 				radio.attr("checked", "checked");
 			}
-			radio.change(o.selectOutput);
 		});
+		
+		o.updateButton();
 	});
 	
 	cd.find(".btnNext").click(function(){
@@ -146,7 +157,9 @@ function AddNewService2(cd, project, serviceDescriptor) {
 				name: serviceDescriptor.name,
 				provider: serviceDescriptor.provider,
 				description: serviceDescriptor.description,
-				url: serviceDescriptor.url,
+				tokenUrl: serviceDescriptor.tokenUrl,
+				authorizationUrl: serviceDescriptor.authorizationUrl,
+				resourceUrl: serviceDescriptor.resourceUrl,
 				input: cd.find(".inputsTable input[checked='checked']").parents("tr").attr("input"),
 				status: "NEW",
 				oauthCode: "",
@@ -166,12 +179,10 @@ function AddNewService2(cd, project, serviceDescriptor) {
 			url: output,
 			type: "TXT"
 		};
-		Global.bimServerApi.call("ServiceInterface", "addExtendedDataSchema", {extendedDataSchema: extendedDataSchema}, function(oid){
+		Global.bimServerApi.callWithNoIndication("ServiceInterface", "addExtendedDataSchema", {extendedDataSchema: extendedDataSchema}, function(oid){
 		});
 		
-		load(cd, "addnewservice3.html", function(){
-			new AddNewService3($(this));
-		});
+		projectPage.rightPanel.loadServices(function(){}, true);
 	});
 }
 </script>

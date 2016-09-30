@@ -87,7 +87,7 @@
 						</table>
 					</div>
 					<div class="newServiceList">
-						<div class="well well-sm noservices">No new services</div>
+						<div class="well well-sm nonewservices">No new services</div>
 						<table class="servicesTable initialhide table table-striped table-hover">
 							<thead>
 								<tr>
@@ -501,6 +501,7 @@ function RightPanel(cd, main, project, projectPage) {
 			event.preventDefault();
 			var div = $("<div class=\"serviceDetail\">");
 			cd.find(".serviceList").hide();
+			cd.find(".newServiceList").hide();
 			cd.find(".services").append(div);
 			div.load(Global.baseDir + "service.html", function(){
 				new Service(main, service, othis);
@@ -514,6 +515,7 @@ function RightPanel(cd, main, project, projectPage) {
 	
 	this.showService = function(callback) {
 		cd.find(".serviceList").hide();
+		cd.find(".newServiceList").hide();
 		othis.tabChanger.changeTab($(".servicesLink"), $(".services"), function(){
 			pushHistory({page: "Project", poid: othis.project.oid, tab: "services"}, "Project");
 			return new Service(main, service);
@@ -541,6 +543,15 @@ function RightPanel(cd, main, project, projectPage) {
 			othis.loadServices();
 		});
 	};
+
+	this.deleteNewServiceClick = function(){
+		Global.bimServerApi.call("ServiceInterface", "removeNewServiceFromProject", {
+			poid: othis.project.oid,
+			serviceOid: $(this).parents("tr").data("service").oid
+		}, function(){
+			othis.loadServices();
+		});
+	};
 	
 	this.addService = function(service) {
 		cd.find(".noservices").hide();
@@ -560,6 +571,18 @@ function RightPanel(cd, main, project, projectPage) {
 		cd.find(".servicesTable tbody").append(tr);
 	};
 	
+	this.formatNewServiceStatus = function(status) {
+		if (status == "NEW") {
+			return "Not authenticated";
+		} else if (status == "AUTHENTICATED") {
+			return "Authenticated";
+		}
+	};
+
+	this.authenticate = function(service){
+		document.location = service.authorizationUrl + "&client_id=" + clientId;
+	};
+
 	this.addNewService = function(service) {
 		var servicesDiv = cd.find(".newServiceList");
 		servicesDiv.find(".noservices").hide();
@@ -570,11 +593,21 @@ function RightPanel(cd, main, project, projectPage) {
 		var td = $("<td soid=\"" + service.oid + "\"></td>");
 		loadNewService(td);
 		tr.append(td);
-		var deleteTd = $("<td>");
+		tr.append("<td>" + o.formatNewServiceStatus(service.status) + "</td>");
+		var actionsTd = $("<td>");
 		var deleteLink = $("<a>delete</a>");
-		deleteLink.click(othis.deleteServiceClick);
-		deleteTd.append(deleteLink);
-		tr.append(deleteTd);
+		deleteLink.click(othis.deleteNewServiceClick);
+		tr.data("service", service);
+		actionsTd.append(deleteLink);
+		if (service.status == "NEW") {
+			var authenticateLink = $("<a>authenticate</a>");
+			authenticateLink.click(function(){
+				console.log(service);
+				o.authenticate(service);
+			});
+			actionsTd.append(authenticateLink);
+		}		
+		tr.append(actionsTd);
 		servicesDiv.find(".servicesTable tbody").append(tr);
 	};
 	
@@ -706,6 +739,7 @@ function RightPanel(cd, main, project, projectPage) {
 	this.showAddService = function(oauth){
 		othis.loadServices(function(){
 			$(".services .serviceList").hide();
+			$(".services .newServiceList").hide();
 			$(".services .details").show();
 			if (oauth == true) {
 				$(".services .details").load("addservice3.html", function(){
@@ -730,6 +764,7 @@ function RightPanel(cd, main, project, projectPage) {
 	this.showAddService2 = function(oauth){
 		othis.loadServices(function(){
 			$(".services .serviceList").hide();
+			$(".services .newServiceList").hide();
 			$(".services .details").show();
 			if (oauth == true) {
 				$(".services .details").load("addservice3.html", function(){
@@ -753,8 +788,9 @@ function RightPanel(cd, main, project, projectPage) {
 
 	this.loadServices = function(callback, pushToHistory) {
 		$(".services .details").hide();
-		cd.find(".serviceList").show()
-		cd.find(".serviceDetail").hide()
+		cd.find(".serviceList").show();
+		cd.find(".newServiceList").show();
+		cd.find(".serviceDetail").hide();
 		cd.find(".noservices").show();
 		cd.find(".servicesTable").hide();
 		othis.tabChanger.changeTab($(".servicesLink"), null, $(".services"), function(){
@@ -769,8 +805,8 @@ function RightPanel(cd, main, project, projectPage) {
 			Global.bimServerApi.call("ServiceInterface", "getAllNewServicesOfProject", {poid: othis.project.oid}, function(data){
 				cd.find(".servicesTable tr.service").remove();
 				data.forEach(function(service){
-					cd.find(".noservices").hide();
-					cd.find(".servicesTable").show();
+					cd.find(".nonewservices").hide();
+					cd.find(".newServicesTable").show();
 					othis.addNewService(service);
 				});
 			});

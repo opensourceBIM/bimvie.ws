@@ -49,7 +49,7 @@ function AddNewService(cd, main, project, projectPage, callback) {
 		var name = $(this).parents("tr").attr("name");
 		var serviceDescriptor = o.serviceDescriptors[name];
 		load(cd, "addnewservice2.html", function(){
-			new AddNewService2($(this), project, serviceDescriptor);
+			new AddNewService2($(this), project, projectPage, serviceDescriptor);
 		})
 	};
 	
