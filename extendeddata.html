@@ -145,6 +145,9 @@ function ExtendedData(main, extendedData, parent) {
 		$(".size").html(getHumanSize(data.length));
 		$(".mime").html(file.mime);
 		Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaById", {oid: extendedData.schemaId}, function(schema){
+			if (file.mime.indexOf(";") != -1) {
+				file.mime = file.mime.substring(0, file.mime.indexOf(";"));
+			}
 			if (file.mime == "text/csv") {
 				othis.showCsv(schema, extendedData, data);
 			} else if (file.mime == "text/html") {
