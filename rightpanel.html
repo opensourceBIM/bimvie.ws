@@ -579,8 +579,26 @@ function RightPanel(cd, main, project, projectPage) {
 		}
 	};
 
-	this.authenticate = function(service){
-		document.location = service.authorizationUrl + "&client_id=" + clientId;
+	this.authenticate = function(server, service){
+		Global.bimServerApi.call("OAuthInterface", "generateForwardUrl", {
+			registrationEndpoint: service.registerUrl,
+			authorizeUrl: service.authorizationUrl,
+			returnUrl: service.resourceUrl
+		})
+		document.location = service.authorizationUrl + "&clientId=" + server.clientId;
+	};
+	
+	this.registerApplication = function(service, callback){
+		Global.bimServerApi.call("OAuthInterface", "registerApplication", {
+			registrationEndpoint: service.registerUrl,
+			apiUrl: service.resourceUrl
+		}, function(oid){
+			Global.bimServerApi.call("OAuthInterface", "getOAuthServerById", {
+				oid: oid
+			}, function(){
+				callback(server);
+			});
+		});
 	};
 
 	this.addNewService = function(service) {
@@ -602,8 +620,9 @@ function RightPanel(cd, main, project, projectPage) {
 		if (service.status == "NEW") {
 			var authenticateLink = $("<a>authenticate</a>");
 			authenticateLink.click(function(){
-				console.log(service);
-				o.authenticate(service);
+				o.registerApplication(service, function(server){
+					o.authenticate(server, service);
+				});
 			});
 			actionsTd.append(authenticateLink);
 		}		
