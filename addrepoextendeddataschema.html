@@ -6,7 +6,7 @@
 		<thead>
 			<tr>
 				<th>Name</th>
-				<th>Namespace</th>
+				<th>Content Type</th>
 				<th>Description</th>
 				<th>Add</th>
 			</tr>
@@ -16,7 +16,7 @@
 	</table>
 	<div class="well well-sm">
 		<button class="btn btn-default cancelButton">Cancel</button>
-		<button class="btn btn-default addAllButton">Add all</button>
+		<button class="btn btn-primary addAllButton">Add all</button>
 	</div>
 </div>
 <script>
@@ -35,13 +35,17 @@ function AddRepoExtendedDataSchema(main, serversettings) {
 	this.addExtendedDataSchema = function(extendedDataSchema) {
 		var tr = $("<tr>");
 		var td = $("<td>");
-		var link = $("<a>");
-		link.html(extendedDataSchema.name);
-		link.attr("href", extendedDataSchema.url);
-		td.append(link);
+		if (extendedDataSchema.url != null && extendedDataSchema.url != "") {
+			var link = $("<a>");
+			link.html(extendedDataSchema.name);
+			link.attr("href", extendedDataSchema.url);
+			td.append(link);
+		} else {
+			td.append(extendedDataSchema.name);
+		}
 		tr.data("extendeddataschema", extendedDataSchema);
 		tr.append(td);
-		tr.append("<td>" + extendedDataSchema.namespace + "</td>");
+		tr.append("<td>" + extendedDataSchema.contentType + "</td>");
 		tr.append("<td>" + extendedDataSchema.description + "</td>");
 		
 		td = $("<td>");

@@ -38,9 +38,11 @@
 <script>
 var lastVal = "";
 
-function AddExtendedData(containerDiv, revision, successFunction) {
+function AddExtendedData(cd, revision, successFunction) {
 	var othis = this;
 
+	othis.schemas = {};
+	
 	var submitdata = null;
 	var shouldsend = false;
 	var currentCheckinId = null;
@@ -56,10 +58,10 @@ function AddExtendedData(containerDiv, revision, successFunction) {
 			var size = othis.file.size;
 			var name = othis.file.name;
 			othis.validFile = true;
-			containerDiv.find(".uploadMessages *").hide();
-			containerDiv.find(".uploadMessages .fileSize").show();
-			containerDiv.find(".uploadMessages .fileSize .name").html(name).show();
-			containerDiv.find(".uploadMessages .fileSize .size").html(bytesToSize(size)).show();
+			cd.find(".uploadMessages *").hide();
+			cd.find(".uploadMessages .fileSize").show();
+			cd.find(".uploadMessages .fileSize .name").html(name).show();
+			cd.find(".uploadMessages .fileSize .size").html(bytesToSize(size)).show();
 			break;
 		}
 		othis.updateSubmitButton();
@@ -67,23 +69,23 @@ function AddExtendedData(containerDiv, revision, successFunction) {
 
 	this.updateSubmitButton = function() {
         if (fileselected) {
-        	containerDiv.find(".uploadButton").show();
+        	cd.find(".uploadButton").show();
         } else {
-        	containerDiv.find(".uploadButton").hide();
+        	cd.find(".uploadButton").hide();
         }
 	};
 	
 	this.hideUpload = function() {
-		containerDiv.find(".uploadTable").hide();
-		containerDiv.find(".uploadProgressBar").show();
-		containerDiv.find(".uploadButton").hide();
-		containerDiv.find(".uploadStatus").show();
+		cd.find(".uploadTable").hide();
+		cd.find(".uploadProgressBar").show();
+		cd.find(".uploadButton").hide();
+		cd.find(".uploadStatus").show();
 	};
 
 	this.showUpload = function() {
-		containerDiv.find(".uploadTable").show();
-		containerDiv.find(".uploadProgressBar").hide();
-		containerDiv.find(".uploadButton").show();
+		cd.find(".uploadTable").show();
+		cd.find(".uploadProgressBar").hide();
+		cd.find(".uploadButton").show();
 	};
 	
 	this.uploadNew = function(project){
@@ -98,27 +100,31 @@ function AddExtendedData(containerDiv, revision, successFunction) {
 
 		othis.hideUpload();
 		
-		containerDiv.find(".uploadStatus").html("Uploading...").show();
+		cd.find(".uploadStatus").html("Uploading...").show();
 		
-		Global.bimServerApi.addExtendedData(revision.oid, othis.file, function(checkinId){
+		var title = cd.find(".addextendeddata .title").val();
+		var schema = othis.schemas[cd.find(".addextendeddata .schemaSelect").val()];
+		Global.bimServerApi.addExtendedData(revision.oid, title, schema, othis.file, function(checkinId){
 			window.onbeforeunload = null;
 
-			containerDiv.find(".uploadStatus").html("<div class=\"alert alert-block alert-info\">Done</div>");
+			successFunction();
+			cd.find(".uploadStatus").html("<div class=\"alert alert-block alert-info\">Done</div>");
 		}, function(exception){
 			window.onbeforeunload = null;
 
-			containerDiv.find(".uploadStatus").html("<div class=\"alert alert-block alert-danger\">" + exception.message + "</div>");
+			cd.find(".uploadStatus").html("<div class=\"alert alert-block alert-danger\">" + exception.message + "</div>");
 			othis.showUpload();
 		});
 	};
 
-	containerDiv.find(".uploadButton").hide();
+	cd.find(".uploadButton").hide();
 	
 	Global.bimServerApi.call("ServiceInterface", "getAllExtendedDataSchemas", {}, function(schemas){
 		schemas.forEach(function(schema){
 			var option = $("<option>" + schema.name + "</option>");
-			option.val(schema.oid);
+			option.val(schema.name);
 			$(".schemaSelect").append(option);
+			othis.schemas[schema.name] = schema;
 		});
 	});
 	
@@ -126,11 +132,11 @@ function AddExtendedData(containerDiv, revision, successFunction) {
 		othis.processFiles(e.target.files)
 	});
 	
-	containerDiv.find(".chooseFileButton").click(function() {
-		$(".file").trigger("click");
+	cd.find(".chooseFileButton").click(function() {
+		cd.find(".file").trigger("click");
 	});
 	
-	containerDiv.find(".uploadButton").click(function(event){
+	cd.find(".uploadButton").click(function(event){
 		othis.uploadNew(othis.project);
 		event.preventDefault();
 	});

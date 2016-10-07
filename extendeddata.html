@@ -127,39 +127,41 @@ function ExtendedData(main, extendedData, parent) {
 		$(".json").show();
 	}
 	
-	this.showCsv = function(schema, extendedData, data){
+	this.showCsv = function(schema, extendedData, url){
 		$(".csv h2").html(extendedData.title + " (CSV)");
-		var json = Papa.parse(data);
-		json.data.forEach(function(row){
-			var tr = $("<tr>");
-			row.forEach(function(val){
-				tr.append("<td>" + val + "</td>");
+		Papa.parse(url, {download: true, compete: function(data){
+			data.data.forEach(function(row){
+				var tr = $("<tr>");
+				row.forEach(function(val){
+					tr.append("<td>" + val + "</td>");
+				});
+				$(".csv table tbody").append(tr);
 			});
-			$(".csv table tbody").append(tr);
-		});
-		$(".csv").show();
+			$(".csv").show();
+		}});
 	};
 	
-	Global.bimServerApi.call("ServiceInterface", "getFile", {fileId: extendedData.fileId}, function(file){
-		var data = UTF8ArrToStr(base64DecToArr(file.data));
-		$(".size").html(getHumanSize(data.length));
+	Global.bimServerApi.call("ServiceInterface", "getFileMeta", {fileId: extendedData.fileId}, function(file){
+//		var data = UTF8ArrToStr(base64DecToArr(file.data));
+		$(".size").html(getHumanSize(file.size));
 		$(".mime").html(file.mime);
 		Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaById", {oid: extendedData.schemaId}, function(schema){
 			if (file.mime.indexOf(";") != -1) {
 				file.mime = file.mime.substring(0, file.mime.indexOf(";"));
 			}
+			var url = Global.bimServerApi.generateExtendedDataDownloadUrl(extendedData.oid);
 			if (file.mime == "text/csv") {
-				othis.showCsv(schema, extendedData, data);
+				othis.showCsv(schema, extendedData, url);
 			} else if (file.mime == "text/html") {
-				othis.showHtml(schema, extendedData, data);
+				othis.showHtml(schema, extendedData, url);
 			} else if (file.mime == "text/plain") {
-				othis.showPlainText(schema, extendedData, data);
+				othis.showPlainText(schema, extendedData, url);
 			} else if (file.mime == "application/json") {
-				othis.showJson(schema, extendedData, data);
+				othis.showJson(schema, extendedData, url);
 			} else if (schema.namespace == "http://extend.bimserver.org/validationreport") {
-				othis.showValidationReport(schema, extendedData, data);
+				othis.showValidationReport(schema, extendedData, url);
 			} else if (schema.namespace == "http://www.buildingsmart-tech.org/specifications/bcf-releases") {
-				othis.showBcf(schema, extendedData, data);
+				othis.showBcf(schema, extendedData, url);
 			}
 		});
 	});

@@ -1191,6 +1191,7 @@ function RightPanel(cd, main, project, projectPage) {
 		$(document.body).append(div);
 		div.load(Global.baseDir + "addextendeddata.html", function(){
 			new AddExtendedData($(this), othis.selectedRevision, function(){
+				console.log("Callback");
 				othis.loadExtendedData();
 			});
 		}).modal({keyboard:true});

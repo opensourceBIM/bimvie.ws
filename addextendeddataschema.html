@@ -8,9 +8,9 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="control-label" for="inputNamespace">Namespace</label>
+			<label class="control-label" for="inputContentType">Content Type</label>
 			<div class="controls">
-				<input type="text" class="form-control inputNamespace input-xxlarge" id="inputNamespace" placeholder="Namespace">
+				<input type="text" class="form-control inputContentType input-xxlarge" id="inputContentType" placeholder="Content-Type">
 			</div>
 		</div>
 		<div class="form-group">
@@ -19,22 +19,6 @@
 				<input type="text" class="form-control inputUrl input-xxlarge" id="inputUrl" placeholder="URL"><br/>
 				- OR -<br/>
 				<input type="file" class="file inputData" id="inputData">
-			</div>
-		</div>
-		<div class="form-group">
-			<div class="controls">
-				<label class="validateInput checkbox"> <input type="checkbox"> Validate
-				</label>
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="control-label" for="inputPassword">Type</label>
-			<div class="controls">
-				<select class="form-control typeSelect">
-					<option>XSD</option>
-					<option>PDF</option>
-					<option>TXT</option>
-				</select>
 			</div>
 		</div>
 		<div class="form-actions">
@@ -55,9 +39,8 @@ function AddExtendedDataSchema(main, serversettings, extendedDataSchema) {
 	
 	if (extendedDataSchema != null) {
 		$(".addextendeddataschema .inputName").val(extendedDataSchema.name);
-		$(".addextendeddataschema .inputNamespace").val(extendedDataSchema.namespace);
+		$(".addextendeddataschema .inputContentType").val(extendedDataSchema.contentType);
 		$(".addextendeddataschema .inputUrl").val(extendedDataSchema.url);
-		$(".addextendeddataschema .typeSelect").val(extendedDataSchema.type);
 	}
 	
 	$(".addextendeddataschema .cancelButton").click(function(event){
@@ -69,9 +52,8 @@ function AddExtendedDataSchema(main, serversettings, extendedDataSchema) {
 		var extendedDataSchema = {
 			__type: "SExtendedDataSchema",
 			name: $(".addextendeddataschema .inputName").val(),
-			namespace: $(".addextendeddataschema .inputNamespace").val(),
+			contentType: $(".addextendeddataschema .inputContentType").val(),
 			url: $(".addextendeddataschema .inputUrl").val(),
-			type: $(".addextendeddataschema .typeSelect").val()
 		};
 		return extendedDataSchema;
 	}
