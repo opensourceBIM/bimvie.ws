@@ -96,6 +96,20 @@ function Query2(cd, parent) {
 				}
 			}
 		},
+		AllPropertiesOf2Spaces1Wall: {
+			guids: [
+				"1geKZCJAHAVQxXKkYkD9nV",
+				"1stYdhm21EUQMz3jV6WdHc",
+				"05yuQkJxb22el7nxTgecJc"
+			],
+			includes: [
+				"validifc:AllProperties",
+				"validifc:ContainedInStructure",
+				"validifc:OwnerHistory",
+				"validifc:Representation",
+				"validifc:ObjectPlacement"
+			]
+		},
 		ExternalWalls: {
 			type: "IfcWall",
 			includeAllSubtypes: true,
@@ -349,7 +363,7 @@ function Query2(cd, parent) {
 		console.log(roids);
 		
 		var params = {
-			downloadType: "downloadByNewJsonQuery",
+			downloadType: "download",
 			allowCheckouts: false,
 			query: cd.find("textarea").val(),
 			roids: roids
