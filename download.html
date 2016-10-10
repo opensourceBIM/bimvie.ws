@@ -224,16 +224,7 @@ function Download(containerDiv, data) {
 		}
 		
 		if (data.streaming) {
-			if (data.downloadType == "downloadRevisions") {
-				var query = {
-					includeAllFields: true
-				};
-				data.query = JSON.stringify(query);
-			} else if (data.downloadType == "downloadByNewJsonQuery") {
-			} else {
-				console.log("Unimplemented for streaming", data.downloadType);
-			}
-			Global.bimServerApi.call("ServiceInterface", "downloadByNewJsonQuery", data, function(data){
+			Global.bimServerApi.call("ServiceInterface", "download", data, function(data){
 				containerDiv.find(".downloadStatus").html("Preparing download...");
 				othis.topicId = parseInt(data);
 				Global.bimServerApi.registerProgressHandler(othis.topicId, othis.progressHandler, afterRegistration);
@@ -242,7 +233,7 @@ function Download(containerDiv, data) {
 				containerDiv.find(".downloadStatus").addClass("alert-danger").html(exception.message);
 			});
 		} else {
-			Global.bimServerApi.call("ServiceInterface", data.downloadType, data, function(data){
+			Global.bimServerApi.call("ServiceInterface", "download", data, function(data){
 				containerDiv.find(".downloadStatus").html("Preparing download...");
 				othis.topicId = parseInt(data);
 				Global.bimServerApi.registerProgressHandler(othis.topicId, othis.progressHandler, afterRegistration);

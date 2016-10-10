@@ -359,10 +359,13 @@ function Main(address, user) {
 		var div = $("<div class=\"modal fade\">");
 		$(document.body).append(div);
 		
+		var query = {
+			includeAllFields: true
+		};
 		var params = {
-			downloadType: "downloadRevisions",
 			roids: roids
 		};
+		params.query = JSON.stringify(query);
 
 		div.load(Global.baseDir + "download.html", function(){
 			new Download($(this), params);
