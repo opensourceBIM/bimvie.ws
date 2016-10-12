@@ -88,6 +88,28 @@ function AddExtendedData(cd, revision, successFunction) {
 		cd.find(".uploadButton").show();
 	};
 	
+	cd.find('.uploadarea, .uploadarea *').on('dragover', function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+	});
+
+	cd.find('.uploadarea').on('dragbetterenter', function(e) {
+		cd.find(".uploadarea").css("background-color", "#EEEEEE");
+		e.preventDefault();
+		e.stopPropagation();
+	});
+
+	cd.find('.uploadarea').on("dragbetterleave", function(e) {
+		cd.find(".uploadarea").removeAttr("style");
+		e.preventDefault();
+		e.stopPropagation();
+	});
+	
+	cd.find('.uploadarea').on("drop", function(e) {
+		othis.processFiles(e.originalEvent.dataTransfer.files);
+		e.preventDefault();
+	});
+	
 	this.uploadNew = function(project){
 		if ($(".addextendeddata .schemaSelect").val() == null) {
 			Global.notifier.setError("No schema selected");
