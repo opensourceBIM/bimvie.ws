@@ -520,3 +520,38 @@ input[type="file"].file {
 .button-bar-bottom {
 	margin-bottom: 10px;
 }
+
+.extendeddata .bcf .col-xs-6.right {
+	padding-left: 0;
+	margin-left: 0;
+}
+
+.extendeddata .bcf .col-xs-6.left {
+	padding-right: 0;
+	margin-right: 0;
+}
+
+.extendeddata .bcf img {
+	margin: 10px;
+}
+
+.extendeddata .bcf .list-group-item {
+	border-left: 0;
+}
+
+.extendeddata .bcf .comment {
+	padding: 10px;
+}
+
+.extendeddata .bcf .commentsLink {
+	margin-left: 10px;
+	margin-bottom: 10px;
+}
+
+.extendeddata .bcf .description {
+	 word-wrap: break-word;
+}
+
+.extendeddata .bcf .list-group-item:first-child {
+	border-top: 0;
+}

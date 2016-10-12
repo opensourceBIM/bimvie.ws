@@ -20,6 +20,7 @@
 			<tbody></tbody>
 		</table>
 	</div>
+	<div class="loadingdiv ih alert alert-info">Loading data...</div>
 	<div class="csv ih">
 		<h2></h2>
 		<table class="table">
@@ -39,10 +40,11 @@
 		<h2></h2>
 		<pre class="content"></pre>
 	</div>
+	<div class="bcf ih"></div>
 </div>
 <script>
-function ExtendedData(main, extendedData, parent) {
-	var othis = this;
+function ExtendedData(cd, main, extendedData, parent) {
+	var o = this;
 
 	var tr = $("<tr><td>User</td></tr>");
 	
@@ -96,7 +98,7 @@ function ExtendedData(main, extendedData, parent) {
 				if (item.oid != null && item.oid != -1) {
 					tr.append("<td><a>" + item.identification + "</a></td>");
 					tr.find("a").data("oid", item.oid);
-					tr.find("a").click(othis.objectClick);
+					tr.find("a").click(o.objectClick);
 				} else {
 					tr.append("<td>" + item.identification + "</td>");
 				}
@@ -141,6 +143,130 @@ function ExtendedData(main, extendedData, parent) {
 		}});
 	};
 	
+	this.showBcf = function(schema, extendedData){
+		function formatTopicStatus(status) {
+			var li = $("<li class=\"list-group-item\">");
+			li.append("Status: ");
+			var span = $("<span class=\"label\">");
+			span.html(status);
+			if (status == "Open") {
+				span.addClass("label-danger");
+			} else if (status == "In Progress") {
+				span.addClass("label-primary");
+			} else if (status == "Closed") {
+				span.addClass("label-success");
+			} else if (status == "ReOpened") {
+				span.addClass("label-warning");
+			} else {
+				span.addClass("label-default");
+			}
+			li.append(span);
+			return li;
+		}
+		
+		function formatTopicType(type) {
+			var li = $("<li class=\"list-group-item\">");
+			li.append("Type: ");
+			var span = $("<span class=\"label\">");
+			span.html(type);
+			if (type == "Comment") {
+				span.addClass("label-primary");
+			} else if (type == "Issue") {
+				span.addClass("label-danger");
+			} else if (type == "Request") {
+				span.addClass("label-warning");
+			} else if (type == "Solution") {
+				span.addClass("label-success");
+			} else {
+				span.addClass("label-default");
+			}
+			li.append(span);
+			return li;
+		}
+		
+		cd.find(".loadingdiv").show();
+		Global.bimServerApi.call("ServiceInterface", "bcfToJson", {
+			extendedDataId: extendedData.oid
+		}, function(jsonString){
+			var bcf = cd.find(".bcf");
+			var json = JSON.parse(jsonString);
+			o.bcf = json;
+			console.log(json);
+			for (var uuid in json.topics) {
+				var topicFolder = json.topics[uuid];
+				var topic = topicFolder.topic;
+				var panel = $("<div class=\"panel panel-default\">");
+				panel.attr("guid", topic.guid);
+				var heading = $("<div class=\"panel-heading\">");
+				heading.html(topic.title);
+				panel.append(heading);
+				
+				var body = $("<div class=\"panel-body\">");
+				var row = $("<div class=\"row\">");
+				body.append(row);
+				var left = $("<div class=\"col-xs-6 left\">");
+				var right = $("<div class=\"col-xs-6 right\">");
+				var listleft = $("<ul class=\"list-group\">");
+				left.append(listleft);
+				row.append(left);
+				row.append(right);
+				if (topic.description != null) {
+					listleft.append("<li class=\"list-group-item description\">Description: " + topic.description + "</li>");
+				}
+				listleft.append("<li class=\"list-group-item\">GUID: " + topic.guid + "</li>");
+				if (topic.topicType != null) {
+					listleft.append(formatTopicType(topic.topicType));
+				}
+				if (topic.topicStatus != null) {
+					listleft.append(formatTopicStatus(topic.topicStatus));
+				}
+				if (topic.creationAuthor != null) {
+					listleft.append("<li class=\"list-group-item\">Creator: " + topic.creationAuthor + " (" + formatDateTime(new Date(topic.creationDate)) + ")</li>");
+				}
+				if (topic.modifiedAuthor != null) {
+					listleft.append("<li class=\"list-group-item\">Modifier: " + topic.modifiedAuthor + " (" + formatDateTime(new Date(topic.modifiedDate)) + ")</li>");
+				}
+				panel.append(body);
+
+				if (topic.viewpoints != null) {
+					topic.viewpoints.forEach(function(viewpoint){
+						if (viewpoint.snapshot != null) {
+							var img = $("<img>");
+							var src = Global.bimServerApi.baseUrl + "/download?token=" + Global.bimServerApi.token + "&action=getBcfImage&extendedDataId=" + extendedData.oid + "&topicGuid=" + topic.guid + "&imageGuid=" + viewpoint.snapshot.snapshot + "&name=" + viewpoint.snapshot;
+							img.attr("width", "380px");
+							img.attr("src", src);
+							right.append(img);
+						}
+					});
+				}
+				
+				if (topic.comments != null) {
+					var div = $("<div class=\"commentsLink\">");
+					var commentsLink = $("<a>Comments &#x25BC;</a>");
+					div.append(commentsLink);
+					commentsLink.attr("guid", topic.guid);
+					commentsLink.click(function(){
+						var guid = $(this).attr("guid");
+						var topic = o.bcf.topics[guid].topic;
+						var panel = cd.find("div[guid='" + guid + "']");
+						topic.comments.forEach(function(comment){
+							var commentDiv = $("<div class=\"comment\">");
+							commentDiv.append(comment.author + " (" + formatDateTime(new Date(comment.date)) + ")");
+							commentDiv.append(comment.comment);
+							panel.find(".panel-body").append(commentDiv);
+						});
+						$(this).remove();
+					});
+					body.append(div);
+				}
+				
+				bcf.append(panel);
+			}
+			cd.find(".loadingdiv").hide();
+			bcf.show();
+		});
+	};
+	
 	Global.bimServerApi.call("ServiceInterface", "getFileMeta", {fileId: extendedData.fileId}, function(file){
 //		var data = UTF8ArrToStr(base64DecToArr(file.data));
 		$(".size").html(getHumanSize(file.size));
@@ -151,17 +277,19 @@ function ExtendedData(main, extendedData, parent) {
 			}
 			var url = Global.bimServerApi.generateExtendedDataDownloadUrl(extendedData.oid);
 			if (file.mime == "text/csv") {
-				othis.showCsv(schema, extendedData, url);
+				o.showCsv(schema, extendedData, url);
 			} else if (file.mime == "text/html") {
-				othis.showHtml(schema, extendedData, url);
+				o.showHtml(schema, extendedData, url);
 			} else if (file.mime == "text/plain") {
-				othis.showPlainText(schema, extendedData, url);
+				o.showPlainText(schema, extendedData, url);
 			} else if (file.mime == "application/json") {
-				othis.showJson(schema, extendedData, url);
+				o.showJson(schema, extendedData, url);
 			} else if (schema.namespace == "http://extend.bimserver.org/validationreport") {
-				othis.showValidationReport(schema, extendedData, url);
+				o.showValidationReport(schema, extendedData, url);
 			} else if (schema.namespace == "http://www.buildingsmart-tech.org/specifications/bcf-releases") {
-				othis.showBcf(schema, extendedData, url);
+				o.showBcf(schema, extendedData, url);
+			} else if (schema.name == "BCF_ZIP_2.0") {
+				o.showBcf(schema, extendedData);
 			}
 		});
 	});

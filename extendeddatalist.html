@@ -38,7 +38,7 @@ function ExtendedDataList(main, revision, parent, extendedData) {
 		$(".extendeddatalist .list").hide();
 		$(".extendeddatalist .details").show();
 		$(".extendeddatalist .details").load(Global.baseDir + "extendeddata.html", function(){
-			new ExtendedData(main, extendedData, parent);
+			new ExtendedData($(this), main, extendedData, parent);
 			pushHistory({page: "Project", poid: othis.revision.projectId, tab: "extendeddata", edid: extendedData.oid}, "Project");
 		});
 	};
@@ -116,6 +116,9 @@ function ExtendedDataList(main, revision, parent, extendedData) {
 	};
 	
 	this.loadExtendedData = function() {
+		$(".extendeddatalist .details div").remove();
+		$(".extendeddatalist .backButton").hide();
+		$(".extendeddatalist .list").show();
 		Global.bimServerApi.call("ServiceInterface", "getAllExtendedDataOfRevision", {roid: revision.oid}, function(data){
 			$(".extendeddatalist table tbody").empty();
 			data.forEach(function(extendedData){
