@@ -404,7 +404,7 @@ function ThreeDView(containerDiv, parent, main) {
 			  }]
 			}
 		*/
-		Global.bimServerApi.callWithNoIndication("ServiceInterface", "getExtendedDataSchemaByNamespace", {namespace: "http://bimserver.org/3dvisualizationeffects"}, function(schema){
+		Global.bimServerApi.callWithNoIndication("ServiceInterface", "getExtendedDataSchemaByName", {name: "3D_VIS_JSON_1.0"}, function(schema){
 			if (schema != null) {
 				var lastExtendedData = null;
 				Global.bimServerApi.call("ServiceInterface", "getAllExtendedDataOfRevision", {roid: roid}, function(list){

@@ -170,9 +170,6 @@ function ServerInfo(containerDiv, main) {
 			$(".bimserver table tbody").append("<tr><td>Current version</td><td>" + data.currentVersion + "</td></tr>");
 			$(".bimserver table tbody").append("<tr><td>Current version date</td><td>" + formatDate(new Date(data.currentDate)) + "</td></tr>");
 			$(".bimserver table tbody").append("<tr><td>Schema version</td><td>" + data.schemaVersion + "</td></tr>");
-			$(".bimserver table tbody").append("<tr><td colspan=\"2\" class=\"header\">Latest version</td></tr>");
-			$(".bimserver table tbody").append("<tr><td>Latest version</td><td>" + data.latestVersion + "</td></tr>");
-			$(".bimserver table tbody").append("<tr><td>Latest version date</td><td>" + formatDate(new Date(data.latestDate)) + "</td></tr>");
 			$(".bimserver table tbody").append("<tr><td colspan=\"2\" class=\"header\">Counts</td></tr>");
 			$(".bimserver table tbody").append("<tr><td>Projects</td><td>" + data.projects + "</td></tr>");
 			$(".bimserver table tbody").append("<tr><td>Revisions</td><td>" + data.revisions + "</td></tr>");
@@ -194,7 +191,7 @@ function ServerInfo(containerDiv, main) {
 				tr.append(td);
 				td.append("<a href=\"" + Global.bimServerApi.baseUrl + "/soap11/" + service.simpleName + "?wsdl\">WSDL (1.1)</a> / ");
 				td.append("<a href=\"" + Global.bimServerApi.baseUrl + "/soap12/" + service.simpleName + "?wsdl\">WSDL (1.2)</a> / ");
-				td.append("<a href=\"" + Global.bimServerApi.baseUrl + "/download?token=" + Global.bimServerApi.token + "&action=getfile&type=proto&name=" + service.simpleName + "\">Proto</a> / ");
+				td.append("<a href=\"" + Global.bimServerApi.baseUrl + "/download?token=" + Global.bimServerApi.token + "&action=getfile&type=proto&name=" + service.simpleName + "\">Proto</a>");
 				$(".webservices table tbody").append(tr);
 			});
 		});

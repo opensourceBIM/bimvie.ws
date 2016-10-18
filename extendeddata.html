@@ -284,10 +284,8 @@ function ExtendedData(cd, main, extendedData, parent) {
 				o.showPlainText(schema, extendedData, url);
 			} else if (file.mime == "application/json") {
 				o.showJson(schema, extendedData, url);
-			} else if (schema.namespace == "http://extend.bimserver.org/validationreport") {
+			} else if (schema.name == "VALIDATION_JSON_1.0") {
 				o.showValidationReport(schema, extendedData, url);
-			} else if (schema.namespace == "http://www.buildingsmart-tech.org/specifications/bcf-releases") {
-				o.showBcf(schema, extendedData, url);
 			} else if (schema.name == "BCF_ZIP_2.0") {
 				o.showBcf(schema, extendedData);
 			}
