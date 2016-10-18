@@ -135,6 +135,8 @@ function ExtendedDataList(main, revision, parent, extendedData) {
 		$(".extendeddatalist .list").show();
 		$(".extendeddatalist .details").hide();
 		$(".extendeddatalist .backButton").hide();
+		othis.loadExtendedData();
+		pushHistory({page: "Project", poid: othis.revision.projectId, tab: "extendeddata"}, "Project");
 	});
 	Global.bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
 	
