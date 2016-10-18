@@ -15,13 +15,23 @@ function PageChanger(navElement, mainContainer) {
 				console.log(msg, xhr.status, xhr.statusText);
 			} else {
 				othis.current = constructorFunction.call(this);
-				othis.current.show();
-				if (callback != null) {
-					if (typeof callback === "function") {
-						callback.call(othis.current);
-					} else {
-						console.error("Callback not a function", callback);
+				var promise = othis.current.show();
+				if (promise == null) {
+					if (callback != null) {
+						if (typeof callback === "function") {
+							callback.call(othis.current);
+						} else {
+							console.error("Callback not a function", callback);
+						}
 					}
+				} else {
+					promise.done(function(){
+						if (typeof callback === "function") {
+							callback.call(othis.current);
+						} else {
+							console.error("Callback not a function", callback);
+						}
+					});
 				}
 			}
 		});
