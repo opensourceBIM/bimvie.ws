@@ -8,27 +8,15 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="control-label" for="inputNamespace">Namespace</label>
+			<label class="control-label" for="contentType">Content-Type</label>
 			<div class="controls">
-				<input type="text" class="form-control inputNamespace input-xxlarge uneditable-input" id="inputNamespace" placeholder="Namespace">
+				<input type="text" class="form-control contentType input-xxlarge uneditable-input" id="contentType" placeholder="Content-Type">
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="control-label" for="inputUrl">URL/Data</label>
 			<div class="controls">
 				<input type="text" class="form-control inputUrl input-xxlarge uneditable-input" id="inputUrl" placeholder="URL"><br/>
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="validateInputLabel control-label">Validate</label>
-			<div class="controls">
-				<span class="validateInput"></span>
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="control-label" for="typeSelect">Type</label>
-			<div class="controls">
-				<span class="typeSelect"></span>
 			</div>
 		</div>
 		<div class="form-actions">
@@ -50,10 +38,8 @@ function ExtendedDataSchema(main, oid) {
 		othis.extendedDataSchema = extendedDataSchema;
 		pushHistory({page: "ServerSettings", subpage: "ExtendedDataSchema", edsid: othis.extendedDataSchema.oid}, "Server Settings - Extended Data Schema");
 		$(".extendeddataschema .inputName").val(othis.extendedDataSchema.name);
-		$(".extendeddataschema .inputNamespace").val(othis.extendedDataSchema.namespace);
 		$(".extendeddataschema .inputUrl").val(othis.extendedDataSchema.url);
-		$(".extendeddataschema .validateInput").html(othis.extendedDataSchema.validate == true ? "Yes" : "No");
-		$(".extendeddataschema .typeSelect").html(othis.extendedDataSchema.type);
+		$(".extendeddataschema .contentType").val(othis.extendedDataSchema.contentType);
 	});
 	
 	this.saveClick = function(event) {
