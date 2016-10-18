@@ -74,8 +74,6 @@ function ThreeDView(containerDiv, parent, main) {
 		if (sceneJsNode != null) {
 			sceneJsNode.nodeId = sceneJsNode.id;
 			o.viewer.getControl("BIMSURFER.Control.ClickSelect").pick(sceneJsNode);
-		} else {
-			console.error("Not found gid", object.gid);
 		}
 	};
 	
@@ -186,8 +184,6 @@ function ThreeDView(containerDiv, parent, main) {
 				threeDObject.parent.set("alpha", color.a);
 				threeDObject.parent.set("baseColor", {r: color.r, g: color.g, b: color.b});
 			}
-		} else {
-			console.log("not found");
 		}
 	};
 	
@@ -255,12 +251,13 @@ function ThreeDView(containerDiv, parent, main) {
 					threeDObject.findParentByType("enable").setEnabled(false);
 				}
 			}
+		} else {
+			console.log("Object not found: " + object.gid);
 		}
 	};
 	
 	this.objectVisibilityChanged = function(objects){
 		// todo use groupid
-		
 		var uniqueRoids = [];
 		
 		if (!Array.isArray(objects)) {
@@ -437,13 +434,31 @@ function ThreeDView(containerDiv, parent, main) {
 								var objects = [];
 								model.getByGuids(guids, function(object){
 									var change = map[object.getGlobalId()];
-									objects.push(object);
-									object.trans.mode = 0;
-									if (checked) {
-										object.trans.colorOverride = change.effect.color;
-									} else {
-										object.trans.colorOverride = null;
+									if (object.object._rRepresentation != -1 && object.object._rRepresentation != null) {
+										objects.push(object);
+										object.trans.mode = 0;
+										if (checked) {
+											object.trans.colorOverride = change.effect.color;
+										} else {
+											object.trans.colorOverride = null;
+										}
 									}
+									// Go 1 level deep for decomposition, this 1 level is quite arbitrarily chosen, but makes models with IfcAssembly work
+								 	if (object.getIsDecomposedBy != null) { 
+								 		object.getIsDecomposedBy(function(ifcRelAggregates){
+								 			ifcRelAggregates.getRelatedObjects(function(relatedObject){
+												if (relatedObject.object._rRepresentation != -1 && relatedObject.object._rRepresentation != null) {
+													objects.push(relatedObject);
+													relatedObject.trans.mode = 0;
+													if (checked) {
+														relatedObject.trans.colorOverride = change.effect.color;
+													} else {
+														relatedObject.trans.colorOverride = null;
+													}
+												}								 				
+								 			});
+								 		});
+								 	}
 								}).done(function(){
 									o.objectVisibilityChanged(objects);
 								});
