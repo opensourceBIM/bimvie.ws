@@ -86,8 +86,6 @@ function InstalledPluginBundles(main, serverSettings, cd) {
 				option.data("version", version);
 			});
 			
-			versionSelect.find("option").first().attr("selected", "selected");
-			
 			if (pluginBundle.availableVersions[pluginBundle.availableVersions.length-1].version != installed.version) {
 				nameTd.append(" <span class=\"label label-primary\">Update available</span>");
 			}
