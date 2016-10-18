@@ -92,6 +92,7 @@
 							<thead>
 								<tr>
 									<th>Name</th>
+									<th>Status</th>
 									<th>Actions</th>
 								</tr>
 							</thead>
@@ -522,6 +523,15 @@ function RightPanel(cd, main, project, projectPage) {
 		}, callback);
 	};
 
+	this.showNewService = function(service, serverId, callback) {
+		cd.find(".serviceList").hide();
+		cd.find(".newServiceList").hide();
+		othis.tabChanger.changeTab($(".servicesLink"), "newservice.html", $(".services"), function(){
+			pushHistory({page: "Project", poid: othis.project.oid, tab: "services"}, "Project");
+			return new NewService(main, service, serverId);
+		}, callback);
+	};
+
 	this.createServiceLink = function(soid) {
 		var link = $("<a></a>");
 		link.attr("soid", soid);
@@ -573,9 +583,9 @@ function RightPanel(cd, main, project, projectPage) {
 	
 	this.formatNewServiceStatus = function(status) {
 		if (status == "NEW") {
-			return "Not authenticated";
+			return "<span class=\"label label-warning\">Not authenticated</span>";
 		} else if (status == "AUTHENTICATED") {
-			return "Authenticated";
+			return "<span class=\"label label-success\">Authenticated</span>";
 		}
 	};
 
@@ -585,17 +595,26 @@ function RightPanel(cd, main, project, projectPage) {
 			authorizeUrl: service.authorizationUrl,
 			returnUrl: service.resourceUrl
 		})
-		document.location = service.authorizationUrl + "&clientId=" + server.clientId;
+		var state = {
+			poid: othis.project.oid,
+			soid: service.oid,
+			serverId: server.oid
+		}
+		state = JSON.stringify(state);
+		document.location = service.authorizationUrl + "?client_id=" + encodeURIComponent(server.clientId) + "&response_type=code&state=" + encodeURIComponent(state);
 	};
 	
 	this.registerApplication = function(service, callback){
+		console.log(document.location);
+		var redirectUrl = document.location.origin + document.location.pathname + "?page=oauthresponse";
 		Global.bimServerApi.call("OAuthInterface", "registerApplication", {
 			registrationEndpoint: service.registerUrl,
-			apiUrl: service.resourceUrl
+			apiUrl: service.resourceUrl,
+			redirectUrl: redirectUrl
 		}, function(oid){
 			Global.bimServerApi.call("OAuthInterface", "getOAuthServerById", {
 				oid: oid
-			}, function(){
+			}, function(server){
 				callback(server);
 			});
 		});
@@ -611,7 +630,9 @@ function RightPanel(cd, main, project, projectPage) {
 		var td = $("<td soid=\"" + service.oid + "\"></td>");
 		loadNewService(td);
 		tr.append(td);
-		tr.append("<td>" + o.formatNewServiceStatus(service.status) + "</td>");
+		var td = $("<td>");
+		td.append(o.formatNewServiceStatus(service.status));
+		tr.append(td);
 		var actionsTd = $("<td>");
 		var deleteLink = $("<a>delete</a>");
 		deleteLink.click(othis.deleteNewServiceClick);
@@ -624,6 +645,7 @@ function RightPanel(cd, main, project, projectPage) {
 					o.authenticate(server, service);
 				});
 			});
+			actionsTd.append(" ");
 			actionsTd.append(authenticateLink);
 		}		
 		tr.append(actionsTd);

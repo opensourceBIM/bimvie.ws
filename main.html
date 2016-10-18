@@ -125,6 +125,17 @@ function Main(address, user) {
 				othis.showResetPassword(null);
 			} else if (history.page == "OAuth") {
 				othis.showOAuth(null);
+			} else if (history.page == "oauthresponse") {
+				var state = history.state;
+				state = JSON.parse(decodeURIComponent(state));
+				
+				Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: state.poid}, function(project){
+					Global.bimServerApi.call("ServiceInterface", "getNewService", {soid: state.soid}, function(service){
+						othis.showService(project, service, state.serverId, function(){
+							
+						});
+					});
+				});
 			} else if (history.page == "AddService") {
 				Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: history.poid}, function(project){
 					othis.showAddService(project, null, true);
@@ -134,7 +145,6 @@ function Main(address, user) {
 					othis.showAddService(project, null, true);
 				});
 			} else if (history.page == "AddService3") {
-				console.log("AddService3");
 				Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: history.poid}, function(project){
 					othis.showAddService(project, null, true);
 				});
@@ -266,9 +276,9 @@ function Main(address, user) {
 		othis.showExtendedDataSchema($(this).attr("soid"));
 	};
 	
-	this.showService = function(project, service, callback) {
+	this.showService = function(project, service, serverId, callback) {
 		this.showProject(project, function(){
-			othis.current.showService(service);
+			othis.pageChanger.current.rightPanel.showNewService(service, serverId);
 		});
 	};
 

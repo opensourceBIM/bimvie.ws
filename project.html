@@ -29,18 +29,20 @@ function Project(containerDiv, main, project) {
 			othis.reloadProject(project);
 		} else {
 			othis.project = project;
-			othis.updateProject(false);
+			return othis.updateProject(false);
 		}
 	};
 
 	this.reloadProject = function(poid) {
+		var promise = new BimServerApiPromise();
 		if (poid == null) {
 			poid = othis.project.oid;
 		}
 		Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: poid}, function(project){
 			othis.project = project;
-			othis.updateProject(false);
+			promise.chain(othis.updateProject(false));
 		});
+		return promise;
 	};
 
 	this.close = function(){
@@ -331,6 +333,7 @@ function Project(containerDiv, main, project) {
 	};
 
 	this.updateProject = function(pushHistory) {
+		var promise = new BimServerApiPromise();
 		if (pushHistory) {
 			pushHistory({page: "Project", poid: othis.project.oid}, "Project");
 		}
@@ -457,18 +460,20 @@ function Project(containerDiv, main, project) {
 					});
 					
 					othis.resize();
-					othis.loadDetails(othis.project);
+					promise.chain(othis.loadDetails(othis.project));
 					othis.projects.forEach(function(project){
 						othis.changeRevision(project, project.lastRevisionId);
 					});
 				});
 			});
 		});
+		return promise;
 	};
 
 	this.loadDetails = function(project){
+		var promise = new BimServerApiPromise();
 		if (othis.rightPanel != null) {
-			othis.rightPanel.reloadProject(project.oid, project.lastRevisionId);
+			promise.chain(othis.rightPanel.reloadProject(project.oid, project.lastRevisionId));
 		} else {
 			containerDiv.find(".rightCol").load("rightpanel.html", function(){
 				othis.rightPanel = new RightPanel($(this), main, project, othis);
@@ -477,13 +482,16 @@ function Project(containerDiv, main, project) {
 						othis.rightPanel.selectedRevision = data;
 						othis.rightPanel.show();
 						containerDiv.find(".rightCol > .details").show();
+						promise.fire();
 					});
 				} else {
 					othis.rightPanel.show();
 					containerDiv.find(".rightCol > .details").show();
+					promise.fire();
 				}
 			});
 		}
+		return promise;
 	};
 	
 	this.share = function(poid, roid) {

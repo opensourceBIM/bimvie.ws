@@ -1,0 +1,17 @@
+<div class="newservice">
+</div>
+<script>
+function NewService(main, service, serverId) {
+	var o = this;
+	
+	var code = QueryString.code;
+	
+	Global.bimServerApi.call("OAuthInterface", "getRemoteToken", {
+		soid: service.oid,
+		code: code,
+		serverId: serverId
+	}, function(result){
+		console.log(result);
+	});
+}
+</script>
