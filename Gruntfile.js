@@ -9,12 +9,12 @@ module.exports = function(grunt) {
 						files : {
 							"output/js/bimviews.js" : [ 
 							        "js/jquery-2.2.0.js", 
-							        "js/bootstrap.min.js", 
 							        "js/jquery.cookie.js", 
 							        "js/jquery.dragbetter.js", 
 							        "js/jquery.enterpress.js", 
 							        "js/jquery.numeric.js", 
 							        "js/jquery.scrollTo.js", 
+							        "js/bootstrap.min.js", 
 							        "js/pagechanger.js", 
 							        "js/papaparse.min.js", 
 							        "js/prettify.js", 
