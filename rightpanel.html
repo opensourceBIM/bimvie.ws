@@ -230,6 +230,10 @@ function RightPanel(cd, main, project, projectPage) {
 		if (o.threeDView != null) {
 			othis.tabChanger.changeTab($(".button3d"), o.threeDView, $(".threedview"), function(){
 				o.threeDView.load();
+			}, function(){
+				if (callback != null) {
+					callback();
+				}
 			});
 		} else {
 			othis.tabChanger.changeTab($(".button3d"), "3dview.html", $(".threedview"), function(){
@@ -241,6 +245,9 @@ function RightPanel(cd, main, project, projectPage) {
 				return o.threeDView;
 			}, function(){
 				o.threeDView.load();
+				if (callback != null) {
+					callback();
+				}
 			});
 		}
 	};

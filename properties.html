@@ -62,15 +62,18 @@ function Properties(containerDiv, parent, oid) {
 					});
 				}
 			});
-			var node = parent.rightPanel.tabChanger.current.viewer.scene.findNode(object.gid);
-			console.log(node);
-			if (node != null) {
-				var geometryInfo = {
-					nrTriangles: 0,
-					nrVertices: 0
-				};
-				othis.processGeometryInfo(node, geometryInfo);
-				console.log(geometryInfo);
+			var current = parent.rightPanel.tabChanger.current;
+			if (current != null) {
+				var node = current.viewer.scene.findNode(object.gid);
+				if (node != null) {
+					var geometryInfo = {
+						nrTriangles: 0,
+						nrVertices: 0
+					};
+					othis.processGeometryInfo(node, geometryInfo);
+				}
+			} else {
+				console.log(parent.rightPanel.tabChanger);
 			}
 		} else {
 			if (this.loaded) {
