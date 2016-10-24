@@ -83,7 +83,12 @@ function TabChanger2(navElement, mainContainer) {
 	
 	this.changeTab = function(linkElement, page, contentElement, constructorFunction, callback) {
 		if (othis.currentContentElement != null && contentElement != null && othis.currentContentElement.get(0) == contentElement.get(0)) {
-			othis.current = constructorFunction.call(contentElement);
+			if (typeof page == "string") {
+				othis.current = constructorFunction.call(contentElement);
+			} else {
+				othis.current = page;
+			}
+			
 			if (callback != null) {
 				callback.call(othis.current);
 			}
