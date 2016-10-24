@@ -5,6 +5,7 @@
 		<li><a class="breadcrumbObject">Object</a> <span class="divider"></span></li>
 		<li class="active">Data</li>
 	</ul>
+	<div class="alert alert-info loadingDiv ih">Loading...</div>
 	<table class="typesTable initialhide table table-striped table-hover">
 		<thead></thead>
 		<tbody></tbody>
@@ -36,74 +37,109 @@ function Browser(containerDiv, project, revision) {
 	othis.project = project;
 	
 	this.loadObject = function(poid, oid) {
+		containerDiv.find(".loadingDiv").show();
 		othis.loadProject(poid, function(){
 			othis.oid = oid;
 			pushHistoryAppend({oid: oid, poid: poid, type: false}, "Browser");
-			Global.bimServerApi.call("LowLevelInterface", "getDataObjectByOid", {roid: othis.revision.oid, oid: oid}, function(data){
-				containerDiv.find(".breadcrumb *").remove();
-				containerDiv.find(".breadcrumb").append("<li><a class=\"breadcrumbModel\">Model</a> <span class=\"divider\"></span></li>");
-				containerDiv.find(".breadcrumb").append("<li><a class=\"breadcrumbClass\">" + data.type + "</a> <span class=\"divider\"></span></li>");
-				containerDiv.find(".breadcrumb").append("<li class=\"active\">" + oid + "</li>");
-				containerDiv.find(".breadcrumb").show();
-				othis.augmentBreadcrumbs();
-	
-				containerDiv.find(".objectTable tbody tr").remove();
-				containerDiv.find("table").hide();
-				var schema = project.schema;
-				var baseUrl = null;
-				if (schema == "ifc2x3tc1") {
-					baseUrl = "http://www.buildingsmart-tech.org/ifc/IFC2x3/TC1/html/";
-				} else if (schema == "ifc4") {
-					baseUrl = "http://www.buildingsmart-tech.org/ifc/IFC4/final/html/schema/";
-				}
-				var docUrl = baseUrl + Global.bimServerApi.schemas[schema][data.type].domain + "/lexical/" + data.type.toLowerCase() + ".htm";
-				containerDiv.find(".objectTable tbody").append("<tr class=\"extra\"><td>Type</td><td><a target=\"_blank\" href=\"" + docUrl + "\">" + data.type + "</a></td></tr>");
-				containerDiv.find(".objectTable tbody").append("<tr class=\"extra\"><td>Oid</td><td>" + oid + "</td></tr>");
-				data.values.forEach(function(value){
-					if (value.__type == "SListDataValue") {
+
+			Global.bimServerApi.getModel(poid, othis.revision.oid, othis.project.schema, false, function(model){
+				model.get(oid, function(object){
+					containerDiv.find(".breadcrumb *").remove();
+					containerDiv.find(".breadcrumb").append("<li><a class=\"breadcrumbModel\">Model</a> <span class=\"divider\"></span></li>");
+					containerDiv.find(".breadcrumb").append("<li><a class=\"breadcrumbClass\">" + object.getType() + "</a> <span class=\"divider\"></span></li>");
+					containerDiv.find(".breadcrumb").append("<li class=\"active\">" + oid + "</li>");
+					containerDiv.find(".breadcrumb").show();
+					othis.augmentBreadcrumbs();
+		
+					containerDiv.find(".objectTable tbody tr").remove();
+					containerDiv.find("table").hide();
+					var schema = project.schema;
+					var baseUrl = null;
+					if (schema == "ifc2x3tc1") {
+						baseUrl = "http://www.buildingsmart-tech.org/ifc/IFC2x3/TC1/html/";
+					} else if (schema == "ifc4") {
+						baseUrl = "http://www.buildingsmart-tech.org/ifc/IFC4/final/html/schema/";
+					}
+					var typeDef = Global.bimServerApi.schemas[schema][object.getType()];
+					var docUrl = baseUrl + typeDef.domain + "/lexical/" + object.getType().toLowerCase() + ".htm";
+					containerDiv.find(".objectTable tbody").append("<tr class=\"extra\"><td>Type</td><td><a target=\"_blank\" href=\"" + docUrl + "\">" + object.getType() + "</a></td></tr>");
+					containerDiv.find(".objectTable tbody").append("<tr class=\"extra\"><td>Oid</td><td>" + oid + "</td></tr>");
+
+					object.fields.forEach(function(field){
 						var tr = $("<tr></tr>");
-						tr.attr("fieldName", value.fieldName);
-						tr.append("<td>" + value.fieldName + "</td>");
-						var td = $("<td></td>");
-						value.values.forEach(function(listItem, index){
-							if (listItem.__type == "SListDataValue") {
-								// Should not occur
-							} else if (listItem.__type == "SSimpleDataValue") {
-								td.append((listItem.stringValue == null ? "" : listItem.stringValue) + (index == value.values.length-1 ? "" : ", "));
-							} else if (listItem.__type == "SReferenceDataValue") {
-								var link = $("<a>" + listItem.typeName + " (" + (listItem.guid == null ? listItem.oid : listItem.guid) + ")</a>");
-								link.attr("oid", listItem.oid);
-								link.attr("type", listItem.typeName);
-								link.click(othis.referenceClick);
-								td.append(link);
-								if (index != value.values.length-1) {
-									td.append(", ");
+						tr.attr("fieldName", field.name);
+						tr.append("<td>" + field.name + "</td>");
+						containerDiv.find(".objectTable tbody").append(tr);
+
+						var td = $("<td>");
+						tr.append(td);
+						
+						if (field.type == "string") {
+							td.append(object.object[field.name]);
+						} else {
+							if (field.many) {
+								var getMethod = object["get" + field.name];
+								getMethod.call(object, function(listItem, index){
+									if (index > 0) {
+										td.append(", ");
+									}
+									if (typeof listItem == "string" || typeof listItem == "number") {
+										td.append(value);
+									} else if (Array.isArray(listItem)) {
+										listItem.forEach(function(item, index){
+											if (index != 0) {
+												td.append(", ");
+											}
+											td.append(item);
+										});
+									} else {
+										var id = listItem.oid;
+										if (listItem.getGlobalId != null) {
+											id = listItem.getGlobalId();
+										}
+										if (listItem._t != null) {
+											td.append(listItem._v);
+										} else {
+											var link = $("<a>" + listItem.getType() + " (" + id + ")</a>");
+											link.attr("oid", listItem.oid);
+											link.attr("type", listItem.getType());
+											link.click(othis.referenceClick);
+											td.append(link);
+										}
+									}
+								});
+							} else {
+								var getMethod = object["get" + field.name];
+								if (getMethod != null) {
+									getMethod.call(object, function(value){
+										if (value != null) {
+											if (typeof value == "string" || typeof value == "number") {
+												td.append(value);
+											} else {
+												if (value._t != null) {
+													td.append(value._v);
+												} else {
+													var id = value.oid;
+													if (value.getGlobalId != null) {
+														id = value.getGlobalId();
+													}
+													var a = $("<a>" + value.getType() + " (" + id + ")</a>");
+													a.attr("type", value.getType());
+													a.attr("oid", value.oid);
+													a.click(othis.referenceClick);
+													td.append(a);
+												}
+											}
+										}
+									});
 								}
 							}
-						});
-						tr.append(td);
-						containerDiv.find(".objectTable tbody").append(tr);
-					} else if (value.__type == "SSimpleDataValue") {
-						var tr = $("<tr></tr>");
-						tr.attr("fieldName", value.fieldName);
-						tr.append("<td>" + value.fieldName + "</td>");
-						tr.append("<td>" + (value.stringValue == null ? "" : value.stringValue) + "</td>");
-						containerDiv.find(".objectTable tbody").append(tr);
-					} else if (value.__type == "SReferenceDataValue") {
-						var tr = $("<tr></tr>");
-						tr.attr("fieldName", value.fieldName);
-						tr.append("<td>" + value.fieldName + "</td>");
-						var valueTd = $("<td></td>");
-						var a = $("<a>" + value.typeName + " (" + (value.guid == null ? value.oid : value.guid) + ")</a>");
-						a.attr("type", value.typeName);
-						a.attr("oid", value.oid);
-						a.click(othis.referenceClick);
-						valueTd.append(a);
-						tr.append(valueTd);
-						containerDiv.find(".objectTable tbody").append(tr);
-					}
+						}
+					});
+				}).done(function(){
+					containerDiv.find(".objectTable").show();
+					containerDiv.find(".loadingDiv").hide();
 				});
-				containerDiv.find(".objectTable").show();
 			});
 		});
 	};
@@ -126,41 +162,55 @@ function Browser(containerDiv, project, revision) {
 	};
 	
 	this.loadType = function(poid, className) {
+		containerDiv.find(".loadingDiv").show();
 		containerDiv.find(".breadcrumb").show();
 		othis.loadProject(poid, function(){
 			pushHistoryAppend({type: className, poid: poid, oid: false}, "Browser");
-			Global.bimServerApi.call("LowLevelInterface", "getDataObjectsByType", {roid: othis.revision.oid, packageName: othis.project.schema, className: className, flat: true, schema: othis.schema}, function(data){
-				containerDiv.find(".breadcrumb *").remove();
-				containerDiv.find(".breadcrumb").append("<li><a class=\"breadcrumbModel\">Model</a> <span class=\"divider\"></span></li>");
-				containerDiv.find(".breadcrumb").append("<li class=\"active\">" + className + "</li>");
-				othis.augmentBreadcrumbs();
-	
-				containerDiv.find(".objectsTable tbody tr").remove();
-				containerDiv.find("table").hide();
-				data.forEach(function(dataObject){
+			containerDiv.find(".breadcrumb *").remove();
+			containerDiv.find(".breadcrumb").append("<li><a class=\"breadcrumbModel\">Model</a> <span class=\"divider\"></span></li>");
+			containerDiv.find(".breadcrumb").append("<li class=\"active\">" + className + "</li>");
+			othis.augmentBreadcrumbs();
+
+			containerDiv.find(".objectsTable tbody tr").remove();
+			containerDiv.find("table").hide();
+			var counter = 0;
+			Global.bimServerApi.getModel(poid, othis.revision.oid, othis.project.schema, false, function(model){
+				model.getAllOfType(className, false, function(object){
 					var tr = $("<tr></tr>");
-					tr.attr("oid", dataObject.oid);
+					tr.attr("oid", object.oid);
 	
 					var oidTd = $("<td></td>");
-					var oidA = $("<a>" + dataObject.oid + "</a>");
+					var oidA = $("<a>" + object.oid + "</a>");
 					oidA.click(othis.objectClick);
 					oidTd.append(oidA);
 					tr.append(oidTd);
 	
-					var nameA = $("<a>" + dataObject.name + "</a>");
-					nameA.click(othis.objectClick);
 					var nameTd = $("<td></td>");
-					nameTd.append(nameA);
+					if (object.getName != null) {
+						var nameA = $("<a>" + object.getName() + "</a>");
+						nameA.click(othis.objectClick);
+						nameTd.append(nameA);
+					}
 					tr.append(nameTd);
 	
-					var guidA = $("<a>" + dataObject.guid + "</a>");
 					var guidTd = $("<td></td>");
-					guidA.click(othis.objectClick);
-					guidTd.append(guidA);
+					if (object.getGlobalId != null) {
+						var guidA = $("<a>" + object.getGlobalId() + "</a>");
+						guidA.click(othis.objectClick);
+						guidTd.append(guidA);
+					}
 					tr.append(guidTd);
-					containerDiv.find(".objectsTable tbody").append(tr);				
+					containerDiv.find(".objectsTable tbody").append(tr);
+					counter++;
+					if (counter > 1000) {
+						tr = $("<tr class=\"toomany\"><td></td><td>Too many objects to show</td><td></td></tr>");
+						containerDiv.find(".objectsTable tbody").append(tr);
+						return true;
+					}
+				}).done(function(){
+					containerDiv.find(".objectsTable").show();
+					containerDiv.find(".loadingDiv").hide();
 				});
-				containerDiv.find(".objectsTable").show();
 			});
 		});
 	};
