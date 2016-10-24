@@ -314,7 +314,7 @@ function Project(containerDiv, main, project) {
 						]
 					};
 				}
-				model.queryNew(preLoadQuery, function(loaded){
+				model.query(preLoadQuery, function(loaded){
 				}).done(function(){
 					console.timeEnd("preloadModel");
 					Global.notifier.setInfo("Loading model data...", -1);
