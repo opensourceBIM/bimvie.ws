@@ -329,7 +329,7 @@ function Query2(cd, parent) {
 				if (jsonObject == null) {
 					return;
 				}
-				model.queryNew(jsonObject, function(loaded){
+				model.query(jsonObject, function(loaded){
 					if (loaded.getType() != "IfcOpeningElement") {
 						oids.push(loaded.oid);
 						loaded.trans.mode = 0;
@@ -389,7 +389,7 @@ function Query2(cd, parent) {
 					if (jsonObject == null) {
 						return;
 					}
-					model.queryNew(jsonObject, function(loaded){
+					model.query(jsonObject, function(loaded){
 						if (loaded.getType() != "IfcOpeningElement") {
 							oids.push(loaded.oid);
 							delete oldOids[loaded.oid];
