@@ -351,11 +351,11 @@ function ThreeDView(containerDiv, parent, main) {
 	this.resize = function(){
 		var resizeBtn = containerDiv.find(".btnResize");
 		var fullscreen = !resizeBtn.hasClass("glyphicon-resize-full");
-		var width = Math.round($(window).width() / 3 * 2 - 29);
+		var width = Math.round($(window).width() / 3 * 2 - 28);
 		$(".overlay-controls").css("top", fullscreen ? 10 : 120);
-		var height = ($(window).height() - $(".navbar").outerHeight() - $(".navbar-header").outerHeight() - $(".right .panel-heading").outerHeight() - 41) + (fullscreen ? 113 : 0);
+		var height = ($(window).height() - $(".navbar").outerHeight() - $(".navbar-header").outerHeight() - $(".rightpanel .panel-heading").outerHeight() - 7) + (fullscreen ? 113 : 0);
 		$("div#viewport").width(width + "px");
-		$("div#viewport").height(height + "px");
+		$("div#viewport").height((height - 1) + "px");
 		o.viewer.resize($('div#viewport').width(), $('div#viewport').height());
 	};
 	

@@ -66,7 +66,7 @@ function Navigator(containerDiv, parent) {
 		var resizeBtn = $(".btnResize");
 		var fullscreen = resizeBtn.size() > 0 && !resizeBtn.hasClass("glyphicon-resize-full");
 		var width = $(window).width() / 3 - 41;
-		var height = ($(window).height() - $(".navbar").outerHeight() - $(".navbar-header").outerHeight() - containerDiv.find(".navigator .panel-heading").outerHeight()) + (fullscreen ? 113 : 0);
+		var height = ($(window).height() - $(".navbar").outerHeight() - $(".navbar-header").outerHeight() - containerDiv.find(".navigator .panel-heading").outerHeight() - 7) + (fullscreen ? 113 : 0);
 		containerDiv.find(".sidespanWrapper").width(width + "px");
 		containerDiv.find(".sidespanWrapper").height(height + "px");
 	};
