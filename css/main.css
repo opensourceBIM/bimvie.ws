@@ -200,8 +200,7 @@ div.threedview {
 }
 
 .my-fluid-container {
-	padding: 15px;
-	padding-bottom: 0px;
+	padding: 0px;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -269,9 +268,13 @@ li.treenode {
 
 .treenode .treelabel {
 	position: relative;
-	top: -5px;
+	top: -1px;
 	margin: 0;
 	padding: 0;
+	width: 200px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
 	display: inline-block;
 }
 
@@ -319,12 +322,6 @@ li.treenode {
 
 div#viewport {
 	background-color: white;
-}
-
-.treelabel a {
-	text-overflow: ellipsis;
-	overflow: hidden;
-	white-space: nowrap;
 }
 
 .eye {
@@ -554,4 +551,8 @@ input[type="file"].file {
 
 .extendeddata .bcf .list-group-item:first-child {
 	border-top: 0;
+}
+
+table.table-hover tr.toomany {
+	cursor: default;
 }

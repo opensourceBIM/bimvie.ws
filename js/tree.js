@@ -165,7 +165,12 @@ Node.prototype.createDom = function(){
 			this.parent.ul.append(this.li);
 		}
 		
-		this.img.addClass("treenodeclosed");
+		if (this.noChildren) {
+			this.img.removeClass("treenodeopen");
+			this.img.removeClass("treenodeclosed");
+		} else {
+			this.img.addClass("treenodeclosed");
+		}
 		
 		if (this.creator != null) {
 			var newNode = this.creator(this);
@@ -344,6 +349,14 @@ Node.prototype.findFirstParentWithAttr = function(attrName){
 		return null;
 	}
 };
+
+Node.prototype.setNoChildren = function(){
+	this.noChildren = true;
+	if (this.img != null) {
+		this.img.removeClass("treenodeopen");
+		this.img.removeClass("treenodeclosed");
+	}
+}
 
 Node.prototype.remove = function(){
 	removeA(this.parent.children, this);

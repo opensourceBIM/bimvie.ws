@@ -430,7 +430,7 @@ function ProjectTree(containerDiv, parent, options, selected) {
 			newNode.setIcon("ball");
 		}
 		newNode.click(othis.treeItemClick);
-		newNode.hint(object.getType());
+		newNode.hint(object.getType() + " - " + object.getName());
 		var state = types[object.getType()];
 
 		newNode.addToDom(function(node){return othis.createEye(node)});
@@ -465,6 +465,9 @@ function ProjectTree(containerDiv, parent, options, selected) {
 //				}, 50);
 				return promise;
 			});
+			if ((object.object._rIsDecomposedBy == null || object.object._rIsDecomposedBy.length == 0) && (object.object._rContainsElements == null || object.object._rContainsElements.length == 0)) {
+				newNode.setNoChildren();
+			}
 		}
 	}
 	
