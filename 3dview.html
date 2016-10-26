@@ -282,14 +282,33 @@ function ThreeDView(containerDiv, parent, main) {
 					if (object.object._rRepresentation != -1 && object.object._rRepresentation != null) {
 						if (Settings.getDefaultHiddenTypes()[object.getType()] == null || object.trans.mode == 0) {
 							if (object.object._rgeometry != null) {
-								oidsNotLoaded[object.object._rgeometry] = object.oid;
-								count++;
+								if (object.model.objects[object.object._rgeometry] != null) {
+									// Only if this data is preloaded, otherwise just don't include any gi
+									object.getGeometry(function(geometryInfo){
+										oidsNotLoaded.push({gid: object.object._rgeometry, oid: object.oid, object: object, info: geometryInfo.object});
+										count++;
+									});
+								} else {
+									oidsNotLoaded.push({gid: object.object._rgeometry, oid: object.oid, object: object});
+									count++;
+								}
 							}
 						}
 					}
 				}
 			}
 		}
+		oidsNotLoaded.sort(function(a, b){
+			if (a.info != null && b.info != null) {
+				var topa = (a.info._emaxBounds.z + a.info._eminBounds.z) / 2;
+				var topb = (b.info._emaxBounds.z + b.info._eminBounds.z) / 2;
+				return topa - topb;
+			} else {
+				// Resort back to type
+				// TODO this is dodgy when some objects do have info, and others don't
+				return a.object.getType().localeCompare(b.object.getType());
+			}
+		});
 		if (count > 0) {
 			var models = {};
 			uniqueRoids.forEach(function(roid){
@@ -304,13 +323,16 @@ function ThreeDView(containerDiv, parent, main) {
 			var first = true;
 			var progressdiv = null;
 			
-			geometryLoader.addProgressListener(function(progress, nrObjectsRead, totalNrObjects){
+			var progressbar = null;
+			var text = null;
+			
+			geometryLoader.addProgressListener(function(title, progressPercent){
 				if (first) {
 					progressdiv = $("<div class=\"progressdiv\">");
-					var text = $("<div class=\"text\">");
-					text.html("Loading");
-					var progress = $("<div class=\"progress progress-striped active\">");
-					var progressbar = $("<div class=\"progress-bar\" style=\"width: 100%\">");
+					text = $("<div class=\"text\">");
+					text.html("Blaat");
+					var progress = $("<div class=\"progress progress-striped\">");
+					progressbar = $("<div class=\"progress-bar\" style=\"width: 100%\">");
 					progressdiv.append(text)
 					progressdiv.append(progress);
 					progress.append(progressbar);
@@ -320,10 +342,11 @@ function ThreeDView(containerDiv, parent, main) {
 					first = false;
 				}
 				//text.html("Loading... (" + nrObjectsRead + "/" + totalNrObjects + ")");
-				if (progress == "done") {
+				if (title == "done") {
 					progressdiv.fadeOut(400);
 				} else {
-					//progressbar.css("width", progress + "%");
+					text.html(title);
+					progressbar.css("width", progressPercent + "%");
 				}
 			});
 			
