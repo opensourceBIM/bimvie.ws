@@ -1,0 +1,389 @@
+<div class="bulkcheckin">
+	<div class="modal-dialog">
+    	<div class="modal-content">	
+			<div class="modal-header">
+		    	<a class="close" data-dismiss="modal">&times;</a>
+		    	<h3>Bulk Checkin</h3>
+		  	</div>
+    		<div class="modal-body">
+				<a class="uploadlink">This project has subprojects, click here if you still want to checkin a new revision</a>
+				<div class="checkinWarning alert initialhide"></div>
+				<div class="uploadStatus"></div>
+				<div class="progressBarHolder"></div>
+				<div class="uploads">
+					<div class="btn-group" data-toggle="buttons" style="margin-bottom: 10px">
+						<label class="btn btn-default active btnFileUpload"><input type="radio" selected>File upload</label>
+						<label class="btn btn-default btnUrl"><input type="radio">URL</label>
+					</div>
+					<div class="upload">
+						You can only upload a zip file here. Every folder (and subfolder) will become a new sub project. When there are multiple IFC files in any given folder, sub projects will be created for each of them.
+						<div class="uploadarea well">
+							<p>Drag and drop your file here, or <button class="btn btn-primary chooseFileButton">Choose File</button></p>
+							<div class="uploadMessages">
+								<span class="fileSize ih">Selected file: <span class="name"></span> (<span class="size"></span>)</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="comment">Comment</label>
+							<textarea id="comment" class="comment form-control" name="comment" rows="4"></textarea>
+						</div>
+						<div class="checkbox mergeDiv ih">
+							<label>Merge
+								<input class="merge" name="merge" type="checkbox"/>
+							</label>
+						</div>
+					</div>
+					<div class="uploadbranch initialhide">
+						<form method="post">
+							<label for="projectRevision">Project/Revision</label>
+							<select id="projectRevision" class="revisionSelect form-control" name="roid">
+							</select> 
+							<label for="branchComment">Comment</label>
+							<textarea id="branchComment" class="form-control" name="comment" rows="4"></textarea>
+							<input type="hidden" name="action" value="branchtoexistingproject" />
+							<input type="hidden" name="destpoid" />
+						</form>
+						<br/>
+					</div>
+					<div class="checkinurl initialhide">
+						<div class="form-group">
+							<label for="url">URL</label>
+							<input id="url" type="text" class="urlinput form-control"/>
+						</div>
+						<div class="form-group">
+							<label for="deserializerNameUrl">Deserializer</label>
+							<select id="deserializerNameUrl" class="deserializerNameUrl form-control" name="deserializerName">
+								<option value="[NONE]">Select a deserializer</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="commentUrl">Comment</label>
+							<textarea id="commentUrl" class="commentUrl form-control" name="comment" rows="4"></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+		  	<div class="modal-footer">
+		    	<a class="btn btn-default" data-dismiss="modal">Close</a>
+		    	<a class="btn uploadButton btn-primary">Checkin new revision</a>
+		  	</div>
+		</div>
+	</div>
+</div>
+<script>
+var lastVal = "";
+
+function BulkCheckin(containerDiv, project, successFunction) {
+	var othis = this;
+	othis.progressDoneHandled = false;
+	othis.project = project;
+	
+	this.hideUpload = function() {
+		containerDiv.find(".uploads").hide();
+		containerDiv.find(".uploadProgressBar").show();
+		containerDiv.find(".uploadButton").hide();
+		containerDiv.find(".uploadStatus").show();
+	};
+
+	this.showUpload = function() {
+		containerDiv.find(".uploads").show();
+		containerDiv.find(".uploadProgressBar").hide();
+		containerDiv.find(".uploadButton").show();
+	};
+	
+	containerDiv.find(".uploadajaxloader").hide();
+
+	var requests = [];
+	requests.push(["PluginInterface", "getAllDeserializersForProject", {onlyEnabled: true, poid: project.oid}]);
+	requests.push(["SettingsInterface", "isCheckinMergingEnabled", {}]);
+	requests.push(["ServiceInterface", "getCheckinWarnings", {poid: othis.project.oid}]);
+	
+	Global.bimServerApi.multiCall(requests, function(data){
+		data[0].result.forEach(function(deserializer){
+			var option = $("<option value=\"" + deserializer.oid + "\">" + deserializer.name + "</option>");
+			containerDiv.find(".deserializerName").append(option);
+			
+			var option = $("<option value=\"" + deserializer.oid + "\">" + deserializer.name + "</option>");
+			containerDiv.find(".deserializerNameUrl").append(option);
+		});
+		if (data[1].result) {
+			$(".mergeDiv").show();
+		}
+		var warnings = data[2].result;
+		if (warnings.length > 0) {
+			warnings.forEach(function(warning){
+				$(".checkinWarning").append(warning).show();
+			});
+		}
+	});
+
+	var submitdata = null;
+	var shouldsend = false;
+	var currentCheckinId = null;
+	var fileselected = false;
+
+	this.progressHandler = function(topicId, state) {
+		var oldStage = othis.stage;
+		othis.stage = state.stage;
+		if (state.state == "AS_ERROR") {
+			containerDiv.find(".uploadStatus").empty();
+			state.errors.forEach(function(error){
+				containerDiv.find(".uploadStatus").append("<div class=\"alert alert-block alert-danger\">" + error + "</div>");
+			});
+			othis.showUpload();
+			Global.bimServerApi.unregisterProgressHandler(topicId, othis.progressHandler);
+		} else {
+			containerDiv.find(".uploadStatus").html(state.title);
+			if (oldStage != state.stage) {
+				containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
+				containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress initialhide\"><div class=\"progress-bar\"></div></div>");
+			}
+			if (state.progress == -1) {
+				containerDiv.find(".uploadProgressBar").addClass("progress-striped").addClass("active");
+				containerDiv.find(".uploadProgressBar .progress-bar").css("width", "100%");
+			} else {
+				containerDiv.find(".uploadProgressBar").removeClass("progress-striped").removeClass("active");
+				containerDiv.find(".uploadProgressBar .progress-bar").css("width", parseInt(state.progress) + "%");
+			}
+			containerDiv.find(".progressBarHolder .uploadProgressBar").show();
+			if (state.state == "FINISHED") {
+				if (!othis.progressDoneHandled) {
+					othis.progressDoneHandled = true;
+					containerDiv.find(".bulkcheckin").parent().modal("hide");
+					Global.bimServerApi.callWithNoIndication("ServiceInterface", "cleanupLongAction", {topicId: topicId}, function(){
+					}).done(function(){
+						// This also automatically unregisters the progress handler, so we only have to tell bimserverapi that it's unregistered
+						Global.bimServerApi.unregister(othis.progressHandler);
+						successFunction();
+					});
+				}
+			} else if (state.state == "STARTED" || state.state == "NONE") {
+			}
+		}
+	};
+	
+	this.uploadNew = function(project){
+		window.onbeforeunload = function() {
+			return "You are uploading a model, if you close your browser/tab now, it will not continue";
+		}
+
+		containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
+		containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"progress-bar\"></div></div>");
+		
+		othis.hideUpload();
+		
+		containerDiv.find(".uploadStatus").html("Uploading...").show();
+
+		var xhr = new XMLHttpRequest();
+		
+		xhr.upload.addEventListener("progress",
+			function(e) {
+				if (e.lengthComputable) {
+					var percentage = Math.round((e.loaded * 100) / e.total);
+					containerDiv.find(".progressBarHolder .uploadProgressBar .progress-bar").css("width", percentage + "%");
+				}
+			}, false);
+
+		xhr.addEventListener("load", function(e) {
+			var result = JSON.parse(this.response);
+			
+			containerDiv.find(".bulkcheckin").parent().modal("hide");
+			window.onbeforeunload = null;
+			successFunction();
+		}, false);
+		xhr.open("POST", Global.bimServerApi.baseUrl + "/bulkupload");
+
+		var formData = new window.FormData();
+		
+		formData.append("token", Global.bimServerApi.token);
+		formData.append("comment", containerDiv.find(".comment").val());
+		formData.append("poid", project.oid);
+		formData.append("file", othis.file);
+
+		xhr.send(formData);
+	};
+	
+	this.processFiles = function(files) {
+		othis.validFile = false;
+		for (var i = 0, file; file = files[i]; i++) {
+			othis.file = file;
+			
+			if (containerDiv.find(".comment").val() == "" || containerDiv.find("#comment").val() == lastVal) {
+				var path = null;
+				path = file.name;
+				if (path.indexOf("/") != -1) {
+					path = path.substr(path.lastIndexOf("/") + 1);
+				} else if (path.indexOf("\\") != -1) {
+					path = path.substr(path.lastIndexOf("\\") + 1);
+				}
+				containerDiv.find(".comment").val(path);
+				lastVal = path;
+			}
+
+			
+        	var path = file.name;
+		    var lastIndex = path.lastIndexOf(".");
+		    if (lastIndex != -1) {
+			    var extension = path.substring(path.lastIndexOf(".") + 1);
+			    Global.bimServerApi.call("ServiceInterface", "getSuggestedDeserializerForExtension", {extension: extension, poid: project.oid}, function(data){
+			    	if (data.oid != null) {
+				    	containerDiv.find(".deserializerName").val(data.oid);
+						othis.updateSubmitButton();
+			    	}
+				});
+		    }
+			
+			var size = othis.file.size;
+			var name = othis.file.name;
+			othis.validFile = true;
+			containerDiv.find(".uploadMessages *").hide();
+			containerDiv.find(".uploadMessages .fileSize").show();
+			containerDiv.find(".uploadMessages .fileSize .name").html(name).show();
+			containerDiv.find(".uploadMessages .fileSize .size").html(bytesToSize(size)).show();
+			break;
+		}
+		othis.updateSubmitButton();
+	};
+	
+	this.updateSubmitButton = function() {
+		window.setTimeout(function(){
+			if (containerDiv.find(".btnFileUpload").hasClass("active")) {
+		        if (containerDiv.find(".deserializerName").val() != "[NONE]" && othis.validFile) {
+		        	containerDiv.find(".uploadButton").show();
+		        } else {
+		        	containerDiv.find(".uploadButton").hide();
+		        }
+			} else if (containerDiv.find(".btnUrl").hasClass("active")) {
+		        if (containerDiv.find(".deserializerNameUrl").val() != "[NONE]" && containerDiv.find(".urlinput").val().trim() != "") {
+		        	containerDiv.find(".uploadButton").show();
+		        } else {
+		        	containerDiv.find(".uploadButton").hide();
+		        }
+			}
+		}, 0);
+	}
+	
+	containerDiv.find('.uploadarea, .uploadarea *').on('dragover', function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+	});
+
+	containerDiv.find('.uploadarea').on('dragbetterenter', function(e) {
+		containerDiv.find(".uploadarea").css("background-color", "#EEEEEE");
+		e.preventDefault();
+		e.stopPropagation();
+	});
+
+	containerDiv.find('.uploadarea').on("dragbetterleave", function(e) {
+		containerDiv.find(".uploadarea").removeAttr("style");
+		e.preventDefault();
+		e.stopPropagation();
+	});
+	
+	containerDiv.find('.uploadarea').on("drop", function(e) {
+		othis.processFiles(e.originalEvent.dataTransfer.files);
+		e.preventDefault();
+	});
+	
+	containerDiv.find(".deserializerName").change(othis.updateSubmitButton);
+	
+	containerDiv.find(".uploadButton").click(function(event){
+		if (containerDiv.find(".checkinurl").is(":visible")) {
+			othis.hideUpload();
+			containerDiv.find(".uploadProgressBar").addClass("progress-striped").addClass("active");
+			containerDiv.find(".uploadProgressBar .progress-bar").css("width", "100%");
+			containerDiv.find(".uploadStatus").html("<div class=\"alert alert-block alert-info\">Connecting to remote server...</div>");
+			Global.bimServerApi.callWithFullIndication("ServiceInterface", "checkinFromUrl", {
+				deserializerOid: containerDiv.find(".checkinurl .deserializerNameUrl").val(),
+				comment: containerDiv.find(".commentUrl").val(),
+				merge: false,
+				poid: othis.project.oid,
+				url: containerDiv.find(".urlinput").val(),
+				sync: false,
+				fileName: null
+			}, function(data){
+				currentCheckinId = data;
+				containerDiv.find(".uploadStatus").html("Uploading file...");
+				containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
+				containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"progress-bar\"></div></div>");
+				Global.bimServerApi.registerProgressHandler(currentCheckinId, othis.progressHandler);
+				
+				containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
+				containerDiv.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"progress-bar\"></div></div>");
+			});
+		} else {
+			othis.deserializerOid = containerDiv.find(".deserializerName").val();
+			othis.uploadNew(othis.project);
+			event.preventDefault();
+		}
+	});
+
+	containerDiv.find(".btnBranch").click(function(){
+		containerDiv.find(".upload").hide();
+		containerDiv.find(".showuploadlink, .checkinurllink").show();
+		containerDiv.find(".checkinurl").hide();
+		containerDiv.find(".uploadbranch").show();
+		containerDiv.find(".uploadButton").html("Checkin existing revision");
+		othis.updateSubmitButton();
+	});
+	
+	containerDiv.find(".btnUrl").click(function(){
+		containerDiv.find(".upload, .uploadbranch").hide();
+		containerDiv.find(".checkinurl").show();
+		containerDiv.find(".checkinurllink").hide();
+		containerDiv.find(".urlinput").focus();
+		containerDiv.find(".uploadButton").html("Checkin new revision");
+		othis.updateSubmitButton();
+	});
+	
+	containerDiv.find(".btnFileUpload").click(function(){
+		containerDiv.find(".upload").show();
+		containerDiv.find(".showuploadlink").hide();
+		containerDiv.find(".uploadbranch, .checkinurl").hide();
+		containerDiv.find(".uploadButton").html("Checkin new revision");
+		othis.updateSubmitButton();
+	});
+	
+	containerDiv.find(".chooseFileButton").click(function() {
+		$(".file").trigger("click");
+	});
+
+	containerDiv.find(".deserializerNameUrl").change(othis.updateSubmitButton);
+	containerDiv.find(".urlinput").keyup(othis.updateSubmitButton);
+	containerDiv.find(".urlinput").bind("paste", function(){
+		othis.updateSubmitButton();
+		window.setTimeout(function(){
+			var path = containerDiv.find(".urlinput").val();
+		    var lastIndex = path.lastIndexOf(".");
+		    if (lastIndex != -1) {
+			    var extension = path.substring(path.lastIndexOf(".") + 1);
+			    Global.bimServerApi.call("ServiceInterface", "getSuggestedDeserializerForExtension", {extension: extension, poid: project.oid}, function(data){
+			    	containerDiv.find(".deserializerNameUrl").val(data.oid);
+					othis.updateSubmitButton();
+				});
+		    }
+		}, 0);
+	});
+
+	$(".file").remove();
+	var fileInput = $("<input type=\"file\" class=\"file\"/>");
+	$("body").append(fileInput);
+
+	$(".file").change(function(e){
+		othis.processFiles(e.target.files)
+	});
+	
+	containerDiv.find(".uploadButton").hide();
+	if (othis.project.subProjects.length != 0) {
+		containerDiv.find(".uploadlink").show();
+		containerDiv.find(".uploadlink").click(function(){
+			containerDiv.find(".uploads").show();
+			containerDiv.find(".uploadlink").hide();
+		});
+		containerDiv.find(".uploads").hide();
+	} else {
+		containerDiv.find(".uploads").show();
+		containerDiv.find(".uploadlink").hide();
+	}
+}
+</script>

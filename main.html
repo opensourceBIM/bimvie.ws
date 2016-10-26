@@ -351,6 +351,18 @@ function Main(address, user) {
 			});
 		}).modal({keyboard:true});
 	};
+
+	this.showBulkCheckinPopup = function(project, callback) {
+		var div = $("<div class=\"modal fade\">");
+		$(document.body).append(div);
+		div.load(Global.baseDir + "bulkcheckin.html", function(){
+			new BulkCheckin($(this), project, function(){
+				if (callback != null) {
+					callback();
+				}
+			});
+		}).modal({keyboard:true});
+	};
 	
 	this.showDownloadCheckoutPopup = function(poid, roid) {
 		var div = $("<div class=\"modal fade\">");

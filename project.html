@@ -152,7 +152,7 @@ function Project(containerDiv, main, project) {
 						defines: {
 							Representation: {
 								type: "IfcProduct",
-								field: "Representation"
+								fields: ["Representation", "geometry"]
 							},
 							ContainsElementsDefine: {
 								type: "IfcSpatialStructureElement",
@@ -420,6 +420,13 @@ function Project(containerDiv, main, project) {
 								Global.bimServerApi.call("ServiceInterface", "getProjectSmallByPoid", {poid: othis.navigator.projecttree.selectedNode.poid}, function(projectSmall){
 									othis.changeRevision(projectSmall, projectSmall.lastRevisionId);
 								});
+							});
+						});
+					}).find("a").prepend("<i class=\"glyphicon glyphicon-cloud-upload\"></i> ");
+					othis.navigator.projecttree.addMenuItem("Bulk checkin...", "btnBulkCheckin", function(){
+						Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: othis.navigator.projecttree.selectedNode.poid}, function(project){
+							main.showBulkCheckinPopup(project, function(){
+								window.location.reload();
 							});
 						});
 					}).find("a").prepend("<i class=\"glyphicon glyphicon-cloud-upload\"></i> ");
