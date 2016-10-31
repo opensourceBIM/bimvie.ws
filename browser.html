@@ -29,27 +29,31 @@
 		</thead>
 		<tbody></tbody>
 	</table>
+	<div id="browserviewport" style="width: 1200px; height: 800px"></div>
 </div>
 <script>
 function Browser(containerDiv, project, revision) {
-	var othis = this;
-	othis.revision = revision;
-	othis.project = project;
+	var o = this;
+	o.revision = revision;
+	o.project = project;
 	
 	this.loadObject = function(poid, oid) {
 		containerDiv.find(".loadingDiv").show();
-		othis.loadProject(poid, function(){
-			othis.oid = oid;
+		o.loadProject(poid, function(){
+			o.oid = oid;
 			pushHistoryAppend({oid: oid, poid: poid, type: false}, "Browser");
 
-			Global.bimServerApi.getModel(poid, othis.revision.oid, othis.project.schema, false, function(model){
+			var objectToShow = null;
+			
+			Global.bimServerApi.getModel(poid, o.revision.oid, o.project.schema, false, function(model){
 				model.get(oid, function(object){
+					objectToShow = object;
 					containerDiv.find(".breadcrumb *").remove();
 					containerDiv.find(".breadcrumb").append("<li><a class=\"breadcrumbModel\">Model</a> <span class=\"divider\"></span></li>");
 					containerDiv.find(".breadcrumb").append("<li><a class=\"breadcrumbClass\">" + object.getType() + "</a> <span class=\"divider\"></span></li>");
 					containerDiv.find(".breadcrumb").append("<li class=\"active\">" + oid + "</li>");
 					containerDiv.find(".breadcrumb").show();
-					othis.augmentBreadcrumbs();
+					o.augmentBreadcrumbs();
 		
 					containerDiv.find(".objectTable tbody tr").remove();
 					containerDiv.find("table").hide();
@@ -103,7 +107,7 @@ function Browser(containerDiv, project, revision) {
 											var link = $("<a>" + listItem.getType() + " (" + id + ")</a>");
 											link.attr("oid", listItem.oid);
 											link.attr("type", listItem.getType());
-											link.click(othis.referenceClick);
+											link.click(o.referenceClick);
 											td.append(link);
 										}
 									}
@@ -126,7 +130,7 @@ function Browser(containerDiv, project, revision) {
 													var a = $("<a>" + value.getType() + " (" + id + ")</a>");
 													a.attr("type", value.getType());
 													a.attr("oid", value.oid);
-													a.click(othis.referenceClick);
+													a.click(o.referenceClick);
 													td.append(a);
 												}
 											}
@@ -139,56 +143,71 @@ function Browser(containerDiv, project, revision) {
 				}).done(function(){
 					containerDiv.find(".objectTable").show();
 					containerDiv.find(".loadingDiv").hide();
+					
+					o.viewer = new BIMSURFER.Viewer(Global.bimServerApi, 'browserviewport');
+					o.viewer.loadScene(function(){
+						Global.scene = o.viewer.scene;
+						
+						objectToShow.gid = objectToShow.object._rgeometry;
+						objectToShow.trans.mode = 0;
+						
+						var models = {};
+						models[o.revision.oid] = model;
+						var geometryLoader = new GeometryLoader(Global.bimServerApi, models, o.viewer, "triangles");
+
+						geometryLoader.setLoadOids([o.revision.oid], [objectToShow]);
+						o.viewer.loadGeometry(geometryLoader);
+					});
 				});
 			});
 		});
 	};
 	
 	this.close = function() {
-		if (othis.viewer != null) {
-			othis.viewer.destroy();
+		if (o.viewer != null) {
+			//o.viewer.destroy();
 		}
 	};
 	
 	this.referenceClick = function(event) {
 		event.preventDefault();
-		othis.loadObject(othis.project.oid, $(this).attr("oid"));
+		o.loadObject(o.project.oid, $(this).attr("oid"));
 	};
 	
 	this.objectClick = function(event) {
 		event.preventDefault();
 		var oid = $(this).parents("tr").attr("oid");
-		othis.loadObject(othis.project.oid, oid);
+		o.loadObject(o.project.oid, oid);
 	};
 	
 	this.loadType = function(poid, className) {
 		containerDiv.find(".loadingDiv").show();
 		containerDiv.find(".breadcrumb").show();
-		othis.loadProject(poid, function(){
+		o.loadProject(poid, function(){
 			pushHistoryAppend({type: className, poid: poid, oid: false}, "Browser");
 			containerDiv.find(".breadcrumb *").remove();
 			containerDiv.find(".breadcrumb").append("<li><a class=\"breadcrumbModel\">Model</a> <span class=\"divider\"></span></li>");
 			containerDiv.find(".breadcrumb").append("<li class=\"active\">" + className + "</li>");
-			othis.augmentBreadcrumbs();
+			o.augmentBreadcrumbs();
 
 			containerDiv.find(".objectsTable tbody tr").remove();
 			containerDiv.find("table").hide();
 			var counter = 0;
-			Global.bimServerApi.getModel(poid, othis.revision.oid, othis.project.schema, false, function(model){
+			Global.bimServerApi.getModel(poid, o.revision.oid, o.project.schema, false, function(model){
 				model.getAllOfType(className, false, function(object){
 					var tr = $("<tr></tr>");
 					tr.attr("oid", object.oid);
 	
 					var oidTd = $("<td></td>");
 					var oidA = $("<a>" + object.oid + "</a>");
-					oidA.click(othis.objectClick);
+					oidA.click(o.objectClick);
 					oidTd.append(oidA);
 					tr.append(oidTd);
 	
 					var nameTd = $("<td></td>");
 					if (object.getName != null) {
 						var nameA = $("<a>" + object.getName() + "</a>");
-						nameA.click(othis.objectClick);
+						nameA.click(o.objectClick);
 						nameTd.append(nameA);
 					}
 					tr.append(nameTd);
@@ -196,7 +215,7 @@ function Browser(containerDiv, project, revision) {
 					var guidTd = $("<td></td>");
 					if (object.getGlobalId != null) {
 						var guidA = $("<a>" + object.getGlobalId() + "</a>");
-						guidA.click(othis.objectClick);
+						guidA.click(o.objectClick);
 						guidTd.append(guidA);
 					}
 					tr.append(guidTd);
@@ -216,24 +235,24 @@ function Browser(containerDiv, project, revision) {
 	};
 	
 	this.typeClick = function() {
-		othis.loadType(othis.project.oid, $(this).parents("tr").attr("className"));
+		o.loadType(o.project.oid, $(this).parents("tr").attr("className"));
 	};
 
 	this.loadProject = function(poid, callback) {
 		Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: poid}, function(project){
-			othis.schema = project.schema;
+			o.schema = project.schema;
 			callback();
 		});
 	};
 	
 	this.loadRevision = function(poid) {
 		containerDiv.find(".breadcrumb").hide();
-		othis.loadProject(poid, function(){
+		o.loadProject(poid, function(){
 			pushHistoryAppend({type: false, poid: poid, oid: false}, "Browser");
 			containerDiv.find(".breadcrumb *").remove();
 			containerDiv.find(".breadcrumb").append("<li class=\"active\">Model</li>");
-			othis.augmentBreadcrumbs();
-			Global.bimServerApi.call("ServiceInterface", "getRevisionSummary", {roid: othis.revision.oid}, function(data){
+			o.augmentBreadcrumbs();
+			Global.bimServerApi.call("ServiceInterface", "getRevisionSummary", {roid: o.revision.oid}, function(data){
 				containerDiv.find(".typesTable tbody tr").remove();
 				containerDiv.find("table").hide();
 				containerDiv.find(".load3dButton, .browser .3dviewport").hide();
@@ -246,7 +265,7 @@ function Browser(containerDiv, project, revision) {
 							tr.attr("className", revisionSummaryType.name);
 							var nameTd = $("<td>");
 							var nameA = $("<a>" + revisionSummaryType.name + "</a>");
-							nameA.click(othis.typeClick);
+							nameA.click(o.typeClick);
 							nameTd.append(nameA);
 							tr.append(nameTd);
 							tr.append("<td>" + revisionSummaryType.count + "</td>");
@@ -261,13 +280,13 @@ function Browser(containerDiv, project, revision) {
 
 	this.augmentBreadcrumbs = function(){
 		containerDiv.find(".breadcrumb").find(".breadcrumbObject").click(function(){
-			othis.loadObject(othis.project.oid, $(this).html());
+			o.loadObject(o.project.oid, $(this).html());
 		});
 		containerDiv.find(".breadcrumb").find(".breadcrumbClass").click(function(){
-			othis.loadType(othis.project.oid, $(this).html());
+			o.loadType(o.project.oid, $(this).html());
 		});
 		containerDiv.find(".breadcrumb").find(".breadcrumbModel").click(function(){
-			othis.loadRevision(othis.project.oid);
+			o.loadRevision(o.project.oid);
 		});
 	};
 
@@ -275,11 +294,11 @@ function Browser(containerDiv, project, revision) {
 		var history = History.getState().data;
 		var poid = history.poid;
 		if (history.type != null) {
-			othis.loadType(poid, history.type);
+			o.loadType(poid, history.type);
 		} else if (history.oid != null) {
-			othis.loadObject(poid, history.oid);
+			o.loadObject(poid, history.oid);
 		} else {
-			othis.loadRevision(poid);
+			o.loadRevision(poid);
 		}
 	};
 }

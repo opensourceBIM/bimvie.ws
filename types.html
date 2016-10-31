@@ -74,7 +74,6 @@ function Types(containerDiv, parent) {
 	};
 	
 	this.loadRevision = function(project, roid){
-		console.time("Types.loadRevision");
 		containerDiv.find(".modelLoader").hide();
 		if (roid != -1 && project.nrSubProjects == 0 || project.subProjects.length == 0) {
 			var model = parent.models[roid];
@@ -138,7 +137,6 @@ function Types(containerDiv, parent) {
 				}				
 			}
 		}
-		console.timeEnd("Types.loadRevision");
 	};
 	
 	othis.unloadRevision = function(poid, roid) {

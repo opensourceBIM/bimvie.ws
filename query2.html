@@ -6,7 +6,7 @@
 			</select>
 		</div>
 		<div class="form-group">
-			<textarea class="form-control" rows="20"></textarea>
+			<textarea class="form-control queryInp"></textarea>
 		</div>
 		<div class="form-group">
 			<button class="btn btn-primary querySetBtn">Query Set</button>
@@ -360,8 +360,6 @@ function Query2(cd, parent) {
 			}
 		});
 		
-		console.log(roids);
-		
 		var params = {
 			downloadType: "download",
 			allowCheckouts: false,
@@ -412,5 +410,13 @@ function Query2(cd, parent) {
 	parent.modelAddedListeners.register(o.addRevision);
 	parent.modelLoadedListeners.register(o.loadRevision);
 	parent.modelUnloadedListeners.register(o.unloadRevision);
+	
+	this.resize = function(){
+		var height = ($(window).height() - $(".navbar").outerHeight() - $(".navbar-header").outerHeight() - cd.find(".navigator .panel-heading").outerHeight() - 187);
+		cd.find(".queryInp").height(height + "px");
+	};
+
+	o.resize();
+	$(window).resize(o.resize);
 }
 </script>

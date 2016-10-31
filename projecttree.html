@@ -74,10 +74,8 @@ function ProjectTree(containerDiv, parent, options, selected) {
 		if (project.nrSubProjects == 0 || (project.subProjects != null && project.subProjects.length == 0)) {
 			if (roid != -1) {
 				node.onLoad(function(){
-					console.time("projectTreeLoad");
 					var promise = othis.loadProjectTree(project, roid, node, types);
 					promise.done(function(){
-						console.timeEnd("projectTreeLoad");
 					});
 					return promise;
 				});

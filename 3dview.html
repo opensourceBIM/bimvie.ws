@@ -311,8 +311,10 @@ function ThreeDView(containerDiv, parent, main) {
 		});
 		if (count > 0) {
 			var models = {};
+			var lastModel;
 			uniqueRoids.forEach(function(roid){
 				models[roid] = parent.models[roid];
+				lastModel = parent.models[roid];
 			});
 			var geometryType = $.cookie(main.user.oid + "geometrytype");
 			if (geometryType == null) {
@@ -351,6 +353,7 @@ function ThreeDView(containerDiv, parent, main) {
 			});
 			
 			geometryLoader.setLoadOids(uniqueRoids, oidsNotLoaded);
+			geometryLoader.setTitle(lastModel.name);
 			
 			// This might be needed when the geometryloader comes up with more objects than requested...
 			geometryLoader.objectAddedListeners.push(function(oid){
