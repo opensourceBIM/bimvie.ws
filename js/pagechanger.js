@@ -82,6 +82,7 @@ function TabChanger2(navElement, mainContainer) {
 	othis.currentContentElement = null;
 	
 	this.changeTab = function(linkElement, page, contentElement, constructorFunction, callback) {
+		console.log("changetab", page, contentElement);
 		if (othis.currentContentElement != null && contentElement != null && othis.currentContentElement.get(0) == contentElement.get(0)) {
 			if (typeof page == "string") {
 				othis.current = constructorFunction.call(contentElement);
@@ -109,7 +110,7 @@ function TabChanger2(navElement, mainContainer) {
 						console.log(response, xhr.status, xhr.statusText);
 					} else {
 						othis.current = constructorFunction.call(this);
-						contentElement.show();
+						contentElement.show(true);
 						if (callback != null) {
 							callback.call(othis.current);
 						}
@@ -118,7 +119,7 @@ function TabChanger2(navElement, mainContainer) {
 			} else {
 				othis.current = page;
 				contentElement.append(page);
-				contentElement.show();
+				contentElement.show(true);
 				if (callback != null) {
 					callback.call(othis.current);
 				}
@@ -128,7 +129,7 @@ function TabChanger2(navElement, mainContainer) {
 			if (callback != null) {
 				callback.call(othis.current);
 			}
-			contentElement.show();
+			contentElement.show(true);
 		}
 		othis.currentContentElement = contentElement;
 	};

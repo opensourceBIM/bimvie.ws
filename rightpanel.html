@@ -74,8 +74,9 @@
 					<div class="details ih">
 					</div>
 					<div class="serviceList">
-						<div class="well well-sm noservices">No services</div>
+						<div class="well well-sm noservices">No old services</div>
 						<table class="servicesTable initialhide table table-striped table-hover">
+							<caption>Old services</caption>
 							<thead>
 								<tr>
 									<th>Name</th>
@@ -88,7 +89,8 @@
 					</div>
 					<div class="newServiceList">
 						<div class="well well-sm nonewservices">No new services</div>
-						<table class="servicesTable initialhide table table-striped table-hover">
+						<table class="newServicesTable initialhide table table-striped table-hover">
+							<caption>New services</caption>
 							<thead>
 								<tr>
 									<th>Name</th>
@@ -266,12 +268,12 @@ function RightPanel(cd, main, project, projectPage) {
 		$(".sidespan").empty();
 	};
 
-	this.show = function() {
+	this.show = function(clickInitiated) {
 		if (typeof project == "number" || typeof project == "string") {
 			othis.reloadProject(project);
 		} else {
 			othis.project = project;
-			othis.updateProject();
+			othis.updateProject(clickInitiated);
 		}
 	};
 
@@ -516,6 +518,20 @@ function RightPanel(cd, main, project, projectPage) {
 			});
 		}
 	};
+
+	this.newServiceRowClick = function(event){
+		if (!$(event.target).is("a, button, span.caret")) {
+			var service = $(this).parents("tr").andSelf().data("service");
+			event.preventDefault();
+			var div = $("<div class=\"serviceDetail\">");
+			cd.find(".serviceList").hide();
+			cd.find(".newServiceList").hide();
+			cd.find(".services").append(div);
+			div.load(Global.baseDir + "newservice.html", function(){
+				new NewService($(this), main, service, othis);
+			});
+		}
+	};
 	
 	this.serviceClick = function(){
 		othis.showService($(this).data("service"));
@@ -535,7 +551,7 @@ function RightPanel(cd, main, project, projectPage) {
 		cd.find(".newServiceList").hide();
 		othis.tabChanger.changeTab($(".servicesLink"), "newservice.html", $(".services"), function(){
 			pushHistory({page: "Project", poid: othis.project.oid, tab: "services"}, "Project");
-			return new NewService(main, service, serverId);
+			return new NewService($(this), main, service, serverId);
 		}, callback);
 	};
 
@@ -612,8 +628,7 @@ function RightPanel(cd, main, project, projectPage) {
 	};
 	
 	this.registerApplication = function(service, callback){
-		console.log(document.location);
-		var redirectUrl = document.location.origin + document.location.pathname + "?page=oauthresponse";
+		var redirectUrl = document.location.origin + document.location.pathname + "?page=oauthresponse&tab=services";
 		Global.bimServerApi.call("OAuthInterface", "registerApplication", {
 			registrationEndpoint: service.registerUrl,
 			apiUrl: service.resourceUrl,
@@ -630,10 +645,10 @@ function RightPanel(cd, main, project, projectPage) {
 	this.addNewService = function(service) {
 		var servicesDiv = cd.find(".newServiceList");
 		servicesDiv.find(".noservices").hide();
-		servicesDiv.find(".servicesTable").show();
+		servicesDiv.find("table").show();
 		var tr = $("<tr class=\"service\">");
 		tr.data("service", service);
-		tr.click(othis.serviceRowClick);
+		tr.click(othis.newServiceRowClick);
 		var td = $("<td soid=\"" + service.oid + "\"></td>");
 		loadNewService(td);
 		tr.append(td);
@@ -656,7 +671,7 @@ function RightPanel(cd, main, project, projectPage) {
 			actionsTd.append(authenticateLink);
 		}		
 		tr.append(actionsTd);
-		servicesDiv.find(".servicesTable tbody").append(tr);
+		servicesDiv.find(".newServicesTable tbody").append(tr);
 	};
 	
 	this.removeModelChecker = function(){
@@ -835,13 +850,20 @@ function RightPanel(cd, main, project, projectPage) {
 	};
 
 	this.loadServices = function(callback, pushToHistory) {
-		$(".services .details").hide();
+		cd.find(".services .details").hide();
 		cd.find(".serviceList").show();
+		cd.find(".servicesTable").hide();
+		cd.find(".newServicesTable").hide();
 		cd.find(".newServiceList").show();
 		cd.find(".serviceDetail").hide();
 		cd.find(".noservices").show();
-		cd.find(".servicesTable").hide();
+		cd.find(".nonewservices").show();
 		othis.tabChanger.changeTab($(".servicesLink"), null, $(".services"), function(){
+			if (pushToHistory == true) {
+				pushHistory({page: "Project", poid: othis.project.oid, tab: "services"}, "Project");
+			}
+			return $(".services");
+		}, function(){
 			Global.bimServerApi.call("ServiceInterface", "getAllServicesOfProject", {poid: othis.project.oid}, function(data){
 				cd.find(".servicesTable tr.service").remove();
 				data.forEach(function(service){
@@ -851,18 +873,17 @@ function RightPanel(cd, main, project, projectPage) {
 				});
 			});
 			Global.bimServerApi.call("ServiceInterface", "getAllNewServicesOfProject", {poid: othis.project.oid}, function(data){
-				cd.find(".servicesTable tr.service").remove();
+				cd.find(".newServicesTable tr.service").remove();
 				data.forEach(function(service){
 					cd.find(".nonewservices").hide();
 					cd.find(".newServicesTable").show();
 					othis.addNewService(service);
 				});
 			});
-			if (pushToHistory == true) {
-				pushHistory({page: "Project", poid: othis.project.oid, tab: "services"}, "Project");
+			if (callback != null) {
+				callback();
 			}
-			return $(".services");
-		}, callback);
+		});
 	};
 
 	this.loadModelCheckers = function(callback) {
@@ -902,11 +923,11 @@ function RightPanel(cd, main, project, projectPage) {
 		});
 	};
 	
-	this.addServiceClick = function() {
+	this.addServiceClick = function(clickInitiated) {
 		main.showAddService(othis.project, null, true);
 	};
 	
-	this.updateProject = function() {
+	this.updateProject = function(clickInitiated) {
 		Global.bimServerApi.registerNewRevisionOnSpecificProjectHandler(othis.project.oid, othis.newRevisionOnSpecificProjectHandler);
 		if (othis.project.lastRevisionId != -1) {
 			Global.bimServerApi.registerNewExtendedDataOnRevisionHandler(othis.project.lastRevisionId, othis.newExtendedDataOnRevisionHandler);
@@ -943,7 +964,7 @@ function RightPanel(cd, main, project, projectPage) {
 			cd.find(".queryLink").show();
 			cd.find(".extendedDataLink").show();
 			cd.find(" .extendedDataLink a").html("Extended Data" + (othis.selectedRevision.extendedData.length == 0 ? "" : (" (" + othis.selectedRevision.extendedData.length + ")")));
-			othis.loadHistory();
+			othis.loadHistory(clickInitiated);
 			Global.bimServerApi.call("ServiceInterface", "getAllCheckoutsOfProjectAndSubProjects", {poid: othis.project.oid}, function(checkouts){
 				cd.find(".checkoutsLink a").html("Checkouts" + (checkouts == null || checkouts.length == 0 ? "" : (" (" + checkouts.length + ")")));
 			});
@@ -952,11 +973,11 @@ function RightPanel(cd, main, project, projectPage) {
 			cd.find(".surferLink").hide();
 			cd.find(".queryLink").hide();
 			cd.find(".extendedDataLink").hide();
-			othis.loadHistory();
+			othis.loadHistory(clickInitiated);
 		}
 	};
 	
-	this.loadHistory = function(){
+	this.loadHistory = function(clickInitiated){
 		var history = History.getState().data;
 		if (history.tab == "details") {
 			othis.loadDetails();
@@ -997,7 +1018,7 @@ function RightPanel(cd, main, project, projectPage) {
 			othis.loadLog();
 		} else if (history.tab == "3D") {
 			othis.showThreeD();
-		} else {
+		} else if (clickInitiated) {
 			othis.showThreeD();
 		}
 		cd.find(".content").show();

@@ -128,18 +128,13 @@ function AddService3(main, project, projectPage, serviceDescriptor, isLocal, lon
 		var td1 = $("<td></td>");
 		tr1.append(td1);
 		$(".addservice3 .rightsTable").append(tr1);	
-		Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaByNamespace", {namespace: serviceDescriptor.readExtendedData}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaByName", {name: serviceDescriptor.readExtendedData}, function(data){
 			othis.readExtendedDataOid = data.oid;
 			td1.append(main.createExtendedDataSchemaLink(data));
-		}, function(){
-			othis.addExtendedDataSchema(serviceDescriptor.readExtendedData, function(data){
-				othis.readExtendedDataOid = data.oid;
-				td1.append(main.createExtendedDataSchemaLink(data));
-				othis.canAdd();
-			}, function(){
-				tr1.addClass("error");
-				td1.append("<br/>Error adding extended data schema");
-			});
+		}, function(data){
+			othis.readExtendedDataOid = data.oid;
+			td1.append(main.createExtendedDataSchemaLink(data));
+			othis.canAdd();
 		}, false, false, false);
 	}
 	if (serviceDescriptor.writeExtendedData != null) {
@@ -147,34 +142,15 @@ function AddService3(main, project, projectPage, serviceDescriptor, isLocal, lon
 		var td2 = $("<td></td>");
 		tr2.append(td2);
 		$(".addservice3 .rightsTable").append(tr2);	
-		Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaByNamespace", {namespace: serviceDescriptor.writeExtendedData}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaByName", {name: serviceDescriptor.writeExtendedData}, function(data){
 			othis.writeExtendedDataOid = data.oid;
 			td2.append(main.createExtendedDataSchemaLink(data));
-		}, function(){
-			othis.addExtendedDataSchema(serviceDescriptor.writeExtendedData, function(data){
-				othis.writeExtendedDataOid = data.oid;
-				td2.append(main.createExtendedDataSchemaLink(data));
-				othis.canAdd();
-			}, function(){
-				tr1.addClass("error");
-				td2.append("<br/>Error adding extended data schema");
-			});
+		}, function(data){
+			othis.writeExtendedDataOid = data.oid;
+			td2.append(main.createExtendedDataSchemaLink(data));
+			othis.canAdd();
 		}, false, false, false);
 	}
-	
-	this.addExtendedDataSchema = function(namespaceurl, callback, errorCallback){
-		var extendedDataSchema = {
-			__type: "SExtendedDataSchema",
-			name: namespaceurl,
-			namespace: namespaceurl,
-			url: namespaceurl,
-			type: "TXT"
-		};
-		Global.bimServerApi.call("ServiceInterface", "addExtendedDataSchema", {extendedDataSchema: extendedDataSchema}, function(oid){
-			extendedDataSchema.oid = oid
-			callback(extendedDataSchema);
-		}, errorCallback);
-	};
 	
 	this.addProfileDescriptor = function(profileDescriptor) {
 		$(".addservice3 .noprofiles").hide();

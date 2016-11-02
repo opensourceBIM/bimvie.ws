@@ -39,7 +39,7 @@
 		</div>
 	</div>
 	<div class="button-bar-bottom">
-		<button class="btn btn-primary pull-right btn-lg btnNext">Next</button>
+		<button class="btn btn-primary pull-right btnNext">Next</button>
 	</div>
 </div>
 <script>
@@ -91,16 +91,16 @@ function AddNewService2(cd, project, projectPage, serviceDescriptor) {
 			}
 			map.push(mapping);
 		});
-		console.log(availableLocalOutputs);
 		serviceDescriptor.inputs.forEach(function(input, index){
 			var tr = $("<tr>");
 			tr.attr("input", input);
 			var td = $("<td>");
 			var radio = $("<input type=\"radio\">");
+			radio.attr("id", "input" + index);
 			radio.attr("name", "inputformat");
 			td.append(radio);
 			tr.append(td);
-			tr.append("<td>" + input + "</td>");
+			tr.append("<td><label for=\"input" + index + "\">" + input + "</label></td>");
 			var mappings = availableLocalOutputs[input.toUpperCase()];
 			var td = $("<td>");
 			tr.append(td);
@@ -129,10 +129,11 @@ function AddNewService2(cd, project, projectPage, serviceDescriptor) {
 			tr.attr("output", output);
 			var td = $("<td>");
 			var radio = $("<input type=\"radio\">");
+			radio.attr("id", "output" + index);
 			radio.attr("name", "outputformat");
 			td.append(radio);
 			tr.append(td);
-			tr.append("<td>" + output + "</td>");
+			tr.append("<td><label for=\"output" + index + "\">" + output + "</label></td>");
 			var td = $("<td>");
 			tr.append(td);
 			var select = $("<select class=\"form-control\">");
@@ -149,7 +150,7 @@ function AddNewService2(cd, project, projectPage, serviceDescriptor) {
 	});
 	
 	cd.find(".btnNext").click(function(){
-		var output = cd.find(".outputsTable input[checked='checked']").parents("tr").attr("output");
+		var output = cd.find(".outputsTable input:checked").parents("tr").attr("output");
 		var request = {
 			poid: project.oid,
 			sService: {
@@ -161,29 +162,17 @@ function AddNewService2(cd, project, projectPage, serviceDescriptor) {
 				authorizationUrl: serviceDescriptor.authorizationUrl,
 				resourceUrl: serviceDescriptor.resourceUrl,
 				registerUrl: serviceDescriptor.registerUrl,
-				input: cd.find(".inputsTable input[checked='checked']").parents("tr").attr("input"),
+				input: cd.find(".inputsTable input:checked").parents("tr").attr("input"),
 				status: "NEW",
 				oauthCode: "",
-				serializerId: parseInt(cd.find(".inputsTable input[checked='checked']").parents("tr").find("select").val()),
+				serializerId: parseInt(cd.find(".inputsTable input:checked").parents("tr").find("select").val()),
 				output: output,
-				action: cd.find(".outputsTable input[checked='checked']").parents("tr").find("select").val()
+				action: cd.find(".outputsTable input:checked").parents("tr").find("select").val()
 			}
 		};
 		Global.bimServerApi.call("ServiceInterface", "addNewServiceToProject", request, function(){
-			
+			projectPage.rightPanel.loadServices(function(){}, true);
 		});
-		
-		var extendedDataSchema = {
-			__type: "SExtendedDataSchema",
-			name: output,
-			namespace: output,
-			url: output,
-			type: "TXT"
-		};
-		Global.bimServerApi.callWithNoIndication("ServiceInterface", "addExtendedDataSchema", {extendedDataSchema: extendedDataSchema}, function(oid){
-		});
-		
-		projectPage.rightPanel.loadServices(function(){}, true);
 	});
 }
 </script>

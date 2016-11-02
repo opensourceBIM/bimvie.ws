@@ -1,17 +1,70 @@
 <div class="newservice">
+	<div class="servicestatus"></div>
+	<div class="button-bar">
+		<div class="btn-group">
+			<button type="button" class="btn btn-primary triggerBtn">Trigger on last revision</button>
+			<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<span class="caret"></span> <span class="sr-only">Toggle Dropdown</span>
+			</button>
+			<ul class="dropdown-menu revisionsUl">
+			</ul>
+		</div>
+	</div>
 </div>
 <script>
-function NewService(main, service, serverId) {
-	var o = this;
-	
-	var code = QueryString.code;
-	
-	Global.bimServerApi.call("OAuthInterface", "getRemoteToken", {
-		soid: service.oid,
-		code: code,
-		serverId: serverId
-	}, function(result){
-		console.log(result);
-	});
-}
+	function NewService(cd, main, service, serverId) {
+		var o = this;
+		
+		this.formatNewServiceStatus = function(status) {
+			if (status == "NEW") {
+				return "<span class=\"label label-warning\">Not authenticated</span>";
+			} else if (status == "AUTHENTICATED") {
+				return "<span class=\"label label-success\">Authenticated</span>";
+			}
+		};
+
+		var code = QueryString.code;
+
+		this.trigger = function(){
+			var roid = $(this).data("roid");
+			Global.bimServerApi.callWithFullIndication("ServiceInterface", "triggerRevisionService", {
+				roid: roid,
+				soid: service.oid
+			}, function(){
+				
+			});
+		};
+		
+		if (service.status != "AUTHENTICATED" && code != null) {
+			Global.bimServerApi.call("OAuthInterface", "getRemoteToken", {
+				soid : service.oid,
+				code : code,
+				serverId : serverId
+			}, function(result) {
+				Global.bimServerApi.call("ServiceInterface", "getNewService", {
+					soid : service.oid
+				}, function(service) {
+					cd.find(".servicestatus").append(o.formatNewServiceStatus(service.status));
+				});
+			});
+		}
+		
+		Global.bimServerApi.call("ServiceInterface", "getAllRevisionsOfProject", {
+			poid: service.projectId
+		}, function(data){
+			data.forEach(function(revision, index){
+				if (index == data.length - 1) {
+					cd.find(".triggerBtn").data("roid", revision.oid);
+				}
+				var li = $("<li>");
+				var a = $("<a>Trigger on " + revision.id + " (" + revision.comment + ")</a>");
+				a.data("roid", revision.oid);
+				a.click(o.trigger);
+				li.append(a);
+				cd.find(".revisionsUl").prepend(li);
+			});
+		});
+		
+		cd.find(".triggerBtn").click(o.trigger);
+	}
 </script>

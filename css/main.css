@@ -514,8 +514,16 @@ input[type="file"].file {
 	border-top-right-radius: 0; 
 }
 
+.addnewservice2 label {
+	cursor: pointer;
+	font-weight: normal;
+}
+
 .button-bar-bottom {
+	height: 26px;
+	margin-top: 10px;
 	margin-bottom: 10px;
+	clear: both;
 }
 
 .extendeddata .bcf .col-xs-6.right {
