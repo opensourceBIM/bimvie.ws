@@ -82,19 +82,18 @@ function TabChanger2(navElement, mainContainer) {
 	othis.currentContentElement = null;
 	
 	this.changeTab = function(linkElement, page, contentElement, constructorFunction, callback) {
-		console.log("changetab", page, contentElement);
-		if (othis.currentContentElement != null && contentElement != null && othis.currentContentElement.get(0) == contentElement.get(0)) {
-			if (typeof page == "string") {
-				othis.current = constructorFunction.call(contentElement);
-			} else {
-				othis.current = page;
-			}
-			
-			if (callback != null) {
-				callback.call(othis.current);
-			}
-			return;
-		}
+//		if (othis.currentContentElement != null && contentElement != null && othis.currentContentElement.get(0) == contentElement.get(0)) {
+//			if (typeof page == "string") {
+//				othis.current = constructorFunction.call(contentElement);
+//			} else {
+//				othis.current = page;
+//			}
+//			
+//			if (callback != null) {
+//				callback.call(othis.current);
+//			}
+//			return;
+//		}
 		if (othis.current != null) {
 			if (othis.current.close != null) {
 				othis.current.close();
@@ -110,18 +109,30 @@ function TabChanger2(navElement, mainContainer) {
 						console.log(response, xhr.status, xhr.statusText);
 					} else {
 						othis.current = constructorFunction.call(this);
-						contentElement.show(true);
-						if (callback != null) {
-							callback.call(othis.current);
+						var promise = contentElement.show(true);
+						if (promise != null && promise.done != null) {
+							promise.done(function(){
+								callback.call(othis.current);
+							});
+						} else {
+							if (callback != null) {
+								callback.call(othis.current);
+							}
 						}
 					}
 				});
 			} else {
 				othis.current = page;
 				contentElement.append(page);
-				contentElement.show(true);
-				if (callback != null) {
-					callback.call(othis.current);
+				var promise = contentElement.show(true);
+				if (promise != null) {
+					promise.done(function(){
+						callback.call(othis.current);
+					});
+				} else {
+					if (callback != null) {
+						callback.call(othis.current);
+					}
 				}
 			}
 		} else {

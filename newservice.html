@@ -1,7 +1,6 @@
 <div class="newservice">
-	<div class="servicestatus"></div>
 	<div class="button-bar">
-		<div class="btn-group">
+		<div class="btn-group triggerBtnGroup">
 			<button type="button" class="btn btn-primary triggerBtn">Trigger on last revision</button>
 			<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				<span class="caret"></span> <span class="sr-only">Toggle Dropdown</span>
@@ -10,6 +9,10 @@
 			</ul>
 		</div>
 	</div>
+	<table class="table">
+		<thead></thead>
+		<tbody></tbody>
+	</table>
 </div>
 <script>
 	function NewService(cd, main, service, serverId) {
@@ -44,7 +47,7 @@
 				Global.bimServerApi.call("ServiceInterface", "getNewService", {
 					soid : service.oid
 				}, function(service) {
-					cd.find(".servicestatus").append(o.formatNewServiceStatus(service.status));
+					cd.find(".table").append("<tr><td>Status</td><td>" + o.formatNewServiceStatus(service.status) + "</td></tr>");
 				});
 			});
 		}
@@ -52,6 +55,9 @@
 		Global.bimServerApi.call("ServiceInterface", "getAllRevisionsOfProject", {
 			poid: service.projectId
 		}, function(data){
+			if (data.length == 0) {
+				cd.find(".triggerBtnGroup").hide();
+			}
 			data.forEach(function(revision, index){
 				if (index == data.length - 1) {
 					cd.find(".triggerBtn").data("roid", revision.oid);
@@ -64,6 +70,13 @@
 				cd.find(".revisionsUl").prepend(li);
 			});
 		});
+		
+		cd.find(".table").append("<tr><td>Name</td><td>" + service.name + "</td></tr>");
+		cd.find(".table").append("<tr><td>Description</td><td>" + service.description + "</td></tr>");
+		cd.find(".table").append("<tr><td>Provider</td><td>" + service.provider + "</td></tr>");
+		cd.find(".table").append("<tr><td>Input</td><td>" + service.input + "</td></tr>");
+		cd.find(".table").append("<tr><td>Output</td><td>" + service.output + "</td></tr>");
+		cd.find(".table").append("<tr><td>Status</td><td>" + o.formatNewServiceStatus(service.status) + "</td></tr>");
 		
 		cd.find(".triggerBtn").click(o.trigger);
 	}

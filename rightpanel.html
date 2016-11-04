@@ -549,7 +549,7 @@ function RightPanel(cd, main, project, projectPage) {
 	this.showNewService = function(service, serverId, callback) {
 		cd.find(".serviceList").hide();
 		cd.find(".newServiceList").hide();
-		othis.tabChanger.changeTab($(".servicesLink"), "newservice.html", $(".services"), function(){
+		othis.tabChanger.changeTab($(".servicesLink"), "newservice.html", cd.find(".services"), function(){
 			pushHistory({page: "Project", poid: othis.project.oid, tab: "services"}, "Project");
 			return new NewService($(this), main, service, serverId);
 		}, callback);

@@ -519,6 +519,10 @@ input[type="file"].file {
 	font-weight: normal;
 }
 
+.button-bar {
+	margin-bottom: 10px;
+}
+
 .button-bar-bottom {
 	height: 26px;
 	margin-top: 10px;
