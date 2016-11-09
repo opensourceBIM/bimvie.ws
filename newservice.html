@@ -47,7 +47,8 @@
 				Global.bimServerApi.call("ServiceInterface", "getNewService", {
 					soid : service.oid
 				}, function(service) {
-					cd.find(".table").append("<tr><td>Status</td><td>" + o.formatNewServiceStatus(service.status) + "</td></tr>");
+					cd.find(".table .statusrow").remove();
+					cd.find(".table").append("<tr class=\"statusrow\"><td>Status</td><td>" + o.formatNewServiceStatus(service.status) + "</td></tr>");
 				});
 			});
 		}
@@ -76,7 +77,7 @@
 		cd.find(".table").append("<tr><td>Provider</td><td>" + service.provider + "</td></tr>");
 		cd.find(".table").append("<tr><td>Input</td><td>" + service.input + "</td></tr>");
 		cd.find(".table").append("<tr><td>Output</td><td>" + service.output + "</td></tr>");
-		cd.find(".table").append("<tr><td>Status</td><td>" + o.formatNewServiceStatus(service.status) + "</td></tr>");
+		cd.find(".table").append("<tr class=\"statusrow\"><td>Status</td><td>" + o.formatNewServiceStatus(service.status) + "</td></tr>");
 		
 		cd.find(".triggerBtn").click(o.trigger);
 	}
