@@ -568,3 +568,7 @@ input[type="file"].file {
 table.table-hover tr.toomany {
 	cursor: default;
 }
+
+.addnewservice2 .panel-body {
+	padding: 10px;
+}

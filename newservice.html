@@ -53,6 +53,20 @@
 			});
 		}
 		
+		function formatAction(action) {
+			if (action.__type == "SCheckinRevision") {
+				var span = $("<span>Checkin new revision</span>");
+				Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {
+					poid: action.projectId
+				}, function(project){
+					span.append(" (" + project.name + ")");
+				});
+				return span;
+			} else {
+				return action.__type;
+			}
+		}
+
 		Global.bimServerApi.call("ServiceInterface", "getAllRevisionsOfProject", {
 			poid: service.projectId
 		}, function(data){
@@ -77,7 +91,12 @@
 		cd.find(".table").append("<tr><td>Provider</td><td>" + service.provider + "</td></tr>");
 		cd.find(".table").append("<tr><td>Input</td><td>" + service.input + "</td></tr>");
 		cd.find(".table").append("<tr><td>Output</td><td>" + service.output + "</td></tr>");
-		cd.find(".table").append("<tr class=\"statusrow\"><td>Status</td><td>" + o.formatNewServiceStatus(service.status) + "</td></tr>");
+		cd.find(".table").append("<tr><td>Action</td><td>" + o.formatNewServiceStatus(service.status) + "</td></tr>");
+		var td = $("<td>");
+		td.append(formatAction(service.action));
+		var tr = $("<tr class=\"statusrow\"><td>Status</td></tr>");
+		tr.append(td);
+		cd.find(".table").append(tr);
 		
 		cd.find(".triggerBtn").click(o.trigger);
 	}

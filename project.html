@@ -402,12 +402,12 @@ function Project(containerDiv, main, project) {
 							main.showAddProject(null, project);
 						});
 					}).find("a").prepend("<i class=\"glyphicon glyphicon-tree-conifer\"></i> ");
-					othis.navigator.projecttree.addMenuItem("Add old service", "btnAddService", function(){
+					othis.navigator.projecttree.addMenuItem("Add internal service", "btnAddService", function(){
 						othis.rightPanel.showAddService(othis.navigator.projecttree.selectedNode.project, null, function(){
 							othis.rightPanel.loadServices();
 						});
 					}).find("a").prepend("<i class=\"glyphicon glyphicon-cloud\"></i> ");
-					othis.navigator.projecttree.addMenuItem("Add new service", "btnAddService2", function(){
+					othis.navigator.projecttree.addMenuItem("Add external service", "btnAddService2", function(){
 						othis.rightPanel.showAddService2(othis.navigator.projecttree.selectedNode.project, null, function(){
 							othis.rightPanel.loadServices();
 						});

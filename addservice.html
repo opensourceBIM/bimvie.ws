@@ -1,21 +1,7 @@
 <div class="addservice">
-	<h1>Add Service</h1>
-	<h3>Add remote service<small class="loadedFrom"></small></h3>
-	<div class="well well-sm noremoteservices">
-		No remote services
-	</div>
-	<table class="table servicesTable initialhide">
-		<tr>
-			<th>Provider</th>
-			<th>Name</th>
-			<th>Description</th>
-			<th>Trigger</th>
-			<th>Actions</th>
-		</tr>
-	</table>
-	<h3>Add local service</h3>
+	<h1>Add internal service</h1>
 	<div class="well well-sm nolocalservices">
-		No local services
+		No internal services
 	</div>
 	<table class="table localServicesTable initialhide">
 		<tr>
@@ -26,18 +12,6 @@
 			<th>Actions</th>
 		</tr>
 	</table>
-	<form class="form-inline addCustomUrlForm initialhide">
-		<h3>Add custom service</h3>
-		<div class="row">
-			<div class="col-lg-7">
-				<input type="text" id="inputUrl" class="inputUrl form-control" placeholder="Server Address"/>
-			</div>
-			<div class="col-lg-3">
-				<input type="text" id="inputUrl" class="inputServiceIdentifier form-control" placeholder="Service Identifier"/>
-			</div>
-			<button type="button" class="btn btn-primary addUrlButton">Add</button>
-		</div>
-	</form>
 </div>
 <script>
 function AddService(main, project, projectPage, longCallBack) {
@@ -91,12 +65,6 @@ function AddService(main, project, projectPage, longCallBack) {
 	};
 	
 	this.loadServices = function() {
-		Global.bimServerApi.call("ServiceInterface", "getAllServiceDescriptors", {}, function(data){
-			$(".addservice .servicesTable tr.serviceDescriptor").remove();
-			data.forEach(function(serviceDescriptor){
-				othis.addServiceDescriptor($(".addservice .servicesTable"), serviceDescriptor, false);
-			});
-		});
 		Global.bimServerApi.call("ServiceInterface", "getAllLocalServiceDescriptors", {}, function(data){
 			$(".addservice .localServicesTable tr.serviceDescriptor").remove();
 			data.forEach(function(serviceDescriptor){
