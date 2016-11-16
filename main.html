@@ -329,6 +329,7 @@ function Main(address, user) {
 	};
 	
 	this.createExtendedDataSchemaLink = function(extendedDataSchema) {
+		console.log(extendedDataSchema);
 		var link = $("<a>" + extendedDataSchema.name + "</a>");
 		link.data("extendeddataschema", extendedDataSchema);
 		link.click(othis.extendedDataSchemaClick);

@@ -435,9 +435,10 @@ function RightPanel(cd, main, project, projectPage) {
 			Global.bimServerApi.call("ServiceInterface", "getAllServicesOfProject", {poid: othis.project.oid}, function(data){
 				actions.find("ul li").remove();
 				var added = 0;
+				actions.find("ul li.old").remove();
 				data.forEach(function(service){
 					if (service.trigger == "NEW_REVISION") {
-						var li = $("<li><a>Run \"" + service.name + "\"</a></li>");
+						var li = $("<li class=\"old\"><a>Run \"" + service.name + "\"</a></li>");
 						added++;
 						li.find("a").click(function(event){
 							Global.bimServerApi.call("ServiceInterface", "triggerNewRevision", {roid: revision.oid, soid: service.oid}, function(data){
@@ -453,9 +454,9 @@ function RightPanel(cd, main, project, projectPage) {
 //				actions.find("ul").append(shareLi);
 				
 				Global.bimServerApi.call("ServiceInterface", "getAllNewServicesOfProject", {poid: othis.project.oid}, function(data){
-					actions.find("ul li").remove();
+					actions.find("ul li.new").remove();
 					data.forEach(function(service){
-						var li = $("<li><a>Run \"" + service.name + "\"</a></li>");
+						var li = $("<li class=\"new\"><a>Run \"" + service.name + "\"</a></li>");
 						added++;
 						li.find("a").click(function(event){
 							Global.bimServerApi.call("ServiceInterface", "triggerRevisionService", {roid: revision.oid, soid: service.oid}, function(data){
@@ -464,7 +465,7 @@ function RightPanel(cd, main, project, projectPage) {
 						actions.find("ul").append(li);
 					});
 					if (added == 0) {
-						var li = $("<li><a>No services configured</a></li>");
+						var li = $("<li class=\"new\"><a>No services configured</a></li>");
 						actions.find("ul").append(li);
 					}
 //					var shareLi = $("<li><a>Share...</a></li>");
