@@ -8,30 +8,30 @@ module.exports = function(grunt) {
 					js : {
 						files : {
 							"output/js/bimviews.js" : [ 
-							        "js/jquery-2.2.0.js", 
-							        "js/jquery.cookie.js", 
-							        "js/jquery.dragbetter.js", 
-							        "js/jquery.enterpress.js", 
-							        "js/jquery.numeric.js", 
-							        "js/jquery.scrollTo.js", 
-							        "js/bootstrap.min.js", 
-							        "js/pagechanger.js", 
-							        "js/papaparse.min.js", 
-							        "js/prettify.js", 
-							        "js/sha256.js", 
-							        "js/String.js", 
-							        "js/tree.js", 
-							        "js/utils.js", 
-							        "js/Variable.js", 
-							        "js/vkbeautify.0.99.00.beta.js", 
-							        "js/history.js", 
-							        "js/history.adapter.jquery.js", 
-							        "js/formatters.js", 
-							        "js/EventRegistry.js", 
-							        "js/consolesettings.js", 
-							        "js/base64unicode.js", 
-							        "js/main.js",
-							        "js/plugins/*.js"]
+						        "js/jquery-2.2.0.js", 
+						        "js/jquery.cookie.js", 
+						        "js/jquery.dragbetter.js", 
+						        "js/jquery.enterpress.js", 
+						        "js/jquery.numeric.js", 
+						        "js/jquery.scrollTo.js", 
+						        "js/history.adapter.jquery.js", 
+						        "js/bootstrap.js", 
+						        "js/pagechanger.js", 
+						        "js/papaparse.js", 
+						        "js/prettify.js", 
+						        "js/sha256.js", 
+						        "js/String.js", 
+						        "js/tree.js", 
+						        "js/utils.js", 
+						        "js/Variable.js", 
+						        "js/vkbeautify.0.99.00.beta.js", 
+						        "js/history.js", 
+						        "js/formatters.js", 
+						        "js/EventRegistry.js", 
+						        "js/consolesettings.js", 
+						        "js/base64unicode.js", 
+						        "js/main.js",
+						        "js/plugins/*.js"]
 						},
 					}
 				},
@@ -84,5 +84,5 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-contrib-clean");
 	grunt.loadNpmTasks("grunt-zip");
 
-	grunt.registerTask("default", [ "clean", "concat", "uglify", "cssmin", "copy" ]);
+	grunt.registerTask("default", [ "clean", "concat", "cssmin", "copy" ]);
 };
