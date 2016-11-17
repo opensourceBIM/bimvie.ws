@@ -18,7 +18,7 @@ module.exports = function(grunt) {
 						        "js/history.adapter.jquery.js", 
 						        "js/bootstrap.js", 
 						        "js/pagechanger.js", 
-						        "js/papaparse.js", 
+						  //      "js/papaparse.js", 
 						        "js/prettify.js", 
 						        "js/sha256.js", 
 						        "js/String.js", 
