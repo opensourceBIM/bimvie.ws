@@ -117,6 +117,13 @@ function Query2(cd, parent) {
 				IsExternal: true
 			}
 		},
+		ClassificationDakenConstructief: {
+			type: "IfcProduct",
+			includeAllSubtypes: true,
+			classifications: [
+				"57.2"
+			]
+		},
 		ThermalTransmittance: {
 			type: "IfcWall",
 			includeAllSubtypes: true,
@@ -412,7 +419,7 @@ function Query2(cd, parent) {
 	parent.modelUnloadedListeners.register(o.unloadRevision);
 	
 	this.resize = function(){
-		var height = ($(window).height() - $(".navbar").outerHeight() - $(".navbar-header").outerHeight() - cd.find(".navigator .panel-heading").outerHeight() - 187);
+		var height = ($(window).height() - $(".navbar").outerHeight() - $(".navbar-header").outerHeight() - $(".navigator .panel-heading").outerHeight() - 143);
 		cd.find(".queryInp").height(height + "px");
 	};
 
