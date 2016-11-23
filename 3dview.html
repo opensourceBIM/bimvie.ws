@@ -55,6 +55,36 @@ function ThreeDView(containerDiv, parent, main) {
 	
 	this.nodeSelected = function(groupId, node){
 		o.selected = node.data.object;
+		var object = node.data.object;
+		object.getGeometry(function(geometryInfo){
+			geometryInfo.getTransformation(function(transformation){
+				var rawLength = 16 * 8;
+				var binary_string =  atob(transformation);
+				var array = new Uint8Array(new ArrayBuffer(rawLength));
+				for(i = 0; i < rawLength; i++) {
+					array[i] = binary_string.charCodeAt(i);
+			  	}
+				var inputStream = new BIMSURFER.DataInputStreamReader(null, array.buffer);
+				var matrix = inputStream.readDoubleArray(16);
+				var min = geometryInfo.getMinBounds(function(min){
+					var max = geometryInfo.getMaxBounds(function(max){
+						var center = {
+							x: (max.x - min.x) / 2,
+							y: (max.y - min.y) / 2,
+							z: (max.z - min.z) / 2
+						}
+//						console.log("center", center);
+						var centerTransformed = SceneJS_math_transformVector4(matrix, [center.x, center.y, center.z, 1]);
+						centerTransformed = {
+							x: centerTransformed[0],
+							y: centerTransformed[1],
+							z: centerTransformed[2]
+						}
+						console.log("center transformed", centerTransformed);
+					});
+				});
+			});
+		})
 		parent.selected(o, groupId, node.data.object);
 	};
 	
@@ -428,7 +458,7 @@ function ThreeDView(containerDiv, parent, main) {
 			  }]
 			}
 		*/
-		Global.bimServerApi.callWithNoIndication("ServiceInterface", "getExtendedDataSchemaByName", {name: "3D_VIS_JSON_1.0"}, function(schema){
+		Global.bimServerApi.callWithNoIndication("ServiceInterface", "getExtendedDataSchemaByName", {name: "VIS_3D_JSON_1_0"}, function(schema){
 			if (schema != null) {
 				var lastExtendedData = null;
 				Global.bimServerApi.call("ServiceInterface", "getAllExtendedDataOfRevision", {roid: roid}, function(list){
