@@ -399,6 +399,9 @@ function Query2(cd, parent) {
 							oids.push(loaded.oid);
 							delete oldOids[loaded.oid];
 						}
+					}, function(error){
+						cd.find(".errorsDiv").addClass("alert-danger").html(error).show();
+						cd.parents(".panel-body").animate({scrollTop:0},0);
 					}).done(function(){
 						var oldOidsAr = [];
 						for (var oid in oldOids) {
