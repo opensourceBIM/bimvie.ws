@@ -3,9 +3,6 @@
 		<thead></thead>
 		<tbody></tbody>
 	</table>
-	<div class="bcf">
-		<img/>
-	</div>
 	<div class="validationreport ih">
 		<h2></h2>
 		<table class="table">
@@ -218,7 +215,8 @@ function ExtendedData(cd, main, extendedData, parent) {
 				row.append(left);
 				row.append(right);
 				if (topic.description != null) {
-					listleft.append("<li class=\"list-group-item description\">Description: " + topic.description + "</li>");
+					var description = topic.description.replace("\n", "<br/>");
+					listleft.append("<li class=\"list-group-item description\">Description: " + description + "</li>");
 				}
 				listleft.append("<li class=\"list-group-item\">GUID: " + topic.guid + "</li>");
 				if (topic.topicType != null) {
@@ -238,16 +236,19 @@ function ExtendedData(cd, main, extendedData, parent) {
 				if (topic.viewpoints != null) {
 					topic.viewpoints.forEach(function(viewpoint){
 						if (viewpoint.snapshot != null) {
+							var a = $("<a>");
+							a.attr("href", Global.bimServerApi.baseUrl + "/download?token=" + Global.bimServerApi.token + "&action=getBcfImage&extendedDataId=" + extendedData.oid + "&topicGuid=" + topic.guid + "&imageGuid=" + viewpoint.snapshot.snapshot + "&name=" + viewpoint.snapshot);
 							var img = $("<img>");
+							a.append(img);
 							var src = Global.bimServerApi.baseUrl + "/download?token=" + Global.bimServerApi.token + "&action=getBcfImage&extendedDataId=" + extendedData.oid + "&topicGuid=" + topic.guid + "&imageGuid=" + viewpoint.snapshot.snapshot + "&name=" + viewpoint.snapshot;
 							img.attr("width", "380px");
 							img.attr("src", src);
-							right.append(img);
+							right.append(a);
 						}
 					});
 				}
 				
-				if (topic.comments != null) {
+				if (topic.comments != null && topic.comments.length > 0) {
 					var div = $("<div class=\"commentsLink\">");
 					var commentsLink = $("<a>Comments &#x25BC;</a>");
 					div.append(commentsLink);
@@ -291,9 +292,9 @@ function ExtendedData(cd, main, extendedData, parent) {
 				o.showPlainText(schema, extendedData, url);
 			} else if (file.mime == "application/json") {
 				o.showJson(schema, extendedData, url);
-			} else if (schema.name == "VALIDATION_JSON_1.0") {
+			} else if (schema.name == "VALIDATION_JSON_1_0") {
 				o.showValidationReport(schema, extendedData, url);
-			} else if (schema.name == "BCF_ZIP_2.0") {
+			} else if (schema.name == "BCF_ZIP_2_0") {
 				o.showBcf(schema, extendedData);
 			}
 		});
