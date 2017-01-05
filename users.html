@@ -7,7 +7,11 @@
 			<tr>
 				<th>Name</th>
 				<th>Username</th>
+				<th>Created at</th>
 				<th>Type</th>
+				<th># projects</th>
+				<th>Status</th>
+				<th>Last login</th>
 				<th>Actions</th>
 			</tr>
 		</thead>
@@ -60,7 +64,11 @@ function Users(containerDiv, main) {
 		userRow.data("user", user);
 		userRow.append("<td>" + user.name + "</td>");
 		userRow.append("<td>" + user.username + "</td>");
+		userRow.append("<td>" + formatDateTime(new Date(user.createdOn)) + "</td>");
 		userRow.append("<td>" + formatUserType(user.userType) + "</td>");
+		userRow.append("<td>" + user.hasRightsOn.length + "</td>");
+		userRow.append("<td>" + user.state + "</td>");
+		userRow.append("<td>" + (user.lastSeen == null ? "never" : formatDateTime(new Date(user.lastSeen))) + "</td>");
 		var actions = newDropdownTd("Actions");
 		
 		actions.find(".dropdown-toggle").click(function(){
