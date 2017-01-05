@@ -16,6 +16,7 @@
 				<th>Name</th>
 				<th>Organization</th>
 				<th>Installed Version</th>
+				<th>Installed Date/Time</th>
 				<th>Source</th>
 				<th>Description</th>
 				<th>Version</th>
@@ -61,6 +62,11 @@ function InstalledPluginBundles(main, serverSettings, cd) {
 			tr.append(nameTd);
 			tr.append("<td>" + pluginBundle.organization + "</td>");
 			tr.append("<td class=\"installedVersion\">" + installed.version + "</td>");
+			if (installed.type == "LOCAL") {
+				tr.append("<td class=\"installedDate\">None</td>");
+			} else {
+				tr.append("<td class=\"installedDate\">" + (installed.date == null ? "Unknown" : formatDateTime(new Date(installed.date))) + "</td>");
+			}
 			tr.append("<td class=\"type\">" + installed.type + "</td>");
 			tr.append("<td class=\"description\">" + installed.description + "</td>");
 

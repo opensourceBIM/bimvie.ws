@@ -41,7 +41,8 @@
 		cd.find(".infoTable tbody").append("<tr title=\"Maven ArtifactID: " + pluginBundleVersion.artifactId + "\"><td>Name</td><td>" + pluginBundle.name + "</td></tr>");
 		cd.find(".infoTable tbody").append("<tr><td>Description</td><td>" + pluginBundleVersion.description + "</td></tr>");
 		cd.find(".infoTable tbody").append("<tr><td>Version</td><td>" + pluginBundleVersion.version + "</td></tr>");
-		
+		cd.find(".infoTable tbody").append("<tr><td>Date/Time</td><td>" + (pluginBundleVersion.date == null ? "Unknown" : formatDateTime(new Date(pluginBundleVersion.date))) + "</td></tr>");
+
 		Global.bimServerApi.callWithFullIndication("PluginInterface", "getPluginInformation", {
 			repository: pluginBundleVersion.repository,
 			groupId: pluginBundleVersion.groupId,
