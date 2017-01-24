@@ -1,7 +1,9 @@
 <div class="users">
 	<div class="well well-sm buttonBar">
 		<button class="addUserButton btn btn-default">Add user</button>
+		<button class="btn btn-default btnShowChart">Show chart</button>
 	</div>
+	<canvas class="chart ih"></canvas>
 	<table class="usersTable table table-striped table-hover">
 		<thead>
 			<tr>
@@ -20,7 +22,7 @@
 	</table>
 </div>
 <script>
-function Users(containerDiv, main) {
+function Users(cd, main) {
 	var othis = this;
 
 	this.show = function(){
@@ -117,6 +119,57 @@ function Users(containerDiv, main) {
 	};
 	
 	othis.loadUsers();
+	
+	function datesToDayData(dates) {
+		var data = [];
+		dates.sort();
+		var counter = 0;
+		dates.forEach(function(date){
+			data.push({
+				x: date,
+				y: ++counter
+			});
+		});
+		return data;
+	}
+	
+	cd.find(".btnShowChart").click(function(){
+		var chart = cd.find(".chart");
+		chart.show();
+		
+		var data = {};
+		Global.bimServerApi.call("ServiceInterface", "getAllUsers", {}, function(data){
+			var dates = [];
+			data.forEach(function(user){
+				var createdOn = new Date(user.createdOn);
+				dates.push(createdOn);
+			});
+			var data = datesToDayData(dates);
+			console.log(data);
+			var myChart = new Chart(chart, {
+			    type: 'line',
+			    data: {
+			        datasets: [{
+			            label: 'Scatter Dataset',
+			            data: data
+			        }]
+			    },
+			    options: {
+			        scales: {
+			            yAxes: [{
+			                ticks: {
+			                	stepSize: 1,
+			                    beginAtZero: true
+			                }
+			            }],
+			            xAxes: [{
+			            	type: "time"
+			            }]
+			        }
+			    }
+			});
+		});
+	});
 	
 	Global.bimServerApi.registerNewUserHandler(othis.newUserHandler);
 	$(".users .addUserButton").click(function(){main.showAddUser()});
