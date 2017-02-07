@@ -62,6 +62,23 @@ function Properties(containerDiv, parent, oid) {
 					});
 				}
 			});
+			
+			var headerTr = $("<tr class=\"active\"></tr>");
+			containerDiv.find("table tbody").append(headerTr);
+			var headerTd = $("<td colspan=\"2\"></td>");
+			headerTr.append(headerTd);
+			headerTd.append("<b>Calculated</b>");
+			object.getGeometry(function(geometryInfo){
+				var tr = $("<tr></tr>");
+				headerTr.after(tr);
+				tr.append("<td>Area</td>");
+				tr.append("<td>" + geometryInfo.object.area.toFixed(2) + "</td>");
+
+				tr = $("<tr></tr>");
+				headerTr.after(tr);
+				tr.append("<td>Volume</td>");
+				tr.append("<td>" + geometryInfo.object.volume.toFixed(2) + "</td>");
+			});
 			var current = parent.rightPanel.tabChanger.current;
 			if (current != null) {
 				var node = current.viewer.scene.findNode(object.gid);
