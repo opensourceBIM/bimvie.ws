@@ -69,15 +69,17 @@ function Properties(containerDiv, parent, oid) {
 			headerTr.append(headerTd);
 			headerTd.append("<b>Calculated</b>");
 			object.getGeometry(function(geometryInfo){
-				var tr = $("<tr></tr>");
-				headerTr.after(tr);
-				tr.append("<td>Area</td>");
-				tr.append("<td>" + geometryInfo.object.area.toFixed(2) + "</td>");
-
-				tr = $("<tr></tr>");
-				headerTr.after(tr);
-				tr.append("<td>Volume</td>");
-				tr.append("<td>" + geometryInfo.object.volume.toFixed(2) + "</td>");
+				if (geometryInfo != null) {
+					var tr = $("<tr></tr>");
+					headerTr.after(tr);
+					tr.append("<td>Area</td>");
+					tr.append("<td>" + geometryInfo.object.area.toFixed(2) + "</td>");
+	
+					tr = $("<tr></tr>");
+					headerTr.after(tr);
+					tr.append("<td>Volume</td>");
+					tr.append("<td>" + geometryInfo.object.volume.toFixed(2) + "</td>");
+				}
 			});
 			var current = parent.rightPanel.tabChanger.current;
 			if (current != null) {
