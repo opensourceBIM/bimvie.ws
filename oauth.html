@@ -44,8 +44,7 @@ function OAuth(cd) {
 				projectId: cd.find(".projectsSelect").val()
 			}
 		}, function(code){
-			console.log("code", code);
-			window.location = "/oauth/" + window.location.search + "&token=" + Global.bimServerApi.token + "&code=" + code;
+			window.location = "/oauth/authorize/" + window.location.search + "&token=" + Global.bimServerApi.token + "&code=" + code;
 		});
 	});
 	
