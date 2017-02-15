@@ -38,7 +38,7 @@ function OAuth(cd) {
 	
 	cd.find(".authorizeBtn").click(function(){
 		Global.bimServerApi.call("OAuthInterface", "authorize", {
-			oAuthServerOid: -1,
+			oAuthServerOid: o.oAuthServerOid,
 			authorization: {
 				__type: "SSingleProjectAuthorization",
 				projectId: cd.find(".projectsSelect").val()
@@ -49,6 +49,7 @@ function OAuth(cd) {
 	});
 	
 	Global.bimServerApi.call("OAuthInterface", "getOAuthServerByClientId", {clientId: QueryString.client_id}, function(data){
+		o.oAuthServerOid = data.oid;
 		cd.find(".appinfo img.appicon").attr("src", "data:image/png;base64," + data.clientIcon);
 		cd.find(".appinfo .name").html(data.clientName);
 		cd.find(".appinfo .description").html(data.clientDescription);
