@@ -153,7 +153,7 @@
 	<dependency>
 		<groupId>org.opensourcebim</groupId>
 		<artifactId>bimsurfer</artifactId>
-		<version>0.0.3</version>
+		<version>0.0.31</version>
 	</dependency>
 	</dependencies>
 	<scm>
