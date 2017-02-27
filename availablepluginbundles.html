@@ -123,7 +123,11 @@ function AvailablePluginBundles(main, serverSettings, cd) {
 
 			reader.addEventListener("load", function () {
 				var base64 = reader.result.substring(reader.result.indexOf(",") + 1);
-				Global.bimServerApi.callWithFullIndication("PluginInterface", "installPluginBundleFromFile", {data: base64});
+				Global.bimServerApi.callWithFullIndication("PluginInterface", "installPluginBundleFromFile", {
+					data: base64,
+					installAllPluginsForAllUsers: true,
+					installAllPluginsForNewUsers: true
+				});
 			}, false);
 
 			var file = cd.find(".fileInput").get(0).files[0];
