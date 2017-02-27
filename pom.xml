@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.opensourcebim</groupId>
 	<artifactId>bimviews</artifactId>
-	<version>0.0.74-SNAPSHOT</version>
+	<version>0.0.75-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -74,27 +74,15 @@
 									<type>xml</type>
 									<classifier>plugin</classifier>
 								</artifact>
-							</artifacts>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>attach-icon</id>
-						<phase>package</phase>
-						<goals>
-							<goal>attach-artifact</goal>
-						</goals>
-						<configuration>
-							<artifacts>
 								<artifact>
 									<file>icon.png</file>
 									<type>png</type>
 									<classifier>icon</classifier>
+								</artifact>
+								<artifact>
+									<file>${project.build.outputDirectory}/plugin/version.properties</file>
+									<type>properties</type>
+									<classifier>version</classifier>
 								</artifact>
 							</artifacts>
 						</configuration>
@@ -165,7 +153,7 @@
 	<dependency>
 		<groupId>org.opensourcebim</groupId>
 		<artifactId>bimsurfer</artifactId>
-		<version>0.0.3</version>
+		<version>0.0.31</version>
 	</dependency>
 	</dependencies>
 	<scm>
