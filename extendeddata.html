@@ -70,10 +70,6 @@ function ExtendedData(cd, main, extendedData, parent) {
 	$(".extendeddata table.detailsTable tbody").append(tr);
 	$(".extendeddata table.detailsTable tbody").append("<tr><td>Added</td><td>" + formatDateTime(new Date(extendedData.added)) + "</td></tr>");
 
-	this.showBcf = function(schema, extendedData, file){
-		$(".bcf img").attr("src", "https://github.com/BuildingSMART/BCF/raw/master/Icons/BCFicon128.png?raw=true");
-	};
-
 	this.objectClick = function(){
 		var oid = $(this).data("oid");
 		parent.loadBrowser(function(){
@@ -81,6 +77,14 @@ function ExtendedData(cd, main, extendedData, parent) {
 		}, false);
 	};
 
+	formatValue = function(value) {
+		console.log(value);
+		if (typeof value == "Number") {
+			return value.toFixed(2);
+		}
+		return value;
+	}
+	
 	this.showValidationReport = function(schema, extendedData, url){
 		$.get(url, function(json){
 			$(".validationreport h2").html(extendedData.title);
@@ -98,9 +102,17 @@ function ExtendedData(cd, main, extendedData, parent) {
 					} else {
 						tr.append("<td>" + item.identification + "</td>");
 					}
-					tr.append("<td>" + item.value + "</td>");
-					tr.append("<td>" + item.shouldBe + "</td>");
-					tr.find("img").attr("src", item.status == "ERROR" ? "img/exclamation.png" : "img/accept.png");
+					tr.append("<td>" + formatValue(item.value) + "</td>");
+					tr.append("<td>" + formatValue(item.shouldBe) + "</td>");
+					var img = "";
+					if (item.status == "ERROR") {
+						img = "img/exclamation.png";
+					} else if (item.status == "SUCCESS") {
+						img = "img/accept.png";
+					} else if (item.status == "CANNOT_CHECK") {
+						img = "img/help.png";
+					}
+					tr.find("img").attr("src", img);
 					$(".validationreport table tbody").append(tr);
 				}
 			});
@@ -235,12 +247,13 @@ function ExtendedData(cd, main, extendedData, parent) {
 
 				if (topic.viewpoints != null) {
 					topic.viewpoints.forEach(function(viewpoint){
+						console.log(topic);
 						if (viewpoint.snapshot != null) {
 							var a = $("<a>");
-							a.attr("href", Global.bimServerApi.baseUrl + "/download?token=" + Global.bimServerApi.token + "&action=getBcfImage&extendedDataId=" + extendedData.oid + "&topicGuid=" + topic.guid + "&imageGuid=" + viewpoint.snapshot.snapshot + "&name=" + viewpoint.snapshot);
+							a.attr("href", Global.bimServerApi.baseUrl + "/download?token=" + Global.bimServerApi.token + "&action=getBcfImage&extendedDataId=" + extendedData.oid + "&topicGuid=" + topic.guid + "&imageGuid=" + viewpoint.viewpoint + "&name=" + viewpoint.snapshot);
 							var img = $("<img>");
 							a.append(img);
-							var src = Global.bimServerApi.baseUrl + "/download?token=" + Global.bimServerApi.token + "&action=getBcfImage&extendedDataId=" + extendedData.oid + "&topicGuid=" + topic.guid + "&imageGuid=" + viewpoint.snapshot.snapshot + "&name=" + viewpoint.snapshot;
+							var src = Global.bimServerApi.baseUrl + "/download?token=" + Global.bimServerApi.token + "&action=getBcfImage&extendedDataId=" + extendedData.oid + "&topicGuid=" + topic.guid + "&imageGuid=" + viewpoint.viewpoint + "&name=" + viewpoint.snapshot;
 							img.attr("width", "380px");
 							img.attr("src", src);
 							right.append(a);
