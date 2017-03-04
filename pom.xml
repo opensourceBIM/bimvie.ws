@@ -174,13 +174,6 @@
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 	</distributionManagement>
-	<dependencies>
-	<dependency>
-		<groupId>org.opensourcebim</groupId>
-		<artifactId>bimsurfer</artifactId>
-		<version>0.0.31</version>
-	</dependency>
-	</dependencies>
 	<scm>
 		<url>https://github.com/opensourceBIM/bimvie.ws.git</url>
 		<connection>scm:git:https://github.com/opensourceBIM/bimvie.ws.git</connection>
