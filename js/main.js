@@ -347,3 +347,15 @@ function Tabs(tabsDiv, contentDiv) {
 		o.tabsDiv.find("label").remove();
 	};
 }
+
+this.formatNewServiceStatus = function(status) {
+	if (status == "NEW") {
+		return "<span class=\"label label-warning\">Not authenticated</span>";
+	} else if (status == "AUTHENTICATED") {
+		return "<span class=\"label label-success\">Authenticated</span>";
+	} else if (status == "NO_AUTHENTICATION") {
+		return "<span class=\"label label-success\">Ready</span>";
+	} else {
+		return status;
+	}
+};

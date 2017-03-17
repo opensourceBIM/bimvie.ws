@@ -17,14 +17,6 @@
 <script>
 	function NewService(cd, main, service, serverId) {
 		var o = this;
-		
-		this.formatNewServiceStatus = function(status) {
-			if (status == "NEW") {
-				return "<span class=\"label label-warning\">Not authenticated</span>";
-			} else if (status == "AUTHENTICATED") {
-				return "<span class=\"label label-success\">Authenticated</span>";
-			}
-		};
 
 		var code = QueryString.code;
 
@@ -48,7 +40,7 @@
 					soid : service.oid
 				}, function(service) {
 					cd.find(".table .statusrow").remove();
-					cd.find(".table").append("<tr class=\"statusrow\"><td>Status</td><td>" + o.formatNewServiceStatus(service.status) + "</td></tr>");
+					cd.find(".table").append("<tr class=\"statusrow\"><td>Status</td><td>" + formatNewServiceStatus(service.status) + "</td></tr>");
 				});
 			});
 		}

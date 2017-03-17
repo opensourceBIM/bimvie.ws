@@ -605,14 +605,6 @@ function RightPanel(cd, main, project, projectPage) {
 		cd.find(".servicesTable tbody").append(tr);
 	};
 	
-	this.formatNewServiceStatus = function(status) {
-		if (status == "NEW") {
-			return "<span class=\"label label-warning\">Not authenticated</span>";
-		} else if (status == "AUTHENTICATED") {
-			return "<span class=\"label label-success\">Authenticated</span>";
-		}
-	};
-
 	this.authenticate = function(server, service){
 		Global.bimServerApi.call("OAuthInterface", "generateForwardUrl", {
 			registrationEndpoint: service.registerUrl,
@@ -654,7 +646,7 @@ function RightPanel(cd, main, project, projectPage) {
 		loadNewService(td);
 		tr.append(td);
 		var td = $("<td>");
-		td.append(o.formatNewServiceStatus(service.status));
+		td.append(formatNewServiceStatus(service.status));
 		tr.append(td);
 		var actionsTd = $("<td>");
 		var deleteLink = $("<a>delete</a>");
