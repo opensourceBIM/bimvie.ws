@@ -96,7 +96,12 @@ function InstalledPluginBundles(main, serverSettings, cd) {
 				nameTd.append(" <span class=\"label label-primary\">Update available</span>");
 			}
 			
-			tr.data("version", pluginBundle.latestVersion);
+			tr.data("pluginBundle", pluginBundle);
+			if (pluginBundle.latestVersion == null) {
+				tr.data("version", pluginBundle.installedVersion);
+			} else {
+				tr.data("version", pluginBundle.latestVersion);
+			}
 			
 			tr.append(versionTd);
 

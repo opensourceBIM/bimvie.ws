@@ -10,7 +10,7 @@ function UninstallPluginBundle(cd, serverSettings, pluginBundle, pluginBundleVer
 	
 	this.uninstall = function(pluginBundleVersion){
 		Global.bimServerApi.call("PluginInterface", "uninstallPluginBundle", {
-			repository: pluginBundleVersion.repository,
+			repository: pluginBundleVersion.repository != null ? pluginBundleVersion.repository : null,
 			groupId: pluginBundleVersion.groupId,
 			artifactId: pluginBundleVersion.artifactId,
 			version: pluginBundleVersion.version
