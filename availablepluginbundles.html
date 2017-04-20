@@ -1,4 +1,7 @@
 <div class="availablepluginbundles">
+	<div class="alert alert-success ih">
+		Plugin successfully installed, <a class="btnBack">Back to available plugins</a>
+	</div>
 	<h3>Available Plugin Bundles <a class="helpBtn" title="Help"><span class="glyphicon glyphicon-question-sign"></span></a></h3>
 	<div class="panel panel-default helpDiv ih">
   		<div class="panel-body">
@@ -139,6 +142,10 @@ function AvailablePluginBundles(main, serverSettings, cd) {
 					data: base64,
 					installAllPluginsForAllUsers: true,
 					installAllPluginsForNewUsers: true
+				}, function(){
+					cd.find(".alert-success").show();
+					cd.find(".installBtn").hide();
+					window.scrollTo(0, 0);
 				});
 			}, false);
 
@@ -147,6 +154,10 @@ function AvailablePluginBundles(main, serverSettings, cd) {
 			    reader.readAsDataURL(file);
 			}
 		}
+	});
+	
+	cd.find(".btnBack").click(function(){
+		serverSettings.showAvailablePluginBundles();
 	});
 }
 </script>
