@@ -127,11 +127,13 @@ function Browser(containerDiv, project, revision) {
 													if (value.getGlobalId != null) {
 														id = value.getGlobalId();
 													}
-													var a = $("<a>" + value.getType() + " (" + id + ")</a>");
-													a.attr("type", value.getType());
-													a.attr("oid", value.oid);
-													a.click(o.referenceClick);
-													td.append(a);
+													if (value != null && value.getType != null) {
+														var a = $("<a>" + value.getType() + " (" + id + ")</a>");
+														a.attr("type", value.getType());
+														a.attr("oid", value.oid);
+														a.click(o.referenceClick);
+														td.append(a);
+													}
 												}
 											}
 										}
@@ -144,20 +146,27 @@ function Browser(containerDiv, project, revision) {
 					containerDiv.find(".objectTable").show();
 					containerDiv.find(".loadingDiv").hide();
 					
-					o.viewer = new BIMSURFER.Viewer(Global.bimServerApi, 'browserviewport');
-					o.viewer.loadScene(function(){
-						Global.scene = o.viewer.scene;
-						
-						objectToShow.gid = objectToShow.object._rgeometry;
-						objectToShow.trans.mode = 0;
-						
-						var models = {};
-						models[o.revision.oid] = model;
-						var geometryLoader = new GeometryLoader(Global.bimServerApi, models, o.viewer, "triangles");
-
-						geometryLoader.setLoadOids([o.revision.oid], [objectToShow]);
-						o.viewer.loadGeometry(geometryLoader);
-					});
+					if (objectToShow.isA("IfcProduct")) {
+						o.viewer = new BIMSURFER.Viewer(Global.bimServerApi, 'browserviewport');
+						o.viewer.loadScene(function(){
+							Global.scene = o.viewer.scene;
+							
+							objectToShow.gid = objectToShow.object._rgeometry;
+							objectToShow.trans.mode = 0;
+							
+							var models = {};
+							models[o.revision.oid] = model;
+							var geometryLoader = new GeometryLoader(Global.bimServerApi, models, o.viewer, "triangles");
+	
+							geometryLoader.setLoadOids([o.revision.oid], [objectToShow]);
+							o.viewer.loadGeometry(geometryLoader);
+						});
+					} else {
+						if (o.viewer != null) {
+							o.viewer = null;
+							cd.find("#browserviewport canvas").remove();
+						}
+					}
 				});
 			});
 		});
