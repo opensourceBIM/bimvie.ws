@@ -189,18 +189,31 @@ function Project(containerDiv, main, project) {
 								]
 						    },
 						    {
-						    	type: "IfcRepresentation",
-						    	includeAllSubtypes: true
+						    	type: {
+						    		name: "IfcRepresentation",
+						    		includeAllSubTypes: true
+						    	}
 						    },
 						    {
-						    	type: "IfcProductRepresentation"
+						    	type: {
+						    		name: "IfcRepresentationItem",
+						    		includeAllSubtypes: true
+						    	}
+						    },
+						    {
+						    	type: {
+						    		name: "IfcProductRepresentation",
+							    	includeAllSubtypes: true
+						    	}
 						    },
 						    {
 						    	type: "IfcPresentationLayerWithStyle"
 						    },
 						    {
-						    	type: "IfcProduct",
-						    	includeAllSubtypes: true
+						    	type: {
+						    		name: "IfcProduct",
+							    	includeAllSubtypes: true
+						    	}
 						    },
 						    {
 						    	type: "IfcProductDefinitionShape"
