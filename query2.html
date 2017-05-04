@@ -5,6 +5,7 @@
 			<select class="form-control">
 			</select>
 		</div>
+		<div class="alert alert-info description">Select an example query, or write your own</div>
 		<div class="form-group">
 			<textarea class="form-control queryInp"></textarea>
 		</div>
@@ -22,135 +23,199 @@ function Query2(cd, parent) {
 	
 	o.queriesIfc2x3tc1 = {
 		AllObjects: {
-			type: "IfcProduct",
-			includeAllSubtypes: true
+			description: "IfcProduct is the super-type of all products like IfcWall, IfcWindow, IfcStair etc... So this query returns all products",
+			query: {
+				type: {
+					name: "IfcProduct",
+					includeAllSubTypes: true
+				}
+			}
 		},
 		AllWalls: {
-			type: "IfcWall",
-			includeAllSubtypes: true
+			description: "This query returns all IfcWall objects, and also all IfcWallStandardCase objects because IfcWallStandardCase is a subtype of IfcWall",
+			query: {
+				type: {
+					name: "IfcWall",
+					includeAllSubTypes: true
+				}
+			}
 		},
 		AllWallsIncludingDecomposition: {
-			type: "IfcWall",
-			includeAllSubtypes: true,
-			includes: ["validifc:ContainedInStructure", "validifc:OwnerHistory", "validifc:Representation", "validifc:ObjectPlacement"]
+			description: "Returns all walls and includes the containment tree (up), owner history, representation and placement for every wall",
+			query: {
+				type: {
+					name: "IfcWall",	
+					includeAllSubTypes: true
+				},
+				includes: ["validifc:ContainedInStructure", "validifc:OwnerHistory", "validifc:Representation", "validifc:ObjectPlacement"]
+			}
 		},
 		AllWallsIncludingWindowsAndDoors: {
-			type: "IfcWall",
-			includeAllSubtypes: true,
-			include: {
-				type: "IfcWall",
-				field: "HasOpenings",
+			description: "Returns all walls and includes the openings and fillings (such as doors and windows) for each wall",
+			query: {
+				type: {
+					name: "IfcWall",
+					includeAllSubTypes: true,
+				},
 				include: {
-					type: "IfcRelVoidsElement",
-					field: "RelatedOpeningElement",
+					type: "IfcWall",
+					field: "HasOpenings",
 					include: {
-						type: "IfcOpeningElement",
-						field: "HasFillings",
+						type: "IfcRelVoidsElement",
+						field: "RelatedOpeningElement",
 						include: {
-							type: "IfcRelFillsElement",
-							field: "RelatedBuildingElement"
+							type: "IfcOpeningElement",
+							field: "HasFillings",
+							include: {
+								type: "IfcRelFillsElement",
+								field: "RelatedBuildingElement"
+							}
 						}
 					}
 				}
 			}
 		},
 		AllWallsIncludingWindows: {
-			type: "IfcWall",
-			includeAllSubtypes: true,
-			include: {
-				type: "IfcWall",
-				field: "HasOpenings",
+			description: "Returns all walls and includes the openings and fillings, but only when those are of type IfcWindow. This is essentially the same as the previous query, except that only windows are included",
+			query: {
+				type: {
+					name: "IfcWall",
+					includeAllSubTypes: true
+				},
 				include: {
-					type: "IfcRelVoidsElement",
-					field: "RelatedOpeningElement",
+					type: "IfcWall",
+					field: "HasOpenings",
 					include: {
-						type: "IfcOpeningElement",
-						field: "HasFillings",
+						type: "IfcRelVoidsElement",
+						field: "RelatedOpeningElement",
 						include: {
-							type: "IfcRelFillsElement",
-							field: "RelatedBuildingElement",
-							outputType: "IfcWindow"
+							type: "IfcOpeningElement",
+							field: "HasFillings",
+							include: {
+								type: "IfcRelFillsElement",
+								field: "RelatedBuildingElement",
+								outputType: "IfcWindow"
+							}
 						}
 					}
 				}
 			}
 		},
 		AllWallsAndSlabs: {
-			types: ["IfcWall", "IfcSlab"],
-			includeAllSubtypes: true
+			description: "Queries all walls and slabs, only IfcWall has subtypes so no subtypes required for IfcSlab",
+			query: {
+				types: [{
+						name: "IfcWall",
+						includeAllSubTypes: true
+					}, {
+						name: "IfcSlab"
+					}],
+			}
 		},
 		SpecificWallsByGuid: {
-			type: "IfcWall",
-			includeAllSubtypes: true,
-			guids: ["2udBPbKibCZ8zbfpJmtDTM", "2V1MCFZRf1GA2ZyRufjYwX", "2oOoWKmmfChQTLCBzuB3$b"]
+			description: "Queries the model for 3 specific walls, identified by their GUIDs. These GUIDs only work on the <a href=\"https://github.com/opensourceBIM/TestFiles/raw/master/TestData/data/AC11-Institute-Var-2-IFC.ifc\">AC11-Institute-Var-2-IFC.ifc</a> model. In this query you can ommit the whole \"type\" part but it could make the query a bit slower",
+			query: {
+				type: {
+					name: "IfcWall",
+					includeAllSubTypes: true
+				},
+				guids: ["2udBPbKibCZ8zbfpJmtDTM", "2V1MCFZRf1GA2ZyRufjYwX", "2oOoWKmmfChQTLCBzuB3$b"]
+			}
 		},
 		SpecificBuildingStoreyIncContains: {
-			type: "IfcBuildingStorey",
-			guid: "25SMdCQszBi9al8gnrh8LV",
-			include: {
+			description: "Query a specific building storey by GUID (test model: <a href=\"https://github.com/opensourceBIM/TestFiles/raw/master/TestData/data/AC11-Institute-Var-2-IFC.ifc\">AC11-Institute-Var-2-IFC.ifc</a>). Includes all directly contained objects",
+			query: {
 				type: "IfcBuildingStorey",
-				field: "ContainsElements",
+				guid: "25SMdCQszBi9al8gnrh8LV",
 				include: {
-					type: "IfcRelContainedInSpatialStructure",
-					field: "RelatedElements"
+					type: "IfcBuildingStorey",
+					field: "ContainsElements",
+					include: {
+						type: "IfcRelContainedInSpatialStructure",
+						field: "RelatedElements"
+					}
 				}
 			}
 		},
 		AllPropertiesOf2Spaces1Wall: {
-			guids: [
-				"1geKZCJAHAVQxXKkYkD9nV",
-				"1stYdhm21EUQMz3jV6WdHc",
-				"05yuQkJxb22el7nxTgecJc"
-			],
-			includes: [
-				"validifc:AllProperties",
-				"validifc:ContainedInStructure",
-				"validifc:OwnerHistory",
-				"validifc:Representation",
-				"validifc:ObjectPlacement"
-			]
+			description: "[BROKEN] Queries all properties of the given GUIDs (test model: <a href=\"https://github.com/opensourceBIM/TestFiles/raw/master/TestData/data/AC11-Institute-Var-2-IFC.ifc\">AC11-Institute-Var-2-IFC.ifc</a>). This query won't visualize anything",
+			query: {
+				guids: [
+					"1geKZCJAHAVQxXKkYkD9nV",
+					"1stYdhm21EUQMz3jV6WdHc",
+					"05yuQkJxb22el7nxTgecJc"
+				],
+				includes: [
+					"validifc:AllProperties",
+					"validifc:ContainedInStructure",
+					"validifc:OwnerHistory",
+					"validifc:Representation",
+					"validifc:ObjectPlacement"
+				]
+			}
 		},
 		ExternalWalls: {
-			type: "IfcWall",
-			includeAllSubtypes: true,
-			properties: {
-				IsExternal: true
+			description: "Queries for all external walls. The \"properties\" part of the query is a specialized type of query that will iterate over all property sets/properties linked to the object",
+			query: {
+				type: {
+					name: "IfcWall",
+					includeAllSubtypes: true
+				},
+				properties: {
+					IsExternal: true
+				}
 			}
 		},
 		ClassificationDakenConstructief: {
-			type: "IfcProduct",
-			includeAllSubtypes: true,
-			classifications: [
-				"57.2"
-			]
+			description: "Queries all products that have a classification with the name \"57.2\". TODO: Link to a working test model that has these classifications",
+			query: {
+				type: {
+					name: "IfcProduct",	
+					includeAllSubtypes: true
+				},
+				classifications: [
+					"57.2"
+				]
+			}
 		},
 		ThermalTransmittance: {
-			type: "IfcWall",
-			includeAllSubtypes: true,
-			properties: {
-				ThermalTransmittance: {
-					comparator: ">",
-					value: 0.2
+			description: "[NOT WORKING]",
+			query: {
+				type: {
+					name: "IfcWall",
+					includeAllSubtypes: true
+				},
+				properties: {
+					ThermalTransmittance: {
+						comparator: ">",
+						value: 0.2
+					}
 				}
 			}
 		},
 		IfcPresentationLayerAssignment: {
-			type: "IfcPresentationLayerAssignment",
-			name: "Räume",
-			include: {
+			description: "[NOT WORKING]",
+			query: {
 				type: "IfcPresentationLayerAssignment",
-				field: "AssignedItems"
+				name: "Räume",
+				include: {
+					type: "IfcPresentationLayerAssignment",
+					field: "AssignedItems"
+				}
 			}
 		},
 		ObjectInBoundingBox: {
-			type: "IfcFurnishingElement",
-			inBoundingBox: {
-				x: 0,
-				y: 0,
-				z: 0,
-				width: 5,
-				height: 5,
-				depth: 5
+			description: "Queries for all furnishing in the given bounding box",
+			query: {
+				type: "IfcFurnishingElement",
+				inBoundingBox: {
+					x: 0,
+					y: 0,
+					z: 0,
+					width: 5,
+					height: 5,
+					depth: 5
+				}
 			}
 		}
 	};
@@ -279,8 +344,10 @@ function Query2(cd, parent) {
 	
 	cd.find("select").change(function(){
 		var query = o.queries[cd.find("select").val()];
-		var json = JSON.stringify(query, null, "  ");
+		cd.find(".description").html(query.description);
+		var json = JSON.stringify(query.query, null, "  ");
 		cd.find("textarea").val(json);
+		o.resize();
 	});
 	
 	this.addRevision = function(project, roid, types){
@@ -422,7 +489,7 @@ function Query2(cd, parent) {
 	parent.modelUnloadedListeners.register(o.unloadRevision);
 	
 	this.resize = function(){
-		var height = ($(window).height() - $(".navbar").outerHeight() - $(".navbar-header").outerHeight() - $(".navigator .panel-heading").outerHeight() - 143);
+		var height = ($(window).height() - $(".navbar").outerHeight() - $(".description").outerHeight() - $(".navbar-header").outerHeight() - $(".navigator .panel-heading").outerHeight() - 200);
 		cd.find(".queryInp").height(height + "px");
 	};
 
