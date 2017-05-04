@@ -30,6 +30,10 @@
 			});
 		};
 		
+		this.formatNewServiceStatus = function(status) {
+			return status;
+		}
+		
 		if (service.status != "AUTHENTICATED" && code != null) {
 			Global.bimServerApi.call("OAuthInterface", "getRemoteToken", {
 				soid : service.oid,
@@ -47,6 +51,7 @@
 		
 		function formatAction(action) {
 			if (action.__type == "SCheckinRevision") {
+				console.log(action);
 				var span = $("<span>Checkin new revision</span>");
 				Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {
 					poid: action.projectId
@@ -54,6 +59,8 @@
 					span.append(" (" + project.name + ")");
 				});
 				return span;
+			} else if (action.__type == "SStoreExtendedData") {
+				return action.__type;
 			} else {
 				return action.__type;
 			}
