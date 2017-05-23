@@ -179,7 +179,7 @@ function Query2(cd, parent) {
 			}
 		},
 		ThermalTransmittance: {
-			description: "[NOT WORKING]",
+			description: "[NOT WORKING] At the moment, no compare functionalities have been implemented",
 			query: {
 				type: {
 					name: "IfcWall",
@@ -205,7 +205,7 @@ function Query2(cd, parent) {
 			}
 		},
 		ObjectInBoundingBox: {
-			description: "Queries for all furnishing in the given bounding box",
+			description: "Queries for all furnishing that completely fits inside the given bounding box, you can add the \"partial: true\" argument to also include partially contained objects",
 			query: {
 				type: "IfcFurnishingElement",
 				inBoundingBox: {

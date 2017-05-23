@@ -141,6 +141,13 @@
 		</div>
 		<div class="form-group">
 			<div class="col-lg-8">
+				<label class="checkbox"><a rel="tooltip" data-original-title="Whether to update last-login for User on login" data-placement="right">Update last-login on login</a>
+					<input type="checkbox" class="storeLastLogin">
+				</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-lg-8">
 				<label class="checkbox"><a rel="tooltip" data-original-title="Allow user to create top level projects" data-placement="right">Allow user to create top level projects</a>
 					<input type="checkbox" class="createTopLevelProjects">
 				</label>
@@ -251,6 +258,7 @@ function BasicServerSettings(main, serversettings) {
 			serverSettings.renderEngineProcesses = $(".basicserversettings .renderEngineProcesses").val();
 			serverSettings.reuseGeometry = $(".basicserversettings .geometryReuseEnabled").prop("checked");
 			serverSettings.checkinMergingEnabled = $(".basicserversettings .checkinMergingEnabled").prop("checked");
+			serverSettings.storeLastLogin = $(".basicserversettings .storeLastLogin").prop("checked");
 			serverSettings.allowUsersToCreateTopLevelProjects = $(".basicserversettings .createTopLevelProjects").prop("checked");
 			serverSettings.allowSelfRegistration = $(".basicserversettings .allowSelfRegistration").prop("checked");
 			serverSettings.sendConfirmationEmailAfterRegistration = $(".basicserversettings .sendConfirmationEmailAfterRegistration").prop("checked");
@@ -307,6 +315,7 @@ function BasicServerSettings(main, serversettings) {
 			$(".basicserversettings .geometryReuseEnabled").prop("checked", data.reuseGeometry);
 			$(".basicserversettings .checkinMergingEnabled").prop("checked", data.checkinMergingEnabled);
 			$(".basicserversettings .createTopLevelProjects").prop("checked", data.allowUsersToCreateTopLevelProjects);
+			$(".basicserversettings .storeLastLogin").prop("checked", data.storeLastLogin);
 			$(".basicserversettings .allowSelfRegistration").prop("checked", data.allowSelfRegistration);
 			$(".basicserversettings .sendConfirmationEmailAfterRegistration").prop("checked", data.sendConfirmationEmailAfterRegistration);
 			$(".basicserversettings .sendEmailOnNewRevision").prop("checked", data.sendEmailOnNewRevision);
