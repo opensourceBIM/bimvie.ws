@@ -368,11 +368,15 @@ function Main(address, user) {
 	this.showDownloadCheckoutPopup = function(poid, roid) {
 		var div = $("<div class=\"modal fade\">");
 		$(document.body).append(div);
+
+		var query = {
+			includeAllFields: true
+		};
 		var params = {
-			downloadType: "downloadRevisions",
-			allowCheckouts: true,
 			roids: [roid]
 		};
+		params.query = JSON.stringify(query);
+
 		div.load(Global.baseDir + "download.html", function(){
 			new Download($(this), params);
 		}).modal("show");
