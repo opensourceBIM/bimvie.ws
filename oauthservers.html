@@ -18,6 +18,9 @@
 		</thead>
 		<tbody></tbody>
 	</table>
+	<div class="well">
+		<button class="btn btn-primary showRegisterServerBtn">Manually register server</button>
+	</div>
 	<div class="alert alert-info">
 		This table shows a list of servers that have been registered to access resources on this BIMserver.
 	</div>
@@ -39,6 +42,45 @@
 		</thead>
 		<tbody></tbody>
 	</table>
+	<div class="modal fade addServerModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">Register manual server</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<label for="inputEmail3" class="col-sm-2 control-label">Name</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control name" id="inputEmail3" placeholder="Name">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputPassword3" class="col-sm-2 control-label">Description</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control description" id="inputPassword3" placeholder="Description">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputPassword3" class="col-sm-2 control-label">Redirect URL</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control redirectUrl" id="inputPassword3" placeholder="https://zapier.com/dashboard/auth/oauth/return/App56192API">
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary registerServerBtn">Register</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 <script>
 function OAuthServers(cd, main, serverSettings) {
@@ -81,7 +123,11 @@ function OAuthServers(cd, main, serverSettings) {
 					tr.append("<td>" + server.clientId + "</td>");
 					tr.append("<td>" + server.clientName + "</td>");
 					tr.append("<td>" + server.clientDescription + "</td>");
-					tr.append("<td><img src=\"data:image/png;base64," + server.clientIcon + "\"/></td>");
+					if (server.clientIcon != null) {
+						tr.append("<td><img src=\"data:image/png;base64," + server.clientIcon + "\"/></td>");
+					} else {
+						tr.append("<td></td>");
+					}
 					tr.append("<td>" + server.clientSecret + "</td>");
 					tr.append("<td>" + formatDateTime(new Date(server.issuedAt)) + "</td>");
 					tr.append("<td>" + formatDuration(server.expiresAt - new Date()) + "</td>");
@@ -116,5 +162,24 @@ function OAuthServers(cd, main, serverSettings) {
 	this.hide = function(){};
 	
 	this.load();
+	
+	cd.find(".showRegisterServerBtn").click(function(e){
+		e.preventDefault();
+		$(".addServerModal").on("shown.bs.modal", function (e) {
+			cd.find(".name").focus();
+		});
+		cd.find(".addServerModal").modal("show");
+	});
+	
+	cd.find(".registerServerBtn").click(function(){
+		Global.bimServerApi.call("OAuthInterface", "registerRemoteApplication", {
+			redirectUrl: cd.find(".redirectUrl").val(),
+			name: cd.find(".name").val(),
+			description: cd.find(".description").val()
+		}, function(){
+			$(".addServerModal").modal("hide");
+			o.load();
+		});
+	});
 }
 </script>
