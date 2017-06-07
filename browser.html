@@ -92,7 +92,17 @@ function Browser(containerDiv, project, revision) {
 									} else if (Array.isArray(listItem)) {
 										listItem.forEach(function(item, index){
 											if (index != 0) {
-												td.append(", ");
+												td.append(", <br/>");
+											}
+											if (Array.isArray(item)) {
+												td.append("[");
+												item.forEach(function(subItem, subIndex){
+													if (subIndex != 0) {
+														td.append(", ");
+													}
+													td.append(subItem._v);
+												});
+												td.append("]");
 											}
 											td.append(item);
 										});
@@ -164,7 +174,7 @@ function Browser(containerDiv, project, revision) {
 					} else {
 						if (o.viewer != null) {
 							o.viewer = null;
-							cd.find("#browserviewport canvas").remove();
+							containerDiv.find("#browserviewport canvas").remove();
 						}
 					}
 				});
