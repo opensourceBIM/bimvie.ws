@@ -95,16 +95,22 @@ function Browser(containerDiv, project, revision) {
 												td.append(", <br/>");
 											}
 											if (Array.isArray(item)) {
+												console.log(item);
 												td.append("[");
 												item.forEach(function(subItem, subIndex){
 													if (subIndex != 0) {
 														td.append(", ");
 													}
-													td.append(subItem._v);
+													if (subItem._v != null) {
+														td.append(subItem._v);
+													} else {
+														td.append(subItem);
+													}
 												});
 												td.append("]");
+											} else {
+												td.append(item);
 											}
-											td.append(item);
 										});
 									} else {
 										var id = listItem.oid;
