@@ -12,9 +12,15 @@
 		<h3>Single Project Access</h3>
 		Select a project
 		<select class="form-control projectsSelect"></select>
+		<button class="btn btn-primary authorizeBtn">Authorize</button>
+	</div>
+	<div class="service">
+		<h3>Service Runner Access</h3>
+		Select a service
+		<select class="form-control servicesSelect"></select>
+		<button class="btn btn-primary authorizeBtn">Authorize</button>
 	</div>
 	<br/>
-	<button class="btn btn-primary authorizeBtn">Authorize</button>
 </div>
 <script>
 function OAuth(cd) {
@@ -34,14 +40,36 @@ function OAuth(cd) {
 				cd.find(".projectsSelect").append(option);
 			});
 		});
+	} else if (authType == "service") {
+		cd.find(".service").show();
+		Global.bimServerApi.call("PluginInterface", "getAllInternalServices", {
+			onlyEnabled: true
+		}, function(services){
+			services.forEach(function(service){
+				var option = $("<option value=\"" + service.oid + "\">" + service.name + "</option>");
+				cd.find(".servicesSelect").append(option);
+			});
+		});
 	}
 	
-	cd.find(".authorizeBtn").click(function(){
+	cd.find(".singleproject .authorizeBtn").click(function(){
 		Global.bimServerApi.call("OAuthInterface", "authorize", {
 			oAuthServerOid: o.oAuthServerOid,
 			authorization: {
 				__type: "SSingleProjectAuthorization",
 				projectId: cd.find(".projectsSelect").val()
+			}
+		}, function(code){
+			window.location = "/oauth/authorize/" + window.location.search + "&token=" + Global.bimServerApi.token + "&code=" + code;
+		});
+	});
+
+	cd.find(".service .authorizeBtn").click(function(){
+		Global.bimServerApi.call("OAuthInterface", "authorize", {
+			oAuthServerOid: o.oAuthServerOid,
+			authorization: {
+				__type: "SRunServiceAuthorization",
+				serviceId: cd.find(".servicesSelect").val()
 			}
 		}, function(code){
 			window.location = "/oauth/authorize/" + window.location.search + "&token=" + Global.bimServerApi.token + "&code=" + code;
