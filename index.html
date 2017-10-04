@@ -300,7 +300,8 @@
 		    					$.removeCookie("address" + window.document.location.port, {});
 		    				};
 
-		    				var address = getParameterByName("address");
+		    				console.log(window.location.search);
+		    				var address = getParameterByName("api_address");
 		    				
 		    				if (address != null) {
 		    					othis.loadBimServerApiFromAddress(address, successFunction, errorFunction);
