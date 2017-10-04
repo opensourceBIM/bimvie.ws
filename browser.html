@@ -72,89 +72,88 @@ function Browser(containerDiv, project, revision) {
 					object.fields.forEach(function(field){
 						var tr = $("<tr></tr>");
 						tr.attr("fieldName", field.name);
-						tr.append("<td>" + field.name + "</td>");
+						if (field.inverse == true) {
+							tr.append("<td style=\"color: #888888\"><i>" + field.name + "</i></td>");
+						} else {
+							tr.append("<td>" + field.name + "</td>");
+						}
 						containerDiv.find(".objectTable tbody").append(tr);
 
 						var td = $("<td>");
 						tr.append(td);
 						
-						if (field.type == "string") {
-							td.append(object.object[field.name]);
-						} else {
-							if (field.many) {
-								var getMethod = object["get" + field.name];
-								getMethod.call(object, function(listItem, index){
-									if (index > 0) {
-										td.append(", ");
-									}
-									if (typeof listItem == "string" || typeof listItem == "number") {
-										td.append(value);
-									} else if (Array.isArray(listItem)) {
-										listItem.forEach(function(item, index){
-											if (index != 0) {
-												td.append(", <br/>");
-											}
-											if (Array.isArray(item)) {
-												console.log(item);
-												td.append("[");
-												item.forEach(function(subItem, subIndex){
-													if (subIndex != 0) {
-														td.append(", ");
-													}
-													if (subItem._v != null) {
-														td.append(subItem._v);
-													} else {
-														td.append(subItem);
-													}
-												});
-												td.append("]");
-											} else {
-												td.append(item);
-											}
-										});
-									} else {
-										var id = listItem.oid;
-										if (listItem.getGlobalId != null) {
-											id = listItem.getGlobalId();
+						if (field.many) {
+							var getMethod = object["get" + field.name];
+							getMethod.call(object, function(listItem, index){
+								if (index > 0) {
+									td.append(", ");
+								}
+								if (typeof listItem == "string" || typeof listItem == "number") {
+									td.append(value);
+								} else if (Array.isArray(listItem)) {
+									listItem.forEach(function(item, index){
+										if (index != 0) {
+											td.append(", <br/>");
 										}
-										if (listItem._t != null) {
-											td.append(listItem._v);
-										} else {
-											var link = $("<a>" + listItem.getType() + " (" + id + ")</a>");
-											link.attr("oid", listItem.oid);
-											link.attr("type", listItem.getType());
-											link.click(o.referenceClick);
-											td.append(link);
-										}
-									}
-								});
-							} else {
-								var getMethod = object["get" + field.name];
-								if (getMethod != null) {
-									getMethod.call(object, function(value){
-										if (value != null) {
-											if (typeof value == "string" || typeof value == "number") {
-												td.append(value);
-											} else {
-												if (value._t != null) {
-													td.append(value._v);
+										if (Array.isArray(item)) {
+											td.append("[");
+											item.forEach(function(subItem, subIndex){
+												if (subIndex != 0) {
+													td.append(", ");
+												}
+												if (subItem._v != null) {
+													td.append(subItem._v);
 												} else {
-													var id = value.oid;
-													if (value.getGlobalId != null) {
-														id = value.getGlobalId();
-													}
-													if (value != null && value.getType != null) {
-														var a = $("<a>" + value.getType() + " (" + id + ")</a>");
-														a.attr("type", value.getType());
-														a.attr("oid", value.oid);
-														a.click(o.referenceClick);
-														td.append(a);
-													}
+													td.append(subItem);
+												}
+											});
+											td.append("]");
+										} else {
+											td.append(item);
+										}
+									});
+								} else {
+									var id = listItem.oid;
+									if (listItem.getGlobalId != null) {
+										id = listItem.getGlobalId();
+									}
+									if (listItem._t != null) {
+										td.append(listItem._v);
+									} else {
+										var link = $("<a>" + listItem.getType() + " (" + id + ")</a>");
+										link.attr("oid", listItem.oid);
+										link.attr("type", listItem.getType());
+										link.click(o.referenceClick);
+										td.append(link);
+									}
+								}
+							});
+						} else {
+							var getMethod = object["get" + field.name];
+							if (getMethod != null) {
+								getMethod.call(object, function(value){
+									if (value != null) {
+										if (typeof value == "string" || typeof value == "number") {
+											td.append(value);
+										} else {
+											if (value._t != null) {
+												td.append(value._v);
+											} else {
+												var id = value.oid;
+												if (value.getGlobalId != null) {
+													id = value.getGlobalId();
+												}
+												if (value != null && value.getType != null) {
+													var a = $("<a>" + value.getType() + " (" + id + ")</a>");
+													a.attr("type", value.getType());
+													a.attr("oid", value.oid);
+													a.click(o.referenceClick);
+													td.append(a);
 												}
 											}
 										}
-									});
-								}
+									}
+								});
 							}
 						}
 					});
