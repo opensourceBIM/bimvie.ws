@@ -606,37 +606,45 @@ function RightPanel(cd, main, project, projectPage) {
 	};
 	
 	this.authenticate = function(server, service){
-		var url = new Url(document.location);
+		url = new Url(document.location);
+		url.remove("poid");
 		url.tab = "services";
 		url.oauth = "true";
 		url.baseUrl = service.url;
 		url.serviceIdentifier = service.identifier;
-		url.applicationId = service.oid;
-		url.page = "Project";
-		var uri = url.toString();
-		Global.bimServerApi.call("OAuthInterface", "generateForwardUrl", {
-			registrationEndpoint: service.registerUrl,
-			authorizeUrl: service.authorizationUrl,
-			returnUrl: encodeURIComponent(uri)
-		}, function(forwardUrl){
-			document.location = forwardUrl;
-		});
-
-		
-		
+		url.applicationId = server.oid;
+		url.page = "oauthresponse";
 //		Global.bimServerApi.call("OAuthInterface", "generateForwardUrl", {
 //			registrationEndpoint: service.registerUrl,
 //			authorizeUrl: service.authorizationUrl,
-//			returnUrl: service.resourceUrl
+//			returnUrl: encodeURIComponent(uri)
 //		}, function(forwardUrl){
-//			var state = {
-//				poid: othis.project.oid,
-//				soid: service.oid,
-//				serverId: server.oid
-///			}
-//			state = JSON.stringify(state);
-//			document.location = service.authorizationUrl + "?client_id=" + encodeURIComponent(server.clientId) + "&response_type=code&state=" + encodeURIComponent(state) + "&auth_type=service";
+//			document.location = forwardUrl;
+//		});
+
+		
+		var state = {
+			_poid: othis.project.oid,
+			_soid: service.oid,
+			_serverId: server.oid
+		}
+		state = JSON.stringify(state);
+		url.state = state;
+		var uri = url.toString();
+		
+		var redirect_uri = encodeURIComponent(uri);
+		console.log(redirect_uri);
+		
+		document.location = service.authorizationUrl + "?client_id=" + encodeURIComponent(server.clientId) + "&response_type=code&state=" + encodeURIComponent(state) + "&auth_type=service&redirect_uri=" + redirect_uri;
+//		Global.bimServerApi.call("OAuthInterface", "generateForwardUrl", {
+//			registrationEndpoint: service.registerUrl,
+//			authorizeUrl: service.authorizationUrl,
+//			returnUrl: uri
+//		}, function(forwardUrl){
+//			console.log(forwardUrl);
 //			document.location = forwardUrl + "&state=" + state;
+
+//			document.location = forwardUrl;
 //		});
 	};
 	
@@ -818,15 +826,17 @@ function RightPanel(cd, main, project, projectPage) {
 			$(".services .newServiceList").hide();
 			$(".services .details").show();
 			if (oauth == true) {
-				$(".services .details").load("addservice3.html", function(){
-					var history = History.getState().data;
-					Global.bimServerApi.call("ServiceInterface", "getServiceDescriptor", {
-						baseUrl: decodeURIComponent(history.baseUrl),
-						serviceIdentifier: history.serviceIdentifier
-					}, function(serviceDescriptor){
-						return new AddService3(main, othis.project, projectPage, serviceDescriptor, false);
-					});
-				});
+				othis.loadServices();
+				
+//				$(".services .details").load("addservice3.html", function(){
+//					var history = History.getState().data;
+//					Global.bimServerApi.call("ServiceInterface", "getServiceDescriptor", {
+//						baseUrl: decodeURIComponent(history.baseUrl),
+//						serviceIdentifier: history.serviceIdentifier
+//					}, function(serviceDescriptor){
+//						return new AddService3(main, othis.project, projectPage, serviceDescriptor, false);
+//					});
+//				});
 			} else {
 				$(".services .details").load("addservice.html", function(){
 					return new AddService(main, othis.project, projectPage, function(){

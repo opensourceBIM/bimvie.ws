@@ -57,6 +57,7 @@ function ThreeDView(containerDiv, parent, main) {
 		o.selected = node.data.object;
 		var object = node.data.object;
 		object.getGeometry(function(geometryInfo){
+			console.log("Triangles", geometryInfo.object.primitiveCount);
 			geometryInfo.getTransformation(function(transformation){
 				var rawLength = 16 * 8;
 				var binary_string =  atob(transformation);

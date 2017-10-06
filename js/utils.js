@@ -111,6 +111,10 @@ function Url(location) {
 		href = href.substring(next + 1);
 	}
 	
+	this.remove = function(key) {
+		delete o[key];
+	}
+	
 	this.toString = function(){
 		var url = location.protocol + "//" + location.host + location.pathname;
 		var first = true;
