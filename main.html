@@ -125,13 +125,13 @@ function Main(address, user) {
 				othis.showResetPassword(null);
 			} else if (history.page == "OAuth") {
 				othis.showOAuth(null);
-			} else if (history.page == "oauthresponse") {
+			} else if (history.state != null) {
 				var state = history.state;
 				state = JSON.parse(decodeURIComponent(state));
 				
-				Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: state.poid}, function(project){
-					Global.bimServerApi.call("ServiceInterface", "getNewService", {soid: state.soid}, function(service){
-						othis.showService(project, service, state.serverId, function(){
+				Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: state._poid}, function(project){
+					Global.bimServerApi.call("ServiceInterface", "getNewService", {soid: state._soid}, function(service){
+						othis.showService(project, service, state._serverId, function(){
 							
 						});
 					});

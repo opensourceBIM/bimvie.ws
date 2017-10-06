@@ -70,7 +70,7 @@ function AddNewService2(cd, project, projectPage, serviceDescriptor) {
 		var output = cd.find(".outputsTable input:checked").parents("tr").attr("output"); 
 		var action = cd.find(".outputsTable input:checked").parents("tr").find("select").val();
 		if (action == "NEW_REVISION") {
-			var canBeCheckedIn = output == "IFC_STEP_2x3TC1" || output == "IFC_STEP_4" || output == "IFC_XML_2x3TC1" || output == "IFC_XML_4" || output == "IFC_JSON_2x3TC1" || output == "IFC_JSON_4";
+			var canBeCheckedIn = output == "IFC_STEP_2X3TC1" || output == "IFC_STEP_4" || output == "IFC_XML_2X3TC1" || output == "IFC_XML_4" || output == "IFC_JSON_2X3TC1" || output == "IFC_JSON_4";
 			cd.find(".checkinDiv").toggle(canBeCheckedIn);
 			if (canBeCheckedIn) {
 				o.loadProjects(cd.find(".projectSelect"));
@@ -88,7 +88,7 @@ function AddNewService2(cd, project, projectPage, serviceDescriptor) {
 					console.log(action);
 					if (action == "NEW_REVISION") {
 						var output = cd.find(".outputsTable input:checked").parents("tr").attr("output"); 
-						var canBeCheckedIn = output == "IFC_STEP_2x3TC1" || output == "IFC_STEP_4" || output == "IFC_XML_2x3TC1" || output == "IFC_XML_4" || output == "IFC_JSON_2x3TC1" || output == "IFC_JSON_4";
+						var canBeCheckedIn = output == "IFC_STEP_2X3TC1" || output == "IFC_STEP_4" || output == "IFC_XML_2X3TC1" || output == "IFC_XML_4" || output == "IFC_JSON_2X3TC1" || output == "IFC_JSON_4";
 						if (canBeCheckedIn) {
 							return cd.find(".projectSelect").val() != "[SELECT_A_PROJECT]";
 						} else {
@@ -186,7 +186,7 @@ function AddNewService2(cd, project, projectPage, serviceDescriptor) {
 			var select = $("<select class=\"form-control\">");
 			select.change(o.changeOutput);
 			select.append("<option value=\"EXTENDED_DATA_TO_REVISION\">Add as extended data to revision</option>");
-			if (output == "IFC_STEP_2x3TC1" || output == "IFC_STEP_4" || output == "IFC_XML_2x3TC1" || output == "IFC_XML_4" || output == "IFC_JSON_2x3TC1" || output == "IFC_JSON_4") {
+			if (output == "IFC_STEP_2X3TC1" || output == "IFC_STEP_4" || output == "IFC_XML_2X3TC1" || output == "IFC_XML_4" || output == "IFC_JSON_2X3TC1" || output == "IFC_JSON_4") {
 				var option = $("<option value=\"NEW_REVISION\">Checkin as new revision</option>");
 				select.append(option);
 				option.attr("selected", "selected");
@@ -206,7 +206,7 @@ function AddNewService2(cd, project, projectPage, serviceDescriptor) {
 		var action = $(this).val();
 		if (action == "NEW_REVISION") {
 			var output = cd.find(".outputsTable input:checked").parents("tr").attr("output");
-			var canBeCheckedIn = output == "IFC_STEP_2x3TC1" || output == "IFC_STEP_4" || output == "IFC_XML_2x3TC1" || output == "IFC_XML_4" || output == "IFC_JSON_2x3TC1" || output == "IFC_JSON_4";
+			var canBeCheckedIn = output == "IFC_STEP_2X3TC1" || output == "IFC_STEP_4" || output == "IFC_XML_2X3TC1" || output == "IFC_XML_4" || output == "IFC_JSON_2X3TC1" || output == "IFC_JSON_4";
 			cd.find(".checkinDiv").toggle(canBeCheckedIn);
 			if (canBeCheckedIn) {
 				o.loadProjects(cd.find(".projectSelect"));
@@ -229,6 +229,8 @@ function AddNewService2(cd, project, projectPage, serviceDescriptor) {
 			action.__type = "SStoreExtendedData";
 		}
 		
+		var state = {};
+		
 		var request = {
 			poid: project.oid,
 			sAction: action,
@@ -246,7 +248,8 @@ function AddNewService2(cd, project, projectPage, serviceDescriptor) {
 				oauthCode: "",
 				action: action,
 				serializerId: parseInt(cd.find(".inputsTable input:checked").parents("tr").find("select").val()),
-				output: output
+				output: output,
+				state: JSON.stringify(state)
 			}
 		};
 		Global.bimServerApi.call("ServiceInterface", "addNewServiceToProject", request, function(){

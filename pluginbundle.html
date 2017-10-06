@@ -1,0 +1,12 @@
+<div class="pluginbundle">
+	Plugin Bundle
+	<div class="details">
+	</div>
+</div>
+<script>
+function PluginBundle(cd, pluginbundle) {
+	var o = this;
+	
+	cd.find(".details").html(JSON.stringify(pluginbundle, 0, 2));
+}
+</script>

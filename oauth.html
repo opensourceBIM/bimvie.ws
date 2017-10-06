@@ -1,11 +1,16 @@
 <div class="oauth">
 	<h3>Authorize external application</h3>
 	<p>
+		Hello <span class="user">user</span><br/>
 		An application wants to use your credentials.
-		<div class="well appinfo">
-			<img class="appicon"/>
-			<span class="name" style="font-weight: bold"></span>
-			<div class="description"></div>
+		<div class="well appinfo row">
+			<div class="col-xs-1">
+				<img class="appicon"/>
+			</div>
+			<div class="col-xs-5">
+				<span class="name" style="font-weight: bold"></span>
+				<div class="description"></div>
+			</div>
 		</div>
 	</p>
 	<div class="singleproject ih">
@@ -16,17 +21,38 @@
 	</div>
 	<div class="service">
 		<h3>Service Runner Access</h3>
-		Select a service
-		<select class="form-control servicesSelect"></select>
+		
+		<div class="serviceInfo well">
+			<span class="name"></span>
+			<span class="description"></span>
+		</div>
+		
+		Select a service configuration. It's normal that only one configuration is available. You can create extra configurations in <i>User Settings | Internal Services</i>.
+		<div class="row" style="margin-bottom: 10px">
+			<div class="col-xs-4">
+				<select class="form-control servicesSelect"></select>
+			</div>
+		</div>
 		<button class="btn btn-primary authorizeBtn">Authorize</button>
+		<button class="btn btn-default goBackBtn">Go back</button>
 	</div>
 	<br/>
 </div>
 <script>
 function OAuth(cd) {
 	var o = this;
-	
+
 	var authType = QueryString.auth_type;
+	var state = JSON.parse(QueryString.state);
+	console.log(state);
+
+	Global.bimServerApi.call("PluginInterface", "getPluginDescriptorByName", {name: state._serviceName}, function(pluginDescriptor){
+		console.log(pluginDescriptor);
+		cd.find(".serviceInfo .name").html(pluginDescriptor.name);
+		cd.find(".serviceInfo .description").html(pluginDescriptor.description);
+	});
+	
+	cd.find(".user").html(Global.bimServerApi.user.name);
 	
 	if (authType == "singleproject") {
 		cd.find(".singleproject").show();
@@ -42,7 +68,8 @@ function OAuth(cd) {
 		});
 	} else if (authType == "service") {
 		cd.find(".service").show();
-		Global.bimServerApi.call("PluginInterface", "getAllInternalServices", {
+		Global.bimServerApi.call("PluginInterface", "getAllInternalServicesOfService", {
+			name: state._serviceName,
 			onlyEnabled: true
 		}, function(services){
 			services.forEach(function(service){

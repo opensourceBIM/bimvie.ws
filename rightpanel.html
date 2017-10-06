@@ -608,12 +608,11 @@ function RightPanel(cd, main, project, projectPage) {
 	this.authenticate = function(server, service){
 		url = new Url(document.location);
 		url.remove("poid");
-		url.tab = "services";
 		url.oauth = "true";
 		url.baseUrl = service.url;
 		url.serviceIdentifier = service.identifier;
+		url.serviceName = service.name;
 		url.applicationId = server.oid;
-		url.page = "oauthresponse";
 //		Global.bimServerApi.call("OAuthInterface", "generateForwardUrl", {
 //			registrationEndpoint: service.registerUrl,
 //			authorizeUrl: service.authorizationUrl,
@@ -626,14 +625,18 @@ function RightPanel(cd, main, project, projectPage) {
 		var state = {
 			_poid: othis.project.oid,
 			_soid: service.oid,
-			_serverId: server.oid
+			_serverId: server.oid,
+			_serviceName: service.name,
+			_serviceOid: service.oid
 		}
+		
+		console.log(service);
+		
 		state = JSON.stringify(state);
 		url.state = state;
 		var uri = url.toString();
 		
 		var redirect_uri = encodeURIComponent(uri);
-		console.log(redirect_uri);
 		
 		document.location = service.authorizationUrl + "?client_id=" + encodeURIComponent(server.clientId) + "&response_type=code&state=" + encodeURIComponent(state) + "&auth_type=service&redirect_uri=" + redirect_uri;
 //		Global.bimServerApi.call("OAuthInterface", "generateForwardUrl", {

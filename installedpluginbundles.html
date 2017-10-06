@@ -57,7 +57,13 @@ function InstalledPluginBundles(main, serverSettings, cd) {
 			tr.append(iconTd);
 
 			var nameTd = $("<td>");
-			nameTd.append(pluginBundle.name);
+			var nameLink = $("<a>" + pluginBundle.name + "</a>");
+			nameLink.click(function(){
+				cd.load("pluginbundle.html", function(){
+					new PluginBundle($(this), pluginBundle);
+				});
+			});
+			nameTd.append(nameLink);
 			
 			tr.append(nameTd);
 			tr.append("<td>" + pluginBundle.organization + "</td>");

@@ -30,10 +30,6 @@
 			});
 		};
 		
-		this.formatNewServiceStatus = function(status) {
-			return status;
-		}
-		
 		if (service.status != "AUTHENTICATED" && code != null) {
 			Global.bimServerApi.call("OAuthInterface", "getRemoteToken", {
 				soid : service.oid,
@@ -60,7 +56,7 @@
 				});
 				return span;
 			} else if (action.__type == "SStoreExtendedData") {
-				return action.__type;
+				return action.__type.substring(1) + " (the returned data will be stored as extended data on the revision)";
 			} else {
 				return action.__type;
 			}
@@ -88,8 +84,12 @@
 		cd.find(".table").append("<tr><td>Name</td><td>" + service.name + "</td></tr>");
 		cd.find(".table").append("<tr><td>Description</td><td>" + service.description + "</td></tr>");
 		cd.find(".table").append("<tr><td>Provider</td><td>" + service.provider + "</td></tr>");
-		cd.find(".table").append("<tr><td>Input</td><td>" + service.input + "</td></tr>");
-		cd.find(".table").append("<tr><td>Output</td><td>" + service.output + "</td></tr>");
+		cd.find(".table").append("<tr><td>Input</td><td class=\"ed\" name=\"" + service.input + "\">" + service.input + "</td></tr>");
+		cd.find(".table").append("<tr><td>Output</td><td class=\"ed\" name=\"" + service.output + "\">" + service.output + "</td></tr>");
+		Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaByName", {name: service.input}, function(ed){
+			var link = $("<a target=\"_blank\" href=\"" + ed.url + "\">" + ed.name + "</a>");
+			cd.find(".ed[name=\"" + ed.name + "\"]").html(link);
+		});
 		var td = $("<td>");
 		td.append(formatAction(service.action));
 		var tr = $("<tr><td>Action</td></tr>");
@@ -97,6 +97,10 @@
 		cd.find(".table").append(tr);
 		
 		cd.find(".triggerBtn").click(o.trigger);
-		cd.find(".table").append("<tr class=\"statusrow\"><td>Status</td><td>" + o.formatNewServiceStatus(service.status) + "</td></tr>");
+		var tr = $("<tr class=\"statusrow\"><td>Status</td></tr>");
+		var td = $("<td>");
+		tr.append(td);
+		td.append(formatNewServiceStatus(service.status));
+		cd.find(".table").append(tr);
 	}
 </script>
