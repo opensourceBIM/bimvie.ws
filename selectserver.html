@@ -33,7 +33,7 @@ function SelectServer(address) {
 	this.selectServer = function(){
 		var address = $(".address").val();
 		address = stripHttps(address);
-		document.location = document.location.origin + document.location.pathname + "?address=http://" + address;
+		document.location = document.location.origin + document.location.pathname + "?api_address=http://" + address;
 	};
 	
 	if ($.cookie("address" + window.document.location.port) != null) {
