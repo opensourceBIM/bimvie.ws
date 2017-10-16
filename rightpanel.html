@@ -701,7 +701,7 @@ function RightPanel(cd, main, project, projectPage) {
 	this.removeModelChecker = function(){
 		Global.bimServerApi.call("ServiceInterface", "removeModelCheckerFromProject", {
 			poid: othis.project.oid,
-			modelCheckerId: $(this).parents("tr").data("modelchecker").oid
+			modelCheckerOid: $(this).parents("tr").data("modelchecker").oid
 		}, function(){
 			othis.loadModelCheckers();
 		});
