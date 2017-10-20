@@ -177,6 +177,8 @@ function Download(containerDiv, data) {
 						containerDiv.find(".fields, .downloadpopup .checkoutMessage").show();
 						containerDiv.find(".modal-footer .btn-group").show();
 						
+						Global.bimServerApi.call("ServiceInterface", "cleanupLongAction", {topicId: othis.topicId}, function(){});
+						
 						// Setting topicId to null to make sure that cancelling at this moment won't try to termintate something that's already done					
 						othis.topicId = null;
 						othis.prepareReceived = false;
