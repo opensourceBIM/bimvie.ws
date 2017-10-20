@@ -9,7 +9,8 @@
 			<thead>
 				<tr>
 					<th></th>
-					<th>Identifier</th>
+					<th>Message</th>
+					<th>Subject</th>
 					<th>Value</th>
 					<th>Should be</th>
 				</tr>
@@ -78,7 +79,6 @@ function ExtendedData(cd, main, extendedData, parent) {
 	};
 
 	formatValue = function(value) {
-		console.log(value);
 		if (typeof value == "Number") {
 			return value.toFixed(2);
 		}
@@ -115,6 +115,42 @@ function ExtendedData(cd, main, extendedData, parent) {
 					tr.find("img").attr("src", img);
 					$(".validationreport table tbody").append(tr);
 				}
+			});
+			$(".validationreport").show();
+		});
+	};
+
+	this.showValidationReport2 = function(schema, extendedData, url){
+		$.get(url, function(json){
+			$(".validationreport h2").html(extendedData.title);
+			json.items.forEach(function(item){
+//				if (item.type == "header") {
+//					var tr = $("<tr><td></td><td colspan=\"3\" class=\"header\">" + item.text + "</td></tr>");
+//					$(".validationreport table tbody").append(tr);
+//				} else if (item.type == "line") {
+					var tr = $("<tr></tr>");
+					tr.append("<td><img/></td>");
+					tr.append("<td width=\"40%\">" + item.message + "</td>");
+					if (item.object != null && item.object.oid != -1) {
+						tr.append("<td><a>" + item.object.oid + "</a></td>");
+						tr.find("a").data("oid", item.object.oid);
+						tr.find("a").click(o.objectClick);
+					} else {
+						tr.append("<td>" + item.identification + "</td>");
+					}
+					tr.append("<td>" + formatValue(item.is) + "</td>");
+					tr.append("<td>" + formatValue(item.shouldBe) + "</td>");
+					var img = "";
+					if (item.type == "ERROR") {
+						img = "img/exclamation.png";
+					} else if (item.type == "SUCCESS") {
+						img = "img/accept.png";
+					} else if (item.type == "CANNOT_CHECK") {
+						img = "img/help.png";
+					}
+					tr.find("img").attr("src", img);
+					$(".validationreport table tbody").append(tr);
+//				}
 			});
 			$(".validationreport").show();
 		});
@@ -299,6 +335,8 @@ function ExtendedData(cd, main, extendedData, parent) {
 			var url = Global.bimServerApi.generateExtendedDataDownloadUrl(extendedData.oid);
 			if (schema.name == "VALIDATION_JSON_1_0") {
 				o.showValidationReport(schema, extendedData, url);
+			} else if (schema.name == "VALIDATION_JSON_2_0") {
+				o.showValidationReport2(schema, extendedData, url);
 			} else if (file.mime == "text/csv") {
 				o.showCsv(schema, extendedData, url);
 			} else if (file.mime == "text/html") {
