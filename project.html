@@ -450,9 +450,6 @@ function Project(containerDiv, main, project) {
 
 					othis.navigator.projecttree.addMenuDivider("revisionDivider");
 					var regenerateGeometryBtn = othis.navigator.projecttree.addMenuItem("Regenerate geometry", "btnRegenerateGeometry", function(){
-						var list = [];
-						othis.navigator.projecttree.gatherRoidList(othis.navigator.projecttree.selectedNode, list);
-						main.showDownloadRevisionsPopup(list);
 					}, function(){
 					});
 					
@@ -464,6 +461,22 @@ function Project(containerDiv, main, project) {
 					Global.bimServerApi.call("PluginInterface", "getAllRenderEngines", {onlyEnabled: true}, function(engines){
 						engines.forEach(function(engine){
 							var li = $("<li><a>with " + engine.name + "</a></li>");
+							li.find("a").click(function(){
+								var list = [];
+								othis.navigator.projecttree.gatherRoidList(othis.navigator.projecttree.selectedNode, list);
+								
+								$(document.body).find(".regenerategeometry").remove();
+								var div = $("<div>");
+								$(document.body).append(div);
+								
+								var dropdown = containerDiv.find(".dropdown");
+								dropdown.hide();
+								
+								div.load("regenerategeometry.html", function(){
+									new RegenerateGeometry($(this), list);
+									div.find(".modal").modal("show");
+								});
+							});
 							ul.append(li);
 							Global.bimServerApi.call("PluginInterface", "getPluginDescriptor", {oid: engine.pluginDescriptorId}, function(pluginDescriptor){
 								Global.bimServerApi.call("PluginInterface", "getInstalledPluginBundle", {oid: pluginDescriptor.pluginBundleVersionId}, function(pluginBundle){

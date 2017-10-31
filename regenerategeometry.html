@@ -1,0 +1,33 @@
+<div class="regenerategeometry">
+	<div class="modal fade" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">Regenerate geometry</h4>
+				</div>
+				<div class="modal-body">
+					<p>The geometry currently stored for this revision will be overwritten</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary btnStart">Start</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	function RegenerateGeometry(cd, roids) {
+		var o = this;
+
+		cd.find(".btnStart").click(function(){
+			Global.bimServerApi.call("ServiceInterface", "regenerateGeometry", {roid: roids[0]}, function(){
+				
+			});
+		});
+	}
+</script>
