@@ -317,11 +317,11 @@ function ThreeDView(containerDiv, parent, main) {
 								if (object.model.objects[object.object._rgeometry] != null) {
 									// Only if this data is preloaded, otherwise just don't include any gi
 									object.getGeometry(function(geometryInfo){
-										oidsNotLoaded.push({gid: object.object._rgeometry, oid: object.oid, object: object, info: geometryInfo.object});
+										oidsNotLoaded.push({gid: object.object._rgeometry._i, oid: object.oid, object: object, info: geometryInfo.object});
 										count++;
 									});
 								} else {
-									oidsNotLoaded.push({gid: object.object._rgeometry, oid: object.oid, object: object});
+									oidsNotLoaded.push({gid: object.object._rgeometry._i, oid: object.oid, object: object});
 									count++;
 								}
 							}
