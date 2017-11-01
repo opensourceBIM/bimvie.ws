@@ -473,7 +473,7 @@ function Project(containerDiv, main, project) {
 								dropdown.hide();
 								
 								div.load("regenerategeometry.html", function(){
-									new RegenerateGeometry($(this), list);
+									new RegenerateGeometry($(this), list, engine);
 									div.find(".modal").modal("show");
 								});
 							});

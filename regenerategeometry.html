@@ -10,7 +10,9 @@
 					<h4 class="modal-title">Regenerate geometry</h4>
 				</div>
 				<div class="modal-body">
-					<p>The geometry currently stored for this revision will be overwritten</p>
+					<p class="startMessage">The geometry currently stored for this revision will be overwritten</p>
+					<div class="uploadStatus"></div>
+					<div class="progressBarHolder"></div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -21,12 +23,61 @@
 	</div>
 </div>
 <script>
-	function RegenerateGeometry(cd, roids) {
+	function RegenerateGeometry(cd, roids, engine) {
 		var o = this;
-
+		
+		cd.find(".modal-title").html("Regenerate geometry with " + engine.name);
+		
+		this.progressHandler = function(topicId, state) {
+			var oldStage = o.stage;
+			o.stage = state.stage;
+			if (state.state == "AS_ERROR") {
+				cd.find(".uploadStatus").empty();
+				state.errors.forEach(function(error){
+					cd.find(".uploadStatus").append("<div class=\"alert alert-block alert-danger\">" + error + "</div>");
+				});
+				o.showUpload();
+				Global.bimServerApi.unregisterProgressHandler(topicId, o.progressHandler);
+			} else {
+				cd.find(".uploadStatus").html(state.title);
+				if (oldStage != state.stage) {
+					cd.find(".progressBarHolder .uploadProgressBar").remove();
+					cd.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress initialhide\"><div class=\"progress-bar\"></div></div>");
+				}
+				if (state.progress == -1) {
+					cd.find(".uploadProgressBar").addClass("progress-striped").addClass("active");
+					cd.find(".uploadProgressBar .progress-bar").css("width", "100%");
+				} else {
+					cd.find(".uploadProgressBar").removeClass("progress-striped").removeClass("active");
+					cd.find(".uploadProgressBar .progress-bar").css("width", parseInt(state.progress) + "%");
+				}
+				cd.find(".progressBarHolder .uploadProgressBar").show();
+				if (state.state == "FINISHED") {
+					if (!o.progressDoneHandled) {
+						o.progressDoneHandled = true;
+						cd.find(".regenerategeometry").parent().modal("hide");
+						Global.bimServerApi.callWithNoIndication("ServiceInterface", "cleanupLongAction", {topicId: topicId}, function(){
+						}).done(function(){
+							cd.find(".progressBarHolder").hide();
+							cd.find(".uploadStatus").addClass("alert").addClass("alert-success");
+							// This also automatically unregisters the progress handler, so we only have to tell bimserverapi that it's unregistered
+							Global.bimServerApi.unregister(o.progressHandler);
+						});
+					}
+				} else if (state.state == "STARTED" || state.state == "NONE") {
+				}
+			}
+		};
+		
 		cd.find(".btnStart").click(function(){
-			Global.bimServerApi.call("ServiceInterface", "regenerateGeometry", {roid: roids[0]}, function(){
+			cd.find(".btnStart").hide();
+			cd.find(".uploadStatus").html("Generating geometry...");
+			Global.bimServerApi.call("ServiceInterface", "regenerateGeometry", {roid: roids[0], eoid: engine.oid}, function(topicId){
+				cd.find(".startMessage").hide();
+				cd.find(".progressBarHolder .uploadProgressBar").remove();
+				cd.find(".progressBarHolder").append("<div class=\"uploadProgressBar progress\"><div class=\"progress-bar\"></div></div>");
 				
+				Global.bimServerApi.registerProgressHandler(topicId, o.progressHandler);
 			});
 		});
 	}
