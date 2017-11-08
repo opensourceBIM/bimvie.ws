@@ -68,7 +68,8 @@ function Navigator(containerDiv, parent) {
 		var width = $(window).width() / 3 - 41;
 		var height = ($(window).height() - $(".navbar").outerHeight() - $(".navbar-header").outerHeight() - containerDiv.find(".navigator .panel-heading").outerHeight() - 7) + (fullscreen ? 113 : 0);
 		containerDiv.find(".sidespanWrapper").width(width + "px");
-		containerDiv.find(".sidespanWrapper").height(height + "px");
+		$(".row").height(height + "px");
+		console.log("nav res", height);
 	};
 
 	this.showProjectTree = function(){

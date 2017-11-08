@@ -438,7 +438,7 @@ div#viewport {
 	padding: 10px;
 }
 
-.projectTabs .btn {
+.projectTabs .btn, .threedviewTabs .btn {
 	border-bottom-left-radius: 0;
 }
 
@@ -571,4 +571,17 @@ table.table-hover tr.toomany {
 
 .addnewservice2 .panel-body {
 	padding: 10px;
+}
+
+table * {
+	font-size: 14px;
+}
+
+.navigator .panel {
+	height: 100%;
+}
+
+.geometrygen table {
+	border-spacing: 10px;
+	border-collapse: separate;
 }

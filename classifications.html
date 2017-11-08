@@ -5,8 +5,7 @@
 	</div>
 	<table class="table table-no-top">
 		<thead></thead>
-		<tbody>
-		</tbody>
+		<tbody></tbody>
 	</table>
 </div>
 <script>
@@ -169,6 +168,11 @@ function Classifications(containerDiv, parent) {
 						});
 					}
 				});
+			}).done(function(){
+				if (Object.keys(othis.classifications).length == 0) {
+					containerDiv.find(".noclassifications").remove();
+					containerDiv.find("table tbody").append("<tr class=\"noclassifications\"><td>No classifications</td></tr>");
+				}
 			});
 		}
 	};

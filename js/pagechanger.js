@@ -94,6 +94,9 @@ function TabChanger2(navElement, mainContainer) {
 //			}
 //			return;
 //		}
+		if (othis.current != null && othis.current == page) {
+			return;
+		}
 		if (othis.current != null) {
 			if (othis.current.close != null) {
 				othis.current.close();
@@ -125,7 +128,7 @@ function TabChanger2(navElement, mainContainer) {
 				othis.current = page;
 				contentElement.append(page);
 				var promise = contentElement.show(true);
-				if (promise != null) {
+				if (promise != null && promise.done != null) {
 					promise.done(function(){
 						callback.call(othis.current);
 					});

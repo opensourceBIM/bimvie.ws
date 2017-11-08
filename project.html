@@ -29,7 +29,11 @@ function Project(containerDiv, main, project) {
 			othis.reloadProject(project);
 		} else {
 			othis.project = project;
-			return othis.updateProject(false);
+			var promise = othis.updateProject(false);
+			promise.done(function(){
+				othis.resize();
+			});
+			return promise;
 		}
 	};
 
@@ -40,7 +44,7 @@ function Project(containerDiv, main, project) {
 		}
 		Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: poid}, function(project){
 			othis.project = project;
-			promise.chain(othis.updateProject(false));
+			promise.chain(othis.updateProject(true));
 		});
 		return promise;
 	};
@@ -344,9 +348,9 @@ function Project(containerDiv, main, project) {
 		return promise;
 	};
 
-	this.updateProject = function(pushHistory) {
+	this.updateProject = function(ph) {
 		var promise = new BimServerApiPromise();
-		if (pushHistory) {
+		if (ph) {
 			pushHistory({page: "Project", poid: othis.project.oid}, "Project");
 		}
 
@@ -491,7 +495,6 @@ function Project(containerDiv, main, project) {
 						});
 					});
 					
-					othis.resize();
 					promise.chain(othis.loadDetails(othis.project));
 					othis.projects.forEach(function(project){
 						othis.changeRevision(project, project.lastRevisionId);
