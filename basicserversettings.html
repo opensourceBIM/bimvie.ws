@@ -127,6 +127,13 @@
 		</div>
 		<div class="form-group">
 			<div class="col-lg-8">
+				<label class="checkbox"><a rel="tooltip" data-original-title="Optimize mapped item geometry" data-placement="right">[EXPERIMENTAL] Optimize mapped items</a>
+					<input type="checkbox" class="geometryOptimizeMappedItems">
+				</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-lg-8">
 				<label class="checkbox"><a rel="tooltip" data-original-title="Whether to generate geometry on checkin" data-placement="right">Generate geometry on checkin</a>
 					<input type="checkbox" class="generateGeometryCheckin">
 				</label>
@@ -264,6 +271,7 @@ function BasicServerSettings(main, serversettings) {
 			serverSettings.cacheOutputFiles = $(".basicserversettings .cacheOutputFiles").prop("checked");
 			serverSettings.renderEngineProcesses = $(".basicserversettings .renderEngineProcesses").val();
 			serverSettings.reuseGeometry = $(".basicserversettings .geometryReuseEnabled").prop("checked");
+			serverSettings.optimizeMappedItems = $(".basicserversettings .geometryOptimizeMappedItems").prop("checked");
 			serverSettings.checkinMergingEnabled = $(".basicserversettings .checkinMergingEnabled").prop("checked");
 			serverSettings.storeLastLogin = $(".basicserversettings .storeLastLogin").prop("checked");
 			serverSettings.storeServiceRuns = $(".basicserversettings .storeServiceRuns").prop("checked");
@@ -321,6 +329,7 @@ function BasicServerSettings(main, serversettings) {
 			$(".basicserversettings .sessionTimeOutSeconds").val(data.sessionTimeOutSeconds);
 			$(".basicserversettings .cacheOutputFiles").prop("checked", data.cacheOutputFiles);
 			$(".basicserversettings .geometryReuseEnabled").prop("checked", data.reuseGeometry);
+			$(".basicserversettings .geometryOptimizeMappedItems").prop("checked", data.optimizeMappedItems);
 			$(".basicserversettings .checkinMergingEnabled").prop("checked", data.checkinMergingEnabled);
 			$(".basicserversettings .createTopLevelProjects").prop("checked", data.allowUsersToCreateTopLevelProjects);
 			$(".basicserversettings .storeLastLogin").prop("checked", data.storeLastLogin);
