@@ -283,7 +283,7 @@ function formatLogState(state) {
 }
 
 function load(element, url, constructor) {
-	var promise = new window.BimServerApiPromise();
+	var promise = new bimserverapi.BimServerApiPromise();
 	element.load(url, function(){
 		var res = constructor.call(element);
 		if (res instanceof Promise) {
