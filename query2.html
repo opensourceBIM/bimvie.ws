@@ -222,21 +222,21 @@ function Query2(cd, parent) {
 	
 	o.queriesIfc4 = {
 		AllObjects: {
-			type: "IfcProduct",
-			includeAllSubtypes: true
-		},
+			description: "AllObjects", query: {
+			type: { name: "IfcProduct", includeAllSubtypes: true }
+		}},
 		AllWalls: {
-			type: "IfcWall",
-			includeAllSubtypes: true
-		},
+			description: "AllWalls", query: {
+			type: { name: "IfcWall", includeAllSubtypes: true }
+		}},
 		AllWallsIncludingDecomposition: {
-			type: "IfcWall",
-			includeAllSubtypes: true,
+			description: "AllWallsIncludingDecomposition", query: {
+			type: { name: "IfcWall", includeAllSubtypes: true },
 			includes: ["ifc4stdlib:ContainedInStructure", "ifc4stdlib:OwnerHistory", "ifc4stdlib:Representation", "ifc4stdlib:ObjectPlacement"]
-		},
+		}},
 		AllWallsIncludingWindowsAndDoors: {
-			type: "IfcWall",
-			includeAllSubtypes: true,
+			description: "AllWallsIncludingWindowsAndDoors", query: {
+			type: { name: "IfcWall", includeAllSubtypes: true },
 			include: {
 				type: "IfcWall",
 				field: "HasOpenings",
@@ -253,10 +253,10 @@ function Query2(cd, parent) {
 					}
 				}
 			}
-		},
+		}},
 		AllWallsIncludingWindows: {
-			type: "IfcWall",
-			includeAllSubtypes: true,
+			description: "AllWallsIncludingWindows", query: {
+			type: { name: "IfcWall", includeAllSubtypes: true },
 			include: {
 				type: "IfcWall",
 				field: "HasOpenings",
@@ -274,18 +274,21 @@ function Query2(cd, parent) {
 					}
 				}
 			}
-		},
+		}},
 		AllWallsAndSlabs: {
-			types: ["IfcWall", "IfcSlab"],
+			description: "AllWallsAndSlabs", query: {
+			types: [{name: "IfcWall"}, {name: "IfcSlab"}],
 			includeAllSubtypes: true
-		},
+		}},
 		SpecificWallsByGuid: {
-			type: "IfcWall",
+			description: "SpecificWallsByGuid", query: {
+			type: {name: "IfcWall"},
 			includeAllSubtypes: true,
 			guids: ["2udBPbKibCZ8zbfpJmtDTM", "2V1MCFZRf1GA2ZyRufjYwX", "2oOoWKmmfChQTLCBzuB3$b"]
-		},
+		}},
 		SpecificBuildingStoreyIncContains: {
-			type: "IfcBuildingStorey",
+			description: "SpecificBuildingStoreyIncContains", query: {
+			type: {name: "IfcBuildingStorey"},
 			guid: "25SMdCQszBi9al8gnrh8LV",
 			include: {
 				type: "IfcBuildingStorey",
@@ -295,16 +298,18 @@ function Query2(cd, parent) {
 					field: "RelatedElements"
 				}
 			}
-		},
+		}},
 		ExternalWalls: {
-			type: "IfcWall",
+			description: "ExternalWalls", query: {
+			type: {name: "IfcWall"},
 			includeAllSubtypes: true,
 			properties: {
 				IsExternal: true
 			}
-		},
+		}},
 		ThermalTransmittance: {
-			type: "IfcWall",
+			description: "ThermalTransmittance", query: {
+			type: {name: "IfcWall"},
 			includeAllSubtypes: true,
 			properties: {
 				ThermalTransmittance: {
@@ -312,17 +317,19 @@ function Query2(cd, parent) {
 					value: 0.2
 				}
 			}
-		},
+		}},
 		IfcPresentationLayerAssignment: {
-			type: "IfcPresentationLayerAssignment",
+			description: "IfcPresentationLayerAssignment", query: {
+			type: {name: "IfcPresentationLayerAssignment"},
 			name: "Räume",
 			include: {
 				type: "IfcPresentationLayerAssignment",
 				field: "AssignedItems"
 			}
-		},
+		}},
 		ObjectInBoundingBox: {
-			type: "IfcFurnishingElement",
+			description: "ObjectInBoundingBox", query: {
+			type: {name: "IfcFurnishingElement"},
 			inBoundingBox: {
 				x: 0,
 				y: 0,
@@ -331,7 +338,7 @@ function Query2(cd, parent) {
 				height: 5,
 				depth: 5
 			}
-		}
+		}}
 	};
 	
 	this.show = function(){
