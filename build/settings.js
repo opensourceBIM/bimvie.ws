@@ -69,7 +69,7 @@ var Settings = {
 		return false;
 	},
 	getBimServerApiAddress: function(){
-		return "../bimserverjavascriptapi/";
+		return "../bimserverjavascriptapi/js";
 	},
 	getBimSurferApiAddress: function(){
 		return "../bimsurfer/";
