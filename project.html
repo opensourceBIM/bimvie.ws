@@ -38,7 +38,7 @@ function Project(containerDiv, main, project) {
 	};
 
 	this.reloadProject = function(poid) {
-		var promise = new bimserverapi.BimServerApiPromise()
+		var promise = new BimServerApiPromise()
 		if (poid == null) {
 			poid = othis.project.oid;
 		}
@@ -141,7 +141,7 @@ function Project(containerDiv, main, project) {
 	this.preloadModel = function(project, roid){
 		console.time("preloadModel " + roid);
 		var countingPromise = new CountingPromise();
-		var promise = new bimserverapi.BimServerApiPromise();
+		var promise = new BimServerApiPromise();
 		var model = othis.models[roid];
 		if (model == null) {
 			console.log("no model", othis.models);
@@ -349,7 +349,7 @@ function Project(containerDiv, main, project) {
 	};
 
 	this.updateProject = function(ph) {
-		var promise = new bimserverapi.BimServerApiPromise()
+		var promise = new BimServerApiPromise()
 		if (ph) {
 			pushHistory({page: "Project", poid: othis.project.oid}, "Project");
 		}
@@ -506,7 +506,7 @@ function Project(containerDiv, main, project) {
 	};
 
 	this.loadDetails = function(project){
-		var promise = new bimserverapi.BimServerApiPromise()
+		var promise = new BimServerApiPromise()
 		if (othis.rightPanel != null) {
 			promise.chain(othis.rightPanel.reloadProject(project.oid, project.lastRevisionId));
 		} else {

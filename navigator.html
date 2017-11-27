@@ -37,7 +37,7 @@ function Navigator(containerDiv, parent) {
 	var o = this;
 	
 	this.load = function(){
-		var promise = new bimserverapi.BimServerApiPromise();
+		var promise = new BimServerApiPromise();
 		promise.chain(load(containerDiv.find(".projectTreeWrapper"), "projecttree.html", function(){
 			o.projecttree = new ProjectTree($(this), parent, {}, o.selectedObject);
 			o.sidespan = o.projecttree;

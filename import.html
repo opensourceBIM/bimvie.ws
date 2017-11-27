@@ -160,7 +160,7 @@ function Import(cd, main) {
 		cd.find(".startBtn").hide();
 		var list = [];
 		cd.find(".message").html("Creating projects...").show();
-		var promise = new bimserverapi.BimServerApiPromise()
+		var promise = new BimServerApiPromise()
 		createProjects(o.structure, list, null, promise);
 		promise.done(function(){
 			cd.find(".progress").show();

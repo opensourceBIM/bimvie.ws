@@ -1,3 +1,4 @@
+<!doctype html>
 <html>
 <head>
 <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
@@ -20,28 +21,36 @@
 			</div>
 		</div>
 	</div>
-	<script>
-		Global = {};
-		bimserverapi = {};
-		
+	<script type="module">
+		import BimServerClient from '/apps/bimserverjavascriptapi/js/bimserverclient.js';
+		import BimServerApiPromise from '/apps/bimserverjavascriptapi/js/bimserverapipromise.js';
+
+		var window = self;
+
+		// Make this object available to other parts of BIMvie.ws without requiring all of BIMvie.ws to convert to the module system (yet)
+		window.BimServerApiPromise = BimServerApiPromise;
+
+		window.Global = {};
+
 		// https://github.com/rgrove/lazyload
-		LazyLoad=function(k){function p(b,a){var g=k.createElement(b),c;for(c in a)a.hasOwnProperty(c)&&g.setAttribute(c,a[c]);return g}function l(b){var a=m[b],c,f;if(a)c=a.callback,f=a.urls,f.shift(),h=0,f.length||(c&&c.call(a.context,a.obj),m[b]=null,n[b].length&&j(b))}function w(){var b=navigator.userAgent;c={async:k.createElement("script").async===!0};(c.webkit=/AppleWebKit\//.test(b))||(c.ie=/MSIE/.test(b))||(c.opera=/Opera/.test(b))||(c.gecko=/Gecko\//.test(b))||(c.unknown=!0)}function j(b,a,g,f,h){var j=
+		var LazyLoad=function(k){function p(b,a){var g=k.createElement(b),c;for(c in a)a.hasOwnProperty(c)&&g.setAttribute(c,a[c]);return g}function l(b){var a=m[b],c,f;if(a)c=a.callback,f=a.urls,f.shift(),h=0,f.length||(c&&c.call(a.context,a.obj),m[b]=null,n[b].length&&j(b))}function w(){var b=navigator.userAgent;c={async:k.createElement("script").async===!0};(c.webkit=/AppleWebKit\//.test(b))||(c.ie=/MSIE/.test(b))||(c.opera=/Opera/.test(b))||(c.gecko=/Gecko\//.test(b))||(c.unknown=!0)}function j(b,a,g,f,h){var j=
 			function(){l(b)},o=b==="css",q=[],d,i,e,r;c||w();if(a)if(a=typeof a==="string"?[a]:a.concat(),o||c.async||c.gecko||c.opera)n[b].push({urls:a,callback:g,obj:f,context:h});else{d=0;for(i=a.length;d<i;++d)n[b].push({urls:[a[d]],callback:d===i-1?g:null,obj:f,context:h})}if(!m[b]&&(r=m[b]=n[b].shift())){s||(s=k.head||k.getElementsByTagName("head")[0]);a=r.urls;d=0;for(i=a.length;d<i;++d)g=a[d],o?e=c.gecko?p("style"):p("link",{href:g,rel:"stylesheet"}):(e=p("script",{src:g}),e.async=!1),e.className="lazyload",
 			e.setAttribute("charset","utf-8"),c.ie&&!o?e.onreadystatechange=function(){if(/loaded|complete/.test(e.readyState))e.onreadystatechange=null,j()}:o&&(c.gecko||c.webkit)?c.webkit?(r.urls[d]=e.href,t()):(e.innerHTML='@import "'+g+'";',u(e)):e.onload=e.onerror=j,q.push(e);d=0;for(i=q.length;d<i;++d)s.appendChild(q[d])}}function u(b){var a;try{a=!!b.sheet.cssRules}catch(c){h+=1;h<200?setTimeout(function(){u(b)},50):a&&l("css");return}l("css")}function t(){var b=m.css,a;if(b){for(a=v.length;--a>=0;)if(v[a].href===
-			b.urls[0]){l("css");break}h+=1;b&&(h<200?setTimeout(t,50):l("css"))}}var c,s,m={},h=0,n={css:[],js:[]},v=k.styleSheets;return{css:function(b,a,c,f){j("css",b,a,c,f)},js:function(b,a,c,f){j("js",b,a,c,f)}}}(this.document);
+			b.urls[0]){l("css");break}h+=1;b&&(h<200?setTimeout(t,50):l("css"))}}var c,s,m={},h=0,n={css:[],js:[]},v=k.styleSheets;return{css:function(b,a,c,f){j("css",b,a,c,f)},js:function(b,a,c,f){j("js",b,a,c,f)}}}(window.document);
 			
-		Global.baseDir = new String(document.location.protocol + "//" + document.location.host + document.location.pathname);
-		if (Global.baseDir.substring(Global.baseDir.length - 5) == ".html") {
-			Global.baseDir = Global.baseDir.substring(0, Global.baseDir.lastIndexOf("/"));
+
+		window.Global.baseDir = new String(window.document.location.protocol + "//" + window.document.location.host + window.document.location.pathname);
+		if (window.Global.baseDir.substring(window.Global.baseDir.length - 5) == ".html") {
+			window.Global.baseDir = window.Global.baseDir.substring(0, window.Global.baseDir.lastIndexOf("/"));
 		}
-		if (Global.baseDir.substring(Global.baseDir.length - 1) != "/") {
-			Global.baseDir = Global.baseDir + "/";
+		if (window.Global.baseDir.substring(window.Global.baseDir.length - 1) != "/") {
+			window.Global.baseDir = window.Global.baseDir + "/";
 		}
-		var baseJsDir = Global.baseDir + "js/";
-		var baseCssDir = Global.baseDir + "css/";
+		var baseJsDir = window.Global.baseDir + "js/";
+		var baseCssDir = window.Global.baseDir + "css/";
 		
-		var base = document.getElementsByTagName("base");
-		base[0].href = Global.baseDir;
+		var base = window.document.getElementsByTagName("base");
+		base[0].href = window.Global.baseDir;
 		
 		function getPluginVersion(address, callback) {
 			var myRequest = new XMLHttpRequest();
@@ -106,17 +115,23 @@
 		}
 
 		function loadBimServerApi(apiAddress, callback) {
-			getPluginVersion(apiAddress, function(apiVersion){
-				Promise.all([
-					Settings.getBimServerApiAddress() + "/bimserverclient.js",
-					Settings.getBimServerApiAddress() + "/bimserverapipromise.js"
-				].map(x => import(x)))
-				.then(([BimServerClient, BimServerApiPromise]) => {
-					bimserverapi.BimServerClient = BimServerClient.BimServerClient;
-					bimserverapi.BimServerApiPromise = BimServerApiPromise.BimServerApiPromise;
- 					callback();
+			var useDynamicLoading = false;
+			if (useDynamicLoading) {
+				getPluginVersion(apiAddress, function(apiVersion){
+					Promise.all([
+						Settings.getBimServerApiAddress() + "/bimserverclient.js",
+						Settings.getBimServerApiAddress() + "/bimserverapipromise.js"
+					].map(x => import(x)))
+					.then(([BimServerClient, BimServerApiPromise]) => {
+						bimserverapi.BimServerClient = BimServerClient.BimServerClient;
+						bimserverapi.BimServerApiPromise = BimServerApiPromise.BimServerApiPromise;
+	 					callback();
+					});
 				});
-			});
+			} else {
+				Global.api = new BimServerClient("../..");
+				callback();
+			}
 		}
 
 		function loadBimViews(callback) {
@@ -156,11 +171,11 @@
 		
 		function loadResources() {
 			(function() {
-			    var link = document.createElement('link');
+			    var link = window.document.createElement('link');
 			    link.type = 'image/x-icon';
 			    link.rel = 'shortcut icon';
 			    link.href = Global.baseDir + 'img/logo_small.png';
-			    document.getElementsByTagName('head')[0].appendChild(link);
+			    window.document.getElementsByTagName('head')[0].appendChild(link);
 			}());
 			
 			if (Settings.useCompressedResources()) {
@@ -180,8 +195,6 @@
 			loadBimServerApi(Settings.getBimServerApiAddress(), function(){
 				loadBimViews(function(){
 					loadBimSurfer(function(){
-		    			var othis = this;
-
 		    			Global.lastKey = null;
 
 		    			$.ajaxSetup({
@@ -202,9 +215,9 @@
 		    				if (e.target.nodeName == "BODY") {
 		    					if (e.keyCode == 67 && Global.lastKey == 67 && !e.ctrlKey) {
 		    						console.log("Clearing cookies");
-		    						$.removeCookie("address" + window.document.location.port, {});
-		    						$.removeCookie("username" + window.document.location.port, {});
-		    						$.removeCookie("autologin" + window.document.location.port, {});
+		    						$.removeCookie("address" + window.window.document.location.port, {});
+		    						$.removeCookie("username" + window.window.document.location.port, {});
+		    						$.removeCookie("autologin" + window.window.document.location.port, {});
 		    						Global.lastKey = null;
 		    					} else {
 		    						Global.lastKey = e.keyCode;
@@ -212,12 +225,12 @@
 		    				}
 		    			});
 		    			
-		    			othis.loadBimServerApiFromAddress = function(address, successFunction, errorFunction){
+		    			Global.loadBimServerApiFromAddress = function(address, successFunction, errorFunction){
 		    				if (address.endsWith("/")) {
 		    					address = address.substring(0, address.length - 1);
 		    				}
-		    				if (bimserverapi.BimServerClient != null) {
-		    					Global.bimServerApi = new bimserverapi.BimServerClient(address, Global.notifier);
+		    				if (BimServerClient != null) {
+		    					Global.bimServerApi = new BimServerClient(address, Global.notifier);
 		    					Global.bimServerApi.init(function(api, serverInfo){
 			    					if (serverInfo.serverState == "NOT_SETUP") {
 			    						$(".indexcontainer").load(Global.baseDir + "setup.html", function(){
@@ -247,23 +260,23 @@
 		    				var notLoggedInFunction = function(address){
 		    					if (Global.history.page == "Login") {
 		    						$(".indexcontainer").load(Global.baseDir + "login.html", function(){
-		    							othis.current = new Login(address);
+		    							Global.current = new Login(address);
 		    						});
 		    					} else if (Global.history.page == "SelectServer") {
 		    						$(".indexcontainer").load(Global.baseDir + "selectserver.html", function(){
-		    							othis.current = new SelectServer(null);
+		    							Global.current = new SelectServer(null);
 		    						});
 		    					} else if (Global.history.page == "Register") {
 		    						$(".indexcontainer").load(Global.baseDir + "register.html", function(){
-		    							othis.current = new Register($(this));
+		    							Global.current = new Register($(this));
 		    						});
 		    					} else if (Global.history.page == "ResetPassword") {
 		    						$(".indexcontainer").load(Global.baseDir + "resetpassword.html", function(){
-		    							othis.current = new ResetPassword($(this), null);
+		    							Global.current = new ResetPassword($(this), null);
 		    						});
 		    					} else {
 		    						$(".indexcontainer").load(Global.baseDir + "login.html", function(){
-		    							othis.current = new Login(address, null, window.location.href);
+		    							Global.current = new Login(address, null, window.location.href);
 		    						});
 		    					}
 		    				};
@@ -272,16 +285,16 @@
 		    					// We do have an API
 		    					var token = getParameterByName("token");
 		    					if (token == null) {
-		    						token = $.cookie("autologin" + window.document.location.port);
+		    						token = $.cookie("autologin" + window.window.document.location.port);
 		    					}
 		    					if (token != null) {
 		    						Global.bimServerApi.setToken(token, function(){
 		    							$(".indexcontainer").load(Global.baseDir + "main.html", function(){
 		    								$(".indexStatus").hide();
-		    								othis.current = new Main(Global.bimServerApi.baseUrl, Global.bimServerApi.user.name).show(false);
+		    								Global.current = new Main(Global.bimServerApi.baseUrl, Global.bimServerApi.user.name).show(false);
 		    							});
 		    						}, function(){
-		    							$.removeCookie("autologin" + window.document.location.port);
+		    							$.removeCookie("autologin" + window.window.document.location.port);
 		    							notLoggedInFunction(address);
 		    						});
 		    					} else {
@@ -290,21 +303,21 @@
 		    				};
 		    				
 		    				var errorFunction = function(){
-		    					$.removeCookie("username" + window.document.location.port, {});
-		    					$.removeCookie("autologin" + window.document.location.port, {});
-		    					$.removeCookie("address" + window.document.location.port, {});
+		    					$.removeCookie("username" + window.window.document.location.port, {});
+		    					$.removeCookie("autologin" + window.window.document.location.port, {});
+		    					$.removeCookie("address" + window.window.document.location.port, {});
 		    				};
 
 		    				var address = getParameterByName("api_address");
 		    				
 		    				if (address != null) {
-		    					othis.loadBimServerApiFromAddress(address, successFunction, errorFunction);
-		    				} else if ($.cookie("address" + window.document.location.port) != null) {
-		    					othis.loadBimServerApiFromAddress($.cookie("address" + window.document.location.port), successFunction, errorFunction);
+		    					Global.loadBimServerApiFromAddress(address, successFunction, errorFunction);
+		    				} else if ($.cookie("address" + window.window.document.location.port) != null) {
+		    					Global.loadBimServerApiFromAddress($.cookie("address" + window.window.document.location.port), successFunction, errorFunction);
 		    				} else if (!Settings.allowBimServerAddress()) {
 		    					Settings.getStaticServerAddress(function(address){
 		    						if (address != null) {
-		    							othis.loadBimServerApiFromAddress(address, successFunction, errorFunction);
+		    							Global.loadBimServerApiFromAddress(address, successFunction, errorFunction);
 		    						} else {
 		    							notLoggedInFunction(address);
 		    							$(".indexcontainer").load(Global.baseDir + "selectserver.html", function(){
@@ -419,9 +432,9 @@
 		    			function loadError() {
 		    				window.clearTimeout(Global.timeoutId);
 		    				Global.notifier.error("Could not connect");
-		    				$.removeCookie("username" + window.document.location.port, {});
-		    				$.removeCookie("autologin" + window.document.location.port, {});
-		    				$.removeCookie("address" + window.document.location.port, {});
+		    				$.removeCookie("username" + window.window.document.location.port, {});
+		    				$.removeCookie("autologin" + window.window.document.location.port, {});
+		    				$.removeCookie("address" + window.window.document.location.port, {});
 		    				$(".indexcontainer").load(Global.baseDir + "login.html", function(){
 		    					new Login();
 		    				});

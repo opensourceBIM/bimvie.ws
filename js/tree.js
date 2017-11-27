@@ -187,7 +187,7 @@ Node.prototype.createDom = function(){
 };
 
 Node.prototype.loadRecursiveSimple = function(){
-	var promise = new bimserverapi.BimServerApiPromise();
+	var promise = new BimServerApiPromise();
 	if (this.onLoadListeners != null && this.onLoadListeners.size() > 0) {
 		this.onLoadListeners.trigger(function(listener){
 			promise.chain(listener());
@@ -197,7 +197,7 @@ Node.prototype.loadRecursiveSimple = function(){
 		promise.fire();
 	}
 	var o = this;
-	var newPromise = new bimserverapi.BimServerApiPromise();
+	var newPromise = new BimServerApiPromise();
 	promise.done(function(){
 		if (o.children != null) {
 			newPromise.chain(o.children.map(function(child){
@@ -211,7 +211,7 @@ Node.prototype.loadRecursiveSimple = function(){
 };
 
 Node.prototype.loadRecursively = function(){
-	var promise = new bimserverapi.BimServerApiPromise();
+	var promise = new BimServerApiPromise();
 	this.setLoading();
 	var o = this;
 	this.loadRecursiveSimple().done(function(){
@@ -222,7 +222,7 @@ Node.prototype.loadRecursively = function(){
 };
 
 Node.prototype.load = function(){
-	var promise = new bimserverapi.BimServerApiPromise();
+	var promise = new BimServerApiPromise();
 	this.setLoading();
 	if (this.onLoadListeners != null && this.onLoadListeners.size() > 0) {
 		this.onLoadListeners.trigger(function(listener){
