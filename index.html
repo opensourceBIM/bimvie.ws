@@ -21,14 +21,13 @@
 			</div>
 		</div>
 	</div>
-	<script type="module">
-		import BimServerClient from '/apps/bimserverjavascriptapi/js/bimserverclient.js';
-		import BimServerApiPromise from '/apps/bimserverjavascriptapi/js/bimserverapipromise.js';
-
-		var window = self;
+	<script>
+// Still not supported...
+//		import BimServerClient from '/apps/bimserverjavascriptapi/js/bimserverclient.js';
+//		import BimServerApiPromise from '/apps/bimserverjavascriptapi/js/bimserverapipromise.js';
 
 		// Make this object available to other parts of BIMvie.ws without requiring all of BIMvie.ws to convert to the module system (yet)
-		window.BimServerApiPromise = BimServerApiPromise;
+//		window.BimServerApiPromise = BimServerApiPromise;
 
 		window.Global = {};
 
@@ -129,8 +128,13 @@
 					});
 				});
 			} else {
-				Global.api = new BimServerClient("../..");
-				callback();
+				// This loads the transpiled version for now. When EcmaScript 6 modules work on recent browsers without special settings, should switch to real modules (be it dynamic or static)
+				LazyLoad.js(["/apps/bimserverjavascriptapi/bimserverapitranspiled.js"], function(){
+					window.BimServerClient = bimserverapi.default;
+					window.BimServerApiPromise = bimserverapi.BimServerApiPromise;
+					
+					callback();
+				});
 			}
 		}
 
@@ -248,8 +252,10 @@
 			    					}
 		    					});
 		    				} else {
-		    					notifier.setError("Could not find BIMserver API");
-		    					errorCallback();
+		    					Global.notifier.setError("Could not find BIMserver API");
+//		    					if (errorCallback != null) {
+//		    						errorCallback();
+//		    					}
 		    				}
 		    			};
 		    			
