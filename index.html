@@ -114,20 +114,20 @@
 		}
 
 		function loadBimServerApi(apiAddress, callback) {
-			var useDynamicLoading = false;
-			if (useDynamicLoading) {
-				getPluginVersion(apiAddress, function(apiVersion){
-					Promise.all([
-						Settings.getBimServerApiAddress() + "/bimserverclient.js",
-						Settings.getBimServerApiAddress() + "/bimserverapipromise.js"
-					].map(x => import(x)))
-					.then(([BimServerClient, BimServerApiPromise]) => {
-						bimserverapi.BimServerClient = BimServerClient.BimServerClient;
-						bimserverapi.BimServerApiPromise = BimServerApiPromise.BimServerApiPromise;
-	 					callback();
-					});
-				});
-			} else {
+//			var useDynamicLoading = false;
+//			if (useDynamicLoading) {
+//				getPluginVersion(apiAddress, function(apiVersion){
+//					Promise.all([
+//						Settings.getBimServerApiAddress() + "/bimserverclient.js",
+//						Settings.getBimServerApiAddress() + "/bimserverapipromise.js"
+//					].map(x => import(x)))
+//					.then(([BimServerClient, BimServerApiPromise]) => {
+//						bimserverapi.BimServerClient = BimServerClient.BimServerClient;
+//						bimserverapi.BimServerApiPromise = BimServerApiPromise.BimServerApiPromise;
+//	 					callback();
+//					});
+//				});
+//			} else {
 				// This loads the transpiled version for now. When EcmaScript 6 modules work on recent browsers without special settings, should switch to real modules (be it dynamic or static)
 				LazyLoad.js(["/apps/bimserverjavascriptapi/bimserverapitranspiled.js"], function(){
 					window.BimServerClient = bimserverapi.default;
@@ -135,7 +135,7 @@
 					
 					callback();
 				});
-			}
+//			}
 		}
 
 		function loadBimViews(callback) {
