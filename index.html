@@ -129,13 +129,26 @@
 //				});
 //			} else {
 				// This loads the transpiled version for now. When EcmaScript 6 modules work on recent browsers without special settings, should switch to real modules (be it dynamic or static)
-				LazyLoad.js(["/apps/bimserverjavascriptapi/bimserverapitranspiled.js"], function(){
-					window.BimServerClient = bimserverapi.default;
-					window.BimServerApiPromise = bimserverapi.BimServerApiPromise;
-					
-					callback();
+			if (Settings.useCompressedResources()) {
+				getPluginVersion(apiAddress, function(apiVersion){
+					console.log(apiVersion);
+					LazyLoad.js(["/apps/bimserverjavascriptapi/bimserverapitranspiled.js?_v=" + apiVersion], function(){
+						window.BimServerClient = bimserverapi.default;
+						window.BimServerApiPromise = bimserverapi.BimServerApiPromise;
+						
+						callback();
+					});
 				});
-//			}
+			} else {
+				getPluginVersion(apiAddress, function(apiVersion){
+					// Using eval here, so we don't trip the browser that don't understand "import"
+					// The reason for using it this way is so we can develop this library and test it without having to transpile.
+					// Obviously developer need to have a browser that understands "import"
+					// One remaining problem here is that dependenies are not loaded with the "apiVersion" attached, so you need to have your browser on "clear cache" all the time
+					var str = "import(Settings.getBimServerApiAddress() + \"/bimserverclient.js?_v=" + apiVersion + "\").then((bimserverapi) => {	window.BimServerClient = bimserverapi.default; window.BimServerApiPromise = bimserverapi.BimServerApiPromise; callback();});";
+					eval(str);
+				});
+			}
 		}
 
 		function loadBimViews(callback) {
