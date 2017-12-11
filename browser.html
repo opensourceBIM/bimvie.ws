@@ -162,11 +162,11 @@ function Browser(containerDiv, project, revision) {
 					containerDiv.find(".loadingDiv").hide();
 					
 					if (objectToShow.isA("IfcProduct")) {
-						o.viewer = new BIMSURFER.Viewer(Global.bimServerApi, 'browserviewport');
+						o.viewer = new BIMSURFER.Viewer(Global.bimServerApi, "browserviewport");
 						o.viewer.loadScene(function(){
 							Global.scene = o.viewer.scene;
 							
-							objectToShow.gid = objectToShow.object._rgeometry;
+							objectToShow.gid = objectToShow.object._rgeometry._i;
 							objectToShow.trans.mode = 0;
 							
 							var models = {};
