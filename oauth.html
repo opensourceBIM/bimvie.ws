@@ -19,7 +19,7 @@
 		<select class="form-control projectsSelect"></select>
 		<button class="btn btn-primary authorizeBtn">Authorize</button>
 	</div>
-	<div class="service">
+	<div class="service ih">
 		<h3>Service Runner Access</h3>
 		
 		<div class="serviceInfo well">
@@ -44,6 +44,7 @@ function OAuth(cd) {
 
 	cd.find(".user").html(Global.bimServerApi.user.name);
 	
+	var authType = QueryString.auth_type;
 	if (authType == "singleproject") {
 		cd.find(".singleproject").show();
 		
@@ -57,7 +58,6 @@ function OAuth(cd) {
 			});
 		});
 	} else if (authType == "service") {
-		var authType = QueryString.auth_type;
 		var state = JSON.parse(QueryString.state);
 		Global.bimServerApi.call("PluginInterface", "getPluginDescriptorByName", {name: state._serviceName}, function(pluginDescriptor){
 			cd.find(".serviceInfo .name").html(pluginDescriptor.name);
