@@ -42,16 +42,6 @@
 function OAuth(cd) {
 	var o = this;
 
-	var authType = QueryString.auth_type;
-	var state = JSON.parse(QueryString.state);
-	console.log(state);
-
-	Global.bimServerApi.call("PluginInterface", "getPluginDescriptorByName", {name: state._serviceName}, function(pluginDescriptor){
-		console.log(pluginDescriptor);
-		cd.find(".serviceInfo .name").html(pluginDescriptor.name);
-		cd.find(".serviceInfo .description").html(pluginDescriptor.description);
-	});
-	
 	cd.find(".user").html(Global.bimServerApi.user.name);
 	
 	if (authType == "singleproject") {
@@ -67,6 +57,12 @@ function OAuth(cd) {
 			});
 		});
 	} else if (authType == "service") {
+		var authType = QueryString.auth_type;
+		var state = JSON.parse(QueryString.state);
+		Global.bimServerApi.call("PluginInterface", "getPluginDescriptorByName", {name: state._serviceName}, function(pluginDescriptor){
+			cd.find(".serviceInfo .name").html(pluginDescriptor.name);
+			cd.find(".serviceInfo .description").html(pluginDescriptor.description);
+		});
 		cd.find(".service").show();
 		Global.bimServerApi.call("PluginInterface", "getAllInternalServicesOfService", {
 			name: state._serviceName,
