@@ -2,7 +2,7 @@ function PageChanger(navElement, mainContainer) {
 	var othis = this;
 	othis.current = null;
 	
-	this.changePage = function(linkElement, page, constructorFunction, callback) {
+	this.changePage = function(linkElement, page, constructorFunction, callback, push) {
 		if (othis.current != null) {
 			if (othis.current.close != null) {
 				othis.current.close();
@@ -15,7 +15,7 @@ function PageChanger(navElement, mainContainer) {
 				console.log(msg, xhr.status, xhr.statusText);
 			} else {
 				othis.current = constructorFunction.call(this);
-				var promise = othis.current.show();
+				var promise = othis.current.show(push);
 				if (promise == null) {
 					if (callback != null) {
 						if (typeof callback === "function") {

@@ -27,21 +27,21 @@
 
 		othis.pageChanger = new PageChanger($(".usersettings .nav"), $(".main .tab-content"));
 		
-		this.showBasicUserSettings = function(callback) {
+		this.showBasicUserSettings = function(callback, push) {
 			othis.pageChanger.changePage($(".userSettingsLink"), "basicusersettings.html", function(){
 				pushHistory({page: "UserSettings", subpage: "BasicUserSettings"}, "User Settings");
 				return new BasicUserSettings($(this), main);
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showOAuthCodes = function(callback) {
+		this.showOAuthCodes = function(callback, push) {
 			othis.pageChanger.changePage($(".oAuthCodesLink"), "oauthcodes.html", function(){
 				pushHistory({page: "UserSettings", subpage: "OAuthCodes"}, "User Settings");
 				return new OAuthCodes($(this), main);
-			}, callback);
+			}, callback, push);
 		};
 		
-		this.showSerializers = function(callback) {
+		this.showSerializers = function(callback, push) {
 			othis.pageChanger.changePage($(".serializersLink"), "genericpluginsettingslist.html", function(){
 				pushHistory({page: "UserSettings", subpage: "Serializers"}, "User Settings");
 				return new GenericPluginSettingsList(main, othis, {
@@ -59,10 +59,10 @@
 					showListFunction: othis.showSerializers,
 					addNewCall: "addSerializer"
 				});
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showDeserializers = function(callback) {
+		this.showDeserializers = function(callback, push) {
 			othis.pageChanger.changePage($(".deserializersLink"), "genericpluginsettingslist.html", function(){
 				pushHistory({page: "UserSettings", subpage: "Deserializers"}, "User Settings");
 				return new GenericPluginSettingsList(main, othis, {
@@ -78,10 +78,10 @@
 					showListFunction: othis.showDeserializers,
 					addNewCall: "addDeserializer"
 				});
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showObjectIdms = function(callback) {
+		this.showObjectIdms = function(callback, push) {
 			othis.pageChanger.changePage($(".objectIdmsLink"), "genericpluginsettingslist.html", function(){
 				pushHistory({page: "UserSettings", subpage: "ObjectIDMs"}, "User Settings");
 				return new GenericPluginSettingsList(main, othis, {
@@ -99,10 +99,10 @@
 					showListFunction: othis.showObjectIdms,
 					addNewCall: "addObjectIDM"
 				});
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showRenderEngines = function(callback) {
+		this.showRenderEngines = function(callback, push) {
 			othis.pageChanger.changePage($(".renderEnginesLink"), "genericpluginsettingslist.html", function(){
 				pushHistory({page: "UserSettings", subpage: "RenderEngines"}, "User Settings");
 				return new GenericPluginSettingsList(main, othis, {
@@ -120,10 +120,10 @@
 					showListFunction: othis.showRenderEngines,
 					addNewCall: "addRenderEngine"
 				});
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showQueryEngines = function(callback) {
+		this.showQueryEngines = function(callback, push) {
 			othis.pageChanger.changePage($(".queryEnginesLink"), "genericpluginsettingslist.html", function(){
 				pushHistory({page: "UserSettings", subpage: "QueryEngines"}, "User Settings");
 				return new GenericPluginSettingsList(main, othis, {
@@ -141,10 +141,10 @@
 					showListFunction: othis.showQueryEngines,
 					addNewCall: "addQueryEngine"
 				});
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showModelMergers = function(callback) {
+		this.showModelMergers = function(callback, push) {
 			othis.pageChanger.changePage($(".modelMergersLink"), "genericpluginsettingslist.html", function(){
 				pushHistory({page: "UserSettings", subpage: "ModelMergers"}, "User Settings");
 				return new GenericPluginSettingsList(main, othis, {
@@ -162,10 +162,10 @@
 					showListFunction: othis.showModelMergers,
 					addNewCall: "addModelMerger"
 				});
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showModelCompares = function(callback) {
+		this.showModelCompares = function(callback, push) {
 			othis.pageChanger.changePage($(".modelComparesLink"), "genericpluginsettingslist.html", function(){
 				pushHistory({page: "UserSettings", subpage: "ModelCompares"}, "User Settings");
 				return new GenericPluginSettingsList(main, othis, {
@@ -183,10 +183,10 @@
 					showListFunction: othis.showModelCompares,
 					addNewCall: "addModelCompare"
 				});
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showInternalServices = function(callback) {
+		this.showInternalServices = function(callback, push) {
 			othis.pageChanger.changePage($(".internalServicesLink"), "genericpluginsettingslist.html", function(){
 				pushHistory({page: "UserSettings", subpage: "InternalServices"}, "User Settings");
 				return new GenericPluginSettingsList(main, othis, {
@@ -203,10 +203,10 @@
 					getAllDescriptorsFunction: "getAllServicePluginDescriptors",
 					addNewCall: "addInternalService"
 				});
-			}, callback);
+			}, callback, push);
 		};
 		
-		this.showSerializer = function(serializer, callback) {
+		this.showSerializer = function(serializer, callback, push) {
 			var oid = typeof serializer == "number" ? serializer : serializer.oid;
 			othis.pageChanger.changePage($(".serializersLink"), "genericpluginsettings.html", function(){
 				pushHistory({page: "UserSettings", subpage: "Serializer", oid: oid}, "User Settings");
@@ -215,17 +215,17 @@
 					getInterface: "ServiceInterface",
 					getMethod: "getSerializerById"
 				});
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showAddSerializer = function(configuration, callback) {
+		this.showAddSerializer = function(configuration, callback, push) {
 			othis.pageChanger.changePage($(".serializersLink"), "genericaddpluginsettings1.html", function(){
 				pushHistory({page: "UserSettings", subpage: "AddSerializer"}, "User Settings");
 				return new GenericAddPluginSettings1($(this), main, othis, configuration);
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showDeserializer = function(deserializer, callback) {
+		this.showDeserializer = function(deserializer, callback, push) {
 			var oid = typeof deserializer == "number" ? deserializer : deserializer.oid;
 			othis.pageChanger.changePage($(".deserializersLink"), "genericpluginsettings.html", function(){
 				pushHistory({page: "UserSettings", subpage: "Deserializer", oid: oid}, "User Settings");
@@ -234,17 +234,17 @@
 					getInterface: "ServiceInterface",
 					getMethod: "getDeserializerById"
 				});
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showAddDeserializer = function(configuration, callback) {
+		this.showAddDeserializer = function(configuration, callback, push) {
 			othis.pageChanger.changePage($(".deserializersLink"), "genericaddpluginsettings1.html", function(){
 				pushHistory({page: "UserSettings", subpage: "AddDeserializer"}, "User Settings");
 				return new GenericAddPluginSettings1($(this), main, othis, configuration);
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showObjectIdm = function(objectidm, callback) {
+		this.showObjectIdm = function(objectidm, callback, push) {
 			var oid = typeof objectidm == "number" ? objectidm : objectidm.oid;
 			othis.pageChanger.changePage($(".objectIdmsLink"), "genericpluginsettings.html", function(){
 				pushHistory({page: "UserSettings", subpage: "ObjectIDM", oid: oid}, "User Settings");
@@ -253,17 +253,17 @@
 					getInterface: "PluginInterface",
 					getMethod: "getObjectIDMById"
 				});
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showAddObjectIDM = function(configuration, callback) {
+		this.showAddObjectIDM = function(configuration, callback, push) {
 			othis.pageChanger.changePage($(".objectIdmsLink"), "genericaddpluginsettings1.html", function(){
 				pushHistory({page: "UserSettings", subpage: "AddObjectIDM"}, "User Settings");
 				return new GenericAddPluginSettings1($(this), main, othis, configuration);
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showRenderEngine = function(renderEngine, callback) {
+		this.showRenderEngine = function(renderEngine, callback, push) {
 			var oid = typeof renderEngine == "number" ? renderEngine : renderEngine.oid;
 			othis.pageChanger.changePage($(".renderEnginesLink"), "genericpluginsettings.html", function(){
 				pushHistory({page: "UserSettings", subpage: "RenderEngine", oid: oid}, "User Settings");
@@ -272,17 +272,17 @@
 					getInterface: "PluginInterface",
 					getMethod: "getRenderEngineById"
 				});
-			}, callback);
+			}, callback, push);
 		};
 		
-		this.showAddRenderEngine = function(configuration, callback) {
+		this.showAddRenderEngine = function(configuration, callback, push) {
 			othis.pageChanger.changePage($(".renderEnginesLink"), "genericaddpluginsettings1.html", function(){
 				pushHistory({page: "UserSettings", subpage: "AddRenderEngine"}, "User Settings");
 				return new GenericAddPluginSettings1($(this), main, othis, configuration);
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showQueryEngine = function(queryEngine, callback) {
+		this.showQueryEngine = function(queryEngine, callback, push) {
 			var oid = typeof queryEngine == "number" ? queryEngine : queryEngine.oid;
 			othis.pageChanger.changePage($(".queryEnginesLink"), "genericpluginsettings.html", function(){
 				pushHistory({page: "UserSettings", subpage: "QueryEngine", oid: oid}, "User Settings");
@@ -291,17 +291,17 @@
 					getInterface: "ServiceInterface",
 					getMethod: "getQueryEngineById"
 				});
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showAddQueryEngine = function(configuration, callback) {
+		this.showAddQueryEngine = function(configuration, callback, push) {
 			othis.pageChanger.changePage($(".queryEnginesLink"), "genericaddpluginsettings1.html", function(){
 				pushHistory({page: "UserSettings", subpage: "AddQueryEngine"}, "User Settings");
 				return new GenericAddPluginSettings1($(this), main, othis, configuration);
-			}, callback);
+			}, callback, push);
 		};
 		
-		this.showModelMerger = function(modelMerger, callback) {
+		this.showModelMerger = function(modelMerger, callback, push) {
 			var oid = typeof modelMerger == "number" ? modelMerger : modelMerger.oid;
 			othis.pageChanger.changePage($(".modelMergersLink"), "genericpluginsettings.html", function(){
 				pushHistory({page: "UserSettings", subpage: "ModelMerger", oid: oid}, "User Settings");
@@ -310,17 +310,17 @@
 					getInterface: "PluginInterface",
 					getMethod: "getModelMergerById"
 				});
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showAddModelMerger = function(configuration, callback) {
+		this.showAddModelMerger = function(configuration, callback, push) {
 			othis.pageChanger.changePage($(".modelMergersLink"), "genericaddpluginsettings1.html", function(){
 				pushHistory({page: "UserSettings", subpage: "AddModelMerger"}, "User Settings");
 				return new GenericAddPluginSettings1($(this), main, othis, configuration);
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showModelCompare = function(modelCompare, callback) {
+		this.showModelCompare = function(modelCompare, callback, push) {
 			var oid = typeof modelCompare == "number" ? modelCompare : modelCompare.oid;
 			othis.pageChanger.changePage($(".modelComparesLink"), "genericpluginsettings.html", function(){
 				pushHistory({page: "UserSettings", subpage: "ModelCompare", oid: oid}, "User Settings");
@@ -329,17 +329,17 @@
 					getInterface: "PluginInterface",
 					getMethod: "getModelCompareById"
 				});
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showAddModelCompare = function(configuration, callback) {
+		this.showAddModelCompare = function(configuration, callback, push) {
 			othis.pageChanger.changePage($(".modelComparesLink"), "genericaddpluginsettings1.html", function(){
 				pushHistory({page: "UserSettings", subpage: "AddModelCompare"}, "User Settings");
 				return new GenericAddPluginSettings1($(this), main, othis, configuration);
-			}, callback);
+			}, callback, push);
 		};
 		
-		this.showInternalService = function(internalService, callback) {
+		this.showInternalService = function(internalService, callback, push) {
 			var oid = typeof internalService == "number" ? internalService : internalService.oid;
 			othis.pageChanger.changePage($(".internalServicesLink"), "genericpluginsettings.html", function(){
 				pushHistory({page: "UserSettings", subpage: "InternalService", oid: oid}, "User Settings");
@@ -348,14 +348,14 @@
 					getInterface: "PluginInterface",
 					getMethod: "getInternalServiceById"
 				});
-			}, callback);
+			}, callback, push);
 		};
 		
-		this.showAddInternalService = function(configuration, callback) {
+		this.showAddInternalService = function(configuration, callback, push) {
 			othis.pageChanger.changePage($(".internalServicesLink"), "genericaddpluginsettings1.html", function(){
 				pushHistory({page: "UserSettings", subpage: "AddInternalService"}, "User Settings");
 				return new GenericAddPluginSettings1($(this), main, othis, configuration);
-			}, callback);
+			}, callback, push);
 		};
 
 		this.close = function() {

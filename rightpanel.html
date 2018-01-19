@@ -227,9 +227,12 @@ function RightPanel(cd, main, project, projectPage) {
 		});
 	};
 	
-	this.showThreeD = function(callback){
+	this.showThreeD = function(callback, push){
 		projectPage.threeDAspectVisible.set(true);
 		if (o.threeDView != null) {
+			if (push) {
+				pushHistory({page: "Project", poid: othis.project.oid, tab: "threedview"}, "Project");
+			}
 			othis.tabChanger.changeTab($(".button3d"), o.threeDView, $(".threedview"), function(){
 				o.threeDView.load();
 			}, function(){
@@ -239,7 +242,9 @@ function RightPanel(cd, main, project, projectPage) {
 			});
 		} else {
 			othis.tabChanger.changeTab($(".button3d"), "3dview.html", $(".threedview"), function(){
-				pushHistory({page: "Project", poid: othis.project.oid, tab: "threedview"}, "Project");
+				if (push) {
+					pushHistory({page: "Project", poid: othis.project.oid, tab: "threedview"}, "Project");
+				}
 				o.threeDView = new ThreeDView($(this), projectPage, main);
 				o.threeDView.close = function(){
 					projectPage.threeDAspectVisible.set(false);
@@ -255,7 +260,7 @@ function RightPanel(cd, main, project, projectPage) {
 	};
 
 	cd.find(".button3d").click(function(){
-		o.showThreeD();
+		o.showThreeD(null, true);
 	});
 
 	this.close = function () {
@@ -1003,7 +1008,7 @@ function RightPanel(cd, main, project, projectPage) {
 		}
 	};
 	
-	this.loadHistory = function(clickInitiated){
+	this.loadHistory = function(clickInitiated) {
 		var history = History.getState().data;
 		if (history.tab == "details") {
 			othis.loadDetails();

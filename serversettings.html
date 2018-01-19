@@ -25,129 +25,129 @@
 		
 		othis.pageChanger = new PageChanger($(".serversettings .nav"), $(".serversettings .tab-content"));
 		
-		this.showAddExtendedDataSchema = function(extendedDataSchema, callback) {
+		this.showAddExtendedDataSchema = function(extendedDataSchema, callback, push) {
 			othis.pageChanger.changePage($(".extendedDataSchemasLink"), "addextendeddataschema.html", function(){
 				pushHistory({page: "ServerSettings", subpage: "AddExtendedDataSchema"}, "Server Settings");
 				return new AddExtendedDataSchema(main, othis, extendedDataSchema);
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showAddRepoExtendedDataSchema = function(callback) {
+		this.showAddRepoExtendedDataSchema = function(callback, push) {
 			othis.pageChanger.changePage($(".extendedDataSchemasLink"), "addrepoextendeddataschema.html", function(){
 				pushHistory({page: "ServerSettings", subpage: "AddRepoExtendedDataSchema"}, "Server Settings");
 				return new AddRepoExtendedDataSchema(main, othis);
-			}, callback);
+			}, callback, push);
 		};
 		
-		this.showAddNewModelChecker = function(modelChecker, callback) {
+		this.showAddNewModelChecker = function(modelChecker, callback, push) {
 			othis.pageChanger.changePage($(".modelCheckersLink"), "addnewmodelchecker.html", function(){
 				pushHistory({page: "ServerSettings", subpage: "AddNewModelChecker"}, "Server Settings");
 				return new AddNewModelChecker(main, othis, modelChecker);
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showAddRepoModelChecker = function(callback) {
+		this.showAddRepoModelChecker = function(callback, push) {
 			othis.pageChanger.changePage($(".modelCheckersLink"), "addrepomodelchecker.html", function(){
 				pushHistory({page: "ServerSettings", subpage: "AddRepoModelChecker"}, "Server Settings");
 				return new AddRepoModelChecker(main, othis);
-			}, callback);
+			}, callback, push);
 		};
 		
-		this.showExtendedDataSchema = function(oid, callback) {
+		this.showExtendedDataSchema = function(oid, callback, push) {
 			othis.pageChanger.changePage($(".extendedDataSchemasLink"), "extendeddataschema.html", function(){
 				return new ExtendedDataSchema(main, oid);
 				pushHistory({page: "ServerSettings", subpage: "ExtendedDataSchema"}, "Extended Data Schema");
-			}, callback);
+			}, callback, push);
 		};
 		
-		this.showModelChecker = function(oid, callback) {
+		this.showModelChecker = function(oid, callback, push) {
 			othis.pageChanger.changePage($(".modelCheckersLink"), "modelchecker.html", function(){
 				pushHistory({page: "ServerSettings", subpage: "ModelChecker"}, "Model Checker");
 				return new ModelChecker(main, oid);
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showBasicServerSettings = function(callback) {
+		this.showBasicServerSettings = function(callback, push) {
 			othis.pageChanger.changePage($(".basicServerSettingsLink"), "basicserversettings.html", function(){
 				pushHistory({page: "ServerSettings", subpage: "BasicServerSettings"}, "Basic Server Settings");
 				return new BasicServerSettings(main, othis);
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showMigrations = function(callback) {
+		this.showMigrations = function(callback, push) {
 			othis.pageChanger.changePage($(".migrationsLink"), "migrations.html", function(){
 				pushHistory({page: "ServerSettings", subpage: "Migrations"}, "Server Settings");
 				return new Migrations(main, othis);
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showOAuthServers = function(callback) {
+		this.showOAuthServers = function(callback, push) {
 			othis.pageChanger.changePage($(".oAuthServersLink"), "oauthservers.html", function(){
 				pushHistory({page: "ServerSettings", subpage: "OAuthServers"}, "Server Settings");
 				return new OAuthServers($(this), main, othis);
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showPlugins = function(callback) {
+		this.showPlugins = function(callback, push) {
 			othis.pageChanger.changePage($(".pluginsLink"), "plugins.html", function(){
 				return new Plugins(main, othis);
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showInstalledPluginBundles = function(callback) {
+		this.showInstalledPluginBundles = function(callback, push) {
 			othis.pageChanger.changePage($(".installedPluginBundlesLink"), "installedpluginbundles.html", function(){
 				pushHistory({page: "ServerSettings", subpage: "InstalledPluginBundles"}, "Server Settings");
 				return new InstalledPluginBundles(main, othis, $(this));
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showInstallPluginBundle = function(pluginBundle, pluginBundleVersion, callback) {
+		this.showInstallPluginBundle = function(pluginBundle, pluginBundleVersion, callback, push) {
 			othis.pageChanger.changePage($(".availablePluginBundlesLink"), "installpluginbundle.html", function(){
 				pushHistory({page: "ServerSettings", subpage: "InstallPluginBundle"}, "Server Settings");
 				return new InstallPluginBundle($(this), othis, pluginBundle, pluginBundleVersion);
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showUpdatePluginBundle = function(pluginBundle, pluginBundleVersion, callback) {
+		this.showUpdatePluginBundle = function(pluginBundle, pluginBundleVersion, callback, push) {
 			othis.pageChanger.changePage($(".installedPluginBundlesLink"), "updatepluginbundle.html", function(){
 				pushHistory({page: "ServerSettings", subpage: "UpdatePluginBundle"}, "Server Settings");
 				return new UpdatePluginBundle($(this), othis, pluginBundle, pluginBundleVersion);
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showUninstallPluginBundle = function(pluginBundle, pluginBundleVersion, callback) {
+		this.showUninstallPluginBundle = function(pluginBundle, pluginBundleVersion, callback, push) {
 			othis.pageChanger.changePage($(".installedPluginBundlesLink"), "uninstallpluginbundle.html", function(){
 				pushHistory({page: "ServerSettings", subpage: "UninstallPluginBundle"}, "Server Settings");
 				return new UninstallPluginBundle($(this), othis, pluginBundle, pluginBundleVersion);
-			}, callback);
+			}, callback, push);
 		};
 		
-		this.showAvailablePluginBundles = function(callback) {
+		this.showAvailablePluginBundles = function(callback, push) {
 			othis.pageChanger.changePage($(".availablePluginBundlesLink"), "availablepluginbundles.html", function(){
 				pushHistory({page: "ServerSettings", subpage: "AvailablePluginBundles"}, "Server Settings");
 				return new AvailablePluginBundles(main, othis, $(this));
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showWebModules = function(callback) {
+		this.showWebModules = function(callback, push) {
 			othis.pageChanger.changePage($(".webModulesLink"), "webmodules.html", function(){
 				pushHistory({page: "ServerSettings", subpage: "WebModules"}, "Server Settings");
 				return new WebModules(main, othis);
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showModelCheckers = function(callback) {
+		this.showModelCheckers = function(callback, push) {
 			othis.pageChanger.changePage($(".modelCheckersLink"), "modelcheckers.html", function(){
 				pushHistory({page: "ServerSettings", subpage: "ModelCheckers"}, "Server Settings");
 				return new ModelCheckers(main, othis);
-			}, callback);
+			}, callback, push);
 		};
 
-		this.showExtendedDataSchemas = function(callback) {
+		this.showExtendedDataSchemas = function(callback, push) {
 			othis.pageChanger.changePage($(".extendedDataSchemasLink"), "extendeddataschemas.html", function(){
 				pushHistory({page: "ServerSettings", subpage: "ExtendedDataSchemas"}, "Server Settings");
 				return new ExtendedDataSchemas(main, othis);
-			}, callback);
+			}, callback, push);
 		};
 		
 		this.close = function() {

@@ -165,87 +165,87 @@ function Main(address, user) {
 		});
 	};
 
-	this.showDashboard = function(callback) {
+	this.showDashboard = function(callback, push) {
 		othis.pageChanger.changePage($(".dashboardLink"), "dashboard.html", function(){
 			pushHistory({page: "Dashboard"}, "Dashboard");
 			return new Dashboard(othis);
-		}, callback);
+		}, callback, push);
 	};
 	
-	this.showResetPassword = function(callback) {
+	this.showResetPassword = function(callback, push) {
 		othis.pageChanger.changePage($(".projectsLink"), "resetpassword.html", function(){
 			return new ResetPassword($(this), othis);
-		}, callback);
+		}, callback, push);
 	};
 
-	this.showOAuth = function(callback) {
+	this.showOAuth = function(callback, push) {
 		othis.pageChanger.changePage($(".projectsLink"), "oauth.html", function(){
 			return new OAuth($(this));
-		}, callback);
+		}, callback, push);
 	};
 
-	this.showProjects = function(callback) {
+	this.showProjects = function(callback, push) {
 		othis.pageChanger.changePage($(".projectsLink"), "projects.html", function(){
 			pushHistory({page: "Projects"}, "Projects");
 			return new Projects($(this), othis);
-		}, callback);
+		}, callback, push);
 	};
 
-	this.showAddProject = function(callback, parentProject) {
+	this.showAddProject = function(callback, parentProject, push) {
 		othis.pageChanger.changePage($(".projectsLink"), "addproject.html", function(){
 			pushHistory({page: "AddProject"}, "Add Project");
 			return new AddProject($(this), othis, parentProject);
-		}, callback);
+		}, callback, push);
 	};
 
-	this.showAddUser = function(callback) {
+	this.showAddUser = function(callback, push) {
 		othis.pageChanger.changePage($(".usersLink"), "adduser.html", function(){
 			pushHistory({page: "AddUser"}, "Add User");
 			return new AddUser(othis);
-		}, callback);
+		}, callback, push);
 	};
 
-	this.showUser = function(user, callback) {
+	this.showUser = function(user, callback, push) {
 		othis.pageChanger.changePage($(".usersLink"), "user.html", function(){
 			return new User($(this), othis, user);
-		}, callback);
+		}, callback, push);
 	};
 
-	this.showAddCheckinModelChecker = function(project, callback) {
+	this.showAddCheckinModelChecker = function(project, callback, push) {
 		othis.pageChanger.changePage($(".projectsLink"), "addmodelchecker.html", function(){
 			return new AddModelChecker(othis, project);
-		}, callback);
+		}, callback, push);
 	};
 
-	this.showAddService2 = function(project, serviceDescriptor, isLocal, callback, longCallBack) {
+	this.showAddService2 = function(project, serviceDescriptor, isLocal, callback, longCallBack, push) {
 		othis.pageChanger.changePage($(".projectsLink"), "addservice2.html", function(){
 			return new AddService2(othis, project, serviceDescriptor, isLocal, longCallBack);
-		}, callback);
+		}, callback, push);
 	};
 
-	this.showProject = function(project, callback) {
+	this.showProject = function(project, callback, push) {
 		othis.pageChanger.changePage($(".projectsLink"), "project.html", function(){
 			return new Project($(this), othis, project);
-		}, callback);
+		}, callback, push);
 	};
 
-	this.showRevision = function(revision, callback) {
+	this.showRevision = function(revision, callback, push) {
 		othis.pageChanger.changePage($(".projectsLink"), "revision.html", function(){
 			return new Revision(othis, revision);
-		}, callback);
+		}, callback, push);
 	};
 
-	this.showUsers = function(callback) {
+	this.showUsers = function(callback, push) {
 		othis.pageChanger.changePage($(".usersLink"), "users.html", function(){
 			pushHistory({page: "Users"}, "Users");
 			return new Users($(this), othis);
-		}, callback);
+		}, callback, push);
 	};
 
-	this.showUserSettings = function(callback) {
+	this.showUserSettings = function(callback, push) {
 		othis.pageChanger.changePage($(".usersettingsLink2"), "usersettings.html", function(){
 			return new UserSettings(othis);
-		}, callback);
+		}, callback, push);
 	};
 
 	this.showExtendedDataSchema = function(oid, callback) {
@@ -288,39 +288,39 @@ function Main(address, user) {
 		});
 	};
 
-	this.showServerSettings = function(loadFromHistory, callback) {
+	this.showServerSettings = function(loadFromHistory, callback, push) {
 		if (othis.current != null && othis.current.getName != null && othis.current.getName() == "ServerSettings") {
 			callback.call(othis.current);
 		} else {
 			othis.pageChanger.changePage($(".serversettingsLink"), "serversettings.html", function(){
 				return new ServerSettings(othis, loadFromHistory);
-			}, callback);
+			}, callback, push);
 		}
 	};
 
-	this.showServerInfo = function(callback) {
+	this.showServerInfo = function(callback, push) {
 		othis.pageChanger.changePage($(".serverinfoLink"), "serverinfo.html", function(){
 			return new ServerInfo($(this), othis);
-		}, callback);
+		}, callback, push);
 	};
 
-	this.showGettingStarted = function(callback) {
+	this.showGettingStarted = function(callback, push) {
 		othis.pageChanger.changePage($(".gettingStartedLink"), "gettingstarted.html", function(){
 			return new GettingStarted($(this), othis);
-		}, callback);
+		}, callback, push);
 	};
 
-	this.showLicense = function(callback) {
+	this.showLicense = function(callback, push) {
 		othis.pageChanger.changePage($(".btnShowLicense"), "license.html", function(){
 			return new License($(this), othis);
-		}, callback);
+		}, callback, push);
 	};
 
-	this.showTesting = function(callback) {
+	this.showTesting = function(callback, push) {
 		othis.pageChanger.changePage($(".testingLink"), "testing.html", function(){
 			pushHistory({page: "Testing"}, "Testing");
 			return new Testing(othis);
-		}, callback);
+		}, callback, push);
 	};
 
 	this.extendedDataSchemaClick = function(event){
