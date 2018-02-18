@@ -585,3 +585,7 @@ table * {
 	border-spacing: 10px;
 	border-collapse: separate;
 }
+
+.appinfo {
+	margin: 0px;
+}
