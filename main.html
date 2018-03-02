@@ -382,6 +382,15 @@ function Main(address, user) {
 		}).modal("show");
 	};
 
+	this.showComparePopup = function(schema, roid1, roid2) {
+		var div = $("<div class=\"modal fade\">");
+		$(document.body).append(div);
+
+		div.load(Global.baseDir + "compare.html", function(){
+			new Compare($(this), schema, roid1, roid2);
+		}).modal("show");
+	};
+
 	this.showDownloadRevisionsPopup = function(roids) {
 		var div = $("<div class=\"modal fade\">");
 		$(document.body).append(div);

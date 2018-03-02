@@ -453,6 +453,11 @@ function Project(containerDiv, main, project) {
 					}).find("a").prepend("<i class=\"glyphicon glyphicon-cloud-download\"></i> ");
 
 					othis.navigator.projecttree.addMenuDivider("revisionDivider");
+					othis.navigator.projecttree.addMenuItem("Compare...", "btnCompare", function(){
+						var project = othis.navigator.projecttree.selectedNode.project;
+						main.showComparePopup(project.schema, project.lastRevisionId);						
+					}).find("a").prepend("<i class=\"glyphicon glyphicon-random\"></i> ");
+					othis.navigator.projecttree.addMenuDivider("revisionDivider");
 					var regenerateGeometryBtn = othis.navigator.projecttree.addMenuItem("Regenerate geometry", "btnRegenerateGeometry", function(){
 					}, function(){
 					});
