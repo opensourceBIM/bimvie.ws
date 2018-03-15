@@ -24,6 +24,7 @@ module.exports = function(grunt) {
 						        "js/String.js", 
 						        "js/tree.js", 
 						        "js/utils.js", 
+						        "js/examplequeries.js", 
 						        "js/Variable.js", 
 						        "js/vkbeautify.0.99.00.beta.js", 
 						        "js/formatters.js", 

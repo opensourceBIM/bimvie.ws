@@ -1,0 +1,92 @@
+<div class="compare">
+	<div class="modal-dialog">
+    	<div class="modal-content">
+			<div class="modal-header">
+		    	<a class="close" data-dismiss="modal">&times;</a>
+		    	<h3>Compare</h3>
+		  	</div>
+		    <div class="modal-body">
+		    	<ul><li>Only projects of the given schema are shown</li><li>Only projects that have at least one revision are shown</li><li>Last revision will be selected from each project</li><li>Default model compare of the user will be used, also default model merger will be used when downloading as IFC</li></ul>
+		    	First project
+				<select class="revision1 form-control"></select>
+				Second project
+				<select class="revision2 form-control"></select>
+		    </div>
+		    <div class="modal-footer">
+	    		<a class="btn btnClose btn-default" style="margin-right: 8px" data-dismiss="modal">Close</a>
+		    	<button class="btn btn-primary btnDownload">Download results (IFC)</button>
+		    	<button class="btn btn-primary btnDownloadJson">Download results (JSON)</button>
+		    </div>
+	    </div>
+    </div>
+</div>
+<script>
+function Compare(cd, schema, roid1, roid2) {
+	var o = this;
+	
+	cd.find(".modal-header h3").html("Compare (" + schema + ")");
+	
+	Global.bimServerApi.call("ServiceInterface", "getAllProjects", {
+		onlyTopLevel: false,
+		onlyActive: true
+	}, function(result){
+		result.forEach(function(project){
+			if (project.schema == schema) {
+				if (project.lastRevisionId != -1) {
+					cd.find(".revision1").append($("<option value=\"" + project.lastRevisionId + "\">" + project.name + "</option>"));
+					cd.find(".revision2").append($("<option value=\"" + project.lastRevisionId + "\">" + project.name + "</option>"));
+				}
+			}
+		});
+		if (roid1 != null) {
+			cd.find(".revision1").val(roid1);
+		}
+	});
+
+	cd.find(".btnDownloadJson").click(function(){
+		Global.bimServerApi.call("PluginInterface", "getDefaultModelCompare", {}, function(modelCompare){
+			Global.bimServerApi.call("ServiceInterface", "compare", {
+				roid1: cd.find(".revision1").val(),
+				roid2: cd.find(".revision2").val(),
+				mcid: modelCompare.oid,
+				sCompareType: "ALL",
+			}, function(results){
+				download("compareresults.json", JSON.stringify(results));
+			});
+		});
+	});
+	
+	function download(filename, text) {
+		  var element = document.createElement('a');
+		  element.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(text));
+		  element.setAttribute('download', filename);
+
+		  element.style.display = 'none';
+		  document.body.appendChild(element);
+
+		  element.click();
+
+		  document.body.removeChild(element);
+		}
+	
+	cd.find(".btnDownload").click(function(){
+		Global.bimServerApi.call("PluginInterface", "getDefaultModelCompare", {}, function(modelCompare){
+			Global.bimServerApi.getSerializerByPluginClassName("org.bimserver.ifc.step.serializer." + schema.firstUpper() + "StepSerializerPlugin", function(serializer){
+				Global.bimServerApi.call("ServiceInterface", "downloadCompareResults", {
+					serializerOid: serializer.oid,
+					roid1: cd.find(".revision1").val(),
+					roid2: cd.find(".revision2").val(),
+					mcid: modelCompare.oid,
+					type: "ALL",
+					sync: false
+				}, function(topicId){
+					var url = Global.bimServerApi.generateRevisionDownloadUrl({
+						topicId: topicId
+					});
+					document.location = url;
+				});
+			})
+		});
+	});
+}
+</script>
