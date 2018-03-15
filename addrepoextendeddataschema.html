@@ -64,7 +64,7 @@ function AddRepoExtendedDataSchema(main, serversettings) {
 				schemas[extendedDataSchema.namespace] = extendedDataSchema;
 			});
 		});
-		Global.bimServerApi.call("ServiceInterface", "getAllRepositoryExtendedDataSchemas", {}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getAllRepositoryExtendedDataSchemas", {usePre: false}, function(data){
 			$("addrepoextendeddata table tbody tr").remove();
 			data.forEach(function(extendedDataSchema){
 				if (schemas[extendedDataSchema.namespace] == null) {
@@ -95,7 +95,7 @@ function AddRepoExtendedDataSchema(main, serversettings) {
 				schemas[extendedDataSchema.namespace] = extendedDataSchema;
 			});
 		});
-		Global.bimServerApi.call("ServiceInterface", "getAllRepositoryExtendedDataSchemas", {}, function(data){
+		Global.bimServerApi.call("ServiceInterface", "getAllRepositoryExtendedDataSchemas", {usePre: false}, function(data){
 			var requests = [];
 			$("addrepoextendeddata table tbody tr").remove();
 			data.forEach(function(extendedDataSchema){
