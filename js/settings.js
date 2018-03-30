@@ -1,7 +1,4 @@
 var Settings = {
-	get3DViewerUrl: function(bimServerApi, roid){
-		return "http://test.bimsurfer.org/index.html?token=" + bimServerApi.token + "&roid=" + roid + "&server=" + bimServerApi.baseUrl;
-	},
 	createStartPage: function(container, main){
 		pushHistory({page: "Projects"}, "Projects");
 		main.pageChanger.changePage($(".serverinfoLink"), "projects.html", function(){
@@ -69,7 +66,7 @@ var Settings = {
 		return false;
 	},
 	getBimServerApiAddress: function(){
-		return "../bimserverjavascriptapi";
+		return "/apps/bimserverjavascriptapi";
 	},
 	getBimSurferApiAddress: function(){
 		return "../bimsurfer/";
