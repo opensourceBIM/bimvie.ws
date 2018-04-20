@@ -189,6 +189,11 @@ function Checkin(containerDiv, project, successFunction) {
 			
 			Global.bimServerApi.checkin(topicId, project, containerDiv.find(".comment").val(), othis.file, othis.deserializerOid, function(percentage){
 				containerDiv.find(".progressBarHolder .uploadProgressBar .progress-bar").css("width", percentage + "%");
+			}, function(){}, function(error){
+				othis.showUpload();
+				containerDiv.find(".uploadStatus").empty();
+				containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
+				containerDiv.find(".uploadStatus").append("<div class=\"alert alert-block alert-danger\">" + error.message + "</div>");
 			});
 		});
 	};
