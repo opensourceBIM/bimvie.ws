@@ -195,6 +195,11 @@ function Checkin(containerDiv, project, successFunction) {
 				containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
 				containerDiv.find(".uploadStatus").append("<div class=\"alert alert-block alert-danger\">" + error.message + "</div>");
 			});
+		}, (error) => {
+			othis.showUpload();
+			containerDiv.find(".uploadStatus").empty();
+			containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
+			containerDiv.find(".uploadStatus").append("<div class=\"alert alert-block alert-danger\">" + error.message + "</div>");
 		});
 	};
 	
