@@ -73,47 +73,52 @@
 			myRequest.send();
 		}
 		
-		function loadBimSurfer(callback) {
-    		if (Settings.useBimSurfer()) {
-    			getPluginVersion(Settings.getBimSurferApiAddress(), function(apiVersion){
-    				var jsToLoad = [];
-					if (Settings.useCompressedResources()) {
-						jsToLoad.push(Settings.getBimSurferApiAddress() + "bimsurfer.min.js?_v=" + apiVersion);
-					} else {
-		    			jsToLoad = jsToLoad.concat([
-		    	   		    Settings.getBimSurferApiAddress() + "api/BIMSURFER.js?_v=" + apiVersion, 
-		    	   		 	Settings.getBimSurferApiAddress() + "lib/hammer/touch-emulator.js?_v=" + apiVersion, 
-		    	   		 	Settings.getBimSurferApiAddress() + "lib/hammer/hammer.min.js?_v=" + apiVersion, 
-		    	   		 	Settings.getBimSurferApiAddress() + "lib/scenejs/scenejs.js?_v=" + apiVersion, 
-			    	   		Settings.getBimSurferApiAddress() + "api/SceneJS.js?_v=" + apiVersion, 
-			    	   		Settings.getBimSurferApiAddress() + "api/Constants.js?_v=" + apiVersion, 
-			    	   		Settings.getBimSurferApiAddress() + "api/ProgressLoader.js?_v=" + apiVersion, 
-			    	   		Settings.getBimSurferApiAddress() + "api/Types/Light.js?_v=" + apiVersion, 
-			    	   		Settings.getBimSurferApiAddress() + "api/Types/Light/Ambient.js?_v=" + apiVersion, 
-			    	   		Settings.getBimSurferApiAddress() + "api/Types/Light/Sun.js?_v=" + apiVersion, 
-			    	   		Settings.getBimSurferApiAddress() + "api/Control.js?_v=" + apiVersion, 
-			    	   		Settings.getBimSurferApiAddress() + "api/Control/ClickSelect.js?_v=" + apiVersion, 
-			    	   		Settings.getBimSurferApiAddress() + "api/Control/LayerList.js?_v=" + apiVersion, 
-			    	   		Settings.getBimSurferApiAddress() + "api/Control/ProgressBar.js?_v=" + apiVersion, 
-			    	   		Settings.getBimSurferApiAddress() + "api/Control/PickFlyOrbit.js?_v=" + apiVersion, 
-			    	   		Settings.getBimSurferApiAddress() + "api/Control/ObjectTreeView.js?_v=" + apiVersion, 
-			    	   		Settings.getBimSurferApiAddress() + "api/Events.js?_v=" + apiVersion, 
-			    	   		Settings.getBimSurferApiAddress() + "api/StringView.js?_v=" + apiVersion, 
-			    	   		Settings.getBimSurferApiAddress() + "api/GeometryLoader.js?_v=" + apiVersion, 
-			    	   		Settings.getBimSurferApiAddress() + "api/AsyncStream.js?_v=" + apiVersion, 
-			    	   		Settings.getBimSurferApiAddress() + "api/DataInputStream.js?_v=" + apiVersion, 
-			    	   		Settings.getBimSurferApiAddress() + "api/Viewer.js?_v=" + apiVersion, 
-			    	   		Settings.getBimSurferApiAddress() + "api/Util.js?_v=" + apiVersion
-		       			]);
-					}
-					LazyLoad.js(jsToLoad, callback);
-    			});
-    		} else {
-    			callback();
-    		}
+		function loadBimSurfer() {
+			var p = new Promise((resolve, reject) => {
+	    		if (Settings.useBimSurfer()) {
+	    			getPluginVersion(Settings.getBimSurferApiAddress(), function(apiVersion){
+	    				var jsToLoad = [];
+						if (Settings.useCompressedResources()) {
+							jsToLoad.push(Settings.getBimSurferApiAddress() + "bimsurfer.min.js?_v=" + apiVersion);
+						} else {
+			    			jsToLoad = jsToLoad.concat([
+			    	   		    Settings.getBimSurferApiAddress() + "api/BIMSURFER.js?_v=" + apiVersion, 
+			    	   		 	Settings.getBimSurferApiAddress() + "lib/hammer/touch-emulator.js?_v=" + apiVersion, 
+			    	   		 	Settings.getBimSurferApiAddress() + "lib/hammer/hammer.min.js?_v=" + apiVersion, 
+			    	   		 	Settings.getBimSurferApiAddress() + "lib/scenejs/scenejs.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "api/SceneJS.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "api/Constants.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "api/ProgressLoader.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "api/Types/Light.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "api/Types/Light/Ambient.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "api/Types/Light/Sun.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "api/Control.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "api/Control/ClickSelect.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "api/Control/LayerList.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "api/Control/ProgressBar.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "api/Control/PickFlyOrbit.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "api/Control/ObjectTreeView.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "api/Events.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "api/StringView.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "api/GeometryLoader.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "api/AsyncStream.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "api/DataInputStream.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "api/Viewer.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "api/Util.js?_v=" + apiVersion
+			       			]);
+						}
+						LazyLoad.js(jsToLoad, () => {
+							resolve();
+						});
+	    			});
+	    		} else {
+	    			callback();
+	    		}
+			});
+			return p;
 		}
 
-		function loadBimServerApi(apiAddress, callback) {
+		function loadBimServerApi(apiAddress) {
 //			var useDynamicLoading = false;
 //			if (useDynamicLoading) {
 //				getPluginVersion(apiAddress, function(apiVersion){
@@ -129,62 +134,70 @@
 //				});
 //			} else {
 				// This loads the transpiled version for now. When EcmaScript 6 modules work on recent browsers without special settings, should switch to real modules (be it dynamic or static)
-			if (Settings.useCompressedResources()) {
-				getPluginVersion(apiAddress, function(apiVersion){
-					LazyLoad.js([Settings.getBimServerApiAddress() + "/bimserverapi.umd.js?_v=" + apiVersion], function(){
-						window.BimServerClient = bimserverapi.default;
-						window.BimServerApiPromise = bimserverapi.BimServerApiPromise;
-						
-						callback();
+			var p = new Promise((resolve, reject) => {
+				if (Settings.useCompressedResources()) {
+					getPluginVersion(apiAddress, function(apiVersion){
+						LazyLoad.js([Settings.getBimServerApiAddress() + "/bimserverapi.umd.js?_v=" + apiVersion], function(){
+							window.BimServerClient = bimserverapi.default;
+							window.BimServerApiPromise = bimserverapi.BimServerApiPromise;
+							
+							resolve();
+						});
 					});
-				});
-			} else {
-				getPluginVersion(apiAddress, function(apiVersion){
-					// Using eval here, so we don't trip the browsers that don't understand "import"
-					// The reason for using it this way is so we can develop this library and test it without having to transpile.
-					// Obviously developers need to have a browser that understands "import" (i.e. a recent version of Chrome, Firefox etc...)
-					
-					// TODO One remaining problem here is that dependencies are not loaded with the "apiVersion" attached, so you need to have your browser on "clear cache" all the time
-					var str = "import(Settings.getBimServerApiAddress() + \"/bimserverclient.js?_v=" + apiVersion + "\").then((bimserverapi) => {	window.BimServerClient = bimserverapi.default; window.BimServerApiPromise = bimserverapi.BimServerApiPromise; callback();});";
-					eval(str);
-				});
-			}
+				} else {
+					getPluginVersion(apiAddress, function(apiVersion){
+						// Using eval here, so we don't trip the browsers that don't understand "import"
+						// The reason for using it this way is so we can develop this library and test it without having to transpile.
+						// Obviously developers need to have a browser that understands "import" (i.e. a recent version of Chrome, Firefox etc...)
+						
+						// TODO One remaining problem here is that dependencies are not loaded with the "apiVersion" attached, so you need to have your browser on "clear cache" all the time
+						var str = "import(Settings.getBimServerApiAddress() + \"/bimserverclient.js?_v=" + apiVersion + "\").then((bimserverapi) => {	window.BimServerClient = bimserverapi.default; window.BimServerApiPromise = bimserverapi.BimServerApiPromise; resolve();});";
+						eval(str);
+					});
+				}
+			});
+			return p;
 		}
 
 		function loadBimViews(callback) {
-			var jsToLoad = [];
-			if (Settings.useCompressedResources()) {
-				var jsToLoad = [baseJsDir + "bimviews.js?_v=" + Global.version];
-			} else {
-				var jsToLoad = [
-	        		baseJsDir + "jquery-2.2.0.js?_v=" + Global.version, 
-	       		    baseJsDir + "main.js?_v=" + Global.version, 
-	       		    baseJsDir + "history.js?_v=" + Global.version, 
-	       		    baseJsDir + "history.adapter.jquery.js?_v=" + Global.version, 
-	       		    baseJsDir + "jquery.cookie.js?_v=" + Global.version, 
-	       		    baseJsDir + "jquery.numeric.js?_v=" + Global.version, 
-	       		    baseJsDir + "jquery.enterpress.js?_v=" + Global.version, 
-	       		    baseJsDir + "jquery.dragbetter.js?_v=" + Global.version, 
-	       		    baseJsDir + "base64unicode.js?_v=" + Global.version, 
-	       		    baseJsDir + "jquery.ui.widget.js?_v=" + Global.version, 
-	       		    baseJsDir + "String.js?_v=" + Global.version, 
-	       		    baseJsDir + "examplequeries.js?_v=" + Global.version, 
-	       		    baseJsDir + "tree.js?_v=" + Global.version, 
-	       		    baseJsDir + "bootstrap.js?_v=" + Global.version, 
-	       		    baseJsDir + "Variable.js?_v=" + Global.version, 
-	       		    baseJsDir + "EventRegistry.js?_v=" + Global.version, 
-	       		    baseJsDir + "sha256.js?_v=" + Global.version, 
-	       		    baseJsDir + "utils.js?_v=" + Global.version, 
-	       		    baseJsDir + "formatters.js?_v=" + Global.version, 
-	       		    baseJsDir + "Chart.bundle.js?_v=" + Global.version, 
-	       		    baseJsDir + "jquery.scrollTo.js?_v=" + Global.version, 
-	       		    baseJsDir + "pagechanger.js?_v=" + Global.version, 
-	       		    baseJsDir + "plugins/pluginmanager.js?_v=" + Global.version, 
-	       		    baseJsDir + "plugins/relaticsplugin.js?_v=" + Global.version,
-	       		    baseJsDir + "papaparse.min.js?_v=" + Global.version
-	    	 	];
-			}
-			LazyLoad.js(jsToLoad, callback);
+			var p = new Promise((resolve, reject) => {
+				var jsToLoad = [];
+				if (Settings.useCompressedResources()) {
+					var jsToLoad = [baseJsDir + "bimviews.js?_v=" + Global.version];
+				} else {
+					var jsToLoad = [
+		        		baseJsDir + "jquery-2.2.0.js?_v=" + Global.version, 
+		       		    baseJsDir + "main.js?_v=" + Global.version, 
+		       		    baseJsDir + "history.js?_v=" + Global.version, 
+		       		    baseJsDir + "history.adapter.jquery.js?_v=" + Global.version, 
+		       		    baseJsDir + "jquery.cookie.js?_v=" + Global.version, 
+		       		    baseJsDir + "jquery.numeric.js?_v=" + Global.version, 
+		       		    baseJsDir + "jquery.enterpress.js?_v=" + Global.version, 
+		       		    baseJsDir + "jquery.dragbetter.js?_v=" + Global.version, 
+		       		    baseJsDir + "base64unicode.js?_v=" + Global.version, 
+		       		    baseJsDir + "jquery.ui.widget.js?_v=" + Global.version, 
+		       		    baseJsDir + "String.js?_v=" + Global.version, 
+		       		    baseJsDir + "examplequeries.js?_v=" + Global.version, 
+		       		    baseJsDir + "tree.js?_v=" + Global.version, 
+		       		    baseJsDir + "bootstrap.js?_v=" + Global.version, 
+		       		    baseJsDir + "Variable.js?_v=" + Global.version, 
+		       		    baseJsDir + "EventRegistry.js?_v=" + Global.version, 
+		       		    baseJsDir + "sha256.js?_v=" + Global.version, 
+		       		    baseJsDir + "utils.js?_v=" + Global.version, 
+		       		    baseJsDir + "formatters.js?_v=" + Global.version, 
+		       		    baseJsDir + "Chart.bundle.js?_v=" + Global.version, 
+		       		    baseJsDir + "jquery.scrollTo.js?_v=" + Global.version, 
+		       		    baseJsDir + "pagechanger.js?_v=" + Global.version, 
+		       		    baseJsDir + "plugins/pluginmanager.js?_v=" + Global.version, 
+		       		    baseJsDir + "plugins/relaticsplugin.js?_v=" + Global.version,
+		       		    baseJsDir + "papaparse.min.js?_v=" + Global.version
+		    	 	];
+				}
+				LazyLoad.js(jsToLoad, () => {
+					resolve();
+				});				
+			});
+			return p;
 		}
 		
 		function loadResources() {
@@ -210,9 +223,10 @@
 
 			var initialJs = [];
 
-			loadBimServerApi(Settings.getBimServerApiAddress(), function(){
-				loadBimViews(function(){
-					loadBimSurfer(function(){
+			var p1 = loadBimServerApi(Settings.getBimServerApiAddress());
+			var p2 = loadBimViews();
+			var p3 = loadBimSurfer();
+			Promise.all([p1, p2, p3]).then(() => {
 		    			Global.lastKey = null;
 
 		    			$.ajaxSetup({
@@ -477,8 +491,6 @@
 		    		}, function (err) {
 		    			console.log(err);
 		    		});	
-				});
-			});
 		}
 
 		// Settings.js is never cached
