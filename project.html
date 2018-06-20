@@ -513,7 +513,7 @@ function Project(containerDiv, main, project) {
 	this.loadDetails = function(project){
 		var promise = new BimServerApiPromise()
 		if (othis.rightPanel != null) {
-			promise.chain(othis.rightPanel.reloadProject(project.oid, false));
+			promise.chain(othis.rightPanel.reloadProject(project.oid, project.lastRevisionId));
 		} else {
 			containerDiv.find(".rightCol").load("rightpanel.html", function(){
 				othis.rightPanel = new RightPanel($(this), main, project, othis);

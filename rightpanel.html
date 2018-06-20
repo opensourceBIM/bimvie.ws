@@ -275,7 +275,7 @@ function RightPanel(cd, main, project, projectPage) {
 
 	this.show = function(clickInitiated) {
 		if (typeof project == "number" || typeof project == "string") {
-			othis.reloadProject(project);
+			othis.reloadProject(project, project.lastRevisionId);
 		} else {
 			othis.project = project;
 			othis.updateProject(clickInitiated);
