@@ -7,7 +7,7 @@
 		BIMserver is a thoroughly tested framework. It uses several plugins to provide additional functions. The graphical user interface <a href="https://github.com/opensourceBIM/bimvie.ws/wiki">bimvie.ws</a> you are now using is not a part of BIMserver and it's test-cycle, it has many known bugs and we do not advice to use it for any other reason than experimenting with the BIMserver framework.
 	</div>
 	<div class="well well-sm noprojects ih">There are no projects yet, click on <b>Project</b> | <b>New project</b> to create a new project</div>
-	<table class="projectsTable table table-hover initialhide">
+	<table id="projectsTable" class="projectsTable table table-hover initialhide">
 		<thead>
 			<tr>
 				<th>Name</th>
@@ -107,9 +107,9 @@ function Projects(containerDiv, main) {
 		
 		projectRow.append(actions);
 
-		$(".projectsTable").append(projectRow);
+		$("#projectsTable").append(projectRow);
 		
-		if ($.cookie(main.user.oid + "showdeleteditems") != "true" && project.state == "DELETED") {
+		if (project.state == "DELETED" && $.cookie(main.user.oid + "showdeleteditems") != "true") {
 			projectRow.hide();
 		}
 	};
