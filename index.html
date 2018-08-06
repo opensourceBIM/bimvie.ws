@@ -329,6 +329,7 @@
 		    							});
 		    						}, function(){
 		    							$.removeCookie("autologin" + window.window.document.location.port);
+		    							Global.bimServerApi.token = null;
 		    							notLoggedInFunction(address);
 		    						});
 		    					} else {
