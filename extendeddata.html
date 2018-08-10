@@ -284,15 +284,25 @@ function ExtendedData(cd, main, extendedData, parent) {
 				}
 				panel.append(body);
 
+				if (topic.defaultSnapshot != null) {
+					var a = $("<a>");
+					var src = Global.bimServerApi.baseUrl + "/download?token=" + Global.bimServerApi.token + "&action=getBcfImage&extendedDataId=" + extendedData.oid + "&topicGuid=" + topic.guid + "&name=" + topic.defaultSnapshot;
+					a.attr("href", src);
+					var img = $("<img>");
+					a.append(img);
+					img.attr("width", "380px");
+					img.attr("src", src);
+					right.append(a);
+				}
+				
 				if (topic.viewpoints != null) {
 					topic.viewpoints.forEach(function(viewpoint){
-						console.log(topic);
 						if (viewpoint.snapshot != null) {
 							var a = $("<a>");
-							a.attr("href", Global.bimServerApi.baseUrl + "/download?token=" + Global.bimServerApi.token + "&action=getBcfImage&extendedDataId=" + extendedData.oid + "&topicGuid=" + topic.guid + "&imageGuid=" + viewpoint.viewpoint + "&name=" + viewpoint.snapshot);
+							var src = Global.bimServerApi.baseUrl + "/download?token=" + Global.bimServerApi.token + "&action=getBcfImage&extendedDataId=" + extendedData.oid + "&topicGuid=" + topic.guid + "&imageGuid=" + viewpoint.viewpoint + "&name=" + viewpoint.snapshot;
+							a.attr("href", src);
 							var img = $("<img>");
 							a.append(img);
-							var src = Global.bimServerApi.baseUrl + "/download?token=" + Global.bimServerApi.token + "&action=getBcfImage&extendedDataId=" + extendedData.oid + "&topicGuid=" + topic.guid + "&imageGuid=" + viewpoint.viewpoint + "&name=" + viewpoint.snapshot;
 							img.attr("width", "380px");
 							img.attr("src", src);
 							right.append(a);
@@ -311,7 +321,11 @@ function ExtendedData(cd, main, extendedData, parent) {
 						var panel = cd.find("div[guid='" + guid + "']");
 						topic.comments.forEach(function(comment){
 							var commentDiv = $("<div class=\"comment\">");
-							commentDiv.append(comment.author + " (" + formatDateTime(new Date(comment.date)) + ")");
+							commentDiv.append("<b>" + comment.author + "</b>");
+							if (comment.date != null) {
+								commentDiv.append(" (" + formatDateTime(new Date(comment.date)) + ")");
+							}
+							commentDiv.append(": ");
 							commentDiv.append(comment.comment);
 							panel.find(".panel-body").append(commentDiv);
 						});
