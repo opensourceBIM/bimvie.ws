@@ -310,7 +310,6 @@ function BasicServerSettings(main, serversettings) {
 	
 	this.loadSettings = function() {
 		Global.bimServerApi.call("SettingsInterface", "getServerSettings", {}, function(data){
-			console.log(data);
 			$(".basicserversettings .inputRepositoryServer").val(data.serviceRepositoryUrl);
 			$(".basicserversettings .siteAddress").val(data.siteAddress);
 			$(".basicserversettings .serverName").val(data.name);
