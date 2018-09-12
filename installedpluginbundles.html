@@ -98,7 +98,7 @@ function InstalledPluginBundles(main, serverSettings, cd) {
 				option.data("version", version);
 			});
 			
-			if (pluginBundle.availableVersions[pluginBundle.availableVersions.length-1].version != installed.version) {
+			if (pluginBundle.availableVersions[0].version != installed.version && installed.type == "MAVEN") {
 				nameTd.append(" <span class=\"label label-primary\">Update available</span>");
 			}
 			
