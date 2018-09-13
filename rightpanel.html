@@ -980,6 +980,7 @@ function RightPanel(cd, main, project, projectPage) {
 		
 		cd.find(".detailsTable tbody").empty();
 		cd.find(".detailsTable tbody").append("<tr><td>Name</td><td>" + othis.project.name + "</td></tr>");
+		cd.find(".detailsTable tbody").append("<tr><td>UUID</td><td>" + othis.project.uuid + "</td></tr>");
 		cd.find(".detailsTable tbody").append("<tr><td>Description</td><td>" + othis.project.description.replaceAll("\n", "<br/>") + "</td></tr>");
 		cd.find(".detailsTable tbody").append("<tr><td>Created on</td><td>" + formatDateTime(new Date(othis.project.createdDate)) + " (by <span class=\"createdBy\"></span>)</td></tr>");
 		cd.find(".createdBy").append(createUserLink(main, othis.project.createdById));

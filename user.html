@@ -121,6 +121,7 @@ function User(containerDiv, main, user) {
 		containerDiv.find(".detailsTable tbody").empty();
 		containerDiv.find(".detailsTable").append("<tr><td>Username</td><td>" + othis.user.username + "</td></tr>");
 		containerDiv.find(".detailsTable").append("<tr><td>Name</td><td>" + othis.user.name + "</td></tr>");
+		containerDiv.find(".detailsTable").append("<tr><td>UUID</td><td>" + othis.user.uuid + "</td></tr>");
 		containerDiv.find(".detailsTable").append("<tr><td>Created on</td><td>" + formatDateTime(new Date(othis.user.createdOn)) + " (by <span class=\"createdBy\"></span>)</td></tr>");
 		containerDiv.find(".createdBy").append(createUserLink(main, othis.user.createdById));
 		containerDiv.find(".detailsTable").append("<tr><td>Type</td><td><div class=\"ro\">" + formatUserType(othis.user.userType) + "</div><div class=\"w\"><select class=\"form-control usertypeSelect\"><option value=\"ADMIN\">Administrator</option><option value=\"USER\">User</option><option value=\"READ_ONLY\">Read only</option></select></div></td></tr>");
