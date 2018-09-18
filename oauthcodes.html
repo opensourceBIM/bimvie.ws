@@ -1,5 +1,6 @@
 <div class="oauthcodes">
 <h3>OAuth Codes</h3>
+<h4>Issued to me</h4>
 Codes that can be used by this user to access resources on other servers
 <table class="table outCodesTable">
 	<thead>
@@ -10,11 +11,14 @@ Codes that can be used by this user to access resources on other servers
 	</thead>
 	<tbody></tbody>
 </table>
-Codes that other servers can use to access resources on this server owned by the current user
+<h4>Issued by me</h4>
+Codes that other servers can use to access resources (such as projects, internal services etc...) on this server owned by the current user
 <table class="table issuedCodesTable">
 	<thead>
 		<tr>
-			<th>Code</th>
+			<th></th>
+			<th>Application name</th>
+			<th>Issued on</th>
 			<th>Authorization</th>
 			<th>Actions<th>
 		</tr>
@@ -60,12 +64,23 @@ function OAuthCodes(cd) {
 				var serverId = code.oauthServerId;
 				var tr = $("<tr>");
 				tr.attr("oid", code.oid);
-				tr.append("<td>" + code.code + "</td>");
 				cd.find(".issuedCodesTable tbody").append(tr);
 				
 				var authorizationTd = $("<td>");
-				tr.append(authorizationTd)
-	
+				var clientNameTd = $("<td>");
+				var iconTd = $("<td>");
+				tr.append(iconTd);
+				tr.append(clientNameTd);
+				tr.append("<td>" + formatDateTime(new Date(code.issued)) + "</td>");
+				tr.append(authorizationTd);
+				
+				Global.bimServerApi.call("OAuthInterface", "getOAuthServerById", {oid: code.oauthServerId}, function(server){
+					var icon = $("<img>");
+					icon.attr("src", "data:image/png;base64, " + server.clientIcon);
+					iconTd.append(icon);
+					clientNameTd.append(server.clientName);
+				});
+				
 				var td = $("<td>");
 				var revokeLink = $("<a>revoke</a>");
 				revokeLink.click(o.revokeClick);
@@ -75,6 +90,15 @@ function OAuthCodes(cd) {
 				Global.bimServerApi.call("OAuthInterface", "getAuthorizationById", {oid: code.authorizationId}, function(authorization){
 					if (authorization.__type == "SSingleProjectAuthorization") {
 						authorizationTd.append("Single Project Authorization (" + authorization.projectId + ")");
+					} else if (authorization.__type == "SRunServiceAuthorization") {
+						authorizationTd.append("Run Service Authorization");
+						Global.bimServerApi.call("PluginInterface", "getInternalServiceById", {
+							oid: authorization.serviceId
+						}, (service) => {
+							authorizationTd.append(" (" + service.name + ")");
+						});
+					} else {
+						console.log(authorization);
 					}
 				});
 			});
