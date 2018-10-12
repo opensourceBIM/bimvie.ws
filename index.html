@@ -138,6 +138,9 @@
 				if (Settings.useCompressedResources()) {
 					getPluginVersion(apiAddress, function(apiVersion){
 						LazyLoad.js([Settings.getBimServerApiAddress() + "/bimserverapi.umd.js?_v=" + apiVersion], function(){
+							if (bimserverapi == null) {
+								throw "Error loading BIMserver API from UMD";
+							}
 							window.BimServerClient = bimserverapi.default;
 							window.BimServerApiPromise = bimserverapi.BimServerApiPromise;
 							
