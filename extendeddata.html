@@ -48,8 +48,7 @@
 
 		tr.append($("<td>").append(createUserLink(main, extendedData.userId)));
 
-		$(".extendeddata table.detailsTable tbody").append(
-				"<tr><td>Title</td><td>" + extendedData.title + "</td></tr>");
+		$(".extendeddata table.detailsTable tbody").append("<tr><td>Title</td><td>" + extendedData.title + "</td></tr>");
 		$(".extendeddata table.detailsTable tbody").append(tr);
 
 		var schemaTd = $("<td>");
@@ -58,25 +57,19 @@
 		var tr = $("<tr><td>Schema</td></tr>");
 		tr.append(schemaTd);
 		$(".extendeddata table.detailsTable tbody").append(tr);
-		$(".extendeddata table.detailsTable tbody").append(
-				"<tr><td>Size</td><td class=\"size\"></td></tr>");
-		$(".extendeddata table.detailsTable tbody").append(
-				"<tr><td>Mime type</td><td class=\"mime\"></td></tr>");
+		$(".extendeddata table.detailsTable tbody").append("<tr><td>Size</td><td class=\"size\"></td></tr>");
+		$(".extendeddata table.detailsTable tbody").append("<tr><td>Mime type</td><td class=\"mime\"></td></tr>");
 		var downloadLink = $("<a>Download</a>");
 		var td = $("<td>");
 		td.append(downloadLink);
 		downloadLink.click(function() {
-			document.location = Global.bimServerApi
-					.generateExtendedDataDownloadUrl(extendedData.oid);
+			document.location = Global.bimServerApi.generateExtendedDataDownloadUrl(extendedData.oid);
 		});
 		tr = $("<tr>");
 		tr.append("<td>Download</td>");
 		tr.append(td);
 		$(".extendeddata table.detailsTable tbody").append(tr);
-		$(".extendeddata table.detailsTable tbody").append(
-				"<tr><td>Added</td><td>"
-						+ formatDateTime(new Date(extendedData.added))
-						+ "</td></tr>");
+		$(".extendeddata table.detailsTable tbody").append("<tr><td>Added</td><td>" + formatDateTime(new Date(extendedData.added)) + "</td></tr>");
 
 		this.objectClick = function() {
 			var oid = $(this).data("oid");
@@ -93,64 +86,38 @@
 		}
 
 		this.showValidationReport = function(schema, extendedData, url) {
-			$
-					.get(
-							url,
-							function(json) {
-								$(".validationreport h2").html(
-										extendedData.title);
-								json.items
-										.forEach(function(item) {
-											if (item.type == "header") {
-												var tr = $("<tr><td></td><td colspan=\"3\" class=\"header\">"
-														+ item.text
-														+ "</td></tr>");
-												$(
-														".validationreport table tbody")
-														.append(tr);
-											} else if (item.type == "line") {
-												var tr = $("<tr></tr>");
-												tr.append("<td><img/></td>");
-												if (item.oid != null
-														&& item.oid != -1) {
-													tr
-															.append("<td><a>"
-																	+ item.identification
-																	+ "</a></td>");
-													tr.find("a").data("oid",
-															item.oid);
-													tr.find("a").click(
-															o.objectClick);
-												} else {
-													tr
-															.append("<td>"
-																	+ item.identification
-																	+ "</td>");
-												}
-												tr
-														.append("<td>"
-																+ formatValue(item.value)
-																+ "</td>");
-												tr
-														.append("<td>"
-																+ formatValue(item.shouldBe)
-																+ "</td>");
-												var img = "";
-												if (item.status == "ERROR") {
-													img = "img/exclamation.png";
-												} else if (item.status == "SUCCESS") {
-													img = "img/accept.png";
-												} else if (item.status == "CANNOT_CHECK") {
-													img = "img/help.png";
-												}
-												tr.find("img").attr("src", img);
-												$(
-														".validationreport table tbody")
-														.append(tr);
-											}
-										});
-								$(".validationreport").show();
-							});
+			$.get(url, function(json) {
+				$(".validationreport h2").html(extendedData.title);
+				json.items.forEach(function(item) {
+					if (item.type == "header") {
+						var tr = $("<tr><td></td><td colspan=\"3\" class=\"header\">" + item.text + "</td></tr>");
+						$(".validationreport table tbody").append(tr);
+					} else if (item.type == "line") {
+						var tr = $("<tr></tr>");
+						tr.append("<td><img/></td>");
+						if (item.oid != null && item.oid != -1) {
+							tr.append("<td><a>" + item.identification + "</a></td>");
+							tr.find("a").data("oid", item.oid);
+							tr.find("a").click(o.objectClick);
+						} else {
+							tr.append("<td>" + item.identification + "</td>");
+						}
+						tr.append("<td>" + formatValue(item.value) + "</td>");
+						tr.append("<td>" + formatValue(item.shouldBe) + "</td>");
+						var img = "";
+						if (item.status == "ERROR") {
+							img = "img/exclamation.png";
+						} else if (item.status == "SUCCESS") {
+							img = "img/accept.png";
+						} else if (item.status == "CANNOT_CHECK") {
+							img = "img/help.png";
+						}
+						tr.find("img").attr("src", img);
+						$(".validationreport table tbody").append(tr);
+					}
+				});
+				$(".validationreport").show();
+			});
 		};
 
 		this.showValidationReport2 = function(schema, extendedData, url) {
@@ -223,10 +190,7 @@
 			},
 			toHtml : function(obj) {
 				var jsonLine = /^( *)("[\w]+": )?("[^"]*"|[\w.+-]*)?([,[{])?$/mg;
-				return JSON.stringify(obj, null, 3).replace(/&/g, '&amp;')
-						.replace(/\\"/g, '&quot;').replace(/</g, '&lt;')
-						.replace(/>/g, '&gt;').replace(jsonLine,
-								o.jsonPrettyPrint.replacer);
+				return JSON.stringify(obj, null, 3).replace(/&/g, '&amp;').replace(/\\"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(jsonLine, o.jsonPrettyPrint.replacer);
 			}
 		};
 
@@ -298,223 +262,137 @@
 			}
 
 			cd.find(".loadingdiv").show();
-			Global.bimServerApi
-					.call(
-							"ServiceInterface",
-							"bcfToJson",
-							{
-								extendedDataId : extendedData.oid
-							},
-							function(jsonString) {
-								var bcf = cd.find(".bcf");
-								var json = JSON.parse(jsonString);
-								o.bcf = json;
-								for ( var uuid in json.topics) {
-									var topicFolder = json.topics[uuid];
-									var topic = topicFolder.topic;
-									var panel = $("<div class=\"panel panel-default\">");
-									panel.attr("guid", topic.guid);
-									var heading = $("<div class=\"panel-heading\">");
-									heading.html(topic.title);
-									panel.append(heading);
+			Global.bimServerApi.call("ServiceInterface", "bcfToJson", {
+				extendedDataId : extendedData.oid
+			}, function(jsonString) {
+				var bcf = cd.find(".bcf");
+				var json = JSON.parse(jsonString);
+				console.log(json);
+				o.bcf = json;
+				for (var uuid in json.topics) {
+					var topicFolder = json.topics[uuid];
+					var topic = topicFolder.topic;
+					var panel = $("<div class=\"panel panel-default\">");
+					panel.attr("guid", topic.guid);
+					var heading = $("<div class=\"panel-heading\">");
+					heading.html(topic.title);
+					panel.append(heading);
 
-									var body = $("<div class=\"panel-body\">");
-									var row = $("<div class=\"row\">");
-									body.append(row);
-									var left = $("<div class=\"col-xs-6 left\">");
-									var right = $("<div class=\"col-xs-6 right\">");
-									var listleft = $("<ul class=\"list-group\">");
-									left.append(listleft);
-									row.append(left);
-									row.append(right);
-									if (topic.description != null) {
-										var description = topic.description
-												.replace("\n", "<br/>");
-										listleft
-												.append("<li class=\"list-group-item description\">Description: "
-														+ description + "</li>");
-									}
-									listleft
-											.append("<li class=\"list-group-item\">GUID: "
-													+ topic.guid + "</li>");
-									if (topic.topicType != null) {
-										listleft
-												.append(formatTopicType(topic.topicType));
-									}
-									if (topic.topicStatus != null) {
-										listleft
-												.append(formatTopicStatus(topic.topicStatus));
-									}
-									if (topic.creationAuthor != null) {
-										listleft
-												.append("<li class=\"list-group-item\">Creator: "
-														+ topic.creationAuthor
-														+ " ("
-														+ formatDateTime(new Date(
-																topic.creationDate))
-														+ ")</li>");
-									}
-									if (topic.modifiedAuthor != null) {
-										listleft
-												.append("<li class=\"list-group-item\">Modifier: "
-														+ topic.modifiedAuthor
-														+ " ("
-														+ formatDateTime(new Date(
-																topic.modifiedDate))
-														+ ")</li>");
-									}
-									panel.append(body);
+					var body = $("<div class=\"panel-body\">");
+					var row = $("<div class=\"row\">");
+					body.append(row);
+					var left = $("<div class=\"col-xs-6 left\">");
+					var right = $("<div class=\"col-xs-6 right\">");
+					var listleft = $("<ul class=\"list-group\">");
+					left.append(listleft);
+					row.append(left);
+					row.append(right);
+					if (topic.description != null) {
+						var description = topic.description.replace("\n", "<br/>");
+						listleft.append("<li class=\"list-group-item description\">Description: " + description + "</li>");
+					}
+					listleft.append("<li class=\"list-group-item\">GUID: " + topic.guid + "</li>");
+					if (topic.topicType != null) {
+						listleft.append(formatTopicType(topic.topicType));
+					}
+					if (topic.topicStatus != null) {
+						listleft.append(formatTopicStatus(topic.topicStatus));
+					}
+					if (topic.creationAuthor != null) {
+						listleft.append("<li class=\"list-group-item\">Creator: " + topic.creationAuthor + " (" + formatDateTime(new Date(topic.creationDate)) + ")</li>");
+					}
+					if (topic.modifiedAuthor != null) {
+						listleft.append("<li class=\"list-group-item\">Modifier: " + topic.modifiedAuthor + " (" + formatDateTime(new Date(topic.modifiedDate)) + ")</li>");
+					}
+					panel.append(body);
 
-									if (topic.defaultSnapshot != null) {
-										var a = $("<a>");
-										var src = Global.bimServerApi.baseUrl
-												+ "/download?token="
-												+ Global.bimServerApi.token
-												+ "&action=getBcfImage&extendedDataId="
-												+ extendedData.oid
-												+ "&topicGuid=" + topic.guid
-												+ "&name="
-												+ topic.defaultSnapshot;
-										a.attr("href", src);
-										var img = $("<img>");
-										a.append(img);
-										img.attr("width", "380px");
-										img.attr("src", src);
-										right.append(a);
-									}
+					if (topic.defaultSnapshot != null) {
+						var a = $("<a>");
+						var src = Global.bimServerApi.baseUrl + "/download?token=" + Global.bimServerApi.token + "&action=getBcfImage&extendedDataId=" + extendedData.oid + "&topicGuid=" + topic.guid + "&name=" + topic.defaultSnapshot;
+						a.attr("href", src);
+						var img = $("<img>");
+						a.append(img);
+						img.attr("width", "380px");
+						img.attr("src", src);
+						right.append(a);
+					}
 
-									if (topic.viewpoints != null) {
-										topic.viewpoints
-												.forEach(function(viewpoint) {
-													if (viewpoint.snapshot != null) {
-														var a = $("<a>");
-														var src = Global.bimServerApi.baseUrl
-																+ "/download?token="
-																+ Global.bimServerApi.token
-																+ "&action=getBcfImage&extendedDataId="
-																+ extendedData.oid
-																+ "&topicGuid="
-																+ topic.guid
-																+ "&imageGuid="
-																+ viewpoint.viewpoint
-																+ "&name="
-																+ viewpoint.snapshot;
-														a.attr("href", src);
-														var img = $("<img>");
-														a.append(img);
-														img.attr("width",
-																"380px");
-														img.attr("src", src);
-														right.append(a);
-													}
-												});
-									}
+					if (topic.viewpoints != null) {
+						topic.viewpoints.forEach(function(viewpoint) {
+							if (viewpoint.snapshot != null) {
+								var a = $("<a>");
+								var src = Global.bimServerApi.baseUrl + "/download?token=" + Global.bimServerApi.token + "&action=getBcfImage&extendedDataId=" + extendedData.oid + "&topicGuid=" + topic.guid + "&imageGuid="
+										+ viewpoint.viewpoint + "&name=" + viewpoint.snapshot;
+								a.attr("href", src);
+								var img = $("<img>");
+								a.append(img);
+								img.attr("width", "380px");
+								img.attr("src", src);
+								right.append(a);
+							}
+						});
+					}
 
-									if (topic.comments != null
-											&& topic.comments.length > 0) {
-										var div = $("<div class=\"commentsLink\">");
-										var commentsLink = $("<a>Comments &#x25BC;</a>");
-										div.append(commentsLink);
-										commentsLink.attr("guid", topic.guid);
-										commentsLink
-												.click(function() {
-													var guid = $(this).attr(
-															"guid");
-													var topic = o.bcf.topics[guid].topic;
-													var panel = cd
-															.find("div[guid='"
-																	+ guid
-																	+ "']");
-													topic.comments
-															.forEach(function(
-																	comment) {
-																var commentDiv = $("<div class=\"comment\">");
-																commentDiv
-																		.append("<b>"
-																				+ comment.author
-																				+ "</b>");
-																if (comment.date != null) {
-																	commentDiv
-																			.append(" ("
-																					+ formatDateTime(new Date(
-																							comment.date))
-																					+ ")");
-																}
-																commentDiv
-																		.append(": ");
-																commentDiv
-																		.append(comment.comment);
-																panel
-																		.find(
-																				".panel-body")
-																		.append(
-																				commentDiv);
-															});
-													$(this).remove();
-												});
-										body.append(div);
-									}
-
-									bcf.append(panel);
+					if (topic.comments != null && topic.comments.length > 0) {
+						var div = $("<div class=\"commentsLink\">");
+						var commentsLink = $("<a>Comments &#x25BC;</a>");
+						div.append(commentsLink);
+						commentsLink.attr("guid", topic.guid);
+						commentsLink.click(function() {
+							var guid = $(this).attr("guid");
+							var topic = o.bcf.topics[guid].topic;
+							var panel = cd.find("div[guid='" + guid + "']");
+							topic.comments.forEach(function(comment) {
+								var commentDiv = $("<div class=\"comment\">");
+								commentDiv.append("<b>" + comment.author + "</b>");
+								if (comment.date != null) {
+									commentDiv.append(" (" + formatDateTime(new Date(comment.date)) + ")");
 								}
-								cd.find(".loadingdiv").hide();
-								bcf.show();
+								commentDiv.append(": ");
+								commentDiv.append(comment.comment);
+								panel.find(".panel-body").append(commentDiv);
 							});
+							$(this).remove();
+						});
+						body.append(div);
+					}
+
+					bcf.append(panel);
+				}
+				cd.find(".loadingdiv").hide();
+				bcf.show();
+			});
 		};
 
-		Global.bimServerApi
-				.call(
-						"ServiceInterface",
-						"getFileMeta",
-						{
-							fileId : extendedData.fileId
-						},
-						function(file) {
-							//		var data = UTF8ArrToStr(base64DecToArr(file.data));
-							$(".size").html(getHumanSize(file.size));
-							$(".mime").html(file.mime);
-							Global.bimServerApi
-									.call(
-											"ServiceInterface",
-											"getExtendedDataSchemaById",
-											{
-												oid : extendedData.schemaId
-											},
-											function(schema) {
-												if (file.mime.indexOf(";") != -1) {
-													file.mime = file.mime
-															.substring(
-																	0,
-																	file.mime
-																			.indexOf(";"));
-												}
-												var url = Global.bimServerApi
-														.generateExtendedDataDownloadUrl(extendedData.oid);
-												if (schema.name == "VALIDATION_JSON_1_0") {
-													o.showValidationReport(
-															schema,
-															extendedData, url);
-												} else if (schema.name == "VALIDATION_JSON_2_0") {
-													o.showValidationReport2(
-															schema,
-															extendedData, url);
-												} else if (file.mime == "text/csv") {
-													o.showCsv(schema,
-															extendedData, url);
-												} else if (file.mime == "text/html") {
-													o.showHtml(schema,
-															extendedData, url);
-												} else if (file.mime == "text/plain") {
-													o.showPlainText(schema,
-															extendedData, url);
-												} else if (file.mime == "application/json") {
-													o.showJson(schema,
-															extendedData, url);
-												} else if (schema.name == "BCF_ZIP_2_0") {
-													o.showBcf(schema,
-															extendedData);
-												}
-											});
-						});
+		Global.bimServerApi.call("ServiceInterface", "getFileMeta", {
+			fileId : extendedData.fileId
+		}, function(file) {
+			//		var data = UTF8ArrToStr(base64DecToArr(file.data));
+			$(".size").html(getHumanSize(file.size));
+			$(".mime").html(file.mime);
+			Global.bimServerApi.call("ServiceInterface", "getExtendedDataSchemaById", {
+				oid : extendedData.schemaId
+			}, function(schema) {
+				if (file.mime.indexOf(";") != -1) {
+					file.mime = file.mime.substring(0, file.mime.indexOf(";"));
+				}
+				var url = Global.bimServerApi.generateExtendedDataDownloadUrl(extendedData.oid);
+				if (schema.name == "VALIDATION_JSON_1_0") {
+					o.showValidationReport(schema, extendedData, url);
+				} else if (schema.name == "VALIDATION_JSON_2_0") {
+					o.showValidationReport2(schema, extendedData, url);
+				} else if (file.mime == "text/csv") {
+					o.showCsv(schema, extendedData, url);
+				} else if (file.mime == "text/html") {
+					o.showHtml(schema, extendedData, url);
+				} else if (file.mime == "text/plain") {
+					o.showPlainText(schema, extendedData, url);
+				} else if (file.mime == "application/json") {
+					o.showJson(schema, extendedData, url);
+				} else if (schema.name == "BCF_ZIP_2_0") {
+					o.showBcf(schema, extendedData);
+				}
+			});
+		});
 	}
 </script>
