@@ -222,17 +222,20 @@
 
 		this.showBcf = function(schema, extendedData) {
 			function formatTopicStatus(status) {
+				status = status.toUpperCase();
 				var li = $("<li class=\"list-group-item\">");
 				li.append("Status: ");
 				var span = $("<span class=\"label\">");
 				span.html(status);
-				if (status == "Open") {
+				if (status == "OPEN") {
 					span.addClass("label-danger");
-				} else if (status == "In Progress") {
+				} else if (status == "ERROR") {
+					span.addClass("label-danger");
+				} else if (status == "IN PROGRESS") {
 					span.addClass("label-primary");
-				} else if (status == "Closed") {
+				} else if (status == "CLOSED") {
 					span.addClass("label-success");
-				} else if (status == "ReOpened") {
+				} else if (status == "REOPENED") {
 					span.addClass("label-warning");
 				} else {
 					span.addClass("label-default");
@@ -242,18 +245,21 @@
 			}
 
 			function formatTopicType(type) {
+				type = type.toUpperCase();
 				var li = $("<li class=\"list-group-item\">");
 				li.append("Type: ");
 				var span = $("<span class=\"label\">");
 				span.html(type);
-				if (type == "Comment") {
+				if (type == "COMMENT") {
 					span.addClass("label-primary");
-				} else if (type == "Issue") {
+				} else if (type == "ISSUE" || type == "ERROR") {
 					span.addClass("label-danger");
-				} else if (type == "Request") {
+				} else if (type == "REQUEST") {
 					span.addClass("label-warning");
-				} else if (type == "Solution") {
+				} else if (type == "SOLUTION") {
 					span.addClass("label-success");
+				} else if (type == "CLASH") {
+					span.addClass("label-warning");
 				} else {
 					span.addClass("label-default");
 				}
@@ -273,7 +279,7 @@
 					var topicFolder = json.topics[uuid];
 					var topic = topicFolder.topic;
 					var panel = $("<div class=\"panel panel-default\">");
-					panel.attr("guid", topic.guid);
+					panel.attr("uuid", uuid);
 					var heading = $("<div class=\"panel-heading\">");
 					heading.html(topic.title);
 					panel.append(heading);
@@ -291,7 +297,7 @@
 						var description = topic.description.replace("\n", "<br/>");
 						listleft.append("<li class=\"list-group-item description\">Description: " + description + "</li>");
 					}
-					listleft.append("<li class=\"list-group-item\">GUID: " + topic.guid + "</li>");
+					listleft.append("<li class=\"list-group-item\">UUID: " + uuid + "</li>");
 					if (topic.topicType != null) {
 						listleft.append(formatTopicType(topic.topicType));
 					}
@@ -308,7 +314,7 @@
 
 					if (topic.defaultSnapshot != null) {
 						var a = $("<a>");
-						var src = Global.bimServerApi.baseUrl + "/download?token=" + Global.bimServerApi.token + "&action=getBcfImage&extendedDataId=" + extendedData.oid + "&topicGuid=" + topic.guid + "&name=" + topic.defaultSnapshot;
+						var src = Global.bimServerApi.baseUrl + "/download?token=" + Global.bimServerApi.token + "&action=getBcfImage&extendedDataId=" + extendedData.oid + "&topicUuid=" + uuid + "&name=" + topic.defaultSnapshot;
 						a.attr("href", src);
 						var img = $("<img>");
 						a.append(img);
@@ -321,7 +327,7 @@
 						topic.viewpoints.forEach(function(viewpoint) {
 							if (viewpoint.snapshot != null) {
 								var a = $("<a>");
-								var src = Global.bimServerApi.baseUrl + "/download?token=" + Global.bimServerApi.token + "&action=getBcfImage&extendedDataId=" + extendedData.oid + "&topicGuid=" + topic.guid + "&imageGuid="
+								var src = Global.bimServerApi.baseUrl + "/download?token=" + Global.bimServerApi.token + "&action=getBcfImage&extendedDataId=" + extendedData.oid + "&topicUuid=" + uuid + "&imageGuid="
 										+ viewpoint.viewpoint + "&name=" + viewpoint.snapshot;
 								a.attr("href", src);
 								var img = $("<img>");
