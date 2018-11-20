@@ -174,13 +174,21 @@ var queriesIfc2x3tc1 = {
 		}
 	},
 	IfcPresentationLayerAssignment: {
-		description: "[NOT WORKING]",
+		description: "Queries for all IfcPresentationLayerAssignments with the name \"Räume\", then shows all objects linked to it. Works with <a href=\"https://github.com/opensourceBIM/TestFiles/raw/master/TestData/data/AC11-Institute-Var-2-IFC.ifc\">AC11-Institute-Var-2-IFC.ifc</a> model",
 		query: {
 			type: "IfcPresentationLayerAssignment",
 			name: "Räume",
 			include: {
 				type: "IfcPresentationLayerAssignment",
-				field: "AssignedItems"
+				field: "AssignedItems",
+				includes: [{
+					type: "IfcShapeRepresentation",
+					fields: ["OfProductRepresentation"],
+					includes: [{
+						type: "IfcProductDefinitionShape",
+						fields: ["ShapeOfProduct"]
+					}]
+				}]
 			}
 		}
 	},
