@@ -7,7 +7,6 @@
 			<label class="btn btn-default revisionsLink"><input type="radio" name="options" id="option2" autocomplete="off">Revisions</label>
 			<label class="btn btn-default checkoutsLink"><input type="radio" name="options" id="option2" autocomplete="off">Checkouts</label>
 			<label class="btn btn-default servicesLink"><input type="radio" name="options" id="option2" autocomplete="off">Services</label>
-			<label class="btn btn-default queryLink"><input type="radio" name="options" id="option2" autocomplete="off">Query</label>
 			<label class="btn btn-default extendedDataLink"><input type="radio" name="options" id="option2" autocomplete="off">Extended Data</label>
 			<label class="btn btn-default browserLink"><input type="radio" name="options" id="option2" autocomplete="off">Browse</label>
 			<label class="btn btn-default usersLink"><input type="radio" name="options" id="option2" autocomplete="off">Users</label>
@@ -266,9 +265,9 @@ function RightPanel(cd, main, project, projectPage) {
 	this.close = function () {
 		if (othis.project != null) {
 			Global.bimServerApi.unregisterNewRevisionOnSpecificProjectHandler(othis.project.oid, othis.newRevisionOnSpecificProjectHandler);
-			if (othis.project.lastRevisionId != -1) {
-				Global.bimServerApi.unregisterNewExtendedDataOnRevisionHandler(othis.project.lastRevisionId, othis.newExtendedDataOnRevisionHandler);
-			}
+//			if (othis.project.lastRevisionId != -1) {
+//				Global.bimServerApi.unregisterNewExtendedDataOnRevisionHandler(othis.project.lastRevisionId, othis.newExtendedDataOnRevisionHandler);
+//			}
 		}
 		$(".sidespan").empty();
 	};
@@ -960,9 +959,9 @@ function RightPanel(cd, main, project, projectPage) {
 	
 	this.updateProject = function(clickInitiated) {
 		Global.bimServerApi.registerNewRevisionOnSpecificProjectHandler(othis.project.oid, othis.newRevisionOnSpecificProjectHandler);
-		if (othis.project.lastRevisionId != -1) {
-			Global.bimServerApi.registerNewExtendedDataOnRevisionHandler(othis.project.lastRevisionId, othis.newExtendedDataOnRevisionHandler);
-		}
+//		if (othis.project.lastRevisionId != -1) {
+//			Global.bimServerApi.registerNewExtendedDataOnRevisionHandler(othis.project.lastRevisionId, othis.newExtendedDataOnRevisionHandler);
+//		}
 
 		othis.projects = [];
 		Global.bimServerApi.call("ServiceInterface", "getAllRelatedProjects", {poid: othis.project.oid}, function(list){
@@ -1269,14 +1268,15 @@ function RightPanel(cd, main, project, projectPage) {
 	
 	this.addExtendedDataButtonClick = function(event){
 		event.preventDefault();
-		var div = $("<div class=\"modal fade\">");
+		var div = $("<div>");
 		$(document.body).append(div);
 		div.load(Global.baseDir + "addextendeddata.html", function(){
 			new AddExtendedData($(this), othis.selectedRevision, function(){
 				console.log("Callback");
 				othis.loadExtendedData();
 			});
-		}).modal({keyboard:true});
+			div.find(".modal").modal("show");
+		});
 	};
 	
 	projectPage.modelAddedListeners.register(function(project, roid){
