@@ -155,7 +155,7 @@ function Revision(main, revision) {
 	};
 	
 	this.showBranch = function(){
-		var div = $("<div class=\"modal fade\">");
+		var div = $("<div>");
 		$(document.body).append(div);
 		div.load(Global.baseDir + "branch.html", function(){
 			new Branch($(this), main, othis.revision.oid);
@@ -163,13 +163,14 @@ function Revision(main, revision) {
 	};
 	
 	this.addExtendedDataButtonClick = function(){
-		var div = $("<div class=\"modal fade\">");
+		var div = $("<div>");
 		$(document.body).append(div);
 		div.load(Global.baseDir + "addextendeddata.html", function(){
 			new AddExtendedData($(this), othis.revision, function(){
 				othis.showExtendedData();
 			});
-		}).modal({keyboard:true});
+			div.find(".modal").modal("show");
+		});
 	};
 	
 	$(".revision .detailsLink").click(othis.showDetails);

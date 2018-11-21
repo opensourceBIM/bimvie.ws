@@ -106,7 +106,7 @@ function Query2(cd, parent) {
 
 	cd.find(".downloadBtn").click(function(e){
 		e.preventDefault();
-		var div = $("<div class=\"modal fade\">");
+		var div = $("<div>");
 		$(document.body).append(div);
 		
 		var jsonObject = o.parseJson();
@@ -129,7 +129,8 @@ function Query2(cd, parent) {
 		};
 		div.load(Global.baseDir + "download.html", function(){
 			new Download($(this), params);
-		}).modal("show");
+			div.find(".modal").modal("show");
+		});
 	});
 	
 	cd.find(".querySetBtn").click(function(e){
