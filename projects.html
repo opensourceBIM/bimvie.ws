@@ -141,11 +141,12 @@ function Projects(containerDiv, main) {
 	};
 	
 	$(".importClick").click(function(){
-		var div = $("<div class=\"modal fade\">");
+		var div = $("<div>");
 		$(document.body).append(div);
 		div.load(Global.baseDir + "import.html", function(){
 			new Import($(this), main);
-		}).modal({keyboard:true});
+			div.find(".modal").modal("show");
+		});
 	});
 	$(".addProjectButton").click(function(){main.showAddProject()});
 
