@@ -10,6 +10,7 @@
 				<tr>
 					<th>Title</th>
 					<th>Added</th>
+					<th>Time to generate</th>
 					<th>User</th>
 					<th>Schema</th>
 					<th>Size</th>
@@ -69,6 +70,7 @@ function ExtendedDataList(main, revision, parent, extendedData) {
 		tr.append("<td>" + extendedData.title + "</td>");
 		
 		tr.append("<td><span title=\"" + formatDateTime(new Date(extendedData.added)) + "\" class=\"timespan\" datetime=\"" + extendedData.added + "\">" + formatTimeSpan(new Date().getTime() - extendedData.added, false) + "</span></td>");
+		tr.append("<td><span>" + formatDuration(extendedData.timeToGenerate, true) + "</span></td>");
 		
 		var userTd = $("<td></td>");
 		var userA = $("<a>loading...</a>");
@@ -131,6 +133,12 @@ function ExtendedDataList(main, revision, parent, extendedData) {
 		Global.bimServerApi.unregister(othis.newLogAction);
 	};
 	
+	this.newExtendedDataOnRevisionHandler = function(poid, edid){
+		Global.bimServerApi.call("ServiceInterface", "getExtendedData", {oid: edid}, function(extendedData){
+			othis.addExtendedData(extendedData);
+		});
+	};
+	
 	$(".extendeddatalist .backButton").click(function(){
 		$(".extendeddatalist .list").show();
 		$(".extendeddatalist .details").hide();
@@ -139,6 +147,7 @@ function ExtendedDataList(main, revision, parent, extendedData) {
 		pushHistory({page: "Project", poid: othis.revision.projectId, tab: "extendeddata"}, "Project");
 	});
 	Global.bimServerApi.register("NotificationInterface", "newLogAction", othis.newLogAction);
+	Global.bimServerApi.registerNewExtendedDataOnRevisionHandler(othis.revision.oid, othis.newExtendedDataOnRevisionHandler);
 	
 	if (extendedData != null) {
 		othis.loadExtendedDataSingle(extendedData);
