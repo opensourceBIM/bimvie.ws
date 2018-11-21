@@ -18,7 +18,7 @@ var queriesIfc2x3tc1 = {
 		}
 	},
 	AllWallsIncludingDecomposition: {
-		description: "Returns all walls and includes the containment tree (up), owner history, representation and placement for every wall",
+		description: "Returns all walls and includes the containment tree (up), owner history, representation and placement for every wall. Typically you'd want to include those 4 whenever you export to IFC with the intention of viewing/using the IFC geometry",
 		query: {
 			type: {
 				name: "IfcWall",	
