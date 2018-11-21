@@ -1,36 +1,38 @@
 <div class="addextendeddata">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true">&times;</button>
-				<h4 class="modal-title">Add extended data</h4>
-			</div>
-			<input id="file" class="form-control file" type="file" name="data"/>
-			<div class="modal-body">
-				<div class="uploads">
-					<div class="upload">
-						<div class="uploadStatus"></div>
-						<div class="progressBarHolder"></div>
-						<table class="uploadTable">
-							<tr><td><label for="file">File</label></td>
-							<td>
-								<div class="uploadarea well">
-									<p>Drag and drop your file here, or <button class="btn btn-primary chooseFileButton">Choose File</button></p>
-									<div class="uploadMessages">
-										<span class="fileSize ih">Selected file: <span class="name"></span> (<span class="size"></span>)</span>
+	<div class="modal fade" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+	   	   	<div class="modal-content">	
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Add extended data</h4>
+				</div>
+				<input id="file" class="form-control file" type="file" name="data"/>
+				<div class="modal-body">
+					<div class="uploads">
+						<div class="upload">
+							<div class="uploadStatus"></div>
+							<div class="progressBarHolder"></div>
+							<table class="uploadTable">
+								<tr><td><label for="file">File</label></td>
+								<td>
+									<div class="uploadarea well">
+										<p>Drag and drop your file here, or <button class="btn btn-primary chooseFileButton">Choose File</button></p>
+										<div class="uploadMessages">
+											<span class="fileSize ih">Selected file: <span class="name"></span> (<span class="size"></span>)</span>
+										</div>
 									</div>
-								</div>
-							</td></tr>
-							<tr><td><label for="schemaSelect">Schema</label></td><td><select id="schemaSelect" class="schemaSelect form-control"></select></td></tr>
-							<tr><td><label for="title">Title</label></td><td><input type="text" id="title" class="title form-control"/></td></tr>
-						</table>
+								</td></tr>
+								<tr><td><label for="schemaSelect">Schema</label></td><td><select id="schemaSelect" class="schemaSelect form-control"></select></td></tr>
+								<tr><td><label for="title">Title</label></td><td><input type="text" id="title" class="title form-control"/></td></tr>
+							</table>
+						</div>
 					</div>
 				</div>
-			</div>
-		  	<div class="modal-footer">
-		    	<a class="btn btn-default" data-dismiss="modal">Close</a>
-		    	<a class="btn uploadButton btn-primary">Add extended data</a>
+			  	<div class="modal-footer">
+			    	<a class="btn btn-default" data-dismiss="modal">Close</a>
+			    	<a class="btn uploadButton btn-primary">Add extended data</a>
+				</div>
 			</div>
 		</div>
 	</div>

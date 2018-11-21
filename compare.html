@@ -1,21 +1,23 @@
 <div class="compare">
-	<div class="modal-dialog">
-    	<div class="modal-content">
-			<div class="modal-header">
-		    	<a class="close" data-dismiss="modal">&times;</a>
-		    	<h3>Compare</h3>
-		  	</div>
-		    <div class="modal-body">
-		    	<ul><li>Only projects of the given schema are shown</li><li>Only projects that have at least one revision are shown</li><li>Last revision will be selected from each project</li><li>Default model compare of the user will be used, also default model merger will be used when downloading as IFC</li></ul>
-		    	First project
-				<select class="revision1 form-control"></select>
-				Second project
-				<select class="revision2 form-control"></select>
-		    </div>
-		    <div class="modal-footer">
-	    		<a class="btn btnClose btn-default" style="margin-right: 8px" data-dismiss="modal">Close</a>
-		    	<button class="btn btn-primary btnDownload">Download results (IFC)</button>
-		    	<button class="btn btn-primary btnDownloadJson">Download results (JSON)</button>
+	<div class="modal fade" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+			    	<a class="close" data-dismiss="modal">&times;</a>
+			    	<h3>Compare</h3>
+			  	</div>
+			    <div class="modal-body">
+			    	<ul><li>Only projects of the given schema are shown</li><li>Only projects that have at least one revision are shown</li><li>Last revision will be selected from each project</li><li>Default model compare of the user will be used, also default model merger will be used when downloading as IFC</li></ul>
+			    	First project
+					<select class="revision1 form-control"></select>
+					Second project
+					<select class="revision2 form-control"></select>
+			    </div>
+			    <div class="modal-footer">
+		    		<a class="btn btnClose btn-default" style="margin-right: 8px" data-dismiss="modal">Close</a>
+			    	<button class="btn btn-primary btnDownload">Download results (IFC)</button>
+			    	<button class="btn btn-primary btnDownloadJson">Download results (JSON)</button>
+			    </div>
 		    </div>
 	    </div>
     </div>

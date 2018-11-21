@@ -342,7 +342,7 @@ function Main(address, user) {
 	};
 	
 	this.showCheckinPopup = function(project, callback) {
-		var div = $("<div class=\"modal fade\">");
+		var div = $("<div>");
 		$(document.body).append(div);
 		div.load(Global.baseDir + "checkin.html", function(){
 			new Checkin($(this), project, function(){
@@ -350,11 +350,12 @@ function Main(address, user) {
 					callback();
 				}
 			});
-		}).modal({keyboard:true});
+			div.find(".modal").modal("show");
+		});
 	};
 
 	this.showBulkCheckinPopup = function(project, callback) {
-		var div = $("<div class=\"modal fade\">");
+		var div = $("<div>");
 		$(document.body).append(div);
 		div.load(Global.baseDir + "bulkcheckin.html", function(){
 			new BulkCheckin($(this), project, function(){
@@ -362,11 +363,12 @@ function Main(address, user) {
 					callback();
 				}
 			});
-		}).modal({keyboard:true});
+			div.find(".modal").modal("show");
+		});
 	};
 	
 	this.showDownloadCheckoutPopup = function(poid, roid) {
-		var div = $("<div class=\"modal fade\">");
+		var div = $("<div>");
 		$(document.body).append(div);
 
 		var query = {
@@ -379,25 +381,32 @@ function Main(address, user) {
 
 		div.load(Global.baseDir + "download.html", function(){
 			new Download($(this), params);
-		}).modal("show");
+			div.find(".modal").modal("show");
+		});
 	};
 
 	this.showComparePopup = function(schema, roid1, roid2) {
-		var div = $("<div class=\"modal fade\">");
+		var div = $("<div>");
 		$(document.body).append(div);
 
 		div.load(Global.baseDir + "compare.html", function(){
 			new Compare($(this), schema, roid1, roid2);
-		}).modal("show");
+		});
 	};
 
 	this.showDownloadRevisionsPopup = function(roids) {
-		var div = $("<div class=\"modal fade\">");
+		var div = $("<div>");
 		$(document.body).append(div);
 		
+		// TODO first only works for serializers that use geometry (gltf), seconds only works for for example ifc export
+		// includeAllFields is a funny one anyways... needs to go
+		// The exclusion of certain types is still a thing, maybe the user should be able to select this?
+		// Or maybe every serializer plugin can provide a default query for the "complete" model e.a. default download?
+		
 		var query = {
-			includeAllFields: true
+			includeAllFields: true,
 		};
+		
 		var params = {
 			roids: roids
 		};
@@ -405,7 +414,8 @@ function Main(address, user) {
 
 		div.load(Global.baseDir + "download.html", function(){
 			new Download($(this), params);
-		}).modal({keyboard:true, show: true});
+			div.find(".modal").modal("show");
+		});
 	};
 
 	this.addMenuDivider = function(mainTitle){

@@ -1,72 +1,74 @@
 <div class="bulkcheckin">
-	<div class="modal-dialog">
-    	<div class="modal-content">	
-			<div class="modal-header">
-		    	<a class="close" data-dismiss="modal">&times;</a>
-		    	<h3>Bulk Checkin</h3>
-		  	</div>
-    		<div class="modal-body">
-				<a class="uploadlink">This project has subprojects, click here if you still want to checkin a new revision</a>
-				<div class="checkinWarning alert initialhide"></div>
-				<div class="uploadStatus"></div>
-				<div class="progressBarHolder"></div>
-				<div class="uploads">
-					<div class="btn-group" data-toggle="buttons" style="margin-bottom: 10px">
-						<label class="btn btn-default active btnFileUpload"><input type="radio" selected>File upload</label>
-						<label class="btn btn-default btnUrl"><input type="radio">URL</label>
-					</div>
-					<div class="upload">
-						You can only upload a zip file here. Every folder (and subfolder) will become a new sub project. When there are multiple IFC files in any given folder, sub projects will be created for each of them.
-						<div class="uploadarea well">
-							<p>Drag and drop your file here, or <button class="btn btn-primary chooseFileButton">Choose File</button></p>
-							<div class="uploadMessages">
-								<span class="fileSize ih">Selected file: <span class="name"></span> (<span class="size"></span>)</span>
+   <div class="modal fade" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+		   	<div class="modal-content">
+				<div class="modal-header">
+			    	<a class="close" data-dismiss="modal">&times;</a>
+			    	<h3>Bulk Checkin</h3>
+			  	</div>
+		   		<div class="modal-body">
+					<a class="uploadlink">This project has subprojects, click here if you still want to checkin a new revision</a>
+					<div class="checkinWarning alert initialhide"></div>
+					<div class="uploadStatus"></div>
+					<div class="progressBarHolder"></div>
+					<div class="uploads">
+						<div class="btn-group" data-toggle="buttons" style="margin-bottom: 10px">
+							<label class="btn btn-default active btnFileUpload"><input type="radio" selected>File upload</label>
+							<label class="btn btn-default btnUrl"><input type="radio">URL</label>
+						</div>
+						<div class="upload">
+							You can only upload a zip file here. Every folder (and subfolder) will become a new sub project. When there are multiple IFC files in any given folder, sub projects will be created for each of them.
+							<div class="uploadarea well">
+								<p>Drag and drop your file here, or <button class="btn btn-primary chooseFileButton">Choose File</button></p>
+								<div class="uploadMessages">
+									<span class="fileSize ih">Selected file: <span class="name"></span> (<span class="size"></span>)</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="comment">Comment</label>
+								<textarea id="comment" class="comment form-control" name="comment" rows="4"></textarea>
+							</div>
+							<div class="checkbox mergeDiv ih">
+								<label>Merge
+									<input class="merge" name="merge" type="checkbox"/>
+								</label>
 							</div>
 						</div>
-						<div class="form-group">
-							<label for="comment">Comment</label>
-							<textarea id="comment" class="comment form-control" name="comment" rows="4"></textarea>
+						<div class="uploadbranch initialhide">
+							<form method="post">
+								<label for="projectRevision">Project/Revision</label>
+								<select id="projectRevision" class="revisionSelect form-control" name="roid">
+								</select> 
+								<label for="branchComment">Comment</label>
+								<textarea id="branchComment" class="form-control" name="comment" rows="4"></textarea>
+								<input type="hidden" name="action" value="branchtoexistingproject" />
+								<input type="hidden" name="destpoid" />
+							</form>
+							<br/>
 						</div>
-						<div class="checkbox mergeDiv ih">
-							<label>Merge
-								<input class="merge" name="merge" type="checkbox"/>
-							</label>
-						</div>
-					</div>
-					<div class="uploadbranch initialhide">
-						<form method="post">
-							<label for="projectRevision">Project/Revision</label>
-							<select id="projectRevision" class="revisionSelect form-control" name="roid">
-							</select> 
-							<label for="branchComment">Comment</label>
-							<textarea id="branchComment" class="form-control" name="comment" rows="4"></textarea>
-							<input type="hidden" name="action" value="branchtoexistingproject" />
-							<input type="hidden" name="destpoid" />
-						</form>
-						<br/>
-					</div>
-					<div class="checkinurl initialhide">
-						<div class="form-group">
-							<label for="url">URL</label>
-							<input id="url" type="text" class="urlinput form-control"/>
-						</div>
-						<div class="form-group">
-							<label for="deserializerNameUrl">Deserializer</label>
-							<select id="deserializerNameUrl" class="deserializerNameUrl form-control" name="deserializerName">
-								<option value="[NONE]">Select a deserializer</option>
-							</select>
-						</div>
-						<div class="form-group">
-							<label for="commentUrl">Comment</label>
-							<textarea id="commentUrl" class="commentUrl form-control" name="comment" rows="4"></textarea>
+						<div class="checkinurl initialhide">
+							<div class="form-group">
+								<label for="url">URL</label>
+								<input id="url" type="text" class="urlinput form-control"/>
+							</div>
+							<div class="form-group">
+								<label for="deserializerNameUrl">Deserializer</label>
+								<select id="deserializerNameUrl" class="deserializerNameUrl form-control" name="deserializerName">
+									<option value="[NONE]">Select a deserializer</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="commentUrl">Comment</label>
+								<textarea id="commentUrl" class="commentUrl form-control" name="comment" rows="4"></textarea>
+							</div>
 						</div>
 					</div>
 				</div>
+			  	<div class="modal-footer">
+			    	<a class="btn btn-default" data-dismiss="modal">Close</a>
+			    	<a class="btn uploadButton btn-primary">Checkin new revision</a>
+			  	</div>
 			</div>
-		  	<div class="modal-footer">
-		    	<a class="btn btn-default" data-dismiss="modal">Close</a>
-		    	<a class="btn uploadButton btn-primary">Checkin new revision</a>
-		  	</div>
 		</div>
 	</div>
 </div>
