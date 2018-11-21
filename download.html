@@ -159,8 +159,7 @@ function Download(containerDiv, data) {
 							var url = Global.bimServerApi.generateRevisionDownloadUrl({
 								topicId: topicId,
 								zip: containerDiv.find(".downloadCheckoutZip").is(":checked"),
-								serializerOid: containerDiv.find(".revisionsdownloadcheckoutselect").val(),
-								topicId: othis.topicId
+								serializerOid: containerDiv.find(".revisionsdownloadcheckoutselect").val()
 							});
 							
 							if (othis.mimeTypeOverride != null) {
