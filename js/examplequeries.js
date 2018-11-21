@@ -131,6 +131,33 @@ var queriesIfc2x3tc1 = {
 			]
 		}
 	},
+	AllPropertiesOfAllWalls: {
+		description: "Get all the properties of all IfcWall types",
+		query: {
+			doublebuffer: true,
+			type: {
+			    name: "IfcWall",
+			    includeAllSubTypes: true
+			  },
+			  includes: [{
+			    type: {
+				  name: "IfcWall",
+				  includeAllSubTypes: true
+				},
+			    fields: ["IsDefinedBy"],
+			    includes: [{
+			      type: "IfcRelDefinesByProperties",
+			      fields: ["RelatingPropertyDefinition"],
+			      includes: [{
+			        type: "IfcPropertySet",
+			        fields: ["HasProperties"]
+			      }]
+			    }
+				]
+			  },  "validifc:ContainedInStructure",
+			      "validifc:OwnerHistory"]
+			}
+	},
 	ExternalWalls: {
 		description: "Queries for all external walls. The \"properties\" part of the query is a specialized type of query that will iterate over all property sets/properties linked to the object",
 		query: {
