@@ -158,7 +158,7 @@
 
 		this.showHtml = function(schema, extendedData, url) {
 			$.get(url, function(data) {
-				if (extendedData.title == "Geometry generation report") {
+				if (extendedData.title == "Geometry generation report (text/html)") {
 					$(".html").addClass("geometrygen");
 				}
 				$(".html h2").html(extendedData.title + " (HTML)");
