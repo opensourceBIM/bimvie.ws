@@ -171,16 +171,19 @@ function Download(containerDiv, data) {
 							containerDiv.find(".checkoutMessage").html("");
 						}
 					}
-				} else if (state.state == "FINISHED") {
+				} else if (state.state == "FINISHED" && othis.topicId != null) {
+					console.log(state.state);
 					Global.bimServerApi.unregisterProgressHandler(othis.topicId, othis.progressHandler, function(){
 						containerDiv.find(".progressBarHolder .downloadProgressBar").remove();
 						containerDiv.find(".downloadStatus").removeClass("alert-info").addClass("alert-success").html("Download complete.");
 						containerDiv.find(".fields, .downloadpopup .checkoutMessage").show();
 						containerDiv.find(".modal-footer .btn-group").show();
 						
-						Global.bimServerApi.call("ServiceInterface", "cleanupLongAction", {topicId: othis.topicId}, function(){});
+						if (othis.topicId != null) {
+							Global.bimServerApi.call("ServiceInterface", "cleanupLongAction", {topicId: othis.topicId}, function(){});
+						}
 						
-						// Setting topicId to null to make sure that cancelling at this moment won't try to termintate something that's already done					
+						// Setting topicId to null to make sure that cancelling at this moment won't try to termintate something that's already done		
 						othis.topicId = null;
 						othis.prepareReceived = false;
 					});				
