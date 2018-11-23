@@ -511,7 +511,8 @@ function Project(containerDiv, main, project) {
 	};
 
 	this.loadDetails = function(project){
-		var promise = new BimServerApiPromise()
+		var promise = new BimServerApiPromise();
+		this.resize();
 		if (othis.rightPanel != null) {
 			promise.chain(othis.rightPanel.reloadProject(project.oid, project.lastRevisionId));
 		} else {

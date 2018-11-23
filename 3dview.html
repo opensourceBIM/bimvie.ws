@@ -380,7 +380,7 @@ function ThreeDView(containerDiv, parent, main) {
 		var fullscreen = !resizeBtn.hasClass("glyphicon-resize-full");
 		var width = Math.round($(window).width() / 3 * 2 - 29);
 		$(".overlay-controls").css("top", fullscreen ? 10 : 120);
-		var height = ($(window).height() - $(".navbar").outerHeight() - $(".navbar-header").outerHeight() - $(".rightpanel .panel-heading").outerHeight() - 90) + (fullscreen ? 113 : 0);
+		var height = ($(window).height() - $(".navbar").outerHeight() - $(".navbar-header").outerHeight() - $(".rightpanel .panel-heading").outerHeight() - 10) + (fullscreen ? 113 : 0);
 		$("div#viewport").width(width + "px");
 		$("div#viewport").height((height - 1) + "px");
 		o.viewer.resize($('div#viewport').width(), $('div#viewport').height());
