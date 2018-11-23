@@ -101,14 +101,6 @@ table .btn {
 	margin-bottom: 3px;
 }
 
-.basicserversettings .form-horizontal .control-label {
-	width: 250px;
-}
-
-.basicserversettings .form-horizontal .controls {
-	margin-left: 260px;
-}
-
 .statusWrapper {
 	position: fixed;
 	top: 10px;
