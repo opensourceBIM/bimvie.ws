@@ -328,7 +328,7 @@
 		    						Global.bimServerApi.setToken(token, function(){
 		    							$(".indexcontainer").load(Global.baseDir + "main.html", function(){
 		    								$(".indexStatus").hide();
-		    								Global.current = new Main(Global.bimServerApi.baseUrl, Global.bimServerApi.user.name).show(false);
+		    								Global.current = new Main(Global.bimServerApi.baseUrl, Global.bimServerApi.user).show(false);
 		    							});
 		    						}, function(){
 		    							$.removeCookie("autologin" + window.window.document.location.port);
