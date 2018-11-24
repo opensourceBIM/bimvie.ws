@@ -68,7 +68,7 @@ table .header {
 	text-align: left;
 	right: 20px;
 	opacity: 0.6;
-	z-index: 5000;
+	z-index: 1;
 	margin: 10px;
 	position: fixed;
 }
@@ -502,6 +502,9 @@ input[type="file"].file {
 }
 
 .panel-body div:first-child.alert {
+	margin-top: -15px;
+	margin-left: -15px;
+	margin-right: -15px;
 	border-top-left-radius: 0; 
 	border-top-right-radius: 0; 
 }
