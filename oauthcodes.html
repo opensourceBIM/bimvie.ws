@@ -1,30 +1,40 @@
 <div class="oauthcodes">
 <h3>OAuth Codes</h3>
-<h4>Issued to me</h4>
-Codes that can be used by this user to access resources on other servers
-<table class="table outCodesTable">
-	<thead>
-		<tr>
-			<th>Application</th>
-			<th>Actions<th>
-		</tr>
-	</thead>
-	<tbody></tbody>
-</table>
-<h4>Issued by me</h4>
-Codes that other servers can use to access resources (such as projects, internal services etc...) on this server owned by the current user
-<table class="table issuedCodesTable">
-	<thead>
-		<tr>
-			<th></th>
-			<th>Application name</th>
-			<th>Issued on</th>
-			<th>Authorization</th>
-			<th>Actions<th>
-		</tr>
-	</thead>
-	<tbody></tbody>
-</table>
+<div class="panel panel-default">
+  <div class="panel-heading">Issued to me</div>
+  <div class="panel-body">
+	<div class="alert alert-info">Codes that can be used by this user to access resources on other servers</div>
+	<div class="noAcquired ih">There are no acquired codes yet</div>
+	<table class="table outCodesTable">
+		<thead>
+			<tr>
+				<th>Application</th>
+				<th>Actions<th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+  </div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">Issued by me</div>
+	<div class="panel-body">
+		<div class="alert alert-info">Codes that other servers can use to access resources (such as projects, internal services etc...) on this server owned by the current user</div>
+		<div class="noIssued ih">There are no issued codes yet</div>
+		<table class="table issuedCodesTable">
+			<thead>
+				<tr>
+					<th></th>
+					<th>Application name</th>
+					<th>Issued on</th>
+					<th>Authorization</th>
+					<th>Actions<th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
+</div>
 </div>
 <script>
 function OAuthCodes(cd) {
@@ -39,6 +49,8 @@ function OAuthCodes(cd) {
 	
 	this.load = function(){
 		Global.bimServerApi.call("OAuthInterface", "listAuthorizationCodes", {}, function(codes){
+			cd.find(".outCodesTable").toggle(codes.length != 0);
+			cd.find(".noAcquired").toggle(codes.length == 0);
 			cd.find(".outCodesTable tbody tr").remove();
 			codes.forEach(function(code){
 				var serverId = code.oauthServerId;
@@ -59,6 +71,8 @@ function OAuthCodes(cd) {
 		});
 	
 		Global.bimServerApi.call("OAuthInterface", "listIssuedAuthorizationCodes", {}, function(codes){
+			cd.find(".issuedCodesTable").toggle(codes.length != 0);
+			cd.find(".noIssued").toggle(codes.length == 0);
 			cd.find(".issuedCodesTable tbody tr").remove();
 			codes.forEach(function(code){
 				var serverId = code.oauthServerId;
