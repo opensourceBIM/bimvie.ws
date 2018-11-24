@@ -48,7 +48,11 @@
 							<li><a class="btnAddUser">Add User</a></li>
 							<li><a class="btnListUsers">List Users</a></li>
 						</ul></li>
-					<li class="dropdown userLink"><a href="#" class="dropdown-toggle" data-toggle="dropdown">User <b class="caret"></b></a>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a class="btnLicense">License</a></li>
+					<li class="dropdown userLink">
+						<a class="dropdown-toggle userName" data-toggle="dropdown">User <b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a class="changePasswordLink"><i></i>Change password</a></li>
 							<li><a><span class="addressLabel"></span></a></li>
@@ -56,7 +60,6 @@
 							<li><a class="logoutLink"><i></i>Logout</a></li>
 						</ul>
 					</li>
-					<li><a class="btnLicense">License</a></li>
 				</ul>
 			</div>
 		</div>
@@ -73,7 +76,7 @@ function Main(address, user) {
 	var othis = this;
 	othis.pageChanger = new PageChanger($(".main .nav"), $(".main .maincontainer"));
 
-	$(".main .userLabel").html(user.username);
+	$(".main .userLink .userName").html(user.name + " (" + user.username + ")");
 	$(".main .addressLabel").html(address);
 	
 	this.show = function() {
