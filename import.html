@@ -138,14 +138,13 @@ function Import(cd, main) {
 	function checkin(list, index, item) {
 		cd.find(".message").html("Checking in: " + item.file.substring(item.file.lastIndexOf("/") + 1)).show();
 		cd.find(".progress .progress-bar").css("width", (100 * index / list.length) + "%");
-		Global.bimServerApi.call("ServiceInterface", "checkinFromUrl", {
+		Global.bimServerApi.call("ServiceInterface", "checkinFromUrlSync", {
 			poid: item.project.oid,
 			comment: "Demo Checkin",
 			deserializerOid: item.deserializer.oid,
 			fileName: item.file.substring(item.file.lastIndexOf("/") + 1),
 			url: "https://github.com/openBIMstandards/DataSetSchependomlaan/raw/master/" + encodeURIComponent(item.file),
-			merge: false,
-			sync: true
+			merge: false
 		}, function(){
 			index++;
 			if (index < list.length) {
