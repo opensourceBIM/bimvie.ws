@@ -225,22 +225,24 @@ function ProjectTree(containerDiv, parent, options, selected) {
 			var model = parent.models[groupId];
 			model.get(object.oid, function(object){
 				// Now we will have to see to which parent structure this object belongs...
-				object.getContainedInStructure(function(struc){
-					struc.getRelatingStructure(function(relatingStructure){
-						if (relatingStructure.getType() == "IfcBuildingStorey") {
-							var buildingStructureNode = othis.tree.find(relatingStructure.oid);
-							if (buildingStructureNode == null) {
-								console.log("IfcBuildingStorey not found in tree");
-							} else {
-								othis.loadBuildingStorey(buildingStructureNode, relatingStructure, []).done(function(){
-									if (!othis.select(origin, id)) {
-										console.log("Still not found");
-									}
-								});
+				if (object.getContainedInStructure != null) {
+					object.getContainedInStructure(function(struc){
+						struc.getRelatingStructure(function(relatingStructure){
+							if (relatingStructure.getType() == "IfcBuildingStorey") {
+								var buildingStructureNode = othis.tree.find(relatingStructure.oid);
+								if (buildingStructureNode == null) {
+									console.log("IfcBuildingStorey not found in tree");
+								} else {
+									othis.loadBuildingStorey(buildingStructureNode, relatingStructure, []).done(function(){
+										if (!othis.select(origin, id)) {
+											console.log("Still not found");
+										}
+									});
+								}
 							}
-						}
+						});
 					});
-				});
+				}
 			});
 		}
 	};
