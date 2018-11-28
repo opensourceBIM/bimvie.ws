@@ -70,11 +70,22 @@ function Properties(containerDiv, parent, oid) {
 			headerTd.append("<b>Calculated</b>");
 			object.getGeometry(function(geometryInfo){
 				if (geometryInfo != null) {
+					var knownTranslations = {
+						TOTAL_SURFACE_AREA: "Total surface area",
+						TOTAL_SHAPE_VOLUME: "Total shape volume",
+						SURFACE_AREA_ALONG_X: "Surface area along X axis",
+						SURFACE_AREA_ALONG_Y: "Surface area along Y axis",
+						SURFACE_AREA_ALONG_Z: "Surface area along Z axis",
+					};
 					if (geometryInfo.object.additionalData != null) {
 						var additionalData = JSON.parse(geometryInfo.object.additionalData);
 						for (const key in additionalData) {
 							const tr = $("<tr></tr>");
-							tr.append("<td>" + key + "</td>");
+							if (knownTranslations[key] == null) {
+								tr.append("<td>" + key + "</td>");
+							} else {
+								tr.append("<td>" + knownTranslations[key] + "</td>");
+							}
 							tr.append("<td>" + additionalData[key].toFixed(2) + "</td>");
 							headerTr.after(tr);
 						}
