@@ -108,6 +108,13 @@
 			}, callback, push);
 		};
 
+		this.showPluginSettings = function(plugin, callback, push) {
+			othis.pageChanger.changePage($(".installedPluginBundlesLink"), "pluginsettings.html", function(){
+				pushHistory({page: "ServerSettings", subpage: "PluginSettings"}, "Server Settings");
+				return new PluginSettings($(this), othis, plugin);
+			}, callback, push);
+		};
+
 		this.showUpdatePluginBundle = function(pluginBundle, pluginBundleVersion, callback, push) {
 			othis.pageChanger.changePage($(".installedPluginBundlesLink"), "updatepluginbundle.html", function(){
 				pushHistory({page: "ServerSettings", subpage: "UpdatePluginBundle"}, "Server Settings");
@@ -181,6 +188,8 @@
 				othis.showExtendedDataSchemas();
 			} else if (history.subpage == "ExtendedDataSchema") {
 				othis.showExtendedDataSchema(history.edsid);
+//			} else if (history.subpage == "PluginSettings") {
+//				othis.showPluginSettings(plugin);
 			} else {
 				othis.showBasicServerSettings();
 			}

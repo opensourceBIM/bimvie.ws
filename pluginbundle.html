@@ -1,12 +1,101 @@
 <div class="pluginbundle">
-	Plugin Bundle
-	<div class="details">
-	</div>
+	<h3>Plugin Bundle</h3>
+	<h4>Plugin Bundle Information</h4>
+	<table class="table infoTable">
+		<thead></thead>
+		<tbody></tbody>
+	</table>
+	<h4>Plugins</h4>
+	<table class="table pluginsTable">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Type</th>
+				<th>Description</th>
+				<th>Enable</th>
+				<th>Enable for new users</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
 </div>
 <script>
-function PluginBundle(cd, pluginbundle) {
+function PluginBundle(cd, serverSettings, pluginBundle) {
 	var o = this;
 	
-	cd.find(".details").html(JSON.stringify(pluginbundle, 0, 2));
+	var pluginBundleVersion = pluginBundle.installedVersion;
+
+	cd.find(".infoTable tbody").append("<tr title=\"Maven GroupID: " + pluginBundleVersion.groupId + "\"><td>Organization</td><td>" + pluginBundle.organization + "</td></tr>");
+	cd.find(".infoTable tbody").append("<tr title=\"Maven ArtifactID: " + pluginBundleVersion.artifactId + "\"><td>Name</td><td>" + pluginBundle.name + "</td></tr>");
+	cd.find(".infoTable tbody").append("<tr><td>Description</td><td>" + pluginBundleVersion.description + "</td></tr>");
+	cd.find(".infoTable tbody").append("<tr><td>Version</td><td>" + pluginBundleVersion.version + "</td></tr>");
+	cd.find(".infoTable tbody").append("<tr><td>Date/Time</td><td>" + (pluginBundleVersion.date == null ? "Unknown" : formatDateTime(new Date(pluginBundleVersion.date))) + "</td></tr>");
+	
+	Global.bimServerApi.callWithFullIndication("PluginInterface", "listPluginsInBundle", {
+		pluginBundleVersionOid: pluginBundleVersion.oid
+	}, function(data){
+		data.forEach(function(plugin){
+			var tr = $("<tr>");
+			var a = $("<a>" + plugin.name + "</a>");
+			var td = $("<td class=\"pluginName\"></td>");
+			td.append(a);
+			tr.append(td);
+			tr.append("<td>" + o.formatPluginType(plugin.type) + "</td>");
+			tr.append("<td>" + plugin.description + "</td>");
+			
+			tr.data("identifier", plugin.identifier);
+			
+			var enableCheckbox = $("<input type=\"checkbox\" class=\"enableCheckbox\" checked=\"checked\">");
+			var newUsersCheckbox = $("<input type=\"checkbox\" class=\"newUsersCheckbox\" checked=\"checked\">");
+			
+			enableCheckbox.change(function(){
+				var enabled = $(this).is(":checked");
+				$(this).parents("tr").find(".newUsersCheckbox").prop("disabled", !enabled);
+				if (!enabled) {
+					$(this).parents("tr").find(".newUsersCheckbox").prop("checked", false);
+				}
+				
+			});
+			
+			var enableTd = $("<td>");
+			var enableNewUsersTd = $("<td>");
+			
+			enableTd.append(enableCheckbox);
+			enableNewUsersTd.append(newUsersCheckbox);
+			
+			tr.append(enableTd);
+			tr.append(enableNewUsersTd);
+			
+			a.click(function(){
+				serverSettings.showPluginSettings(plugin);
+			});
+			
+			cd.find(".pluginsTable tbody").append(tr);
+		});
+	});
+	
+	this.formatPluginType = function(type){
+		if (type == "SERIALIZER") {
+			return "Serializer";
+		} else if (type == "DESERIALIZER") {
+			return "Deserializer";
+		} else if (type == "OBJECT_IDM") {
+			return "Object IDM";
+		} else if (type == "RENDER_ENGINE") {
+			return "Render Engine";
+		} else if (type == "QUERY_ENGINE") {
+			return "Query Engine";
+		} else if (type == "MODEL_CHECKER") {
+			return "Model Checker";
+		} else if (type == "MODEL_MERGER") {
+			return "Model Merger";
+		} else if (type == "SERVICE") {
+			return "Service";
+		} else if (type == "WEB_MODULE") {
+			return "Web Module";
+		} else {
+			return type;
+		}
+	};
 }
 </script>

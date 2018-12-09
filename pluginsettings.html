@@ -1,0 +1,186 @@
+<div class="pluginsettings">
+	<h3>Plugin Settings</h3>
+	<table class="table detailsTable">
+		<thead></thead>
+		<tbody></tbody>
+	</table>
+		<h3>Settings</h3>
+	<div class="well well-sm nosettings">
+		No settings
+	</div>
+	<table class="table settingsTable">
+		<tbody>
+		</tbody>
+	</table>
+	<div class="popupLoader"></div>
+	<div class="well clearfix">
+		<button class="btn btn-primary saveButton pull-right">Save</button>
+	</div>
+</div>
+<script>
+function PluginSettings(cd, serverSettings, plugin) {
+	var o = this;
+
+	o.plugin = plugin;
+	
+	this.show = function(){};
+	this.hide = function(){};
+
+	this.loadGenericPluginSettings = function() {
+		cd.find(".detailsTable tbody").append("<tr><td>Name</td><td>" + o.plugin.name + "</td></tr>");
+		cd.find(".detailsTable tbody").append("<tr><td>Description</td><td>" + o.plugin.description + "</td></tr>");
+		cd.find(".detailsTable tbody").append("<tr><td>Status</td><td>" + (o.plugin.enabled ? "Enabled" : "Disabled") + "</td></tr>");
+		Global.bimServerApi.call("PluginInterface", "getPluginDescriptor", {oid: o.plugin.oid}, function(pluginDescriptor){
+			cd.find(".detailsTable tbody").append("<tr><td>Class</td><td>" + pluginDescriptor.pluginClassName + "</td></tr>");
+			cd.find(".detailsTable tbody").append("<tr><td>Plugin State</td><td>" + (pluginDescriptor.enabled ? "Enabled" : "Disabled") + "</td></tr>");
+			Global.bimServerApi.call("PluginInterface", "getInstalledPluginBundle", {oid: pluginDescriptor.pluginBundleVersionId}, function(pluginBundleVersion){
+				cd.find(".detailsTable tbody").append("<tr><td>Plugin Bundle</td><td>" + (pluginBundleVersion.groupId + "." + pluginBundleVersion.artifactId + ":" + pluginBundleVersion.version) + "</td></tr>");
+			});
+		});
+		o.loadPluginObjectDefinition();
+	};
+	
+	this.loadPluginSettings = function() {
+		Global.bimServerApi.call("PluginInterface", "getPluginSystemSettings", {poid: plugin.oid}, function(objectDefinition){
+			if (objectDefinition != null) {
+				if (objectDefinition.parameters != null) {
+					objectDefinition.parameters.forEach(function(parameter){
+						var input = cd.find("input[identifier=\"" + parameter.identifier + "\"]");
+						var value = parameter.value;
+						if (value != null) {
+							if (value.__type == "SDoubleType" || value.__type == "SStringType" || value.__type == "SLongType") {
+								input.val(value.value);
+							} else if (value.__type == "SBooleanType") {
+								if (value.value) {
+									input.attr("checked", "checked");
+								}
+							} else if (value.__type == "SObjectType") {
+							} else if (value.__type == "SArrayType") {
+							} else if (value.__type == "SByteArrayType") {
+								if (value.value != null) {
+									input.data("base64", value.value);
+									input.parent().append("<span>Current: " + atob(value.value).length + " bytes</span>");
+								}
+							}
+						}
+					});
+				}
+			}
+		});
+	};
+	
+	this.loadPluginObjectDefinition = function() {
+		Global.bimServerApi.call("PluginInterface", "getPluginSystemObjectDefinition", {oid: o.plugin.oid}, function(objectDefinition){
+			if (objectDefinition != null && objectDefinition.parameters != null) {
+				objectDefinition.parameters.forEach(function(parameter){
+					cd.find(".nosettings").hide();
+					var tr = $("<tr></tr>");
+					tr.append("<td></td>");
+					var link = $("<a>" + parameter.name.firstUpper() + "</a>");
+					link.tooltip({title: parameter.description});
+					tr.find("td").append(link);
+					var td = $("<td></td>");
+					tr.append(td);
+					if (parameter.type.__type == "SPrimitiveDefinition") {
+						var primitiveDefinition = parameter.type;
+						var input = null;
+						if (primitiveDefinition.type == "LONG") {
+							input = $("<input class=\"form-control\" identifier=\"" + parameter.identifier + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
+							input.numeric({ decimal: false, negative: false });
+							td.append(input);
+						} else if (primitiveDefinition.type == "DOUBLE") {
+							input = $("<input class=\"form-control\" identifier=\"" + parameter.identifier + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
+							input.numeric({ decimal: ".", negative: false });
+							td.append(input);
+						} else if (primitiveDefinition.type == "STRING") {
+							input = $("<input class=\"form-control\" identifier=\"" + parameter.identifier + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"text\"/>");
+							td.append(input);
+						} else if (primitiveDefinition.type == "BYTE_ARRAY") {
+							input = $("<input class=\"form-control\" identifier=\"" + parameter.identifier + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"file\"/>");
+							
+							var reader = new FileReader();
+							reader.onload = function (event) {
+								var data = event.target.result;
+								var encoded = data.substr(data.indexOf(",") + 1);
+								input.data("base64", encoded);
+							};
+							input.change(function(){
+								var get = input.get(0);
+								var files = get.files;
+								if (files != null && files.length == 1) {
+									var oFile = files[0];
+									reader.readAsDataURL(oFile);
+								}
+							});
+							
+							td.append(input);
+						} else if (primitiveDefinition.type == "BOOLEAN") {
+							input = $("<input class=\"form-control\" identifier=\"" + parameter.identifier + "\" dtype=\"" + primitiveDefinition.type + "\" type=\"checkbox\"/>");
+							td.append(input);
+						}
+					}
+					cd.find(".settingsTable tbody").append(tr);
+				});
+				o.loadPluginSettings();
+			}
+		});
+	};
+
+	this.saveSettings = function(callback) {
+		var settings = {
+			__type: "SObjectType",
+			parameters: []
+		};
+		cd.find("input[identifier]").each(function(){
+			var type = null;
+			var input = $(this);
+			if ($(this).attr("dtype") == "DOUBLE") {
+				type = {
+					__type: "SDoubleType",
+					value: parseFloat($(this).val())
+				};
+			} else if ($(this).attr("dtype") == "STRING") {
+				type = {
+					__type: "SStringType",
+					value: $(this).val()
+				};
+			} else if ($(this).attr("dtype") == "INTEGER") {
+				type = {
+					__type: "SStringType",
+					value: parseInt($(this).val())
+				};
+			} else if ($(this).attr("dtype") == "BYTE_ARRAY") {
+				type = {
+					__type: "SByteArrayType",
+					value: $(this).data("base64")
+				};
+			} else if ($(this).attr("dtype") == "BOOLEAN") {
+				type = {
+					__type: "SBooleanType",
+					value: $(this).is(":checked")
+				};
+			}
+			var parameter = {
+				__type: "SParameter",
+				identifier: $(this).attr("identifier"),
+				name: $(this).attr("name"),
+				value: type
+			};
+			settings.parameters.push(parameter);
+		});
+		Global.bimServerApi.callWithFullIndication("PluginInterface", "setPluginSystemSettings", {poid: o.plugin.oid, settings: settings}, function(data){
+			if (callback != null) {
+				callback();
+			}
+		});
+	};
+	
+	this.save = function(event) {
+		event.preventDefault();
+		o.saveSettings();
+	};
+	
+	this.loadGenericPluginSettings();
+	cd.find(".saveButton").click(o.save);
+}
+</script>

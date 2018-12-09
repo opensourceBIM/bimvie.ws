@@ -2,7 +2,7 @@
 	<h3>Installed Plugin Bundles <a class="helpBtn" title="Help"><span class="glyphicon glyphicon-question-sign"></span></a></h3>
 	<div class="panel panel-default helpDiv ih">
   		<div class="panel-body">
-			<p>Only plugin bundles are shown that have no installed versions on this BIMserver. To update installed plugins, goto <a class="installedPluginsBtn">Installed Plugin Bundles</a>.</p>
+			<p>Only plugin bundles are shown that are installed on this BIMserver. To install new plugins, goto <a class="availablePluginsBtn">Available Plugin Bundles</a>.</p>
 			<p>Plugins are discovered by connecting to a repository, you can change the repository in <a class="btnServerSettings">Server Settings</a></p>
 		</div>
 	</div>
@@ -60,7 +60,7 @@ function InstalledPluginBundles(main, serverSettings, cd) {
 			var nameLink = $("<a>" + pluginBundle.name + "</a>");
 			nameLink.click(function(){
 				cd.load("pluginbundle.html", function(){
-					new PluginBundle($(this), pluginBundle);
+					new PluginBundle($(this), serverSettings, pluginBundle);
 				});
 			});
 			nameTd.append(nameLink);
@@ -164,5 +164,8 @@ function InstalledPluginBundles(main, serverSettings, cd) {
 	cd.find(".helpBtn").click(function(){
 		cd.find(".helpDiv").toggle();
 	});
+	
+	cd.find(".availablePluginsBtn").click(serverSettings.showAvailablePluginBundles);
+	cd.find(".btnServerSettings").click(serverSettings.showBasicServerSettings);
 }
 </script>
