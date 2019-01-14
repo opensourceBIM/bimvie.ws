@@ -55,7 +55,7 @@
     <dependency>
       <groupId>org.opensourcebim</groupId>
       <artifactId>pluginbase</artifactId>
-      <version>1.5.121-SNAPSHOT</version>
+      <version>1.5.120</version>
     </dependency>
   </dependencies>
   <build>
@@ -148,7 +148,7 @@
           <serverId>ossrh</serverId>
           <nexusUrl>https://oss.sonatype.org/</nexusUrl>
           <autoReleaseAfterClose>true</autoReleaseAfterClose>
-  		  <stagingProgressTimeoutMinutes>60</stagingProgressTimeoutMinutes>
+          <stagingProgressTimeoutMinutes>60</stagingProgressTimeoutMinutes>
         </configuration>
       </plugin>
       <plugin>
