@@ -62,13 +62,15 @@ function Browser(containerDiv, project, revision) {
 					if (schema == "ifc2x3tc1") {
 						baseUrl = "http://www.buildingsmart-tech.org/ifc/IFC2x3/TC1/html/";
 					} else if (schema == "ifc4") {
-						baseUrl = "http://www.buildingsmart-tech.org/ifc/IFC4/final/html/schema/";
+						baseUrl = "http://www.buildingsmart-tech.org/ifc/IFC4/Add2/html/schema/";
 					}
 					var typeDef = Global.bimServerApi.schemas[schema][object.getType()];
 					var docUrl = baseUrl + typeDef.domain + "/lexical/" + object.getType().toLowerCase() + ".htm";
 					containerDiv.find(".objectTable tbody").append("<tr class=\"extra\"><td>Type</td><td><a target=\"_blank\" href=\"" + docUrl + "\">" + object.getType() + "</a></td></tr>");
 					containerDiv.find(".objectTable tbody").append("<tr class=\"extra\"><td>Oid</td><td>" + oid + "</td></tr>");
 
+					console.log(object);
+					
 					object.fields.forEach(function(field){
 						var tr = $("<tr></tr>");
 						tr.attr("fieldName", field.name);
@@ -81,7 +83,7 @@ function Browser(containerDiv, project, revision) {
 
 						var td = $("<td>");
 						tr.append(td);
-						
+
 						if (field.many) {
 							var getMethod = object["get" + field.name];
 							getMethod.call(object, function(listItem, index){
@@ -108,6 +110,25 @@ function Browser(containerDiv, project, revision) {
 												}
 											});
 											td.append("]");
+										} else if (item._t != null) {
+											td.append(item._t + "(");
+											var v = item._v;
+											if (Array.isArray(v)) {
+												td.append("[");
+												v.forEach(function(subItem, subIndex){
+													if (subIndex != 0) {
+														td.append(", ");
+													}
+													if (subItem._v != null) {
+														td.append(subItem._v);
+													} else {
+														td.append(subItem);
+													}
+													
+												});
+												td.append("]");
+											}
+											td.append(")");
 										} else {
 											td.append(item);
 										}
@@ -133,8 +154,9 @@ function Browser(containerDiv, project, revision) {
 							if (getMethod != null) {
 								getMethod.call(object, function(value){
 									if (value != null) {
-										if (typeof value == "string" || typeof value == "number") {
-											td.append(value);
+										console.log(typeof value);
+										if (typeof value == "string" || typeof value == "number" || typeof value == "boolean") {
+											td.append("" + value);
 										} else {
 											if (value._t != null) {
 												td.append(value._v);
