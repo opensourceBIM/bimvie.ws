@@ -21,13 +21,17 @@
 			</div>
 		</div>
 	</div>
-	<script>
-// Still not supported...
-//		import BimServerClient from '/apps/bimserverjavascriptapi/js/bimserverclient.js';
-//		import BimServerApiPromise from '/apps/bimserverjavascriptapi/js/bimserverapipromise.js';
+	<script type="module">
+		/* START_OF_BLOCK */
 
-		// Make this object available to other parts of BIMvie.ws without requiring all of BIMvie.ws to convert to the module system (yet)
-//		window.BimServerApiPromise = BimServerApiPromise;
+		/* The following block is removed during the build (for transpiled version), because the build falls back to non-ES6 */
+		import BimServerClient from '/apps/bimserverjavascriptapi/bimserverclient.js';
+		import BimServerApiPromise from '/apps/bimserverjavascriptapi/bimserverapipromise.js';
+
+		window.BimServerClient = BimServerClient;
+		window.BimServerApiPromise = BimServerApiPromise;
+
+		/* END_OF_BLOCK */
 
 		window.Global = {};
 
@@ -135,29 +139,30 @@
 //			} else {
 				// This loads the transpiled version for now. When EcmaScript 6 modules work on recent browsers without special settings, should switch to real modules (be it dynamic or static)
 			var p = new Promise((resolve, reject) => {
-				if (Settings.useCompressedResources()) {
-					getPluginVersion(apiAddress, function(apiVersion){
-						LazyLoad.js([Settings.getBimServerApiAddress() + "/bimserverapi.umd.js?_v=" + apiVersion], function(){
-							if (bimserverapi == null) {
-								throw "Error loading BIMserver API from UMD";
-							}
-							window.BimServerClient = bimserverapi.default;
-							window.BimServerApiPromise = bimserverapi.BimServerApiPromise;
-							
+//				if (Settings.useCompressedResources()) {
+//					getPluginVersion(apiAddress, function(apiVersion){
+//						LazyLoad.js([Settings.getBimServerApiAddress() + "/bimserverapi.umd.js?_v=" + apiVersion], function(){
+//							if (bimserverapi == null) {
+//								throw "Error loading BIMserver API from UMD";
+//							}
+//							window.BimServerClient = bimserverapi.default;
+//							window.BimServerApiPromise = bimserverapi.BimServerApiPromise;
+//							
 							resolve();
-						});
-					});
-				} else {
-					getPluginVersion(apiAddress, function(apiVersion){
+//						});
+//					});
+//				} else {
+//					getPluginVersion(apiAddress, function(apiVersion){
 						// Using eval here, so we don't trip the browsers that don't understand "import"
 						// The reason for using it this way is so we can develop this library and test it without having to transpile.
 						// Obviously developers need to have a browser that understands "import" (i.e. a recent version of Chrome, Firefox etc...)
 						
 						// TODO One remaining problem here is that dependencies are not loaded with the "apiVersion" attached, so you need to have your browser on "clear cache" all the time
-						var str = "import(Settings.getBimServerApiAddress() + \"/bimserverclient.js?_v=" + apiVersion + "\").then((bimserverapi) => {	window.BimServerClient = bimserverapi.default; window.BimServerApiPromise = bimserverapi.BimServerApiPromise; resolve();});";
-						eval(str);
-					});
-				}
+						//var str = "import(Settings.getBimServerApiAddress() + \"/bimserverclient.js?_v=" + apiVersion + "\").then((bimserverapi) => {	window.BimServerClient = bimserverapi.default; window.BimServerApiPromise = bimserverapi.BimServerApiPromise; resolve();});";
+						//eval(str);
+//						resolve();
+//					});
+//				}
 			});
 			return p;
 		}
