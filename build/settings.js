@@ -1,7 +1,4 @@
 var Settings = {
-	get3DViewerUrl: function(bimServerApi, roid){
-		return "http://test.bimsurfer.org/index.html?token=" + bimServerApi.token + "&roid=" + roid + "&server=" + bimServerApi.baseUrl;
-	},
 	createStartPage: function(container, main){
 		pushHistory({page: "Projects"}, "Projects");
 		main.pageChanger.changePage($(".serverinfoLink"), "projects.html", function(){
@@ -69,10 +66,10 @@ var Settings = {
 		return false;
 	},
 	getBimServerApiAddress: function(){
-		return "../bimserverjavascriptapi";
+		return "../deps/bimserverjsapi";
 	},
 	getBimSurferApiAddress: function(){
-		return "../bimsurfer/";
+		return "../deps/bimsurfer-v1/";
 	},
 	getDefaultHiddenTypes: function() {
 		return {"IfcOpeningElement": true, "IfcSpace": true};
