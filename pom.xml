@@ -60,62 +60,10 @@
   <build>
     <resources>
       <resource>
-        <targetPath>css</targetPath>
-        <directory>css</directory>
-      </resource>
-      <resource>
-        <targetPath>js</targetPath>
-        <directory>js</directory>
-        <excludes>
-          <exclude>settings.js</exclude>
-        </excludes>
-      </resource>
-      <resource>
-        <targetPath>img</targetPath>
-        <directory>img</directory>
-      </resource>
-      <resource>
-        <targetPath>/</targetPath>
-        <directory>/</directory>
+        <targetPath>.</targetPath>
+        <directory>output</directory>
         <includes>
-        	<include>index.html</include>
-        </includes>
-      </resource>
-      <resource>
-        <targetPath>deps</targetPath>
-        <directory>deps</directory>
-         <includes>
-          <include>**/*</include>
-        </includes>
-      </resource>
-      <resource>
-        <targetPath>fonts</targetPath>
-        <directory>fonts</directory>
-      </resource>
-      <resource>
-        <targetPath>js</targetPath>
-        <directory>../../output/js</directory>
-      </resource>
-      <resource>
-        <targetPath>css</targetPath>
-        <directory>../../output/css</directory>
-      </resource>
-      <resource>
-        <directory>.</directory>
-        <includes>
-          <include>*.html</include>
-        </includes>
-      </resource>
-      <resource>
-        <targetPath>plugin</targetPath>
-        <filtering>true</filtering>
-        <directory>plugin</directory>
-      </resource>
-      <resource>
-        <targetPath>js</targetPath>
-        <directory>build</directory>
-        <includes>
-          <include>settings.js</include>
+        	<include>**/*</include>
         </includes>
       </resource>
     </resources>
