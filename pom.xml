@@ -61,7 +61,7 @@
     <resources>
       <resource>
         <targetPath>.</targetPath>
-        <directory>output</directory>
+        <directory>../../output</directory>
         <includes>
         	<include>**/*</include>
         </includes>
