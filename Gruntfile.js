@@ -64,6 +64,9 @@ module.exports = function(grunt) {
 							src: ["*.html"],
 							dest: "output/"
 						}, {
+							src: ["deps/**"],
+							dest: "output/"
+						}, {
 							src: ["plugin/**"],
 							dest: "output/"
 						}]
