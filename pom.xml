@@ -75,6 +75,10 @@
         <directory>img</directory>
       </resource>
       <resource>
+        <targetPath>deps</targetPath>
+        <directory>deps</directory>
+      </resource>
+      <resource>
         <targetPath>fonts</targetPath>
         <directory>fonts</directory>
       </resource>
