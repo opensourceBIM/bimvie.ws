@@ -77,7 +77,7 @@
 	    		if (Settings.useBimSurfer()) {
 	    			getPluginVersion(Settings.getBimSurferApiAddress(), function(apiVersion){
 	    				var jsToLoad = [];
-						if (Settings.useCompressedResources()) {
+						if (false) {
 							jsToLoad.push(Settings.getBimSurferApiAddress() + "bimsurfer.min.js?_v=" + apiVersion);
 						} else {
 			    			jsToLoad = jsToLoad.concat([
