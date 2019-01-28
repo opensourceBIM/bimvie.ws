@@ -165,6 +165,9 @@
           <useReleaseProfile>false</useReleaseProfile>
           <releaseProfiles>release</releaseProfiles>
           <goals>deploy</goals>
+           <checkModificationExcludes>
+        	<checkModificationExclude>index.html</checkModificationExclude>
+    		</checkModificationExcludes>
         </configuration>
       </plugin>
     </plugins>
