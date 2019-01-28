@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.opensourcebim</groupId>
   <artifactId>bimviews</artifactId>
@@ -54,7 +55,7 @@
     <dependency>
       <groupId>org.opensourcebim</groupId>
       <artifactId>pluginbase</artifactId>
-      <version>1.5.120</version>
+      <version>1.5.121</version>
     </dependency>
   </dependencies>
   <build>
@@ -63,10 +64,10 @@
         <targetPath>.</targetPath>
         <directory>../../output</directory>
         <includes>
-        	<include>**/*</include>
+          <include>**/*</include>
         </includes>
       </resource>
-       <resource>
+      <resource>
         <targetPath>js</targetPath>
         <directory>build</directory>
         <includes>
@@ -130,9 +131,9 @@
           <useReleaseProfile>false</useReleaseProfile>
           <releaseProfiles>release</releaseProfiles>
           <goals>deploy</goals>
-           <checkModificationExcludes>
-        	<checkModificationExclude>index.html</checkModificationExclude>
-    		</checkModificationExcludes>
+          <checkModificationExcludes>
+            <checkModificationExclude>index.html</checkModificationExclude>
+          </checkModificationExcludes>
         </configuration>
       </plugin>
     </plugins>
