@@ -66,6 +66,13 @@
         	<include>**/*</include>
         </includes>
       </resource>
+       <resource>
+        <targetPath>js</targetPath>
+        <directory>build</directory>
+        <includes>
+          <include>settings.js</include>
+        </includes>
+      </resource>
     </resources>
     <plugins>
       <plugin>
