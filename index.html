@@ -21,16 +21,12 @@
 		</div>
 	</div>
 	<script type="module">
-		/* START_OF_BLOCK */
-
-		/* The following block is removed during the build (for transpiled version), because the build falls back to non-ES6 */
-		import BimServerClient from '../apps/bimserverjavascriptapi/bimserverclient.js';
-		import BimServerApiPromise from '../apps/bimserverjavascriptapi/bimserverapipromise.js';
+		/* The following two lines are modified during the build, the imports as defined here work for running BIMvie.ws on a local-dev station within BIMserver */
+		import BimServerClient from '../bimserverjavascriptapi/bimserverclient.js';
+		import BimServerApiPromise from '../bimserverjavascriptapi/bimserverapipromise.js';
 
 		window.BimServerClient = BimServerClient;
 		window.BimServerApiPromise = BimServerApiPromise;
-
-		/* END_OF_BLOCK */
 
 		window.Global = {};
 
