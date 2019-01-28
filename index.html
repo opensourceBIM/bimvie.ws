@@ -78,32 +78,32 @@
 	    			getPluginVersion(Settings.getBimSurferApiAddress(), function(apiVersion){
 	    				var jsToLoad = [];
 						if (false) {
-							jsToLoad.push(Settings.getBimSurferApiAddress() + "bimsurfer.min.js?_v=" + apiVersion);
+							jsToLoad.push(Settings.getBimSurferApiAddress() + "/bimsurfer.min.js?_v=" + apiVersion);
 						} else {
 			    			jsToLoad = jsToLoad.concat([
-			    	   		    Settings.getBimSurferApiAddress() + "api/BIMSURFER.js?_v=" + apiVersion, 
-			    	   		 	Settings.getBimSurferApiAddress() + "lib/hammer/touch-emulator.js?_v=" + apiVersion, 
-			    	   		 	Settings.getBimSurferApiAddress() + "lib/hammer/hammer.min.js?_v=" + apiVersion, 
-			    	   		 	Settings.getBimSurferApiAddress() + "lib/scenejs/scenejs.js?_v=" + apiVersion, 
-				    	   		Settings.getBimSurferApiAddress() + "api/SceneJS.js?_v=" + apiVersion, 
-				    	   		Settings.getBimSurferApiAddress() + "api/Constants.js?_v=" + apiVersion, 
-				    	   		Settings.getBimSurferApiAddress() + "api/ProgressLoader.js?_v=" + apiVersion, 
-				    	   		Settings.getBimSurferApiAddress() + "api/Types/Light.js?_v=" + apiVersion, 
-				    	   		Settings.getBimSurferApiAddress() + "api/Types/Light/Ambient.js?_v=" + apiVersion, 
-				    	   		Settings.getBimSurferApiAddress() + "api/Types/Light/Sun.js?_v=" + apiVersion, 
-				    	   		Settings.getBimSurferApiAddress() + "api/Control.js?_v=" + apiVersion, 
-				    	   		Settings.getBimSurferApiAddress() + "api/Control/ClickSelect.js?_v=" + apiVersion, 
-				    	   		Settings.getBimSurferApiAddress() + "api/Control/LayerList.js?_v=" + apiVersion, 
-				    	   		Settings.getBimSurferApiAddress() + "api/Control/ProgressBar.js?_v=" + apiVersion, 
-				    	   		Settings.getBimSurferApiAddress() + "api/Control/PickFlyOrbit.js?_v=" + apiVersion, 
-				    	   		Settings.getBimSurferApiAddress() + "api/Control/ObjectTreeView.js?_v=" + apiVersion, 
-				    	   		Settings.getBimSurferApiAddress() + "api/Events.js?_v=" + apiVersion, 
-				    	   		Settings.getBimSurferApiAddress() + "api/StringView.js?_v=" + apiVersion, 
-				    	   		Settings.getBimSurferApiAddress() + "api/GeometryLoader.js?_v=" + apiVersion, 
-				    	   		Settings.getBimSurferApiAddress() + "api/AsyncStream.js?_v=" + apiVersion, 
-				    	   		Settings.getBimSurferApiAddress() + "api/DataInputStream.js?_v=" + apiVersion, 
-				    	   		Settings.getBimSurferApiAddress() + "api/Viewer.js?_v=" + apiVersion, 
-				    	   		Settings.getBimSurferApiAddress() + "api/Util.js?_v=" + apiVersion
+			    	   		    Settings.getBimSurferApiAddress() + "/api/BIMSURFER.js?_v=" + apiVersion, 
+			    	   		 	Settings.getBimSurferApiAddress() + "/lib/hammer/touch-emulator.js?_v=" + apiVersion, 
+			    	   		 	Settings.getBimSurferApiAddress() + "/lib/hammer/hammer.min.js?_v=" + apiVersion, 
+			    	   		 	Settings.getBimSurferApiAddress() + "/lib/scenejs/scenejs.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "/api/SceneJS.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "/api/Constants.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "/api/ProgressLoader.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "/api/Types/Light.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "/api/Types/Light/Ambient.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "/api/Types/Light/Sun.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "/api/Control.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "/api/Control/ClickSelect.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "/api/Control/LayerList.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "/api/Control/ProgressBar.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "/api/Control/PickFlyOrbit.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "/api/Control/ObjectTreeView.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "/api/Events.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "/api/StringView.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "/api/GeometryLoader.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "/api/AsyncStream.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "/api/DataInputStream.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "/api/Viewer.js?_v=" + apiVersion, 
+				    	   		Settings.getBimSurferApiAddress() + "/api/Util.js?_v=" + apiVersion
 			       			]);
 						}
 						LazyLoad.js(jsToLoad, () => {

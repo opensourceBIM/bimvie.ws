@@ -69,7 +69,7 @@ var Settings = {
 		return "/apps/bimserverjavascriptapi";
 	},
 	getBimSurferApiAddress: function(){
-		return "../bimsurfer/";
+		return "../bimsurfer";
 	},
 	getDefaultHiddenTypes: function() {
 		return {"IfcOpeningElement": true, "IfcSpace": true};
