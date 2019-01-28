@@ -60,7 +60,7 @@ var Settings = {
 		});
 	},
 	useCompressedResources: function(){
-		return false;
+		return true;
 	},
 	allowBimServerAddress: function() {
 		return false;
