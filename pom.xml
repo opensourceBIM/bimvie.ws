@@ -75,8 +75,18 @@
         <directory>img</directory>
       </resource>
       <resource>
+        <targetPath>/</targetPath>
+        <directory>/</directory>
+        <includes>
+        	<include>index.html</include>
+        </includes>
+      </resource>
+      <resource>
         <targetPath>deps</targetPath>
         <directory>deps</directory>
+         <includes>
+          <include>**/*</include>
+        </includes>
       </resource>
       <resource>
         <targetPath>fonts</targetPath>
