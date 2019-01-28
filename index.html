@@ -3,7 +3,6 @@
 <head>
 <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 <meta content="utf-8" http-equiv="encoding">
-<base href="/" />
 <title>BIMvie.ws</title>
 </head>
 <body style="margin: 0; padding: 0">
@@ -25,8 +24,8 @@
 		/* START_OF_BLOCK */
 
 		/* The following block is removed during the build (for transpiled version), because the build falls back to non-ES6 */
-		import BimServerClient from '../apps/bimserverjavascriptapi/bimserverclient.js';
-		import BimServerApiPromise from '../apps/bimserverjavascriptapi/bimserverapipromise.js';
+		import BimServerClient from '../../apps/bimserverjavascriptapi/bimserverclient.js';
+		import BimServerApiPromise from '../../apps/bimserverjavascriptapi/bimserverapipromise.js';
 
 		window.BimServerClient = BimServerClient;
 		window.BimServerApiPromise = BimServerApiPromise;
@@ -51,9 +50,6 @@
 		}
 		var baseJsDir = window.Global.baseDir + "js/";
 		var baseCssDir = window.Global.baseDir + "css/";
-		
-		var base = window.document.getElementsByTagName("base");
-		base[0].href = window.Global.baseDir;
 		
 		function getPluginVersion(address, callback) {
 			var myRequest = new XMLHttpRequest();
