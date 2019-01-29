@@ -80,7 +80,7 @@ function AvailablePluginBundles(main, serverSettings, cd) {
 				}
 				var option = $("<option val=\"" + version.version + "\">" + text + "</option>");
 				option.data("version", version);
-				versionSelect.prepend(option);
+				versionSelect.append(option);
 			});
 			
 			versionSelect.find("option").first().attr("selected", "selected");

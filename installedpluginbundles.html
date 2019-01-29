@@ -91,7 +91,7 @@ function InstalledPluginBundles(main, serverSettings, cd) {
 					text += " (UNTESTED)";
 				}
 				var option = $("<option val=\"" + version.version + "\">" + text + "</option>");
-				versionSelect.prepend(option);
+				versionSelect.append(option);
 				if (version.version == installed.version) {
 					option.attr("selected", "selected");
 				}
