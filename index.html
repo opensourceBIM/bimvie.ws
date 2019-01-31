@@ -22,8 +22,8 @@
 	</div>
 	<script type="module">
 		/* The following two lines are modified during the build, the imports as defined here work for running BIMvie.ws on a local-dev station within BIMserver */
-		import BimServerClient from '../bimserverjavascriptapi/bimserverclient.js';
-		import BimServerApiPromise from '../bimserverjavascriptapi/bimserverapipromise.js';
+		import {BimServerClient} from '../bimserverjavascriptapi/bimserverclient.js';
+		import {BimServerApiPromise} from '../bimserverjavascriptapi/bimserverapipromise.js';
 
 		window.BimServerClient = BimServerClient;
 		window.BimServerApiPromise = BimServerApiPromise;
@@ -290,7 +290,19 @@
 		    				}
 		    			};
 		    			
-		    			
+	function getApiAddress() {
+		var pathname = document.location.pathname;
+		if (pathname.length > 6 && pathname.substring(0, 6) == "/apps/") {
+			// We assume that BIMsurfer 3 is being served from a BIMserver and that this is also the BIMserver we would like to connect to
+			const href = document.location.href; 
+			return href.substring(0, href.indexOf("/apps/"));
+		} else {
+			// Return a default
+			console.log(document.location);
+			return "http://localhost:8080";
+		}
+	}		    			
+
 		    			function load() {
 		    				$(".sidespan").empty();
 		    				Global.history = pushInitialState();
@@ -353,16 +365,15 @@
 		    				} else if ($.cookie("address" + window.window.document.location.port) != null) {
 		    					Global.loadBimServerApiFromAddress($.cookie("address" + window.window.document.location.port), successFunction, errorFunction);
 		    				} else if (!Settings.allowBimServerAddress()) {
-		    					Settings.getStaticServerAddress(function(address){
-		    						if (address != null) {
-		    							Global.loadBimServerApiFromAddress(address, successFunction, errorFunction);
-		    						} else {
-		    							notLoggedInFunction(address);
-		    							$(".indexcontainer").load(Global.baseDir + "selectserver.html", function(){
-		    								new SelectServer();
-		    							});
-		    						}
-		    					});
+								var address = getApiAddress();
+	    						if (address != null) {
+	    							Global.loadBimServerApiFromAddress(address, successFunction, errorFunction);
+	    						} else {
+	    							notLoggedInFunction(address);
+	    							$(".indexcontainer").load(Global.baseDir + "selectserver.html", function(){
+	    								new SelectServer();
+	    							});
+	    						}
 		    				} else {
 		    					// NO API
 		    					$(".indexcontainer").load(Global.baseDir + "selectserver.html", function(){
