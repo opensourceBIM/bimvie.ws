@@ -24,7 +24,7 @@ var queriesIfc2x3tc1 = {
 				name: "IfcWall",	
 				includeAllSubTypes: true
 			},
-			includes: ["validifc:ContainedInStructure", "validifc:OwnerHistory", "validifc:Representation", "validifc:ObjectPlacement"]
+			includes: ["ifc2x3tc1-stdlib:ContainedInStructure", "ifc2x3tc1-stdlib:OwnerHistory", "ifc2x3tc1-stdlib:Representation", "ifc2x3tc1-stdlib:ObjectPlacement"]
 		}
 	},
 	AllWallsIncludingWindowsAndDoors: {
@@ -123,11 +123,11 @@ var queriesIfc2x3tc1 = {
 				"05yuQkJxb22el7nxTgecJc"
 			],
 			includes: [
-				"validifc:AllProperties",
-				"validifc:ContainedInStructure",
-				"validifc:OwnerHistory",
-				"validifc:Representation",
-				"validifc:ObjectPlacement"
+				"ifc2x3tc1-stdlib:AllProperties",
+				"ifc2x3tc1-stdlib:ContainedInStructure",
+				"ifc2x3tc1-stdlib:OwnerHistory",
+				"ifc2x3tc1-stdlib:Representation",
+				"ifc2x3tc1-stdlib:ObjectPlacement"
 			]
 		}
 	},
@@ -154,8 +154,8 @@ var queriesIfc2x3tc1 = {
 			      }]
 			    }
 				]
-			  },  "validifc:ContainedInStructure",
-			      "validifc:OwnerHistory"]
+			  },  "ifc2x3tc1-stdlib:ContainedInStructure",
+			      "ifc2x3tc1-stdlib:OwnerHistory"]
 			}
 	},
 	ExternalWalls: {
