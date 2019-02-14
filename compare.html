@@ -73,7 +73,7 @@ function Compare(cd, schema, roid1, roid2) {
 	
 	cd.find(".btnDownload").click(function(){
 		Global.bimServerApi.call("PluginInterface", "getDefaultModelCompare", {}, function(modelCompare){
-			Global.bimServerApi.getSerializerByPluginClassName("org.bimserver.ifc.step.serializer." + schema.firstUpper() + "StepSerializerPlugin", function(serializer){
+			Global.bimServerApi.getSerializerByPluginClassName("org.bimserver.ifc.step.serializer." + schema.firstUpper() + "StepSerializerPlugin").then(function(serializer) {
 				Global.bimServerApi.call("ServiceInterface", "downloadCompareResults", {
 					serializerOid: serializer.oid,
 					roid1: cd.find(".revision1").val(),

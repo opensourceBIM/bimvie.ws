@@ -394,6 +394,7 @@ function Main(address, user) {
 
 		div.load(Global.baseDir + "compare.html", function(){
 			new Compare($(this), schema, roid1, roid2);
+			div.find(".modal").modal("show");
 		});
 	};
 
