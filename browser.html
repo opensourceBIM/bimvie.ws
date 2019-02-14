@@ -106,11 +106,15 @@ function Browser(containerDiv, project, revision) {
 												if (subItem._v != null) {
 													td.append(subItem._v);
 												} else if (subItem._t != null) {
-													var link = $("<a>" + subItem._t + " (" + subItem._r + ")</a>");
-													link.attr("oid", subItem._r);
-													link.attr("type", subItem._t);
-													link.click(o.referenceClick);
-													td.append(link);
+													if (subItem._r != null) {
+														var link = $("<a>" + subItem._t + " (" + subItem._r + ")</a>");
+														link.attr("oid", subItem._r);
+														link.attr("type", subItem._t);
+														link.click(o.referenceClick);
+														td.append(link);
+													} else {
+														td.append(subItem._t + " (" + subItem.wrappedValueAsString + ")");
+													}
 												} else {
 													td.append(subItem);
 												}
