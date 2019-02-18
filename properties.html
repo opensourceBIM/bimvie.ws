@@ -91,7 +91,12 @@ function Properties(containerDiv, parent, oid) {
 							} else {
 								tr.append("<td>" + knownTranslations[key] + "</td>");
 							}
-							tr.append("<td>" + additionalData[key].toFixed(2) + "</td>");
+							const value = additionalData[key];
+							if (value.toFixed == null) {
+								tr.append("<td>" + value + "</td>");
+							} else {
+								tr.append("<td>" + value.toFixed(2) + "</td>");
+							}
 							headerTr.after(tr);
 						}
 					};
