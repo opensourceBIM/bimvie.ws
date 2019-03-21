@@ -51,6 +51,8 @@ function formatUserType(type) {
 		return "User";
 	} else if (type == "READ_ONLY") {
 		return "Read only";
+	} else if (type == "MONITOR") {
+		return "Monitor";
 	}
 }
 
