@@ -66,7 +66,7 @@ function Properties(containerDiv, parent, oid) {
 			var headerTr = $("<tr class=\"active\"></tr>");
 			containerDiv.find("table tbody").append(headerTr);
 			var headerTd = $("<td colspan=\"2\"></td>");
-			headerTr.append(headerTd);
+			headerTr.append(headerTd).hide();
 			headerTd.append("<b>Calculated</b>");
 			object.getGeometry(function(geometryInfo){
 				if (geometryInfo != null) {
@@ -80,11 +80,13 @@ function Properties(containerDiv, parent, oid) {
 						LARGEST_FACE_AREA: "Largest face area",
 						BOUNDING_BOX_SIZE_ALONG_X: "Bounding box size along X axis",
 						BOUNDING_BOX_SIZE_ALONG_Y: "Bounding box size along Y axis",
-						BOUNDING_BOX_SIZE_ALONG_Z: "Bounding box size along Z axis"
+						BOUNDING_BOX_SIZE_ALONG_Z: "Bounding box size along Z axis",
+						LARGEST_FACE_DIRECTION: "Largest face direction"
 					};
 					if (geometryInfo.object.additionalData != null) {
 						var additionalData = JSON.parse(geometryInfo.object.additionalData);
 						for (const key in additionalData) {
+							headerTr.show();
 							const tr = $("<tr></tr>");
 							if (knownTranslations[key] == null) {
 								tr.append("<td>" + key + "</td>");
