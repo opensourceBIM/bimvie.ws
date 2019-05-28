@@ -69,8 +69,6 @@ function Browser(containerDiv, project, revision) {
 					containerDiv.find(".objectTable tbody").append("<tr class=\"extra\"><td>Type</td><td><a target=\"_blank\" href=\"" + docUrl + "\">" + object.getType() + "</a></td></tr>");
 					containerDiv.find(".objectTable tbody").append("<tr class=\"extra\"><td>Oid</td><td>" + oid + "</td></tr>");
 
-					console.log(object);
-					
 					object.fields.forEach(function(field){
 						var tr = $("<tr></tr>");
 						tr.attr("fieldName", field.name);
@@ -170,7 +168,6 @@ function Browser(containerDiv, project, revision) {
 							if (getMethod != null) {
 								getMethod.call(object, function(value){
 									if (value != null) {
-										console.log(typeof value);
 										if (typeof value == "string" || typeof value == "number" || typeof value == "boolean") {
 											td.append("" + value);
 										} else {
@@ -200,20 +197,22 @@ function Browser(containerDiv, project, revision) {
 					containerDiv.find(".loadingDiv").hide();
 					
 					if (objectToShow.isA("IfcProduct")) {
-						o.viewer = new BIMSURFER.Viewer(Global.bimServerApi, "browserviewport");
-						o.viewer.loadScene(function(){
-							Global.scene = o.viewer.scene;
-							
-							objectToShow.gid = objectToShow.object._rgeometry._i;
-							objectToShow.trans.mode = 0;
-							
-							var models = {};
-							models[o.revision.oid] = model;
-							var geometryLoader = new GeometryLoader(Global.bimServerApi, models, o.viewer, "triangles");
-	
-							geometryLoader.setLoadOids([o.revision.oid], [objectToShow]);
-							o.viewer.loadGeometry(geometryLoader);
-						});
+						if (objectToShow.object._rgeometry) {
+							o.viewer = new BIMSURFER.Viewer(Global.bimServerApi, "browserviewport");
+							o.viewer.loadScene(function(){
+								Global.scene = o.viewer.scene;
+								
+								objectToShow.gid = objectToShow.object._rgeometry._i;
+								objectToShow.trans.mode = 0;
+								
+								var models = {};
+								models[o.revision.oid] = model;
+								var geometryLoader = new GeometryLoader(Global.bimServerApi, models, o.viewer, "triangles");
+		
+								geometryLoader.setLoadOids([o.revision.oid], [objectToShow]);
+								o.viewer.loadGeometry(geometryLoader);
+							});
+						}
 					} else {
 						if (o.viewer != null) {
 							o.viewer = null;
