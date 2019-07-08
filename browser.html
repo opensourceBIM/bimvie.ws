@@ -60,9 +60,9 @@ function Browser(containerDiv, project, revision) {
 					var schema = project.schema;
 					var baseUrl = null;
 					if (schema == "ifc2x3tc1") {
-						baseUrl = "http://www.buildingsmart-tech.org/ifc/IFC2x3/TC1/html/";
+						baseUrl = "https://standards.buildingsmart.org/IFC/RELEASE/IFC2x3/TC1/HTML/";
 					} else if (schema == "ifc4") {
-						baseUrl = "http://www.buildingsmart-tech.org/ifc/IFC4/Add2/html/schema/";
+						baseUrl = "https://standards.buildingsmart.org/IFC/RELEASE/IFC4/ADD2/HTML/";
 					}
 					var typeDef = Global.bimServerApi.schemas[schema][object.getType()];
 					var docUrl = baseUrl + typeDef.domain + "/lexical/" + object.getType().toLowerCase() + ".htm";
