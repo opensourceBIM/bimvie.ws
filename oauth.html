@@ -58,7 +58,12 @@ function OAuth(cd) {
 			});
 		});
 	} else if (authType == "service") {
-		var state = JSON.parse(QueryString.state);
+		var state = QueryString.state;
+		if (Array.isArray(state)) {
+			// Somehow sometimes it's an array with 2 duplicate values
+			state = state[0];
+		}
+		var state = JSON.parse(state);
 		Global.bimServerApi.call("PluginInterface", "getPluginDescriptorByName", {name: state._serviceName}, function(pluginDescriptor){
 			cd.find(".serviceInfo .name").html(pluginDescriptor.name);
 			cd.find(".serviceInfo .description").html(pluginDescriptor.description);
