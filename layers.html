@@ -46,25 +46,33 @@ function Layers(containerDiv, parent) {
 			var mode = object.trans.mode;
 			if (layers != null) {
 				layers.forEach(function(layer){
-					if (oldMode == 0) {
-						othis.layers[layer.oid].visible--;
-					} else if (oldMode == 1) {
-						othis.layers[layer.oid].transparent--;
-					}
-					if (mode == 0) {
-						othis.layers[layer.oid].visible++;
-					} else if (mode == 1) {
-						othis.layers[layer.oid].transparent++;
-					}
-					var eye = othis.layers[layer.oid].eye;
 					var info = othis.layers[layer.oid];
-					eye.attr("mode", mode);
-					if (info.visible == info.total) {
-						eye.addClass("eyeopen").removeClass("eyeclosed").removeClass("eyehalfopen");
-					} else if (info.transparent == info.total) {
-						eye.addClass("eyehalfopen").removeClass("eyeopen").removeClass("eyeclosed");
-					} else if (info.visible == 0) {
-						eye.addClass("eyeclosed").removeClass("eyehalfopen").removeClass("eyeopen");
+					if (info == null) {
+						console.warn("Layer not found");
+					} else {
+						if (oldMode == 0) {
+							othis.layers[layer.oid].visible--;
+						} else if (oldMode == 1) {
+							othis.layers[layer.oid].transparent--;
+						}
+						if (mode == 0) {
+							othis.layers[layer.oid].visible++;
+						} else if (mode == 1) {
+							othis.layers[layer.oid].transparent++;
+						}
+						var eye = info.eye;
+						if (eye == null) {
+							console.warn("No eye");
+						} else {
+							eye.attr("mode", mode);
+							if (info.visible == info.total) {
+								eye.addClass("eyeopen").removeClass("eyeclosed").removeClass("eyehalfopen");
+							} else if (info.transparent == info.total) {
+								eye.addClass("eyehalfopen").removeClass("eyeopen").removeClass("eyeclosed");
+							} else if (info.visible == 0) {
+								eye.addClass("eyeclosed").removeClass("eyehalfopen").removeClass("eyeopen");
+							}
+						}
 					}
 				});
 			}
