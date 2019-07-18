@@ -82,6 +82,9 @@
 			if (typeof value == "Number") {
 				return value.toFixed(2);
 			}
+			if (value == null) {
+				return "";
+			}
 			return value;
 		}
 
@@ -120,14 +123,13 @@
 			});
 		};
 
-		this.showValidationReport2 = function(schema, extendedData, url) {
-			$.get(url, function(json) {
-				$(".validationreport h2").html(extendedData.title);
-				json.items.forEach(function(item) {
-					//				if (item.type == "header") {
-					//					var tr = $("<tr><td></td><td colspan=\"3\" class=\"header\">" + item.text + "</td></tr>");
-					//					$(".validationreport table tbody").append(tr);
-					//				} else if (item.type == "line") {
+		this.showItems = function(items) {
+			items.forEach(function(item) {
+				if (item.items) {
+					var tr = $("<tr><td></td><td colspan=\"4\" class=\"header\">" + item.title + "</td></tr>");
+					$(".validationreport table tbody").append(tr);
+					o.showItems(item.items);
+				} else {
 					var tr = $("<tr></tr>");
 					tr.append("<td><img/></td>");
 					tr.append("<td width=\"40%\">" + item.message + "</td>");
@@ -135,8 +137,10 @@
 						tr.append("<td><a>" + item.object.oid + "</a></td>");
 						tr.find("a").data("oid", item.object.oid);
 						tr.find("a").click(o.objectClick);
-					} else {
+					} else if (item.identification) {
 						tr.append("<td>" + item.identification + "</td>");
+					} else {
+						tr.append("<td>None</td>");
 					}
 					tr.append("<td>" + formatValue(item.is) + "</td>");
 					tr.append("<td>" + formatValue(item.shouldBe) + "</td>");
@@ -151,7 +155,15 @@
 					tr.find("img").attr("src", img);
 					$(".validationreport table tbody").append(tr);
 					//				}
-				});
+				}
+			});
+		}
+		
+		this.showValidationReport2 = function(schema, extendedData, url) {
+			$.get(url, function(json) {
+				console.log(json);
+				$(".validationreport h2").html(extendedData.title);
+				o.showItems(json.items);
 				$(".validationreport").show();
 			});
 		};
