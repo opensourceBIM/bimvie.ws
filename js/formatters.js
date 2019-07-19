@@ -49,6 +49,9 @@ function formatDateTimeWithSeconds(date) {
 }
 
 function formatDuration(ms, showSeconds) {
+	if (ms == 0) {
+		return "Not available";
+	}
 	var s = Math.round(ms / 1000);
 	if (s < 60) {
 		if (showSeconds && s > 0) {
