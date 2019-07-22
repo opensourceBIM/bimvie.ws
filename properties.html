@@ -52,6 +52,9 @@ function Properties(containerDiv, parent, oid) {
 			if (object.getGlobalId() != null) {
 				containerDiv.find("table tbody").append("<tr><td>GUID</td><td>" + object.getGlobalId() + "</td></tr>");
 			}
+			if (object.object._u != null) {
+				containerDiv.find("table tbody").append("<tr><td>UUID (BIMserver)</td><td>" + object.object._u + "</td></tr>");
+			}
 			object.getIsDefinedBy(function(isDefinedBy){
 				if (isDefinedBy.getType() == "IfcRelDefinesByProperties") {
 					isDefinedBy.getRelatingPropertyDefinition(function(propertySet){
