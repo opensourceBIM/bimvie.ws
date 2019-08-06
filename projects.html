@@ -109,7 +109,7 @@ function Projects(containerDiv, main) {
 
 		$("#projectsTable").append(projectRow);
 		
-		if (project.state == "DELETED" && $.cookie(main.user.oid + "showdeleteditems") != "true") {
+		if ((project.state == "DELETED" || (parentRow != null && parentRow.is(":hidden"))) && $.cookie(main.user.oid + "showdeleteditems") != "true") {
 			projectRow.hide();
 		}
 	};
