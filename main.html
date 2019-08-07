@@ -375,8 +375,19 @@ function Main(address, user) {
 		$(document.body).append(div);
 
 		var query = {
-			includeAllFields: true
+			defines: {"AllFields": {
+				includeAllFields: true,
+				include: "AllFields"
+			}},
+			queries: [{
+				includeAllFields: true,
+				include: "AllFields"
+			}]
 		};
+		
+//		var query = {
+//			includeAllFields: true
+//		};
 		var params = {
 			roids: [roid]
 		};
@@ -408,7 +419,26 @@ function Main(address, user) {
 		// Or maybe every serializer plugin can provide a default query for the "complete" model e.a. default download?
 		
 		var query = {
-			includeAllFields: true,
+			doublebuffer: true,
+			defines: {"AllFields": {
+				includeAllFields: true,
+				includes: ["AllFields", {
+					type: "IfcProduct",
+					field: "geometry",
+					include: {
+						type: "GeometryInfo",
+						field: "data",
+						include: {
+							type: "GeometryData",
+							fields: ["indices", "vertices", "normals", "colorsQuantized"]
+						}
+					}
+				}]
+			}},
+			queries: [{
+				includeAllFields: true,
+				include: "AllFields"
+			}]
 		};
 		
 		var params = {

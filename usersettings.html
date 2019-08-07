@@ -6,7 +6,6 @@
 				<li class="oAuthCodesLink active"><a>OAuth Codes</a></li>
 				<li class="serializersLink"><a>Serializers</a></li>
 				<li class="deserializersLink"><a>Deserializers</a></li>
-				<li class="objectIdmsLink"><a>ObjectIDMs</a></li>
 				<li class="renderEnginesLink"><a>Render Engines</a></li>
 				<li class="queryEnginesLink"><a>Query Engines</a></li>
 				<li class="modelMergersLink"><a>Model Mergers</a></li>
@@ -77,27 +76,6 @@
 					getAllDescriptorsFunction: "getAllDeserializerPluginDescriptors",
 					showListFunction: othis.showDeserializers,
 					addNewCall: "addDeserializer"
-				});
-			}, callback, push);
-		};
-
-		this.showObjectIdms = function(callback, push) {
-			othis.pageChanger.changePage($(".objectIdmsLink"), "genericpluginsettingslist.html", function(){
-				pushHistory({page: "UserSettings", subpage: "ObjectIDMs"}, "User Settings");
-				return new GenericPluginSettingsList(main, othis, {
-					getAllMethodName: "getAllObjectIDMs",
-					updateMethodName: "updateObjectIDM",
-					setDefaultMethodName: "setDefaultObjectIDM",
-					defaultFieldName: "defaultObjectIDMId",
-					createUpdateObject: function(pluginConfiguration){return {objectIDM: pluginConfiguration}},
-					type: "SObjectIDMPluginConfiguration",
-					listTitle: "Object IDMs",
-					showDetailsFunction: othis.showObjectIdm,
-					addTitle: "Add ObjectIDM",
-					showAddFunction: othis.showAddObjectIDM,
-					getAllDescriptorsFunction: "getAllObjectIDMPluginDescriptors",
-					showListFunction: othis.showObjectIdms,
-					addNewCall: "addObjectIDM"
 				});
 			}, callback, push);
 		};
@@ -244,25 +222,6 @@
 			}, callback, push);
 		};
 
-		this.showObjectIdm = function(objectidm, callback, push) {
-			var oid = typeof objectidm == "number" ? objectidm : objectidm.oid;
-			othis.pageChanger.changePage($(".objectIdmsLink"), "genericpluginsettings.html", function(){
-				pushHistory({page: "UserSettings", subpage: "ObjectIDM", oid: oid}, "User Settings");
-				return new GenericPluginSettings(main, othis, oid, {
-					title: "Object IDM",
-					getInterface: "PluginInterface",
-					getMethod: "getObjectIDMById"
-				});
-			}, callback, push);
-		};
-
-		this.showAddObjectIDM = function(configuration, callback, push) {
-			othis.pageChanger.changePage($(".objectIdmsLink"), "genericaddpluginsettings1.html", function(){
-				pushHistory({page: "UserSettings", subpage: "AddObjectIDM"}, "User Settings");
-				return new GenericAddPluginSettings1($(this), main, othis, configuration);
-			}, callback, push);
-		};
-
 		this.showRenderEngine = function(renderEngine, callback, push) {
 			var oid = typeof renderEngine == "number" ? renderEngine : renderEngine.oid;
 			othis.pageChanger.changePage($(".renderEnginesLink"), "genericpluginsettings.html", function(){
@@ -365,7 +324,6 @@
 		$(".usersettings .oAuthCodesLink").click(function(){othis.showOAuthCodes(null, true)});
 		$(".usersettings .serializersLink").click(function(){othis.showSerializers(null, true)});
 		$(".usersettings .deserializersLink").click(function(){othis.showDeserializers(null, true)});
-		$(".usersettings .objectIdmsLink").click(function(){othis.showObjectIdms(null, true)});
 		$(".usersettings .renderEnginesLink").click(function(){othis.showRenderEngines(null, true)});
 		$(".usersettings .queryEnginesLink").click(function(){othis.showQueryEngines(null, true)});
 		$(".usersettings .modelMergersLink").click(function(){othis.showModelMergers(null, true)});
@@ -383,10 +341,6 @@
 			othis.showDeserializers();
 		} else if (history.subpage == "Deserializer") {
 			othis.showDeserializer(parseInt(history.oid));
-		} else if (history.subpage == "ObjectIDMs") {
-			othis.showObjectIdms();
-		} else if (history.subpage == "ObjectIDM") {
-			othis.showObjectIdm(parseInt(history.oid));
 		} else if (history.subpage == "RenderEngines") {
 			othis.showRenderEngines();
 		} else if (history.subpage == "RenderEngine") {
