@@ -247,7 +247,7 @@ var queriesIfc4 = {
 	AllWallsIncludingDecomposition: {
 		description: "AllWallsIncludingDecomposition", query: {
 		type: { name: "IfcWall", includeAllSubTypes: true },
-		includes: ["ifc4stdlib:ContainedInStructure", "ifc4stdlib:OwnerHistory", "ifc4stdlib:Representation", "ifc4stdlib:ObjectPlacement"]
+		includes: ["ifc4-stdlib:ContainedInStructure", "ifc4-stdlib:OwnerHistory", "ifc4-stdlib:Representation", "ifc4-stdlib:ObjectPlacement"]
 	}},
 	AllWallsIncludingWindowsAndDoors: {
 		description: "AllWallsIncludingWindowsAndDoors", query: {
