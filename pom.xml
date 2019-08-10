@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.opensourcebim</groupId>
   <artifactId>bimviews</artifactId>
-  <version>0.0.165-SNAPSHOT</version>
+  <version>0.0.164-SNAPSHOT</version>
   <name>BIMvie.ws</name>
   <description>BIMvie.ws</description>
   <url>https://github.com/opensourceBIM/bimvie.ws</url>
@@ -55,7 +55,7 @@
     <dependency>
       <groupId>org.opensourcebim</groupId>
       <artifactId>pluginbase</artifactId>
-      <version>1.5.165-SNAPSHOT</version>
+      <version>1.5.166-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <build>
