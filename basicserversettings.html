@@ -134,6 +134,13 @@
 							<input type="text" class="form-control renderEngineProcesses">
 						</div>
 					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="defaultRenderEnginePlugin"><a rel="tooltip" data-original-title="Default render engine plugin" data-placement="right">Default render engine plugin</a></label>
+						<div class="col-sm-8">
+							<select class="form-control defaultRenderEnginePlugin" id="defaultRenderEnginePlugin">
+							</select>
+						</div>
+					</div>
 				</div>
 		</div>
 		<div class="panel panel-default">
@@ -345,6 +352,7 @@ function BasicServerSettings(main, serversettings) {
 			serverSettings.protocolBuffersPort = $(".basicserversettings .protocolBuffersPort").val();
 			serverSettings.sessionTimeOutSeconds = $(".basicserversettings .sessionTimeOutSeconds").val();
 			serverSettings.cacheOutputFiles = $(".basicserversettings .cacheOutputFiles").prop("checked");
+			serverSettings.defaultRenderEnginePluginId = $(".basicserversettings .defaultRenderEnginePlugin").val();
 			serverSettings.renderEngineProcesses = $(".basicserversettings .renderEngineProcesses").val();
 			serverSettings.reuseGeometry = $(".basicserversettings .geometryReuseEnabled").prop("checked");
 			serverSettings.optimizeMappedItems = $(".basicserversettings .geometryOptimizeMappedItems").prop("checked");
@@ -472,6 +480,18 @@ function BasicServerSettings(main, serversettings) {
 	$(".basicserversettings .allowOnlyWhitelisted").change(function(event){othis.updateWhiteListedVisible($(this).is(":checked"))});
 	$(".basicserversettings .clearCacheButton").click(othis.clearCacheClick);
 	$(".basicserversettings .clearMavenCacheButton").click(othis.clearMavenCacheClick);
+
+	Global.bimServerApi.call("PluginInterface", "getDefaultRenderEnginePluginDescriptor", {}, function(defaultPluginDescriptor){
+		Global.bimServerApi.call("PluginInterface", "getAllRenderEnginePluginDescriptors", {}, function(pluginDescriptors){
+			pluginDescriptors.forEach(function(pluginDescriptor){
+				var option = $("<option value=\"" + pluginDescriptor.oid + "\">" + pluginDescriptor.name + "</option>");
+				$(".defaultRenderEnginePlugin").append(option);
+				if (defaultPluginDescriptor.oid == pluginDescriptor.oid) {
+					option.attr("selected", "selected");
+				}
+			});
+		});
+	});
 	
 	$("[rel=tooltip]").tooltip();
 	othis.loadSettings();
