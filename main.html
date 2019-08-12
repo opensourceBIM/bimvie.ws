@@ -17,7 +17,6 @@
 							<li><a class="btnOAuthCodes">OAuth Codes</a></li>
 							<li><a class="btnSerializers">Serializers</a></li>
 							<li><a class="btnDeserializers">Deserializers</a></li>
-							<li><a class="btnObjectIDMs">Object IDMs</a></li>
 							<li><a class="btnRenderEngines">Render Engines</a></li>
 							<li><a class="btnQueryEngines">Query Engines</a></li>
 							<li><a class="btnModelMergers">Model Mergers</a></li>
@@ -544,11 +543,6 @@ function Main(address, user) {
 	$(".btnQueryEngines").click(function(){
 		othis.showUserSettings(function(){
 			this.showQueryEngines();
-		});
-	});
-	$(".btnObjectIDMs").click(function(){
-		othis.showUserSettings(function(){
-			this.showObjectIdms();
 		});
 	});
 	$(".btnModelMergers").click(function(){
