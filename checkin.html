@@ -133,9 +133,10 @@ function Checkin(containerDiv, project, successFunction) {
 		var oldStage = othis.stage;
 		othis.stage = state.stage;
 		if (state.state == "AS_ERROR") {
+			console.log(state);
 			containerDiv.find(".uploadStatus").empty();
 			state.errors.forEach(function(error){
-				containerDiv.find(".uploadStatus").append("<div class=\"alert alert-block alert-danger\">" + error + "</div>");
+				containerDiv.find(".uploadStatus").append("<div class=\"alert alert-block alert-danger\">" + (state.deserializeErrorCode ? ("[" + state.deserializeErrorCode + "] ") : "") + error + "</div>");
 			});
 			othis.showUpload();
 			Global.bimServerApi.unregisterProgressHandler(topicId, othis.progressHandler);
@@ -192,16 +193,18 @@ function Checkin(containerDiv, project, successFunction) {
 			Global.bimServerApi.checkin(topicId, project, containerDiv.find(".comment").val(), othis.file, othis.deserializerOid, function(percentage){
 				containerDiv.find(".progressBarHolder .uploadProgressBar .progress-bar").css("width", percentage + "%");
 			}, function(){}, function(error){
+				console.log(error);
 				othis.showUpload();
 				containerDiv.find(".uploadStatus").empty();
 				containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
 				containerDiv.find(".uploadStatus").append("<div class=\"alert alert-block alert-danger\">" + error.message + "</div>");
 			});
 		}, (error) => {
+			console.log(error);
 			othis.showUpload();
 			containerDiv.find(".uploadStatus").empty();
 			containerDiv.find(".progressBarHolder .uploadProgressBar").remove();
-			containerDiv.find(".uploadStatus").append("<div class=\"alert alert-block alert-danger\">" + error.message + "</div>");
+			containerDiv.find(".uploadStatus").append("<div class=\"alert alert-block alert-danger\">" + error.message + (error.deserializerErrorCode ? (" [" + error.deserializerErrorCode + "]") : "") + "</div>");
 		});
 	};
 	
