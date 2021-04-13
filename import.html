@@ -8,7 +8,7 @@
 			  	</div>
 	    		<div class="modal-body">
 	    			<p>
-	    			This process will create a new Main project called "Schependomlaan". Several files will be downloaded from <a href="https://github.com/openBIMstandards/DataSetSchependomlaan">The Schependomlaan project page</a> to your server.
+	    			This process will create a new Main project called "Schependomlaan". Several files will be downloaded from <a href="https://github.com/buildingSMART/Sample-Test-Files/tree/master/IFC%202x3/Schependomlaan">The Schependomlaan project page</a> to your server.
 	    			</p>
 	    			
 	    			<p>
@@ -143,7 +143,7 @@ function Import(cd, main) {
 			comment: "Demo Checkin",
 			deserializerOid: item.deserializer.oid,
 			fileName: item.file.substring(item.file.lastIndexOf("/") + 1),
-			url: "https://github.com/openBIMstandards/DataSetSchependomlaan/raw/master/" + encodeURIComponent(item.file),
+			url: "https://github.com/buildingSMART/Sample-Test-Files/raw/master/IFC%202x3/Schependomlaan/" + encodeURIComponent(item.file),
 			merge: false
 		}, function(){
 			index++;
