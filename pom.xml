@@ -28,7 +28,6 @@
   <scm>
     <connection>scm:git:https://github.com/opensourceBIM/bimvie.ws.git</connection>
     <developerConnection>scm:git:https://github.com/opensourceBIM/bimvie.ws.git</developerConnection>
-    <tag>bimviews-0.0.168</tag>
     <url>https://github.com/opensourceBIM/bimvie.ws.git</url>
   </scm>
   <issueManagement>
@@ -55,14 +54,14 @@
     <dependency>
       <groupId>org.opensourcebim</groupId>
       <artifactId>pluginbase</artifactId>
-      <version>1.5.183-SNAPSHOT</version>
+      <version>1.5.183</version>
     </dependency>
   </dependencies>
   <build>
     <resources>
       <resource>
         <targetPath>.</targetPath>
-        <directory>../../output</directory>
+        <directory>output</directory>
         <includes>
           <include>**/*</include>
         </includes>
@@ -116,7 +115,7 @@
         <configuration>
           <serverId>ossrh</serverId>
           <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-          <autoReleaseAfterClose>true</autoReleaseAfterClose>
+          <autoReleaseAfterClose>false</autoReleaseAfterClose>
           <stagingProgressTimeoutMinutes>60</stagingProgressTimeoutMinutes>
         </configuration>
       </plugin>
@@ -124,7 +123,6 @@
         <artifactId>maven-release-plugin</artifactId>
         <version>2.5.3</version>
         <configuration>
-          <project.scm.id>github.com</project.scm.id>
           <checkModificationExcludes>
             <checkModificationExclude>BuildingSMARTLibrary/pom.xml</checkModificationExclude>
           </checkModificationExcludes>
@@ -158,6 +156,8 @@
                     <arg>--pinentry-mode</arg>
                     <arg>loopback</arg>
                   </gpgArguments>
+                  <keyname>${gpg.keyname}</keyname>
+                  <passphraseServerId>${gpg.keyname}</passphraseServerId>
                 </configuration>
               </execution>
             </executions>
