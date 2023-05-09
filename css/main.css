@@ -572,6 +572,10 @@ table * {
 	font-size: 14px;
 }
 
+table.table tr td {
+    white-space: pre
+}
+
 .navigator .panel {
 	height: 100%;
 }
