@@ -2,7 +2,6 @@ bimvie.ws
 ============
 
 JavaScript client for Building Information Modelling, using open standards like IFC, BCF and BIMSie.
-More info on http://bimvie.ws/
 
 ## How to get a working copy after a git clone:
 if you do a plain checkout your missing the bimsurfer package (wich is implemented as a git submodule).
