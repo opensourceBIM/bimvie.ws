@@ -1,2 +1,4 @@
 /bin
 /target/
+node_modules
+output
