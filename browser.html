@@ -58,14 +58,21 @@ function Browser(containerDiv, project, revision) {
 					containerDiv.find(".objectTable tbody tr").remove();
 					containerDiv.find("table").hide();
 					var schema = project.schema;
+					var typeDef = Global.bimServerApi.schemas[schema][object.getType()];
 					var baseUrl = null;
+					var docURL = null;
+
 					if (schema == "ifc2x3tc1") {
 						baseUrl = "https://standards.buildingsmart.org/IFC/RELEASE/IFC2x3/TC1/HTML/";
+						docURL = baseUrl + typeDef.domain + "/lexical/" + object.getType().toLowerCase() + ".htm";
 					} else if (schema == "ifc4") {
-						baseUrl = "https://standards.buildingsmart.org/IFC/RELEASE/IFC4/ADD2/HTML/";
+						baseUrl = "https://standards.buildingsmart.org/IFC/RELEASE/IFC4/ADD2_TC1/HTML/";
+						docURL = baseURL + "/link/" + object.getType().toLowerCase() + ".htm";
+					} else if (schema == "ifc4x3") {
+						baseUrl = "https://standards.buildingsmart.org/IFC/RELEASE/IFC4_3/HTML/";
+						docURL = baseUrl + "/lexical/" + object.getType().toLowerCase() + ".htm";
 					}
-					var typeDef = Global.bimServerApi.schemas[schema][object.getType()];
-					var docUrl = baseUrl + typeDef.domain + "/lexical/" + object.getType().toLowerCase() + ".htm";
+
 					containerDiv.find(".objectTable tbody").append("<tr class=\"extra\"><td>Type</td><td><a target=\"_blank\" href=\"" + docUrl + "\">" + object.getType() + "</a></td></tr>");
 					containerDiv.find(".objectTable tbody").append("<tr class=\"extra\"><td>Oid</td><td>" + oid + "</td></tr>");
 
