@@ -70,7 +70,7 @@ function Browser(containerDiv, project, revision) {
 						docURL = baseURL + "/link/" + object.getType().toLowerCase() + ".htm";
 					} else if (schema == "ifc4x3") {
 						baseUrl = "https://standards.buildingsmart.org/IFC/RELEASE/IFC4_3/HTML/";
-						docURL = baseUrl + "/lexical/" + object.getType().toLowerCase() + ".htm";
+						docURL = baseUrl + "/lexical/" + object.getType() + ".htm";
 					}
 
 					containerDiv.find(".objectTable tbody").append("<tr class=\"extra\"><td>Type</td><td><a target=\"_blank\" href=\"" + docUrl + "\">" + object.getType() + "</a></td></tr>");
