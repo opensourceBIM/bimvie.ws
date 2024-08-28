@@ -43,7 +43,7 @@ var Settings = {
 				return;
 			}
 			if (myRequest.status != 200)  {
-				successCallback(new Date().getTime());
+				successCallback(new Date().getTime().toString());
 				return;
 			} else {
 				successCallback(JSON.parse(myRequest.responseText).version);
