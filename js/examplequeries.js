@@ -291,10 +291,16 @@ var queriesIfc4 = {
 		}
 	}},
 	AllWallsAndSlabs: {
-		description: "AllWallsAndSlabs", query: {
-		types: [{name: "IfcWall"}, {name: "IfcSlab"}],
-		includeAllSubTypes: true
-	}},
+		description: "AllWallsAndSlabs",
+		query: {
+			types: [{
+				name: "IfcWall",
+				includeAllSubTypes: true
+			}, {
+				name: "IfcSlab"
+			}],
+		}
+	},
 	SpecificWallsByGuid: {
 		description: "SpecificWallsByGuid", query: {
 		type: {name: "IfcWall"},
@@ -316,12 +322,14 @@ var queriesIfc4 = {
 	}},
 	ExternalWalls: {
 		description: "ExternalWalls", query: {
-		type: {name: "IfcWall"},
-		includeAllSubTypes: true,
-		properties: {
-			IsExternal: true
-		}
-	}},
+			type: {name: "IfcWall"},
+			includeAllSubTypes: true,
+			properties: {
+				Pset_WallCommon: {
+					IsExternal: true
+				}
+			}
+		}},
 	ThermalTransmittance: {
 		description: "ThermalTransmittance", query: {
 		type: {name: "IfcWall"},
