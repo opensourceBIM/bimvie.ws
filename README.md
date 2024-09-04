@@ -8,6 +8,7 @@ if you do a plain checkout your missing the bimsurfer package (wich is implement
 to utilize this do the following:
 
     $ cd <Path to bimvie.ws>
+    $ git submodule init
     $ git submodule update
     Cloning into 'js/bimsurfer'...
     remote: Reusing existing pack: 3329, done.
