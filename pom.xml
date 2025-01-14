@@ -78,6 +78,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.6.0</version>
         <executions>
           <execution>
             <id>attach-plugin</id>
@@ -131,6 +132,7 @@
           <goals>deploy</goals>
           <checkModificationExcludes>
             <checkModificationExclude>index.html</checkModificationExclude>
+            <checkModificationExclude>js/settings.js</checkModificationExclude>
           </checkModificationExcludes>
         </configuration>
       </plugin>
@@ -157,7 +159,6 @@
                     <arg>loopback</arg>
                   </gpgArguments>
                   <keyname>${gpg.keyname}</keyname>
-                  <passphraseServerId>${gpg.keyname}</passphraseServerId>
                 </configuration>
               </execution>
             </executions>
