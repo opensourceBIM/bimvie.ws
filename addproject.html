@@ -1,5 +1,6 @@
 <div class="addproject">
 	<form class="form-horizontal" role="form">
+		<div class="warning">The parent project has concrete revisions. Do you still want to add a subproject? Use browser back button if you don't want to add a subproject.</div>
 		<div class="form-group">
 			<label class="col-lg-3 control-label" for="inputName">Name</label>
 			<div class="col-lg-5">
@@ -98,5 +99,10 @@ function AddProject(containerDiv, main, parentProject) {
 		}
 	});
 	$(".addproject .inputName").focus();
+	if  (parentProject.concreteRevisions.length>0) {
+		$(".warning").show();
+	} else {
+		$(".warning").hide();
+	}
 }
 </script>
