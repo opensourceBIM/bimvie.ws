@@ -55,13 +55,13 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="warningLabel">Sub project</h4>
+                <h4 class="modal-title" id="warningLabel">Subproject</h4>
             </div>
             <div class="modal-body">
                 <p>Parent project has concrete revisions. Do you still want to add a subproject?</p> 
             </div>
             <div class="modal-footer">
-				<button type="button" class="btn btn-secondary" id="cancel">cancel</button>
+				<button type="button" class="btn btn-secondary" id="cancel">Cancel</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
             </div>
         </div>
@@ -73,7 +73,7 @@ function AddProject(containerDiv, main, parentProject) {
 	var othis = this;
 	var history = History.getState().data;
 
-	if  (parentProject.concreteRevisions.length>0) {
+	if  (parentProject!=null && parentProject.concreteRevisions.length>0) {
 		const modal = containerDiv.find("#warning");
 		modal.modal({
             backdrop: "static", 

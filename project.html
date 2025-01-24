@@ -415,7 +415,7 @@ function Project(containerDiv, main, project) {
 						});
 					}).find("a").prepend("<i class=\"glyphicon glyphicon-pencil\"></i> ");
 					othis.navigator.projecttree.addMenuDivider("revisionDivider");
-					othis.navigator.projecttree.addMenuItem("Add sub project", "btnAddProject", function(){
+					othis.navigator.projecttree.addMenuItem("Add subproject", "btnAddProject", function(){
 						Global.bimServerApi.call("ServiceInterface", "getProjectByPoid", {poid: othis.navigator.projecttree.selectedNode.poid}, function(project){
 							main.showAddProject(null, project);
 						});
