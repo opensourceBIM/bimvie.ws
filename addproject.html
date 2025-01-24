@@ -1,6 +1,5 @@
 <div class="addproject">
 	<form class="form-horizontal" role="form">
-		<div class="warning">The parent project has concrete revisions. Do you still want to add a subproject? Use browser back button if you don't want to add a subproject.</div>
 		<div class="form-group">
 			<label class="col-lg-3 control-label" for="inputName">Name</label>
 			<div class="col-lg-5">
@@ -51,9 +50,34 @@
 		</div>
 	</form>
 </div>
+
+<div id="warning" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="warningLabel">Confirmation</h4>
+            </div>
+            <div class="modal-body">
+                <p>Parent project has concrete revisions. Do you still want to add a subproject? Use browser back button if you don't want to add a subproject.</p> 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 function AddProject(containerDiv, main, parentProject) {
 	var othis = this;
+
+	if  (parentProject.concreteRevisions.length>0) {
+		const modal = containerDiv.find("#warning");
+		modal.modal({
+            backdrop: "static", 
+            keyboard: false     
+        });
+	}
 
 	this.show = function(){
 		if (parentProject != null && parentProject.schema == "ifc4") {
@@ -99,10 +123,6 @@ function AddProject(containerDiv, main, parentProject) {
 		}
 	});
 	$(".addproject .inputName").focus();
-	if  (parentProject.concreteRevisions.length>0) {
-		$(".warning").show();
-	} else {
-		$(".warning").hide();
-	}
+
 }
 </script>
