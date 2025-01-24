@@ -55,12 +55,13 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="warningLabel">Confirmation</h4>
+                <h4 class="modal-title" id="warningLabel">Sub project</h4>
             </div>
             <div class="modal-body">
-                <p>Parent project has concrete revisions. Do you still want to add a subproject? Use browser back button if you don't want to add a subproject.</p> 
+                <p>Parent project has concrete revisions. Do you still want to add a subproject?</p> 
             </div>
             <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" id="cancel">cancel</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
             </div>
         </div>
@@ -70,6 +71,7 @@
 <script>
 function AddProject(containerDiv, main, parentProject) {
 	var othis = this;
+	var history = History.getState().data;
 
 	if  (parentProject.concreteRevisions.length>0) {
 		const modal = containerDiv.find("#warning");
@@ -77,6 +79,13 @@ function AddProject(containerDiv, main, parentProject) {
             backdrop: "static", 
             keyboard: false     
         });
+
+		modal.find("#cancel").click(function () {
+			$("#warning").modal("hide"); 
+			$(".modal-backdrop").remove(); 
+			window.history.back();
+		});
+
 	}
 
 	this.show = function(){
@@ -124,5 +133,9 @@ function AddProject(containerDiv, main, parentProject) {
 	});
 	$(".addproject .inputName").focus();
 
+	window.addEventListener("popstate", function (event) {
+		$("#warning").modal("hide"); 
+		$(".modal-backdrop").remove(); 
+	});
 }
 </script>
