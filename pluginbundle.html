@@ -22,7 +22,7 @@
 <script>
 function PluginBundle(cd, serverSettings, pluginBundle) {
 	var o = this;
-	
+
 	var pluginBundleVersion = pluginBundle.installedVersion;
 
 	cd.find(".infoTable tbody").append("<tr title=\"Maven GroupID: " + pluginBundleVersion.groupId + "\"><td>Organization</td><td>" + pluginBundle.organization + "</td></tr>");
@@ -30,7 +30,7 @@ function PluginBundle(cd, serverSettings, pluginBundle) {
 	cd.find(".infoTable tbody").append("<tr><td>Description</td><td>" + pluginBundleVersion.description + "</td></tr>");
 	cd.find(".infoTable tbody").append("<tr><td>Version</td><td>" + pluginBundleVersion.version + "</td></tr>");
 	cd.find(".infoTable tbody").append("<tr><td>Date/Time</td><td>" + (pluginBundleVersion.date == null ? "Unknown" : formatDateTime(new Date(pluginBundleVersion.date))) + "</td></tr>");
-	
+
 	Global.bimServerApi.callWithFullIndication("PluginInterface", "listPluginsInBundle", {
 		pluginBundleVersionOid: pluginBundleVersion.oid
 	}, function(data){
@@ -40,58 +40,60 @@ function PluginBundle(cd, serverSettings, pluginBundle) {
 			var td = $("<td class=\"pluginName\"></td>");
 			td.append(a);
 			tr.append(td);
-			tr.append("<td>" + o.formatPluginType(plugin.type) + "</td>");
+			tr.append("<td>" + o.formatPluginType(plugin.pluginInterfaceClassName) + "</td>");
 			tr.append("<td>" + plugin.description + "</td>");
-			
+
 			tr.data("identifier", plugin.identifier);
-			
+
 			var enableCheckbox = $("<input type=\"checkbox\" class=\"enableCheckbox\" checked=\"checked\">");
 			var newUsersCheckbox = $("<input type=\"checkbox\" class=\"newUsersCheckbox\" checked=\"checked\">");
-			
+
 			enableCheckbox.change(function(){
 				var enabled = $(this).is(":checked");
 				$(this).parents("tr").find(".newUsersCheckbox").prop("disabled", !enabled);
 				if (!enabled) {
 					$(this).parents("tr").find(".newUsersCheckbox").prop("checked", false);
 				}
-				
+
 			});
-			
+
 			var enableTd = $("<td>");
 			var enableNewUsersTd = $("<td>");
-			
+
 			enableTd.append(enableCheckbox);
 			enableNewUsersTd.append(newUsersCheckbox);
-			
+
 			tr.append(enableTd);
 			tr.append(enableNewUsersTd);
-			
+
 			a.click(function(){
 				serverSettings.showPluginSettings(plugin);
 			});
-			
+
 			cd.find(".pluginsTable tbody").append(tr);
 		});
 	});
-	
+
 	this.formatPluginType = function(type){
-		if (type == "SERIALIZER") {
+		if (type.startsWith("org.bimserver.plugins.serializers.")) {
 			return "Serializer";
-		} else if (type == "DESERIALIZER") {
+		} else if (type.startsWith("org.bimserver.plugins.deserializers.")) {
 			return "Deserializer";
-		} else if (type == "OBJECT_IDM") {
+		} else if (type == "org.bimserver.plugins.objectidms.ObjectIDMPlugin") {
 			return "Object IDM";
-		} else if (type == "RENDER_ENGINE") {
+		} else if (type == "org.bimserver.plugins.renderengine.RenderEnginePlugin") {
 			return "Render Engine";
-		} else if (type == "QUERY_ENGINE") {
+		} else if (type == "org.bimserver.plugins.queryengine.QueryEnginePlugin") {
 			return "Query Engine";
-		} else if (type == "MODEL_CHECKER") {
+		} else if (type == "org.bimserver.plugins.modelchecker.ModelCheckerPlugin") {
 			return "Model Checker";
-		} else if (type == "MODEL_MERGER") {
+		} else if (type == "org.bimserver.plugins.modelmerger.ModelMergerPlugin") {
 			return "Model Merger";
-		} else if (type == "SERVICE") {
+		} else if (type == "org.bimserver.plugins.modelcompare.ModelComparePlugin") {
+			return "Model Compare";
+		} else if (type == "org.bimserver.plugins.services.ServicePlugin") {
 			return "Service";
-		} else if (type == "WEB_MODULE") {
+		} else if (type == "org.bimserver.plugins.web.WebModulePlugin") {
 			return "Web Module";
 		} else {
 			return type;
