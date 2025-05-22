@@ -114,6 +114,180 @@ var queriesIfc2x3tc1 = {
 			}
 		}
 	},
+	SpecificBuildingStoreyIncAllObjectsAndRelations: {
+        description: "Query a specific building storey, including all objects with their relations. (test model: <a href=\"https://github.com/buildingsmart-community/Community-Sample-Test-Files/tree/main/IFC%202.3.0.1%20(IFC%202x3)/Medical-Dental%20Clinic</a>)",
+        query:
+        {
+          type: {
+            name: "IfcBuildingStorey"
+          },
+          guid: "3eM8WbY_59RR5TDWs3wwJN",
+          includes: [
+            {
+              type: "IfcBuildingStorey",
+              field: "IsDecomposedBy",
+              include: {
+                type: "IfcRelAggregates",
+                field: "RelatedObjects",
+                includes: [
+                  "ifc2x3tc1-stdlib:Representation",
+                  "ifc2x3tc1-stdlib:ObjectPlacement",
+                  "ifc2x3tc1-stdlib:AllProperties"
+                ]
+              }
+            },
+            {
+              type: "IfcBuildingStorey",
+              field: "ContainsElements",
+              include: {
+                type: "IfcRelContainedInSpatialStructure",
+                field: "RelatedElements",
+                includes: [
+                  "ifc2x3tc1-stdlib:Representation",
+                  "ifc2x3tc1-stdlib:ObjectPlacement",
+                  "ifc2x3tc1-stdlib:AllProperties",
+                  {
+                    type: {
+                      name: "IfcBuildingElement",
+                      includeAllSubTypes: true
+                    },
+                    field: "HasOpenings",
+                    include:{
+                      type: "IfcRelVoidsElement",
+                      field: "RelatedOpeningElement",
+                      includes: [
+                        {
+                          type: "IfcOpeningElement",
+                          field: "HasFillings",
+                          include: {
+                            type: "IfcRelFillsElement",
+                            field: "RelatedBuildingElement",
+                            includes:[
+                              "ifc2x3tc1-stdlib:Representation",
+                              "ifc2x3tc1-stdlib:ObjectPlacement",
+                              "ifc2x3tc1-stdlib:AllProperties"
+                            ]
+                          }
+                        },
+                        "ifc2x3tc1-stdlib:Representation",
+                        "ifc2x3tc1-stdlib:ObjectPlacement"
+                      ]
+                    }
+                  },
+                  {
+                    type: "IfcBuildingElement",
+                    field: "IsDecomposedBy",
+                    include:{
+                      type: "IfcRelAggregates",
+                      field: "RelatedObjects",
+                      includes:[
+                        "ifc2x3tc1-stdlib:Representation",
+                        "ifc2x3tc1-stdlib:ObjectPlacement",
+                        "ifc2x3tc1-stdlib:AllProperties"
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "ifc2x3tc1-stdlib:Decomposes"
+          ]
+        }
+	},
+	BuildingIncAllObjects:{
+	    description: "Queries building with its child's objects",
+	    query: {
+             type: "IfcBuilding",
+             includes: [
+               {
+                 type: "IfcBuilding",
+                 field: "IsDecomposedBy",
+                 include: {
+                   type: "IfcRelAggregates",
+                   field: "RelatedObjects",
+                   includes: [
+                     {
+                       type: "IfcBuildingStorey",
+                       includes: [
+                         "ifc2x3tc1-stdlib:Decomposes"
+                       ]
+                     },
+                     {
+                       type: "IfcBuildingStorey",
+                       field: "IsDecomposedBy",
+                       include: {
+                         type: "IfcRelAggregates",
+                         field: "RelatedObjects",
+                         includes: [
+                           "ifc2x3tc1-stdlib:Representation",
+                           "ifc2x3tc1-stdlib:ObjectPlacement",
+                           "ifc2x3tc1-stdlib:AllProperties"
+                         ]
+                       }
+                     },
+                     {
+                       type: "IfcBuildingStorey",
+                       field: "ContainsElements",
+                       include: {
+                         type: "IfcRelContainedInSpatialStructure",
+                         field: "RelatedElements",
+                         includes: [
+                           "ifc2x3tc1-stdlib:Representation",
+                           "ifc2x3tc1-stdlib:ObjectPlacement",
+                           "ifc2x3tc1-stdlib:AllProperties",
+                           {
+                             type: {
+                               name: "IfcBuildingElement",
+                               includeAllSubTypes: true
+                             },
+                             field: "HasOpenings",
+                             include: {
+                               type: "IfcRelVoidsElement",
+                               field: "RelatedOpeningElement",
+                               includes: [
+                                 {
+                                   type: "IfcOpeningElement",
+                                   field: "HasFillings",
+                                   include: {
+                                     type: "IfcRelFillsElement",
+                                     field: "RelatedBuildingElement",
+                                     includes: [
+                                       "ifc2x3tc1-stdlib:Representation",
+                                       "ifc2x3tc1-stdlib:ObjectPlacement",
+                                       "ifc2x3tc1-stdlib:AllProperties"
+                                     ]
+                                   }
+                                 },
+                                 "ifc2x3tc1-stdlib:Representation",
+                                 "ifc2x3tc1-stdlib:ObjectPlacement"
+                               ]
+                             }
+                           },
+                           {
+                             type: "IfcBuildingElement",
+                             field: "IsDecomposedBy",
+                             include: {
+                               type: "IfcRelAggregates",
+                               field: "RelatedObjects",
+                               includes: [
+                                 "ifc2x3tc1-stdlib:Representation",
+                                 "ifc2x3tc1-stdlib:ObjectPlacement",
+                                 "ifc2x3tc1-stdlib:AllProperties"
+                               ]
+                             }
+                           }
+                         ]
+                       }
+                     }
+                   ]
+                 }
+               },
+               "ifc2x3tc1-stdlib:ObjectPlacement",
+               "ifc2x3tc1-stdlib:Decomposes",
+               "ifc2x3tc1-stdlib:AllProperties"
+             ]
+           }
+	},
 	AllPropertiesOf2Spaces1Wall: {
 		description: "[BROKEN] Queries all properties of the given GUIDs (test model: <a href=\"https://github.com/opensourceBIM/TestFiles/raw/master/TestData/data/AC11-Institute-Var-2-IFC.ifc\">AC11-Institute-Var-2-IFC.ifc</a>). This query won't visualize anything",
 		query: {
@@ -320,6 +494,179 @@ var queriesIfc4 = {
 			}
 		}
 	}},
+	SpecificBuildingStoreyIncAllObjectsAndRelations = {
+      description: "Query a specific building storey, including all objects with their relations."
+      query: {
+        type: {
+          name: "IfcBuildingStorey"
+        },
+        guid: "3eM8WbY_59RR5TDWs3wwJN",
+        includes: [
+          {
+            type: "IfcBuildingStorey",
+            field: "IsDecomposedBy",
+            include: {
+              type: "IfcRelAggregates",
+              field: "RelatedObjects",
+              includes: [
+                "ifc4-stdlib:Representation",
+                "ifc4-stdlib:ObjectPlacement",
+                "ifc4-stdlib:AllProperties"
+              ]
+            }
+          },
+          {
+            type: "IfcBuildingStorey",
+            field: "ContainsElements",
+            include: {
+              type: "IfcRelContainedInSpatialStructure",
+              field: "RelatedElements",
+              includes: [
+                "ifc4-stdlib:Representation",
+                "ifc4-stdlib:ObjectPlacement",
+                "ifc4-stdlib:AllProperties",
+                {
+                  type: {
+                    name: "IfcBuildingElement",
+                    includeAllSubTypes: true
+                  },
+                  field: "HasOpenings",
+                  include: {
+                    type: "IfcRelVoidsElement",
+                    field: "RelatedOpeningElement",
+                    includes: [
+                      {
+                        type: "IfcOpeningElement",
+                        field: "HasFillings",
+                        include: {
+                          type: "IfcRelFillsElement",
+                          field: "RelatedBuildingElement",
+                          includes: [
+                            "ifc4-stdlib:Representation",
+                            "ifc4-stdlib:ObjectPlacement",
+                            "ifc4-stdlib:AllProperties"
+                          ]
+                        }
+                      },
+                      "ifc4-stdlib:Representation",
+                      "ifc4-stdlib:ObjectPlacement"
+                    ]
+                  }
+                },
+                {
+                  type: "IfcBuildingElement",
+                  field: "IsDecomposedBy",
+                  include: {
+                    type: "IfcRelAggregates",
+                    field: "RelatedObjects",
+                    includes: [
+                      "ifc4-stdlib:Representation",
+                      "ifc4-stdlib:ObjectPlacement",
+                      "ifc4-stdlib:AllProperties"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "ifc4-stdlib:Decomposes"
+        ]
+      }
+    },
+	BuildingIncAllObjects: {
+	    description: "BuildingIncAllObjects",
+	    query: {
+           type: "IfcBuilding",
+           includes: [
+               {
+                   type: "IfcBuilding",
+                   field: "IsDecomposedBy",
+                   include: {
+                       type: "IfcRelAggregates",
+                       field: "RelatedObjects",
+                       includes: [
+                           {
+                               type: "IfcBuildingStorey",
+                               includes: [
+                                   "ifc4-stdlib:Decomposes"
+                               ]
+                           },
+                           {
+                               type: "IfcBuildingStorey",
+                               field: "IsDecomposedBy",
+                               include: {
+                                   type: "IfcRelAggregates",
+                                   field: "RelatedObjects",
+                                   includes: [
+                                       "ifc4-stdlib:Representation",
+                                       "ifc4-stdlib:ObjectPlacement",
+                                       "ifc4-stdlib:AllProperties"
+                                   ]
+                               }
+                           },
+                           {
+                               type: "IfcBuildingStorey",
+                               field: "ContainsElements",
+                               include: {
+                                   type: "IfcRelContainedInSpatialStructure",
+                                   field: "RelatedElements",
+                                   includes: [
+                                       "ifc4-stdlib:Representation",
+                                       "ifc4-stdlib:ObjectPlacement",
+                                       "ifc4-stdlib:AllProperties",
+                                       {
+                                           type: {
+                                               name: "IfcBuildingElement",
+                                               includeAllSubTypes: true
+                                           },
+                                           field: "HasOpenings",
+                                           include: {
+                                               type: "IfcRelVoidsElement",
+                                               field: "RelatedOpeningElement",
+                                               includes: [
+                                                   {
+                                                       type: "IfcOpeningElement",
+                                                       field: "HasFillings",
+                                                       include: {
+                                                           type: "IfcRelFillsElement",
+                                                           field: "RelatedBuildingElement",
+                                                           includes: [
+                                                               "ifc4-stdlib:Representation",
+                                                               "ifc4-stdlib:ObjectPlacement",
+                                                               "ifc4-stdlib:AllProperties"
+                                                           ]
+                                                       }
+                                                   },
+                                                   "ifc4-stdlib:Representation",
+                                                   "ifc4-stdlib:ObjectPlacement"
+                                               ]
+                                           }
+                                       },
+                                       {
+                                           type: "IfcBuildingElement",
+                                           field: "IsDecomposedBy",
+                                           include: {
+                                               type: "IfcRelAggregates",
+                                               field: "RelatedObjects",
+                                               includes: [
+                                                   "ifc4-stdlib:Representation",
+                                                   "ifc4-stdlib:ObjectPlacement",
+                                                   "ifc4-stdlib:AllProperties"
+                                               ]
+                                           }
+                                       }
+                                   ]
+                               }
+                           }
+                       ]
+                   }
+               },
+               "ifc4-stdlib:ObjectPlacement",
+               "ifc4-stdlib:Decomposes",
+               "ifc4-stdlib:AllProperties"
+           ]
+       }
+	},
 	ExternalWalls: {
 		description: "ExternalWalls", query: {
 			type: {name: "IfcWall"},
