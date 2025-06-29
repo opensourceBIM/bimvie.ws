@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.opensourcebim</groupId>
   <artifactId>bimviews</artifactId>
-  <version>0.0.190</version>
+  <version>0.0.191-SNAPSHOT</version>
   <name>BIMvie.ws</name>
   <description>bimvie.ws</description>
   <url>https://github.com/opensourceBIM/bimvie.ws</url>
@@ -28,7 +28,7 @@
     <connection>scm:git:https://github.com/opensourceBIM/bimvie.ws.git</connection>
     <developerConnection>scm:git:https://github.com/opensourceBIM/bimvie.ws.git</developerConnection>
     <url>https://github.com/opensourceBIM/bimvie.ws.git</url>
-    <tag>bimviews-0.0.190</tag>
+    <tag>HEAD</tag>
   </scm>
   <issueManagement>
     <system>GitHub</system>
