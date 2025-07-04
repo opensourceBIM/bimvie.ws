@@ -494,8 +494,8 @@ var queriesIfc4 = {
 			}
 		}
 	}},
-	SpecificBuildingStoreyIncAllObjectsAndRelations = {
-      description: "Query a specific building storey, including all objects with their relations."
+	SpecificBuildingStoreyIncAllObjectsAndRelations: {
+      description: "Query a specific building storey, including all objects with their relations.",
       query: {
         type: {
           name: "IfcBuildingStorey"
