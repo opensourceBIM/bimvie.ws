@@ -109,7 +109,7 @@ function Browser(containerDiv, project, revision) {
 													td.append(", ");
 												}
 												if (subItem._v != null) {
-													td.append(subItem._v);
+													o.appendValue(td, subItem._v);
 												} else if (subItem._t != null) {
 													if (subItem._r != null) {
 														var link = $("<a>" + subItem._t + " (" + subItem._r + ")</a>");
@@ -135,7 +135,7 @@ function Browser(containerDiv, project, revision) {
 														td.append(", ");
 													}
 													if (subItem._v != null) {
-														td.append(subItem._v);
+														o.appendValue(td, subItem._v);
 													} else if (subItem._t != null) {
 														var link = $("<a>" + subItem.getType() + " (" + id + ")</a>");
 														link.attr("oid", subItem.oid);
@@ -160,7 +160,7 @@ function Browser(containerDiv, project, revision) {
 										id = listItem.getGlobalId();
 									}
 									if (listItem._t != null) {
-										td.append(listItem._v);
+										o.appendValue(td, listItem._v);
 									} else {
 										var link = $("<a>" + listItem.getType() + " (" + id + ")</a>");
 										link.attr("oid", listItem.oid);
@@ -176,10 +176,10 @@ function Browser(containerDiv, project, revision) {
 								getMethod.call(object, function(value){
 									if (value != null) {
 										if (typeof value == "string" || typeof value == "number" || typeof value == "boolean") {
-											td.append("" + value);
+											o.appendValue(td, value);
 										} else {
 											if (value._t != null) {
-												td.append(value._v);
+												o.appendValue(td, value._v);
 											} else {
 												var id = value.oid;
 												if (value.getGlobalId != null) {
@@ -240,6 +240,21 @@ function Browser(containerDiv, project, revision) {
 	this.referenceClick = function(event) {
 		event.preventDefault();
 		o.loadObject(o.project.oid, $(this).attr("oid"));
+	};
+
+	this.appendValue = function(td, value) {
+		var s = ("" + value).trim();
+		if (/^(https?:\/\/|www\.)\S+$/i.test(s)) {
+			var href = /^www\./i.test(s) ? "http://" + s : s;
+			var a = $("<a></a>");
+			a.attr("target", "_blank");
+			a.attr("rel", "noopener noreferrer");
+			a.attr("href", href);
+			a.text(s);
+			td.append(a);
+		} else {
+			td.append(document.createTextNode("" + value));
+		}
 	};
 	
 	this.objectClick = function(event) {
